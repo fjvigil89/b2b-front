@@ -12,6 +12,7 @@ import theme from '../native-base-theme/variables/commonColor';
 
 import Routes from './routes/index';
 import Loading from './components/Loading';
+import LoginScreen from './containers/LoginApp';
 
 if (Platform.OS === 'android') StatusBar.setHidden(true);
 
@@ -19,10 +20,16 @@ export default class Root extends React.Component {
   static propTypes = {
     store: PropTypes.shape({}).isRequired,
     persistor: PropTypes.shape({}).isRequired,
+    isAuthenticated: PropTypes.bool,
   };
+
+  static defaultProps = {
+    isAuthenticated: false,
+  }
 
   constructor(props) {
     super(props);
+
     this.state = {
       isReady: false,
     };
@@ -43,8 +50,14 @@ export default class Root extends React.Component {
   }
 
   render() {
+    const { isAuthenticated } = this.props;
+
     if (!this.state.isReady) {
       return <Expo.AppLoading />;
+    }
+
+    if (!isAuthenticated) {
+      return <LoginScreen />;
     }
 
     return (
