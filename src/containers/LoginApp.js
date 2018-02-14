@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TextInput } from 'react-native';
-import NavigationBar from 'react-native-navbar';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, 
+  Right, Body, Icon, Text, Subtitle, Grid, Row, Form, Item, Label, Input } from 'native-base';
+
 import { connect } from 'react-redux';
 
 import * as loginActions from '../actions/member';
@@ -54,31 +54,28 @@ class LoginScreen extends Component {
     };
 
     return (
-      <View>
-        <NavigationBar
-          title={titleConfig}
-          tintColor="#ADF8D1"
-        />
-        <View>
-          {error}
-          <TextInput
-            placeholder="email"
-            onChangeText={v => this.handleChange('email', v)}
-          />
-
-          <TextInput
-            placeholder="password"
-            onChangeText={v => this.handleChange('password', v)}
-          />
-
-          <Icon.Button
-            name="envelope-o"
-            onPress={this.handleSubmit}
-          >
-            Login
-          </Icon.Button>
-        </View>
-      </View>
+      <Container>
+        <Grid>
+          <Row size={3} />
+          <Row size={3}>
+            <Content>
+              <Form>
+                <Item floatingLabel style={{ marginRight: 15 }}>
+                  <Label>Username</Label>
+                  <Input />
+                </Item>
+                <Item floatingLabel style={{ marginRight: 15 }}>
+                  <Label>Password</Label>
+                  <Input secureTextEntry />
+                </Item>
+              </Form>
+              <Button block style={{ margin: 15, marginTop: 50 }}>
+                <Text>Sign In</Text>
+              </Button>
+            </Content>
+          </Row>
+        </Grid>
+      </Container>
     );
   }
 }
