@@ -9,7 +9,7 @@ import theme from './native-base-theme/variables/commonColor';
 
 import configureStore from './src/store/index';
 import Loading from './src/components/Loading';
-import LoginScreen from './src/containers/LoginApp';
+import LoginScreen from './src/containers/login/LoginApp';
 
 const { persistor, store } = configureStore();
 

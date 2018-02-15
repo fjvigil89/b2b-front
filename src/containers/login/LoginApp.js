@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, 
   Right, Body, Icon, Text, Subtitle, Grid, Row, Form, Item, Label, Input } from 'native-base';
+import { Image, View } from 'react-native';
 
 import { connect } from 'react-redux';
 
-import * as loginActions from '../actions/member';
-import Loading from '../components/Loading';
+import * as loginActions from '../../actions/member';
+import Loading from '../../components/Loading';
+import styles from './styles';
+
+const logoImage = require('../../images/logo_cademsmart.png');
 
 class LoginScreen extends Component {
   static propTypes = {
@@ -54,11 +58,15 @@ class LoginScreen extends Component {
     };
 
     return (
-      <Container>
+      <Container style={{ flex: 1 }}>
         <Grid>
-          <Row size={3} />
-          <Row size={3}>
-            <Content>
+          <Row size={4}>
+            <View style={styles.viewImage} >
+              <Image source={logoImage} style={styles.drawerCover} />
+            </View>
+          </Row>
+          <Row size={5} style={{backgroundColor: '#f5f5f5'}}>
+            <View style={{ flex: 1 }}>
               <Form>
                 <Item floatingLabel style={{ marginRight: 15 }}>
                   <Label>Username</Label>
@@ -72,7 +80,7 @@ class LoginScreen extends Component {
               <Button block style={{ margin: 15, marginTop: 50 }}>
                 <Text>Sign In</Text>
               </Button>
-            </Content>
+            </View>
           </Row>
         </Grid>
       </Container>
