@@ -8,11 +8,10 @@ const deviceWidth = Dimensions.get('window').width;
 export default {
   viewImage: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  drawerCover: {
-    width: deviceWidth - 100,
+  image: {
+    width: deviceWidth,
   },
 };

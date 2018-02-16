@@ -16,6 +16,7 @@
     "prefer-promise-reject-errors": "off",
     "no-nested-ternary": "off",
     "react/no-multi-comp": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "react/prefer-stateless-function": "off"
   },
 }

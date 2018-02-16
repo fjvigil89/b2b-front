@@ -3,15 +3,18 @@ import Expo from 'expo';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import { StyleProvider } from 'native-base';
+import { StatusBar, Platform } from 'react-native';
 
 import getTheme from './native-base-theme/components';
 import theme from './native-base-theme/variables/commonColor';
 
 import configureStore from './src/store/index';
 import Loading from './src/components/Loading';
-import LoginScreen from './src/containers/login/LoginApp';
+import Root from './src/index';
 
 const { persistor, store } = configureStore();
+
+if (Platform.OS === 'android') StatusBar.setHidden(true);
 
 export default class App extends React.Component {
   constructor(props) {
@@ -48,7 +51,7 @@ export default class App extends React.Component {
           persistor={persistor}
         >
           <StyleProvider style={getTheme(theme)}>
-            <LoginScreen />
+            <Root />
           </StyleProvider>
         </PersistGate>
       </Provider>
