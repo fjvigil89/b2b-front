@@ -9,7 +9,6 @@ export default function (dispatch, type, val) {
       return reject('Type should be one of success, error or info');
     }
 
-    // Set some defaults for convenience
     let message = val;
     if (!val) {
       if (type === 'success') message = 'Success';

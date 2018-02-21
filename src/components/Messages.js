@@ -1,12 +1,15 @@
 import React from 'react';
+import { View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
 import { Text } from 'native-base';
 
 import Colors from '../../native-base-theme/variables/commonColor';
 
+const deviceWidth = Dimensions.get('window').width;
+
 const Messages = ({ message, type }) => (
   <View style={{
+      width: deviceWidth - 35,
       backgroundColor: (type === 'error') ? Colors.brandDanger : (type === 'success') ? Colors.brandSuccess : Colors.brandInfo,
       paddingVertical: 10,
       paddingHorizontal: 5,

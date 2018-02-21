@@ -4,16 +4,15 @@ export const initialState = Store;
 
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
-    case '': {
+    case 'USER_LOGIN': {
       if (action.data) {
-        console.log(action.data);
         return {
           ...state,
           loading: false,
           error: null,
-          uid: action.data[0].id,
-          email: action.data[0].email,
-          emailVerified: action.data[0].email,
+          uid: action.data.uid,
+          email: action.data.email,
+          emailVerified: action.data.emailVerified,
         };
       }
       return initialState;

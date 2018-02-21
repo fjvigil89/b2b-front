@@ -112,7 +112,7 @@ export default {
   cardDefaultBg: '#fff',
 
   // Color
-  brandPrimary: '#473BE7',
+  brandPrimary: '#89a9c8',
   brandInfo: '#62B1F6',
   brandSuccess: '#5cb85c',
   brandDanger: '#d9534f',
@@ -137,7 +137,7 @@ export default {
 
   // Footer
   footerHeight: isIphoneX ? 89 : 55,
-  footerDefaultBg: '#2874F0',
+  footerDefaultBg: '#29537e',
   footerPaddingBottom: isIphoneX ? 34 : 0,
 
   // FooterTab
@@ -158,7 +158,7 @@ export default {
 
   // Header
   toolbarBtnColor: '#fff',
-  toolbarDefaultBg: '#2874F0',
+  toolbarDefaultBg: '#29537e',
   toolbarHeight: platform === 'ios' ? (isIphoneX ? 88 : 64) : 56,
   toolbarIconSize: platform === 'ios' ? 20 : 22,
   toolbarSearchIconSize: platform === 'ios' ? 20 : 23,

@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'native-base';
+import { View, Text } from 'react-native';
 
 const Spacer = ({ size }) => (
-  <View style={{ flex: 1, height: size }} />
+  <View style={{ height: size }} >
+    <Text style={{ color: '#fff', textAlign: 'center' }}>FASFASFAFS</Text>
+  </View>
 );
 
 Spacer.propTypes = {

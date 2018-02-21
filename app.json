@@ -4,6 +4,9 @@
     "name": "React Native Starter Kit",
     "slug": "react-native-starter-kit",
     "icon": "src/images/app-icon.png",
-    "privacy": "public"
+    "privacy": "public",
+    "ios": {
+      "bundleIdentifier": "com.miguelmeza.me"
+    }
   }
 }

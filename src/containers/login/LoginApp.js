@@ -1,34 +1,37 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, 
-  Right, Body, Icon, Text, Subtitle, Grid, Row, Form, Item, Label, Input } from 'native-base';
-import { Image, View, ScrollView, RefreshControl } from 'react-native';
+import { Container, Content, Button,
+  Text, Form, Item, Label, Input } from 'native-base';
+import { Image, View } from 'react-native';
 
 import { connect } from 'react-redux';
 
-import * as loginActions from '../../actions/member';
+import Messages from '../../components/Messages';
+import Spacer from '../../components/Spacer';
 import Loading from '../../components/Loading';
+
+import { Login } from '../../actions/user';
 import styles from './styles';
 
-const logoImage = require('../../images/logo_login.png');
+const logoImage = require('../../images/logo-cadem.png');
 
 class LoginScreen extends Component {
   static propTypes = {
-    error: PropTypes.string,
-    loading: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    errorMessage: PropTypes.string,
+    onLogin: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    error: null,
+    errorMessage: null,
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      email: 'user@gmail.com',
-      password: 'user',
-      refreshing: false,
+      email: 'boadude@gmail.com',
+      password: 'slipknot',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -36,9 +39,11 @@ class LoginScreen extends Component {
   }
 
   handleSubmit = () => {
-    const { email, password } = this.state;
-
-    console.log(email, password, this.props);
+    this.props.onLogin(this.state)
+      .then(() => {
+        // Actions.home();
+      })
+      .catch(e => console.log(`Error: ${e}`));
   };
 
   handleChange = (name, val) => {
@@ -49,49 +54,55 @@ class LoginScreen extends Component {
   }
 
   render() {
-    const { loading, error } = this.props;
+    const { isLoading, errorMessage } = this.props;
 
-    if (loading) return <Loading />;
-
-    const titleConfig = {
-      title: 'Meetup Async Login',
-      tintColor: 'black',
-    };
+    if (isLoading) return <Loading />;
 
     return (
       <Container>
-        <Content style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+        <Content style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
           <View
             style={{
-              flex: 0.4,
+              flex: 0.35,
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Image source={logoImage} style={styles.image} />
+            <Image source={logoImage} />
           </View>
           <View
             style={{
-              flex: 0.6,
-              justifyContent: 'center',
+              flex: 0.65,
+              justifyContent: 'flex-start',
               alignItems: 'center',
             }}
           >
-            <ScrollView>
-              <Form style={styles.image}>
-                <Item floatingLabel style={{ marginRight: 15 }}>
-                  <Label>Username</Label>
-                  <Input />
-                </Item>
-                <Item floatingLabel style={{ marginRight: 15 }}>
-                  <Label>Password</Label>
-                  <Input secureTextEntry />
-                </Item>
-              </Form>
-              <Button block style={{ margin: 15, marginTop: 50 }}>
-                <Text>Sign In</Text>
+            <Form style={styles.image}>
+              <Item floatingLabel style={{ marginRight: 15 }}>
+                <Label>Email</Label>
+                <Input
+                  autoCapitalize="none"
+                  value={this.state.email}
+                  keyboardType="email-address"
+                  onChangeText={v => this.handleChange('email', v)}
+                />
+              </Item>
+              <Item floatingLabel style={{ marginRight: 15 }}>
+                <Label>Contraseña</Label>
+                <Input
+                  secureTextEntry
+                  onChangeText={v => this.handleChange('password', v)}
+                />
+              </Item>
+
+              <Spacer size={20} />
+
+              <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.handleSubmit}>
+                <Text>Ingresar</Text>
               </Button>
-            </ScrollView>
+            </Form>
+
+            {errorMessage && <Messages message={errorMessage} />}
           </View>
         </Content>
       </Container>
@@ -100,11 +111,14 @@ class LoginScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  member: state.member || {},
+  isLoading: state.status.loading || false,
+  infoMessage: state.status.info || null,
+  errorMessage: state.status.error || null,
+  successMessage: state.status.success || null,
 });
 
 const mapDispatchToProps = {
-  onLogin: loginActions,
+  onLogin: Login,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
