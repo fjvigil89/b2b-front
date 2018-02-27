@@ -4,7 +4,6 @@ import { Container, Content, Form, Item, Label, Input, Text, Button } from 'nati
 import { Actions } from 'react-native-router-flux';
 import Loading from './Loading';
 import Messages from './Messages';
-import Header from './Header';
 import Spacer from './Spacer';
 
 class Login extends React.Component {
@@ -57,10 +56,6 @@ class Login extends React.Component {
     return (
       <Container>
         <Content padder>
-          <Header
-            title="Welcome back"
-            content="Please use your email and password to login."
-          />
 
           {error && <Messages message={error} />}
 

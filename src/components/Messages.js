@@ -3,7 +3,7 @@ import { View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import { Text } from 'native-base';
 
-import Colors from '../../native-base-theme/variables/commonColor';
+import Colors from '../../theme/variables/commonColor';
 
 const deviceWidth = Dimensions.get('window').width;
 

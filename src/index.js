@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { H3, Text, Container, Header, Left, Button, Icon, Body, Title, Right, Footer, Content, FooterTab, List, Card, Thumbnail, SwipeRow, CardItem } from 'native-base';
-import { View, Image } from 'react-native';
+import { H3, Text, Container, Header, Left, Button, Icon, Body, Title, Right, Content, Card, Thumbnail, CardItem } from 'native-base';
 
 import LoginScreen from './containers/login/LoginApp';
 
@@ -10,8 +9,6 @@ import { Logout } from './actions/user';
 
 const avatar = require('../src/images/jumbo.png');
 const cencosud = require('../src/images/cencosud.png');
-const remote = 'https://upload.wikimedia.org/wikipedia/commons/6/62/Starsinthesky.jpg';
-const resizeMode = 'center';
 
 class Root extends Component {
   static propTypes = {

@@ -5,8 +5,8 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import { StyleProvider } from 'native-base';
 import { StatusBar, Platform } from 'react-native';
 
-import getTheme from './native-base-theme/components';
-import theme from './native-base-theme/variables/commonColor';
+import getTheme from './theme/components';
+import theme from './theme/variables/commonColor';
 
 import configureStore from './src/store/index';
 import Loading from './src/components/Loading';
