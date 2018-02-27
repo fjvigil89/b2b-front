@@ -1,47 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Text, Container, Header, Left, Button, Icon, Body, Title, Right, Footer, Content, FooterTab, List, ListItem, Thumbnail, SwipeRow } from 'native-base';
-import { View } from 'react-native';
+import { H3, Text, Container, Header, Left, Button, Icon, Body, Title, Right, Footer, Content, FooterTab, List, Card, Thumbnail, SwipeRow, CardItem } from 'native-base';
+import { View, Image } from 'react-native';
 
 import LoginScreen from './containers/login/LoginApp';
 
 import { Logout } from './actions/user';
 
-const avatar = require('../src/images/avatar.png');
-
-const datas = [
-  {
-    img: avatar,
-    text: 'Jumbo Costanera',
-    note: 'Its time to build a difference . .',
-  },
-  {
-    img: avatar,
-    text: 'Kumar Sanket',
-    note: 'One needs courage to be happy and smiling all time . . ',
-  },
-  {
-    img: avatar,
-    text: 'Megha',
-    note: 'Live a life style that matchs your vision',
-  },
-  {
-    img: avatar,
-    text: 'Atul Ranjan',
-    note: 'Failure is temporary, giving up makes it permanent',
-  },
-  {
-    img: avatar,
-    text: 'Saurabh Sahu',
-    note: 'The biggest risk is a missed opportunity !!',
-  },
-  {
-    img: avatar,
-    text: 'Varun Sahu',
-    note: 'Wish I had a Time machine . .',
-  },
-];
+const avatar = require('../src/images/jumbo.png');
+const cencosud = require('../src/images/cencosud.png');
+const remote = 'https://upload.wikimedia.org/wikipedia/commons/6/62/Starsinthesky.jpg';
+const resizeMode = 'center';
 
 class Root extends Component {
   static propTypes = {
@@ -93,85 +63,55 @@ class Root extends Component {
             </Button>
           </Right>
         </Header>
-        <Content>
-          <List
-            dataArray={datas}
-            renderRow={data => (
-              <SwipeRow
-                leftOpenValue={75}
-                rightOpenValue={-75}
-                left={
-                  <Button success >
-                    <Icon active name="add" style={{ color: '#FFF' }} />
-                  </Button>
-                }
-                right={
-                  <Button danger >
-                    <Icon active name="trash" />
-                  </Button>
-                }
-                body={
-                  <View style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingLeft: 20,
-                    }}
-                  >
-                    <View style={{
-                      flex: 0.15,
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    >
-                      <Thumbnail small source={data.img} />
-                    </View>
-                    <View style={{
-                      flex: 0.65,
-                      flexDirection: 'column',
-                      justifyContent: 'flex-start',
-                      alignItems: 'flex-start',
-                    }}
-                    >
-                      <Text>Jumbo Costanera Center</Text>
-                      <Text
-                        note
-                        style={{
-                          marginLeft: 8,
-                        }}
-                      >
-                        Providencia #5000, Santiago.
-                      </Text>
-                    </View>
-                    <View style={{
-                      flex: 0.2,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
-                    }}
-                    >
-                      <Button transparent>
-                        <Icon name="star" />
-                      </Button>
-                    </View>
-                    
-                  </View>
-                }
-              />
-            )}
-          />
+        <Content style={{ padding: 2 }}>
+          <Card style={{ backgroundColor: '#9BC53D', marginBottom: 0 }}>
+            <CardItem style={{ marginBottom: 0, shadowOpacity: 0, backgroundColor: 'transparent' }}>
+              <Left>
+                <Thumbnail large source={avatar} />
+                <Body>
+                  <H3 style={{ color: '#FFFFFF' }}>JUMBO Costanera Center</H3>
+                  <Text note style={{ color: '#FFFFFF' }}>Con medición B2B</Text>
+                </Body>
+              </Left>
+            </CardItem>
+            <CardItem style={{ margin: 0, padding: 0, backgroundColor: '#C8DF95' }}>
+              <Left style={{ margin: 0, padding: 0 }}>
+                <Icon active name="calendar" style={{ fontSize: 20, color: '#FFFFFF' }} />
+                <Text style={{ fontSize: 12 }}>Ultima actualización</Text>
+              </Left>
+              <Right style={{ margin: 0, padding: 0 }}>
+                <Text style={{ fontSize: 12 }}>11h ago</Text>
+              </Right>
+            </CardItem>
+          </Card>
+
+          <Card style={{ backgroundColor: '#F4C92E', marginBottom: 0 }}>
+            <CardItem style={{ marginBottom: 0, shadowOpacity: 0, backgroundColor: 'transparent' }}>
+              <Left>
+                <Thumbnail large source={cencosud} />
+                <Body>
+                  <H3 style={{ color: '#FFFFFF' }}>LIDER Providencia</H3>
+                  <Text note style={{ color: '#FFFFFF' }}>Sin medición B2B</Text>
+                </Body>
+              </Left>
+            </CardItem>
+            {/*
+            <CardItem style={{ margin: 0, padding: 0, backgroundColor: '#F9E18D' }}>
+              <Left style={{ margin: 0, padding: 0 }}>
+                <Icon active name="calendar" style={{ fontSize: 20, color: '#FFFFFF' }} />
+                <Text style={{ fontSize: 12 }}>Ultima actualización</Text>
+              </Left>
+              <Right style={{ margin: 0, padding: 0 }}>
+                <Text style={{ fontSize: 12 }}>11h ago</Text>
+              </Right>
+            </CardItem>
+            */}
+          </Card>
+
           <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.handleLogout}>
             <Text>Salir</Text>
           </Button>
         </Content>
-        <Footer>
-          <FooterTab>
-            <Button full>
-              <Text>Footer</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
       </Container>
     );
   }
