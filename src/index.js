@@ -49,7 +49,7 @@ class Root extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Mis Salas</Title>
+            <Title style={{ fontFamily: 'Questrial' }}>Mis Salas</Title>
           </Body>
           <Right>
             <Button transparent>
@@ -60,21 +60,26 @@ class Root extends Component {
             </Button>
           </Right>
         </Header>
-        <Content style={{ padding: 2 }}>
-          <Card style={{ backgroundColor: '#9BC53D', marginBottom: 0 }}>
+        <Content style={{ padding: 2, backgroundColor: '#f4f4f4' }}>
+          <Card
+            style={{
+              borderWidth: 0.3,
+              borderColor: '#d6d7da',
+            }}
+            transparent
+          >
             <CardItem style={{ marginBottom: 0, shadowOpacity: 0, backgroundColor: 'transparent' }}>
               <Left>
                 <Thumbnail large source={avatar} />
                 <Body>
-                  <H3 style={{ color: '#FFFFFF' }}>JUMBO Costanera Center</H3>
-                  <Text note style={{ color: '#FFFFFF' }}>Con medición B2B</Text>
+                  <H3 style={{ fontFamily: 'Questrial' }}>JUMBO Costanera Center</H3>
+                  <Text note style={{ fontFamily: 'Questrial' }}>Con medición B2B</Text>
                 </Body>
               </Left>
             </CardItem>
-            <CardItem style={{ margin: 0, padding: 0, backgroundColor: '#C8DF95' }}>
+            <CardItem style={{ margin: 0, padding: 0 }}>
               <Left style={{ margin: 0, padding: 0 }}>
-                <Icon active name="calendar" style={{ fontSize: 20, color: '#FFFFFF' }} />
-                <Text style={{ fontSize: 12 }}>Ultima actualización</Text>
+                <Text style={{ fontSize: 10, fontFamily: 'Questrial' }}>Ultima actualización</Text>
               </Left>
               <Right style={{ margin: 0, padding: 0 }}>
                 <Text style={{ fontSize: 12 }}>11h ago</Text>

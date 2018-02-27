@@ -79,8 +79,9 @@ class LoginScreen extends Component {
           >
             <Form style={styles.image}>
               <Item floatingLabel style={{ marginRight: 15 }}>
-                <Label>Email</Label>
+                <Label style={{ fontFamily: 'Questrial' }}>Email</Label>
                 <Input
+                  style={{ fontFamily: 'Questrial' }}
                   autoCapitalize="none"
                   value={this.state.email}
                   keyboardType="email-address"
@@ -88,7 +89,7 @@ class LoginScreen extends Component {
                 />
               </Item>
               <Item floatingLabel style={{ marginRight: 15 }}>
-                <Label>Contraseña</Label>
+                <Label style={{ fontFamily: 'Questrial' }}>Contraseña</Label>
                 <Input
                   secureTextEntry
                   onChangeText={v => this.handleChange('password', v)}
