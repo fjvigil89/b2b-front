@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { H3, Text, Container, Header, Left, Button, Icon, Body, Title, Right, Content, Card, Thumbnail, CardItem } from 'native-base';
+import { Image } from 'react-native';
 
 import LoginScreen from './containers/login/LoginApp';
 
@@ -9,6 +10,7 @@ import { Logout } from './actions/user';
 
 const avatar = require('../src/images/jumbo.png');
 const cencosud = require('../src/images/cencosud.png');
+const conb2b = require('../src/images/con-medicion-b2b.png');
 
 class Root extends Component {
   static propTypes = {
@@ -61,19 +63,16 @@ class Root extends Component {
           </Right>
         </Header>
         <Content style={{ padding: 2, backgroundColor: '#f4f4f4' }}>
-          <Card
-            style={{
-              borderWidth: 0.3,
-              borderColor: '#d6d7da',
-            }}
-            transparent
-          >
-            <CardItem style={{ marginBottom: 0, shadowOpacity: 0, backgroundColor: 'transparent' }}>
+          <Card>
+            <Image
+              style={{ position: 'absolute', height: 100, width: 100, right: 0 }}
+              source={conb2b}
+            />
+            <CardItem style={{ marginBottom: 10, shadowOpacity: 0, backgroundColor: 'transparent', zIndex: 500 }}>
               <Left>
                 <Thumbnail large source={avatar} />
-                <Body>
+                <Body style={{ zIndex: 100 }}>
                   <H3 style={{ fontFamily: 'Questrial' }}>JUMBO Costanera Center</H3>
-                  <Text note style={{ fontFamily: 'Questrial' }}>Con medición B2B</Text>
                 </Body>
               </Left>
             </CardItem>
@@ -82,18 +81,18 @@ class Root extends Component {
                 <Text style={{ fontSize: 10, fontFamily: 'Questrial' }}>Ultima actualización</Text>
               </Left>
               <Right style={{ margin: 0, padding: 0 }}>
-                <Text style={{ fontSize: 12 }}>11h ago</Text>
+                <Text style={{ fontSize: 12, fontFamily: 'Questrial' }}>11h ago</Text>
               </Right>
             </CardItem>
           </Card>
 
-          <Card style={{ backgroundColor: '#F4C92E', marginBottom: 0 }}>
+          <Card style={{ marginBottom: 0 }}>
             <CardItem style={{ marginBottom: 0, shadowOpacity: 0, backgroundColor: 'transparent' }}>
               <Left>
                 <Thumbnail large source={cencosud} />
                 <Body>
-                  <H3 style={{ color: '#FFFFFF' }}>LIDER Providencia</H3>
-                  <Text note style={{ color: '#FFFFFF' }}>Sin medición B2B</Text>
+                  <H3>LIDER Providencia</H3>
+                  <Text note >Sin medición B2B</Text>
                 </Body>
               </Left>
             </CardItem>
