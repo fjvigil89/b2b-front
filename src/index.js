@@ -1,28 +1,52 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Text, Container, Header, Left, Button, Icon, Body, Title, Right, Content } from 'native-base';
+import { Text, Container, Content, Button } from 'native-base';
 
 import LoginScreen from './containers/login/LoginApp';
-import SalaDetail from './components/SalaDetail';
 
+import SalaDetail from './components/SalaDetail';
+import SalasHeader from './components/SalasHeader';
+
+import ListadoSalas from './actions/salas';
 import { Logout } from './actions/user';
+
+import CONSTANTES from './constants/constants';
 
 class Root extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool,
+    salas: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      imagen: PropTypes.string,
+      sala: PropTypes.string,
+      date: PropTypes.string,
+      estado: PropTypes.number,
+      cadena: PropTypes.string,
+    })),
     onLogout: PropTypes.func.isRequired,
+    getListadoSalas: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     isAuthenticated: false,
+    salas: [],
   }
 
   constructor(props) {
     super(props);
 
+    this.state = {
+      salas: this.props.salas,
+    };
+
     this.handleLogout = this.handleLogout.bind(this);
+    this.salasFilter = this.salasFilter.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
+    this.filterSection = this.filterSection.bind(this);
   }
+
+  componentDidMount = () => this.props.getListadoSalas();
 
   handleLogout = () => {
     this.props.onLogout()
@@ -31,6 +55,55 @@ class Root extends Component {
       .catch(e => console.log(`Error: ${e}`));
   };
 
+  salasFilter = (val) => {
+    let salasFiltradas;
+
+    if (val) {
+      salasFiltradas = this.props.salas.filter((item) => {
+        const itemData = item.sala.toUpperCase();
+        const textData = val.toUpperCase();
+
+        return itemData.indexOf(textData) > -1;
+      });
+    } else {
+      salasFiltradas = this.props.salas;
+    }
+
+    this.setState({
+      ...this.state,
+      salas: salasFiltradas,
+    });
+  }
+
+  clearSearch() {
+    this.setState({
+      salas: this.props.salas,
+    });
+  }
+
+  filterSection(i = CONSTANTES.CANCEL_INDEX) {
+    if (i === CONSTANTES.CANCEL_INDEX) {
+      return;
+    } else if (i === CONSTANTES.DESTRUCTIVE_INDEX) {
+      this.setState({
+        ...this.state,
+        salas: this.props.salas,
+      });
+
+      return;
+    }
+
+    const salasFiltradas = this.props.salas.filter((item) => {
+      const itemData = item.cadena.toUpperCase();
+      const textData = CONSTANTES.OPTIONS_FILTERS_SALAS[i].toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+
+    this.setState({
+      salas: salasFiltradas,
+    });
+  }
+
   render = () => {
     const { isAuthenticated } = this.props;
 
@@ -38,52 +111,14 @@ class Root extends Component {
       return <LoginScreen />;
     }
 
-    const listSalas = [{
-      id: 1,
-      imagen: 'jumbo',
-      sala: 'Jumbo Costanera',
-      b2b: 0,
-    }, {
-      id: 2,
-      imagen: 'jumbo',
-      sala: 'Jumbo Costanera',
-      b2b: 0,
-    }, {
-      id: 3,
-      imagen: 'jumbo',
-      sala: 'Jumbo Costanera',
-      b2b: 0,
-    }, {
-      id: 4,
-      imagen: 'jumbo',
-      sala: 'Jumbo Costanera',
-      b2b: 0,
-    }];
-
-    const listadoSalas = listSalas.map(sala => (
-      <SalaDetail data={sala} key={sala.id} />
+    const delay = 200;
+    const listadoSalas = this.state.salas.map((sala, i) => (
+      <SalaDetail data={sala} key={sala.id} delay={delay * i} />
     ));
 
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent>
-              <Icon name="menu" />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={{ fontFamily: 'Questrial' }}>Mis Salas</Title>
-          </Body>
-          <Right>
-            <Button transparent>
-              <Icon name="refresh" />
-            </Button>
-            <Button transparent>
-              <Icon name="more" />
-            </Button>
-          </Right>
-        </Header>
+        <SalasHeader salasFilter={this.salasFilter} clearSearch={this.clearSearch} filterSection={this.filterSection} />
         <Content style={{ backgroundColor: '#F4F4F4' }}>
           { listadoSalas }
 
@@ -98,10 +133,12 @@ class Root extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
+  salas: state.salas.listSalas,
 });
 
 const mapDispatchToProps = {
   onLogout: Logout,
+  getListadoSalas: ListadoSalas,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);

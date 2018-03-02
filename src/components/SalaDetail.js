@@ -4,16 +4,16 @@ import * as Animatable from 'react-native-animatable';
 import { Image, View } from 'react-native';
 import { Thumbnail, Text } from 'native-base';
 
-const pendienteVisita = require('../images/pendiente-visita.png');
-
 class SalaDetail extends React.Component {
   static propTypes = {
     data: PropTypes.shape({
       id: PropTypes.number,
       imagen: PropTypes.string,
       sala: PropTypes.string,
-      b2b: PropTypes.number,
+      date: PropTypes.string,
+      estado: PropTypes.number,
     }),
+    delay: PropTypes.number,
   }
 
   static defaultProps = {
@@ -21,21 +21,36 @@ class SalaDetail extends React.Component {
       id: 0,
       imagen: '',
       sala: '',
-      b2b: 0,
+      date: '-',
+      estado: 3,
     },
+    delay: 100,
   }
 
   render() {
     let logo = '';
+    let imagen = '';
+    const fechaB2B = this.props.data.estado === 1 ? this.props.data.date : 'Sin fecha';
 
     if (this.props.data.imagen === 'jumbo') {
       logo = require('../images/jumbo.png');
+    } else if (this.props.data.imagen === 'lider') {
+      logo = require('../images/lider.png');
+    } else if (this.props.data.imagen === 'tottus') {
+      logo = require('../images/tottus.png');
+    }
+
+    if (this.props.data.estado === 1) {
+      imagen = require('../images/con-medicion-b2b.png');
+    } else if (this.props.data.estado === 2) {
+      imagen = require('../images/pendiente-visita.png');
     }
 
     return (
       <Animatable.View
         animation="fadeInRight"
         duration={1000}
+        delay={this.props.delay}
         style={{
           margin: 0,
           padding: 0,
@@ -46,16 +61,18 @@ class SalaDetail extends React.Component {
           marginBottom: 5,
         }}
       >
-        <Image
-          style={{
-            position: 'absolute',
-            height: 110,
-            width: 110,
-            right: 0,
-            zIndex: 1000,
-          }}
-          source={pendienteVisita}
-        />
+        {(this.props.data.estado === 1 || this.props.data.estado === 2) &&
+          <Image
+            style={{
+              position: 'absolute',
+              height: 110,
+              width: 110,
+              right: 0,
+              zIndex: 1000,
+            }}
+            source={imagen}
+          />
+        }
 
         <View
           style={{
@@ -85,7 +102,7 @@ class SalaDetail extends React.Component {
               fontWeight: 'bold',
             }}
             >
-              JUMBO Costanera Center
+              {this.props.data.sala}
             </Text>
           </View>
         </View>
@@ -111,7 +128,7 @@ class SalaDetail extends React.Component {
                 fontFamily: 'Questrial',
               }}
             >
-              Ultima actualización
+              Ultima actualización B2B
             </Text>
           </View>
           <View
@@ -126,7 +143,7 @@ class SalaDetail extends React.Component {
                 fontFamily: 'Questrial',
               }}
             >
-            12 de Febrero de 20018
+              {fechaB2B}
             </Text>
           </View>
         </View>
