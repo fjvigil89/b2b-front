@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Text, Container, Content, Button } from 'native-base';
+import { Text, Container, Content, Button, RefreshControl, List } from 'native-base';
 
 import LoginScreen from './containers/login/LoginApp';
 
@@ -38,15 +38,23 @@ class Root extends Component {
 
     this.state = {
       salas: this.props.salas,
+      refreshing: false,
     };
 
     this.handleLogout = this.handleLogout.bind(this);
     this.salasFilter = this.salasFilter.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
     this.filterSection = this.filterSection.bind(this);
+    this._onRefresh = this._onRefresh.bind(this);
   }
 
-  componentDidMount = () => this.props.getListadoSalas();
+  componentDidMount = () => {
+    this.props.getListadoSalas().then(() => {
+      this.setState({
+        salas: this.props.salas,
+      });
+    });
+  };
 
   handleLogout = () => {
     this.props.onLogout()
@@ -104,6 +112,10 @@ class Root extends Component {
     });
   }
 
+  _onRefresh = () => {
+    console.log('entro');
+  }
+
   render = () => {
     const { isAuthenticated } = this.props;
 
@@ -118,10 +130,24 @@ class Root extends Component {
 
     return (
       <Container>
-        <SalasHeader salasFilter={this.salasFilter} clearSearch={this.clearSearch} filterSection={this.filterSection} />
-        <Content style={{ backgroundColor: '#F4F4F4' }}>
-          { listadoSalas }
-
+        <SalasHeader
+          salasFilter={this.salasFilter}
+          clearSearch={this.clearSearch}
+          filterSection={this.filterSection}
+        />
+        <Content
+          style={{ backgroundColor: '#F4F4F4' }}
+        >
+          <List
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
+          >
+            { listadoSalas }
+          </List>
           <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.handleLogout}>
             <Text>Salir</Text>
           </Button>
@@ -134,6 +160,7 @@ class Root extends Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
   salas: state.salas.listSalas,
+  refreshing: state.salas.refreshing,
 });
 
 const mapDispatchToProps = {

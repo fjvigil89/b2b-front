@@ -62,6 +62,9 @@ class SalasHeader extends React.Component {
     if (i === CONSTANTES.CANCEL_INDEX) {
       return;
     } else if (i === CONSTANTES.DESTRUCTIVE_INDEX) {
+      this.setState({
+        searchFilters: false,
+      });
       this.props.filterSection(i);
       return;
     }
