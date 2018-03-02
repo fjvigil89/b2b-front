@@ -35,6 +35,10 @@ class SalasHeader extends React.Component {
       showSearch: !this.state.showSearch,
       inputSearch: '',
     });
+
+    if (this.state.showSearch) {
+      this.clearSearch();
+    }
   }
 
   handleChange = (name, val) => {

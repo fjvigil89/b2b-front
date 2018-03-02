@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Text, Container, Content, Button, RefreshControl, List } from 'native-base';
+import { Text, Container, Content, Button } from 'native-base';
+import { RefreshControl } from 'react-native';
 
 import LoginScreen from './containers/login/LoginApp';
 
@@ -113,7 +114,16 @@ class Root extends Component {
   }
 
   _onRefresh = () => {
-    console.log('entro');
+    this.setState({
+      refreshing: true,
+    });
+
+    this.props.getListadoSalas().then(() => {
+      this.setState({
+        salas: this.props.salas,
+        refreshing: false,
+      });
+    });
   }
 
   render = () => {
@@ -137,17 +147,14 @@ class Root extends Component {
         />
         <Content
           style={{ backgroundColor: '#F4F4F4' }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
         >
-          <List
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
-            }
-          >
-            { listadoSalas }
-          </List>
+          { listadoSalas }
           <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.handleLogout}>
             <Text>Salir</Text>
           </Button>
