@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Text, Container, Content, Button } from 'native-base';
+import { Container, Content } from 'native-base';
+import { RefreshControl } from 'react-native';
 
 import LoginScreen from './containers/login/LoginApp';
 
 import SalaDetail from './components/SalaDetail';
 import SalasHeader from './components/SalasHeader';
+import NoSalas from './components/NoSalas';
 
 import ListadoSalas from './actions/salas';
 import { Logout } from './actions/user';
@@ -24,7 +26,7 @@ class Root extends Component {
       estado: PropTypes.number,
       cadena: PropTypes.string,
     })),
-    onLogout: PropTypes.func.isRequired,
+    // onLogout: PropTypes.func.isRequired,
     getListadoSalas: PropTypes.func.isRequired,
   };
 
@@ -38,47 +40,46 @@ class Root extends Component {
 
     this.state = {
       salas: this.props.salas,
+      refreshing: false,
     };
 
-    this.handleLogout = this.handleLogout.bind(this);
+    // this.handleLogout = this.handleLogout.bind(this);
     this.salasFilter = this.salasFilter.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
     this.filterSection = this.filterSection.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
   }
 
-  componentDidMount = () => this.props.getListadoSalas();
-
-  handleLogout = () => {
-    this.props.onLogout()
+  componentDidMount = () => {
+    this.props.getListadoSalas()
       .then(() => {
-      })
-      .catch(e => console.log(`Error: ${e}`));
+        this.setState({
+          salas: this.props.salas,
+        });
+      });
   };
 
-  salasFilter = (val) => {
-    let salasFiltradas;
+  /*
+    handleLogout = () => {
+      this.props.onLogout()
+        .then(() => {
+        })
+        .catch(e => console.log(`Error: ${e}`));
+    };
+  */
 
-    if (val) {
-      salasFiltradas = this.props.salas.filter((item) => {
-        const itemData = item.sala.toUpperCase();
-        const textData = val.toUpperCase();
+  onRefresh = () => {
+    this.setState({
+      refreshing: true,
+    });
 
-        return itemData.indexOf(textData) > -1;
+    this.props.getListadoSalas()
+      .then(() => {
+        this.setState({
+          salas: this.props.salas,
+          refreshing: false,
+        });
       });
-    } else {
-      salasFiltradas = this.props.salas;
-    }
-
-    this.setState({
-      ...this.state,
-      salas: salasFiltradas,
-    });
-  }
-
-  clearSearch() {
-    this.setState({
-      salas: this.props.salas,
-    });
   }
 
   filterSection(i = CONSTANTES.CANCEL_INDEX) {
@@ -104,6 +105,32 @@ class Root extends Component {
     });
   }
 
+  clearSearch() {
+    this.setState({
+      salas: this.props.salas,
+    });
+  }
+
+  salasFilter = (val) => {
+    let salasFiltradas;
+
+    if (val) {
+      salasFiltradas = this.props.salas.filter((item) => {
+        const itemData = item.sala.toUpperCase();
+        const textData = val.toUpperCase();
+
+        return itemData.indexOf(textData) > -1;
+      });
+    } else {
+      salasFiltradas = this.props.salas;
+    }
+
+    this.setState({
+      ...this.state,
+      salas: salasFiltradas,
+    });
+  }
+
   render = () => {
     const { isAuthenticated } = this.props;
 
@@ -118,14 +145,33 @@ class Root extends Component {
 
     return (
       <Container>
-        <SalasHeader salasFilter={this.salasFilter} clearSearch={this.clearSearch} filterSection={this.filterSection} />
-        <Content style={{ backgroundColor: '#F4F4F4' }}>
-          { listadoSalas }
+        <SalasHeader
+          salasFilter={this.salasFilter}
+          clearSearch={this.clearSearch}
+          filterSection={this.filterSection}
+        />
+        {this.state.salas.length !== 0 ?
+          <Content
+            style={{ backgroundColor: '#F4F4F4' }}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh}
+                title="Recargar Salas..."
+              />
+            }
+          >
+            { listadoSalas }
 
-          <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.handleLogout}>
-            <Text>Salir</Text>
-          </Button>
-        </Content>
+            {/*
+              <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.handleLogout}>
+                <Text>Salir</Text>
+              </Button>
+            */}
+          </Content>
+          :
+          <NoSalas />
+        }
       </Container>
     );
   }
