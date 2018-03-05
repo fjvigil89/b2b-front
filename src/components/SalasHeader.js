@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
+import * as Animatable from 'react-native-animatable';
 
 import { Header, Left, Button, Icon, Body, Title, Right, Item, Input } from 'native-base';
 
@@ -25,7 +26,6 @@ class SalasHeader extends React.Component {
 
     this.showSearch = this.showSearch.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.clearSearch = this.clearSearch.bind(this);
     this.openFilter = this.openFilter.bind(this);
     this.filterSection = this.filterSection.bind(this);
   }
@@ -34,10 +34,11 @@ class SalasHeader extends React.Component {
     this.setState({
       showSearch: !this.state.showSearch,
       inputSearch: '',
+      searchFilters: false,
     });
-
+    
     if (this.state.showSearch) {
-      this.clearSearch();
+      this.props.clearSearch();
     }
   }
 
@@ -48,14 +49,6 @@ class SalasHeader extends React.Component {
     });
 
     this.props.salasFilter(val);
-  }
-
-  clearSearch() {
-    this.setState({
-      inputSearch: '',
-    });
-
-    this.props.clearSearch();
   }
 
   openFilter = () => {
@@ -69,7 +62,9 @@ class SalasHeader extends React.Component {
       this.setState({
         searchFilters: false,
       });
+
       this.props.filterSection(i);
+      
       return;
     }
 
@@ -85,27 +80,27 @@ class SalasHeader extends React.Component {
 
     if (this.state.showSearch) {
       return (
-        <Header style={{ backgroundColor: '#FFFFFF' }}>
-          <Button transparent onPress={this.showSearch}>
-            <Icon name="arrow-back" style={{ color: '#000' }} />
-          </Button>
-          <Body rounded>
-            <Item>
-              <Input style={{ color: '#000000' }} placeholder="Buscar Sala..." placeholderTextColor="#A4A4A4" autoFocus={this.state.showSearch} value={this.state.inputSearch} onChangeText={v => this.handleChange('inputSearch', v)} />
-              <Icon name="ios-close" onPress={this.clearSearch} />
-            </Item>
-          </Body>
-        </Header>
+        <Animatable.View
+          animation="fadeInRight"
+          duration={500}
+        >
+          <Header style={{ backgroundColor: '#FFFFFF' }}>
+            <Button transparent onPress={this.showSearch}>
+              <Icon name="arrow-back" style={{ color: '#000' }} />
+            </Button>
+            <Body rounded>
+              <Item>
+                <Input style={{ color: '#000000' }} placeholder="Buscar Sala..." placeholderTextColor="#A4A4A4" autoFocus={this.state.showSearch} value={this.state.inputSearch} onChangeText={v => this.handleChange('inputSearch', v)} />
+              </Item>
+            </Body>
+          </Header>
+        </Animatable.View>
       );
     }
 
     return (
       <Header>
-        <Left>
-          <Button transparent>
-            <Icon name="menu" />
-          </Button>
-        </Left>
+        <Left />
         <Body>
           <Title>Mis Salas</Title>
         </Body>

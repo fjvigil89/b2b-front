@@ -3,3 +3,4 @@ node_modules/
 .expo/
 .idea/
 npm-debug.*
+.DS_Store
