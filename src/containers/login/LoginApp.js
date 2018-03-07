@@ -11,6 +11,7 @@ import Spacer from '../../components/Spacer';
 import Loading from '../../components/Loading';
 
 import { Login } from '../../actions/user';
+import ListadoSalas from '../../actions/salas';
 import styles from './styles';
 
 const logoImage = require('../../images/logo-cadem.png');
@@ -20,6 +21,7 @@ class LoginScreen extends Component {
     isLoading: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
     onLogin: PropTypes.func.isRequired,
+    getListadoSalas: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -41,7 +43,7 @@ class LoginScreen extends Component {
   handleSubmit = () => {
     this.props.onLogin(this.state)
       .then(() => {
-        // Actions.home();
+
       })
       .catch(e => console.log(`Error: ${e}`));
   };
@@ -120,6 +122,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onLogin: Login,
+  getListadoSalas: ListadoSalas,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

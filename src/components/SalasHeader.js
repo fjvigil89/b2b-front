@@ -3,52 +3,40 @@ import PropTypes from 'prop-types';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
-
 import { Header, Left, Button, Icon, Body, Title, Right, Item, Input } from 'native-base';
+
+import { clearSearch, searchByName, filterSection } from '../actions/salas';
+import { showSearch } from '../actions/salasHeader';
 
 import CONSTANTES from '../constants/constants';
 
 class SalasHeader extends React.Component {
   static propTypes = {
-    salasFilter: PropTypes.func.isRequired,
     clearSearch: PropTypes.func.isRequired,
+    showSearch: PropTypes.func.isRequired,
+    searchByName: PropTypes.func.isRequired,
     filterSection: PropTypes.func.isRequired,
+    searchFilters: PropTypes.bool,
+    isOpenSearch: PropTypes.bool,
+    inputSearch: PropTypes.string,
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showSearch: false,
-      inputSearch: '',
-      searchFilters: false,
-    };
-
-    this.showSearch = this.showSearch.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.openFilter = this.openFilter.bind(this);
-    this.filterSection = this.filterSection.bind(this);
+  static defaultProps = {
+    searchFilters: false,
+    isOpenSearch: false,
+    inputSearch: '',
   }
 
   showSearch() {
-    this.setState({
-      showSearch: !this.state.showSearch,
-      inputSearch: '',
-      searchFilters: false,
-    });
-    
-    if (this.state.showSearch) {
-      this.props.clearSearch();
-    }
+    this.props.showSearch();
   }
 
-  handleChange = (name, val) => {
-    this.setState({
-      ...this.state,
-      [name]: val,
-    });
+  hideSearch() {
+    this.props.clearSearch();
+  }
 
-    this.props.salasFilter(val);
+  handleChange = (val) => {
+    this.props.searchByName(val);
   }
 
   openFilter = () => {
@@ -56,41 +44,25 @@ class SalasHeader extends React.Component {
   }
 
   filterSection(i) {
-    if (i === CONSTANTES.CANCEL_INDEX) {
-      return;
-    } else if (i === CONSTANTES.DESTRUCTIVE_INDEX) {
-      this.setState({
-        searchFilters: false,
-      });
-
-      this.props.filterSection(i);
-      
-      return;
-    }
-
     this.props.filterSection(i);
-
-    this.setState({
-      searchFilters: true,
-    });
   }
 
   render() {
-    const iconFilters = this.state.searchFilters ? 'ios-funnel' : 'ios-funnel-outline';
+    const iconFilters = this.props.searchFilters ? 'ios-funnel' : 'ios-funnel-outline';
 
-    if (this.state.showSearch) {
+    if (this.props.isOpenSearch) {
       return (
         <Animatable.View
           animation="fadeInRight"
           duration={500}
         >
           <Header style={{ backgroundColor: '#FFFFFF' }}>
-            <Button transparent onPress={this.showSearch}>
+            <Button transparent onPress={this.hideSearch}>
               <Icon name="arrow-back" style={{ color: '#000' }} />
             </Button>
             <Body rounded>
               <Item>
-                <Input style={{ color: '#000000' }} placeholder="Buscar Sala..." placeholderTextColor="#A4A4A4" autoFocus={this.state.showSearch} value={this.state.inputSearch} onChangeText={v => this.handleChange('inputSearch', v)} />
+                <Input style={{ color: '#000000' }} placeholder="Buscar Sala..." placeholderTextColor="#A4A4A4" autoFocus={this.props.isOpenSearch} value={this.props.inputSearch} onChangeText={v => this.handleChange(v)} />
               </Item>
             </Body>
           </Header>
@@ -132,6 +104,16 @@ class SalasHeader extends React.Component {
 
 const mapStateToProps = state => ({
   salas: state.salas.listSalas,
+  isOpenSearch: state.salasHeader.showSearch,
+  inputSearch: state.salasHeader.inputSearch,
+  searchFilters: state.salasHeader.searchFilters,
 });
 
-export default connect(mapStateToProps)(SalasHeader);
+const mapDispatchToProps = {
+  clearSearch,
+  showSearch,
+  searchByName,
+  filterSection,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SalasHeader);

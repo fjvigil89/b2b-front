@@ -1,6 +1,7 @@
 import status from './status';
 import user from './user';
 import salas from './salas';
+import salasHeader from './salasHeader';
 
 const rehydrated = (state = false, action) => {
   switch (action.type) {
@@ -16,4 +17,5 @@ export default {
   status,
   user,
   salas,
+  salasHeader,
 };
