@@ -15,9 +15,9 @@ export default function salasReducer(state = initialState, action) {
       if (action.data) {
         let group = [];
         group = _.chain(action.data).groupBy('cadena').map((obj, name) => name).value();
-        const cancel = group.push('Cancelar');
-        const clean = group.push('Limpiar');
-
+        const cancel = group.push('Cancelar') - 1;
+        const clean = group.push('Limpiar') - 1;
+        console.log(group);
         return {
           ...state,
           salas: action.data,
@@ -37,32 +37,28 @@ export default function salasReducer(state = initialState, action) {
       };
     }
     case 'SALAS_FILTER_SECTION': {
-      if (action.filter) {
-        if (action.filter === state.indexCancel) {
-          return state;
-        }
+      if (action.filter === state.indexCancel) {
+        return state;
+      }
 
-        if (action.filter === state.indexClean) {
-          return {
-            ...state,
-            salas: state.salas_backup,
-          };
-        }
-
-        const salasFiltradas = state.salas.filter((item) => {
-          const itemData = item.cadena.toUpperCase();
-          const textData = state.groupCadena[action.filter].toUpperCase();
-
-          return itemData.indexOf(textData) > -1;
-        });
-
+      if (action.filter === state.indexClean) {
         return {
           ...state,
-          salas: salasFiltradas,
+          salas: state.salas_backup,
         };
       }
 
-      return state;
+      const salasFiltradas = state.salas_backup.filter((item) => {
+        const itemData = item.cadena.toUpperCase();
+        const textData = state.groupCadena[action.filter].toUpperCase();
+
+        return itemData.indexOf(textData) > -1;
+      });
+
+      return {
+        ...state,
+        salas: salasFiltradas,
+      };
     }
     case 'SALAS_SEARCH_BY_NAME': {
       if (action.text) {

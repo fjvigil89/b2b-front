@@ -59,7 +59,6 @@ class SalasHeader extends React.Component {
         </Animatable.View>
       );
     }
-
     return (
       <Header>
         <Left>
