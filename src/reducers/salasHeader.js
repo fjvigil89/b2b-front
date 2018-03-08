@@ -19,14 +19,10 @@ export default function salasHeaderReducer(state = initialState, action) {
       };
     }
     case 'SALAS_HEADER_SEARCH_BY_NAME': {
-      if (action.text) {
-        return {
-          ...state,
-          inputSearch: action.text,
-        };
-      }
-
-      return state;
+      return {
+        ...state,
+        inputSearch: action.text,
+      };
     }
     default:
       return state;

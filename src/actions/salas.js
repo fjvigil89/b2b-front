@@ -68,7 +68,6 @@ export function filterSection(i = CONSTANTES.CANCEL_INDEX) {
 }
 
 export function searchByName(text) {
-  console.log(text);
   return dispatch => new Promise(async (resolve) => {
     dispatch({
       type: 'SALAS_SEARCH_BY_NAME',

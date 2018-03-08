@@ -98,7 +98,7 @@ class SalasHeader extends React.Component {
 const mapStateToProps = state => ({
   isOpenSearch: state.salasHeader.showSearch,
   inputSearch: state.salasHeader.inputSearch,
-  searchFilters: state.sala.searchFilters,
+  searchFilters: state.salas.searchFilters,
   groupCadena: state.salas.groupCadena,
   indexCancel: state.salas.indexCancel,
   indexClean: state.salas.indexClean,
