@@ -9,8 +9,6 @@ import { clearSearch, searchByName, filterSection } from '../actions/salas';
 import showSearch from '../actions/salasHeader';
 import { logout } from '../actions/user';
 
-import CONSTANTES from '../constants/constants';
-
 class SalasHeader extends React.Component {
   static propTypes = {
     clearSearch: PropTypes.func.isRequired,
@@ -22,6 +20,8 @@ class SalasHeader extends React.Component {
     inputSearch: PropTypes.string,
     logout: PropTypes.func.isRequired,
     groupCadena: PropTypes.arrayOf(PropTypes.string),
+    indexCancel: PropTypes.number,
+    indexClean: PropTypes.number,
   }
 
   static defaultProps = {
@@ -29,6 +29,8 @@ class SalasHeader extends React.Component {
     isOpenSearch: false,
     inputSearch: '',
     groupCadena: [],
+    indexCancel: null,
+    indexClean: null,
   }
 
   openFilter = () => {
@@ -84,8 +86,8 @@ class SalasHeader extends React.Component {
             }}
             onPress={this.props.filterSection}
             options={this.props.groupCadena}
-            cancelButtonIndex={CONSTANTES.CANCEL_INDEX}
-            destructiveButtonIndex={CONSTANTES.DESTRUCTIVE_INDEX}
+            cancelButtonIndex={this.props.indexCancel}
+            destructiveButtonIndex={this.props.indexClean}
             title="Filtro"
           />
         </Right>
@@ -99,6 +101,8 @@ const mapStateToProps = state => ({
   inputSearch: state.salasHeader.inputSearch,
   searchFilters: state.salasHeader.searchFilters,
   groupCadena: state.salas.groupCadena,
+  indexCancel: state.salas.indexCancel,
+  indexClean: state.salas.indexClean,
 });
 
 const mapDispatchToProps = {
