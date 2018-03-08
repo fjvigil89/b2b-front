@@ -64,27 +64,23 @@ export default function salasReducer(state = initialState, action) {
       };
     }
     case 'SALAS_SEARCH_BY_NAME': {
+      let salasFiltradas;
+
       if (action.text) {
-        let salasFiltradas;
+        salasFiltradas = state.salas_backup.filter((item) => {
+          const itemData = item.bandera.toUpperCase();
+          const textData = action.text.toUpperCase();
 
-        if (action.text) {
-          salasFiltradas = state.salas.filter((item) => {
-            const itemData = item.sala.toUpperCase();
-            const textData = action.text.toUpperCase();
-
-            return itemData.indexOf(textData) > -1;
-          });
-        } else {
-          salasFiltradas = state.salas;
-        }
-
-        return {
-          ...state,
-          salas: salasFiltradas,
-        };
+          return itemData.indexOf(textData) > -1;
+        });
+      } else {
+        salasFiltradas = state.salas_backup;
       }
 
-      return state;
+      return {
+        ...state,
+        salas: salasFiltradas,
+      };
     }
     default:
       return state;
