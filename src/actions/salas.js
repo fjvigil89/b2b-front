@@ -1,23 +1,44 @@
 import axios from 'axios';
 
-import statusMessage from './status';
 import CONSTANTES from '../constants/constants';
 
-export function ListadoSalas() {
+export function listadoSalas() {
   return dispatch => new Promise(async (resolve, reject) => {
-    await statusMessage(dispatch, 'loading', true);
+    return axios({
+      method: 'GET',
+      url: 'http://b2b-app.us-east-1.elasticbeanstalk.com/store/12345',
+    })
+      .then(async (response) => {
+        resolve(dispatch({
+          type: 'SALAS_LIST',
+          data: response.data,
+        }));
+      })
+      .catch(error => reject({ message: error.response.data.error }));
+  });
+}
+
+export function listadoSalasWithRefresh() {
+  return dispatch => new Promise(async (resolve, reject) => {
+    dispatch({
+      type: 'SALAS_LIST_REFRESH',
+    });
 
     return axios({
       method: 'GET',
       url: 'http://b2b-app.us-east-1.elasticbeanstalk.com/store/12345',
     })
       .then(async (response) => {
-        await statusMessage(dispatch, 'loading', false);
+        dispatch({
+          type: 'SALAS_LIST_REFRESH',
+        });
 
-        resolve(dispatch({
+        dispatch({
           type: 'SALAS_LIST',
           data: response.data,
-        }));
+        });
+
+        resolve(true);
       })
       .catch(error => reject({ message: error.response.data.error }));
   });
@@ -30,7 +51,7 @@ export function clearSearch() {
     });
 
     dispatch({
-      type: 'HEADER_CLEAR_SEARCH',
+      type: 'SALAS_HEADER_CLEAR_SEARCH',
     });
 
     resolve(true);

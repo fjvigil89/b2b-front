@@ -1,6 +1,8 @@
-export const initialState = {
+ export const initialState = {
   loading: false,
   error: null,
+  email: 'boadude@gmail.com',
+  password: 'slipknot',
 };
 
 export default function userReducer(state = initialState, action) {
@@ -27,6 +29,17 @@ export default function userReducer(state = initialState, action) {
         token: null,
       };
     }
+    case 'USER_CHANGE_INPUT': {
+      if (action.data) {
+        return {
+          ...state,
+          [action.data.name]: action.data.value,
+        };
+      }
+
+      return state;
+    }
+
     default:
       return state;
   }

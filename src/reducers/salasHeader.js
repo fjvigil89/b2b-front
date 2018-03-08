@@ -4,7 +4,7 @@ export const initialState = {
   searchFilters: false,
 };
 
-export default function salasReducer(state = initialState, action) {
+export default function salasHeaderReducer(state = initialState, action) {
   switch (action.type) {
     case 'SALAS_HEADER_SHOW_SEARCH': {
       return {
@@ -12,6 +12,12 @@ export default function salasReducer(state = initialState, action) {
         showSearch: !state.showSearch,
         inputSearch: '',
         searchFilters: false,
+      };
+    }
+    case 'SALAS_HEADER_CLEAR_SEARCH': {
+      return {
+        ...state,
+        showSearch: !state.showSearch,
       };
     }
     case 'SALAS_HEADER_SEARCH_BY_NAME': {

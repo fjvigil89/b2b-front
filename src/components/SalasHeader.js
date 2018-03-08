@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import { Header, Left, Button, Icon, Body, Title, Right, Item, Input } from 'native-base';
 
 import { clearSearch, searchByName, filterSection } from '../actions/salas';
-import { showSearch } from '../actions/salasHeader';
+import showSearch from '../actions/salasHeader';
 
 import CONSTANTES from '../constants/constants';
 
@@ -27,24 +27,8 @@ class SalasHeader extends React.Component {
     inputSearch: '',
   }
 
-  showSearch() {
-    this.props.showSearch();
-  }
-
-  hideSearch() {
-    this.props.clearSearch();
-  }
-
-  handleChange = (val) => {
-    this.props.searchByName(val);
-  }
-
   openFilter = () => {
     this.ActionSheet.show();
-  }
-
-  filterSection(i) {
-    this.props.filterSection(i);
   }
 
   render() {
@@ -57,12 +41,12 @@ class SalasHeader extends React.Component {
           duration={500}
         >
           <Header style={{ backgroundColor: '#FFFFFF' }}>
-            <Button transparent onPress={this.hideSearch}>
+            <Button transparent onPress={this.props.clearSearch}>
               <Icon name="arrow-back" style={{ color: '#000' }} />
             </Button>
             <Body rounded>
               <Item>
-                <Input style={{ color: '#000000' }} placeholder="Buscar Sala..." placeholderTextColor="#A4A4A4" autoFocus={this.props.isOpenSearch} value={this.props.inputSearch} onChangeText={v => this.handleChange(v)} />
+                <Input style={{ color: '#000000' }} placeholder="Buscar Sala..." placeholderTextColor="#A4A4A4" autoFocus={this.props.isOpenSearch} value={this.props.inputSearch} onChangeText={v => this.props.searchByName(v)} />
               </Item>
             </Body>
           </Header>
@@ -77,7 +61,7 @@ class SalasHeader extends React.Component {
           <Title>Mis Salas</Title>
         </Body>
         <Right>
-          <Button transparent onPress={this.showSearch}>
+          <Button transparent onPress={this.props.showSearch}>
             <Icon name="search" />
           </Button>
           <Button transparent onPress={this.openFilter} >
@@ -90,7 +74,7 @@ class SalasHeader extends React.Component {
 
               return this.ActionSheet;
             }}
-            onPress={this.filterSection}
+            onPress={this.props.filterSection}
             options={CONSTANTES.OPTIONS_FILTERS_SALAS}
             cancelButtonIndex={CONSTANTES.CANCEL_INDEX}
             destructiveButtonIndex={CONSTANTES.DESTRUCTIVE_INDEX}
@@ -103,7 +87,6 @@ class SalasHeader extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  salas: state.salas.listSalas,
   isOpenSearch: state.salasHeader.showSearch,
   inputSearch: state.salasHeader.inputSearch,
   searchFilters: state.salasHeader.searchFilters,

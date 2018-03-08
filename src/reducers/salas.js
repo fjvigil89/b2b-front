@@ -12,7 +12,6 @@ export default function salasReducer(state = initialState, action) {
       if (action.data) {
         return {
           ...state,
-          loading: false,
           salas: action.data,
           salas_backup: action.data,
         };

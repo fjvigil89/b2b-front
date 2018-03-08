@@ -40,7 +40,7 @@ class Root extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
-  isLoading: state.status.loading || false,
+  isLoading: state.status.loading,
 });
 
 export default connect(mapStateToProps)(Root);
