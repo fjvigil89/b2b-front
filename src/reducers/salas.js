@@ -1,19 +1,24 @@
+import _ from 'lodash';
 import CONSTANTES from '../constants/constants';
 
 export const initialState = {
   loading: false,
   salas: [],
   salas_backup: [],
+  groupCadena: [],
 };
 
 export default function salasReducer(state = initialState, action) {
   switch (action.type) {
     case 'SALAS_LIST': {
       if (action.data) {
+        const group = _.chain(action.data).groupBy('cadena').map((obj, name) => name).value();
+        console.log(group);
         return {
           ...state,
           salas: action.data,
           salas_backup: action.data,
+          groupCadena: group,
         };
       }
 
@@ -40,7 +45,7 @@ export default function salasReducer(state = initialState, action) {
 
         const salasFiltradas = state.salas.filter((item) => {
           const itemData = item.cadena.toUpperCase();
-          const textData = CONSTANTES.OPTIONS_FILTERS_SALAS[action.filter].toUpperCase();
+          const textData = state.groupCadena[action.filter].toUpperCase();
 
           return itemData.indexOf(textData) > -1;
         });

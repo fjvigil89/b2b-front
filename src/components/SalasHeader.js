@@ -21,12 +21,14 @@ class SalasHeader extends React.Component {
     isOpenSearch: PropTypes.bool,
     inputSearch: PropTypes.string,
     logout: PropTypes.func.isRequired,
+    groupCadena: PropTypes.arrayOf(PropTypes.string),
   }
 
   static defaultProps = {
     searchFilters: false,
     isOpenSearch: false,
     inputSearch: '',
+    groupCadena: [],
   }
 
   openFilter = () => {
@@ -81,7 +83,7 @@ class SalasHeader extends React.Component {
               return this.ActionSheet;
             }}
             onPress={this.props.filterSection}
-            options={CONSTANTES.OPTIONS_FILTERS_SALAS}
+            options={this.props.groupCadena}
             cancelButtonIndex={CONSTANTES.CANCEL_INDEX}
             destructiveButtonIndex={CONSTANTES.DESTRUCTIVE_INDEX}
             title="Filtro"
@@ -96,6 +98,7 @@ const mapStateToProps = state => ({
   isOpenSearch: state.salasHeader.showSearch,
   inputSearch: state.salasHeader.inputSearch,
   searchFilters: state.salasHeader.searchFilters,
+  groupCadena: state.salas.groupCadena,
 });
 
 const mapDispatchToProps = {
