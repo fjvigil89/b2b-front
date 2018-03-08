@@ -7,6 +7,7 @@ export const initialState = {
   groupCadena: [],
   indexCancel: null,
   indexClean: null,
+  searchFilters: false,
 };
 
 export default function salasReducer(state = initialState, action) {
@@ -45,6 +46,7 @@ export default function salasReducer(state = initialState, action) {
         return {
           ...state,
           salas: state.salas_backup,
+          searchFilters: false,
         };
       }
 
@@ -58,6 +60,7 @@ export default function salasReducer(state = initialState, action) {
       return {
         ...state,
         salas: salasFiltradas,
+        searchFilters: true,
       };
     }
     case 'SALAS_SEARCH_BY_NAME': {
