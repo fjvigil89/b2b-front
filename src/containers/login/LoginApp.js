@@ -14,6 +14,7 @@ import { login, changeInputLogin } from '../../actions/user';
 import styles from './styles';
 
 const logoImage = require('../../images/logo-cadem.png');
+const backgroundImage = require('../../images/login-background.png');
 
 class LoginScreen extends Component {
   static propTypes = {
@@ -46,18 +47,28 @@ class LoginScreen extends Component {
         <Content style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.5,
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
             <Image source={logoImage} />
+            <Text style={{ fontFamily: 'Bree', fontSize: 22 }}>SmartB2B</Text>
+            <Image
+              style={{
+                position: 'absolute',
+                height: '100%',
+                bottom: 0,
+              }}
+              source={backgroundImage}
+            />
           </View>
           <View
             style={{
-              flex: 0.65,
+              flex: 0.5,
               justifyContent: 'flex-start',
               alignItems: 'center',
+              backgroundColor: '#F4F4F4',
             }}
           >
             <Form style={styles.image}>
@@ -81,7 +92,7 @@ class LoginScreen extends Component {
 
               <Spacer size={20} />
 
-              <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.handleSubmit}>
+              <Button block style={{ margin: 15, marginTop: 40 }} onPress={this.handleSubmit}>
                 <Text>Ingresar</Text>
               </Button>
             </Form>

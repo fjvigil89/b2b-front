@@ -7,6 +7,7 @@ import { Header, Left, Button, Icon, Body, Title, Right, Item, Input } from 'nat
 
 import { clearSearch, searchByName, filterSection } from '../actions/salas';
 import showSearch from '../actions/salasHeader';
+import { logout } from '../actions/user';
 
 import CONSTANTES from '../constants/constants';
 
@@ -19,6 +20,7 @@ class SalasHeader extends React.Component {
     searchFilters: PropTypes.bool,
     isOpenSearch: PropTypes.bool,
     inputSearch: PropTypes.string,
+    logout: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -40,7 +42,7 @@ class SalasHeader extends React.Component {
           animation="fadeInRight"
           duration={500}
         >
-          <Header style={{ backgroundColor: '#FFFFFF' }}>
+          <Header style={{ backgroundColor: '#FFFFFF' }} iosBarStyle="dark-content">
             <Button transparent onPress={this.props.clearSearch}>
               <Icon name="arrow-back" style={{ color: '#000' }} />
             </Button>
@@ -56,7 +58,11 @@ class SalasHeader extends React.Component {
 
     return (
       <Header>
-        <Left />
+        <Left>
+          <Button transparent onPress={this.props.logout}>
+            <Icon name="exit" />
+          </Button>
+        </Left>
         <Body>
           <Title>Mis Salas</Title>
         </Body>
@@ -97,6 +103,7 @@ const mapDispatchToProps = {
   showSearch,
   searchByName,
   filterSection,
+  logout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalasHeader);

@@ -35,6 +35,7 @@ export default class App extends React.Component {
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       Ionicons: require('@expo/vector-icons/fonts/Ionicons.ttf'),
       Questrial: require('./src/assets/fonts/Questrial-Regular.ttf'),
+      Bree: require('./src/assets/fonts/Bree-Regular.ttf'),
     });
 
     this.setState({ isReady: true });
