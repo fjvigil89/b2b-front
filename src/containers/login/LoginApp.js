@@ -10,7 +10,7 @@ import Messages from '../../components/Messages';
 import Spacer from '../../components/Spacer';
 import Loading from '../../components/Loading';
 
-import { Login } from '../../actions/user';
+import { login, changeInputLogin } from '../../actions/user';
 import styles from './styles';
 
 const logoImage = require('../../images/logo-cadem.png');
@@ -19,39 +19,22 @@ class LoginScreen extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
-    onLogin: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
+    changeInputLogin: PropTypes.func.isRequired,
+    email: PropTypes.string,
+    password: PropTypes.string,
   }
 
   static defaultProps = {
     errorMessage: null,
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      email: 'boadude@gmail.com',
-      password: 'slipknot',
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    email: '',
+    password: '',
   }
 
   handleSubmit = () => {
-    this.props.onLogin(this.state)
-      .then(() => {
-        // Actions.home();
-      })
+    this.props.login(this.props.email, this.props.password)
       .catch(e => console.log(`Error: ${e}`));
   };
-
-  handleChange = (name, val) => {
-    this.setState({
-      ...this.state,
-      [name]: val,
-    });
-  }
 
   render() {
     const { isLoading, errorMessage } = this.props;
@@ -83,16 +66,16 @@ class LoginScreen extends Component {
                 <Input
                   style={{ fontFamily: 'Questrial' }}
                   autoCapitalize="none"
-                  value={this.state.email}
+                  value={this.props.email}
                   keyboardType="email-address"
-                  onChangeText={v => this.handleChange('email', v)}
+                  onChangeText={v => this.props.changeInputLogin('email', v)}
                 />
               </Item>
               <Item floatingLabel style={{ marginRight: 15 }}>
                 <Label style={{ fontFamily: 'Questrial' }}>Contraseña</Label>
                 <Input
                   secureTextEntry
-                  onChangeText={v => this.handleChange('password', v)}
+                  onChangeText={v => this.props.changeInputLogin('password', v)}
                 />
               </Item>
 
@@ -112,14 +95,17 @@ class LoginScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.status.loading || false,
+  isLoading: state.status.loading,
   infoMessage: state.status.info || null,
   errorMessage: state.status.error || null,
   successMessage: state.status.success || null,
+  email: state.user.email,
+  password: state.user.password,
 });
 
 const mapDispatchToProps = {
-  onLogin: Login,
+  login,
+  changeInputLogin,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

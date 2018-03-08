@@ -4,14 +4,22 @@ import * as Animatable from 'react-native-animatable';
 import { Image, View } from 'react-native';
 import { Thumbnail, Text } from 'native-base';
 
+import _ from 'lodash';
+import moment from 'moment';
+import 'moment/locale/es';
+
+moment.locale('es');
+
 class SalaDetail extends React.Component {
   static propTypes = {
     data: PropTypes.shape({
       id: PropTypes.number,
-      imagen: PropTypes.string,
-      sala: PropTypes.string,
-      date: PropTypes.string,
-      estado: PropTypes.number,
+      bandera: PropTypes.string,
+      date_b2b: PropTypes.string,
+      mide: PropTypes.number,
+      realizada: PropTypes.number,
+      fecha_visita: PropTypes.string,
+      direccion: PropTypes.string,
     }),
     delay: PropTypes.number,
   }
@@ -19,30 +27,52 @@ class SalaDetail extends React.Component {
   static defaultProps = {
     data: {
       id: 0,
-      imagen: '',
-      sala: '',
-      date: '-',
-      estado: 3,
+      bandera: '',
+      date_b2b: '',
+      mide: 0,
+      realizada: 0,
+      fecha_visita: '',
+      direccion: '',
     },
     delay: 100,
   }
 
   render() {
     let logo = '';
-    let imagen = '';
-    const fechaB2B = this.props.data.estado === 1 ? this.props.data.date : 'Sin fecha';
+    let imagen = null;
+    let fecha = '';
 
-    if (this.props.data.imagen === 'jumbo') {
+    if (this.props.data.bandera === 'JUMBO') {
       logo = require('../images/jumbo.png');
-    } else if (this.props.data.imagen === 'lider') {
+    } else if (
+      this.props.data.bandera === 'LIDER EXPRESS' ||
+      this.props.data.bandera === 'LIDER') {
       logo = require('../images/lider.png');
-    } else if (this.props.data.imagen === 'tottus') {
+    } else if (this.props.data.bandera === 'CENTRAL MAYORISTA') {
+      logo = require('../images/central-mayorista.png');
+    } else if (this.props.data.bandera === 'TOTTUS') {
       logo = require('../images/tottus.png');
+    } else if (this.props.data.bandera === 'EKONO') {
+      logo = require('../images/ekono.png');
+    } else if (this.props.data.bandera === 'ACUENTA') {
+      logo = require('../images/acuenta.png');
+    } else if (this.props.data.bandera === 'SANTA ISABEL') {
+      logo = require('../images/santaisabel.png');
+    } else if (this.props.data.bandera === 'UNIMARC') {
+      logo = require('../images/unimarc.png');
+    } else if (this.props.data.bandera === 'MAYORISTA 10') {
+      logo = require('../images/mayorista10.png');
+    } else if (this.props.data.bandera === 'ALVI') {
+      logo = require('../images/alvi.png');
+    } else {
+      logo = require('../images/alvi.png');
     }
 
-    if (this.props.data.estado === 1) {
-      imagen = require('../images/con-medicion-b2b.png');
-    } else if (this.props.data.estado === 2) {
+    if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
+      imagen = require('../images/visita-realizada.png');
+
+      fecha = moment(this.props.data.fecha_visita).fromNow();
+    } else if (this.props.data.mide === 1 && this.props.data.realizada === 0) {
       imagen = require('../images/pendiente-visita.png');
     }
 
@@ -61,7 +91,7 @@ class SalaDetail extends React.Component {
           marginBottom: 5,
         }}
       >
-        {(this.props.data.estado === 1 || this.props.data.estado === 2) &&
+        {!_.isNull(imagen) &&
           <Image
             style={{
               position: 'absolute',
@@ -102,8 +132,9 @@ class SalaDetail extends React.Component {
               fontWeight: 'bold',
             }}
             >
-              {this.props.data.sala}
+              {this.props.data.bandera}
             </Text>
+            <Text note>{this.props.data.direccion}</Text>
           </View>
         </View>
 
@@ -114,6 +145,7 @@ class SalaDetail extends React.Component {
             paddingLeft: 10,
             paddingRight: 10,
             paddingBottom: 10,
+            marginTop: 10,
           }}
         >
           <View
@@ -143,10 +175,53 @@ class SalaDetail extends React.Component {
                 fontFamily: 'Questrial',
               }}
             >
-              {fechaB2B}
+              { moment(this.props.data.date_b2b).fromNow() }
             </Text>
           </View>
         </View>
+
+        {!_.isEmpty(fecha) &&
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              paddingLeft: 10,
+              paddingRight: 10,
+              paddingBottom: 10,
+            }}
+          >
+            <View
+              style={{
+                flex: 0.5,
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}
+            >
+              <Text style={{
+                  fontSize: 12,
+                  fontFamily: 'Questrial',
+                }}
+              >
+                Fecha de visita
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 0.5,
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}
+            >
+              <Text style={{
+                  fontSize: 12,
+                  fontFamily: 'Questrial',
+                }}
+              >
+                {fecha}
+              </Text>
+            </View>
+          </View>
+        }
       </Animatable.View>
     );
   }

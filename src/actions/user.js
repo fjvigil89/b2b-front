@@ -4,20 +4,10 @@ import axios from 'axios';
 import ErrorMessages from '../constants/errors';
 import statusMessage from './status';
 
-/**
-  * Login
-  */
-export function Login(form) {
-  const {
-    email,
-    password,
-  } = form;
-
+export function login(email, password) {
   return dispatch => new Promise(async (resolve, reject) => {
-
     await statusMessage(dispatch, 'loading', true);
 
-    // Validation checks
     if (!email) return reject({ message: ErrorMessages.missingEmail });
     if (!password) return reject({ message: ErrorMessages.missingPassword });
 
@@ -46,10 +36,7 @@ export function Login(form) {
   });
 }
 
-/**
-  * Logout
-  */
-export function Logout() {
+export function logout() {
   return dispatch => new Promise(async (resolve) => {
     resolve(dispatch({
       type: 'USER_LOGOUT',
@@ -59,3 +46,16 @@ export function Logout() {
     throw err.message;
   });
 }
+
+export function changeInputLogin(name, value) {
+  return dispatch => new Promise(async (resolve) => {
+    resolve(dispatch({
+      type: 'USER_CHANGE_INPUT',
+      data: {
+        name,
+        value,
+      },
+    }));
+  });
+}
+

@@ -3,94 +3,50 @@ import PropTypes from 'prop-types';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
-
 import { Header, Left, Button, Icon, Body, Title, Right, Item, Input } from 'native-base';
+
+import { clearSearch, searchByName, filterSection } from '../actions/salas';
+import showSearch from '../actions/salasHeader';
 
 import CONSTANTES from '../constants/constants';
 
 class SalasHeader extends React.Component {
   static propTypes = {
-    salasFilter: PropTypes.func.isRequired,
     clearSearch: PropTypes.func.isRequired,
+    showSearch: PropTypes.func.isRequired,
+    searchByName: PropTypes.func.isRequired,
     filterSection: PropTypes.func.isRequired,
+    searchFilters: PropTypes.bool,
+    isOpenSearch: PropTypes.bool,
+    inputSearch: PropTypes.string,
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showSearch: false,
-      inputSearch: '',
-      searchFilters: false,
-    };
-
-    this.showSearch = this.showSearch.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.openFilter = this.openFilter.bind(this);
-    this.filterSection = this.filterSection.bind(this);
-  }
-
-  showSearch() {
-    this.setState({
-      showSearch: !this.state.showSearch,
-      inputSearch: '',
-      searchFilters: false,
-    });
-    
-    if (this.state.showSearch) {
-      this.props.clearSearch();
-    }
-  }
-
-  handleChange = (name, val) => {
-    this.setState({
-      ...this.state,
-      [name]: val,
-    });
-
-    this.props.salasFilter(val);
+  static defaultProps = {
+    searchFilters: false,
+    isOpenSearch: false,
+    inputSearch: '',
   }
 
   openFilter = () => {
     this.ActionSheet.show();
   }
 
-  filterSection(i) {
-    if (i === CONSTANTES.CANCEL_INDEX) {
-      return;
-    } else if (i === CONSTANTES.DESTRUCTIVE_INDEX) {
-      this.setState({
-        searchFilters: false,
-      });
-
-      this.props.filterSection(i);
-      
-      return;
-    }
-
-    this.props.filterSection(i);
-
-    this.setState({
-      searchFilters: true,
-    });
-  }
-
   render() {
-    const iconFilters = this.state.searchFilters ? 'ios-funnel' : 'ios-funnel-outline';
+    const iconFilters = this.props.searchFilters ? 'ios-funnel' : 'ios-funnel-outline';
 
-    if (this.state.showSearch) {
+    if (this.props.isOpenSearch) {
       return (
         <Animatable.View
           animation="fadeInRight"
           duration={500}
         >
           <Header style={{ backgroundColor: '#FFFFFF' }}>
-            <Button transparent onPress={this.showSearch}>
+            <Button transparent onPress={this.props.clearSearch}>
               <Icon name="arrow-back" style={{ color: '#000' }} />
             </Button>
             <Body rounded>
               <Item>
-                <Input style={{ color: '#000000' }} placeholder="Buscar Sala..." placeholderTextColor="#A4A4A4" autoFocus={this.state.showSearch} value={this.state.inputSearch} onChangeText={v => this.handleChange('inputSearch', v)} />
+                <Input style={{ color: '#000000' }} placeholder="Buscar Sala..." placeholderTextColor="#A4A4A4" autoFocus={this.props.isOpenSearch} value={this.props.inputSearch} onChangeText={v => this.props.searchByName(v)} />
               </Item>
             </Body>
           </Header>
@@ -105,7 +61,7 @@ class SalasHeader extends React.Component {
           <Title>Mis Salas</Title>
         </Body>
         <Right>
-          <Button transparent onPress={this.showSearch}>
+          <Button transparent onPress={this.props.showSearch}>
             <Icon name="search" />
           </Button>
           <Button transparent onPress={this.openFilter} >
@@ -118,7 +74,7 @@ class SalasHeader extends React.Component {
 
               return this.ActionSheet;
             }}
-            onPress={this.filterSection}
+            onPress={this.props.filterSection}
             options={CONSTANTES.OPTIONS_FILTERS_SALAS}
             cancelButtonIndex={CONSTANTES.CANCEL_INDEX}
             destructiveButtonIndex={CONSTANTES.DESTRUCTIVE_INDEX}
@@ -131,7 +87,16 @@ class SalasHeader extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  salas: state.salas.listSalas,
+  isOpenSearch: state.salasHeader.showSearch,
+  inputSearch: state.salasHeader.inputSearch,
+  searchFilters: state.salasHeader.searchFilters,
 });
 
-export default connect(mapStateToProps)(SalasHeader);
+const mapDispatchToProps = {
+  clearSearch,
+  showSearch,
+  searchByName,
+  filterSection,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SalasHeader);
