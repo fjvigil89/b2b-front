@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+import salasHeader from './salasHeader';
+
 export const initialState = {
   loading: false,
   salas: [],
@@ -37,6 +39,7 @@ export default function salasReducer(state = initialState, action) {
       };
     }
     case 'SALAS_FILTER_SECTION': {
+      console.log(salasHeader.state);
       if (action.filter === state.indexCancel) {
         return state;
       }
