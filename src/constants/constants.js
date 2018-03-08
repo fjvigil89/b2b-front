@@ -1,6 +1,6 @@
 export default {
   // ActionSheet de Header Salas
-  CANCEL_INDEX: 3,
-  DESTRUCTIVE_INDEX: 4,
-  OPTIONS_FILTERS_SALAS: ['Jumbo', 'Lider', 'Tottus', 'Cancelar', 'Limpiar'],
+  CANCEL_INDEX: 4,
+  DESTRUCTIVE_INDEX: 5,
+  OPTIONS_FILTERS_SALAS: ['Cencosud', 'Falabella', 'SMU', 'Walmart', 'Cancelar', 'Limpiar'],
 };
