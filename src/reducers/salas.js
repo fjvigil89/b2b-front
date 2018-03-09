@@ -16,8 +16,10 @@ export default function salasReducer(state = initialState, action) {
       if (action.data) {
         let group = [];
         group = _.chain(action.data).groupBy('cadena').map((obj, name) => name).value();
+        
         const cancel = group.push('Cancelar') - 1;
         const clean = group.push('Limpiar') - 1;
+        
         return {
           ...state,
           salas: action.data,
