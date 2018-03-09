@@ -1,7 +1,6 @@
 export const initialState = {
   showSearch: false,
   inputSearch: '',
-  searchFilters: false,
 };
 
 export default function salasHeaderReducer(state = initialState, action) {
@@ -11,7 +10,6 @@ export default function salasHeaderReducer(state = initialState, action) {
         ...state,
         showSearch: !state.showSearch,
         inputSearch: '',
-        searchFilters: false,
       };
     }
     case 'SALAS_HEADER_CLEAR_SEARCH': {
@@ -21,14 +19,10 @@ export default function salasHeaderReducer(state = initialState, action) {
       };
     }
     case 'SALAS_HEADER_SEARCH_BY_NAME': {
-      if (action.text) {
-        return {
-          ...state,
-          inputSearch: action.text,
-        };
-      }
-
-      return state;
+      return {
+        ...state,
+        inputSearch: action.text,
+      };
     }
     default:
       return state;

@@ -9,8 +9,6 @@ import { clearSearch, searchByName, filterSection } from '../actions/salas';
 import showSearch from '../actions/salasHeader';
 import { logout } from '../actions/user';
 
-import CONSTANTES from '../constants/constants';
-
 class SalasHeader extends React.Component {
   static propTypes = {
     clearSearch: PropTypes.func.isRequired,
@@ -21,12 +19,18 @@ class SalasHeader extends React.Component {
     isOpenSearch: PropTypes.bool,
     inputSearch: PropTypes.string,
     logout: PropTypes.func.isRequired,
+    groupCadena: PropTypes.arrayOf(PropTypes.string),
+    indexCancel: PropTypes.number,
+    indexClean: PropTypes.number,
   }
 
   static defaultProps = {
     searchFilters: false,
     isOpenSearch: false,
     inputSearch: '',
+    groupCadena: [],
+    indexCancel: null,
+    indexClean: null,
   }
 
   openFilter = () => {
@@ -55,7 +59,6 @@ class SalasHeader extends React.Component {
         </Animatable.View>
       );
     }
-
     return (
       <Header>
         <Left>
@@ -81,9 +84,9 @@ class SalasHeader extends React.Component {
               return this.ActionSheet;
             }}
             onPress={this.props.filterSection}
-            options={CONSTANTES.OPTIONS_FILTERS_SALAS}
-            cancelButtonIndex={CONSTANTES.CANCEL_INDEX}
-            destructiveButtonIndex={CONSTANTES.DESTRUCTIVE_INDEX}
+            options={this.props.groupCadena}
+            cancelButtonIndex={this.props.indexCancel}
+            destructiveButtonIndex={this.props.indexClean}
             title="Filtro"
           />
         </Right>
@@ -95,7 +98,10 @@ class SalasHeader extends React.Component {
 const mapStateToProps = state => ({
   isOpenSearch: state.salasHeader.showSearch,
   inputSearch: state.salasHeader.inputSearch,
-  searchFilters: state.salasHeader.searchFilters,
+  searchFilters: state.salas.searchFilters,
+  groupCadena: state.salas.groupCadena,
+  indexCancel: state.salas.indexCancel,
+  indexClean: state.salas.indexClean,
 });
 
 const mapDispatchToProps = {
