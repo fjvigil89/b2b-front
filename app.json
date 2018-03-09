@@ -1,12 +1,13 @@
 {
   "expo": {
-    "sdkVersion": "22.0.0",
-    "name": "B2B CademSmart Service Integration",
-    "slug": "b2b-cademsmart-service-integration",
+    "sdkVersion": "25.0.0",
+    "name": "SmartB2B CademSmart",
+    "slug": "SmartB2B-CademSmart",
     "icon": "src/images/app-icon.png",
     "privacy": "public",
     "ios": {
       "bundleIdentifier": "com.miguelmeza.me"
-    }
+    },
+    "orientation": "portrait"
   }
 }
