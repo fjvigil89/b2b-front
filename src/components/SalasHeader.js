@@ -28,7 +28,7 @@ class SalasHeader extends React.Component {
     searchFilters: false,
     isOpenSearch: false,
     inputSearch: '',
-    groupCadena: [],
+    groupCadena: ['Cancelar'],
     indexCancel: null,
     indexClean: null,
   }
@@ -59,6 +59,7 @@ class SalasHeader extends React.Component {
         </Animatable.View>
       );
     }
+
     return (
       <Header>
         <Left>
