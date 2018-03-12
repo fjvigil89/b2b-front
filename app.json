@@ -3,7 +3,7 @@
     "sdkVersion": "25.0.0",
     "name": "SmartB2B CademSmart",
     "slug": "SmartB2B-CademSmart",
-    "icon": "src/images/app-icon.png",
+    "icon": "src/assets/images/app-icon.png",
     "privacy": "public",
     "ios": {
       "bundleIdentifier": "com.miguelmeza.me"
