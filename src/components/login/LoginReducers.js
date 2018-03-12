@@ -1,39 +1,39 @@
- export const initialState = {
+export const initialState = {
   loading: false,
   error: null,
-  email: 'boadude@gmail.com',
-  password: 'slipknot',
+  email: "boadude@gmail.com",
+  password: "slipknot"
 };
 
-export default function userReducer(state = initialState, action) {
+export default function user(state = initialState, action) {
   switch (action.type) {
-    case 'USER_LOGIN': {
+    case "USER_LOGIN": {
       if (action.data) {
         return {
           ...state,
           loading: false,
           error: null,
           isAuthenticated: true,
-          token: action.data.token,
+          token: action.data.token
         };
       }
 
       return initialState;
     }
-    case 'USER_LOGOUT': {
+    case "USER_LOGOUT": {
       return {
         ...state,
         loading: false,
         error: null,
         isAuthenticated: false,
-        token: null,
+        token: null
       };
     }
-    case 'USER_CHANGE_INPUT': {
+    case "USER_CHANGE_INPUT": {
       if (action.data) {
         return {
           ...state,
-          [action.data.name]: action.data.value,
+          [action.data.name]: action.data.value
         };
       }
 
