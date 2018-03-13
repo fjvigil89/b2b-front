@@ -9,5 +9,6 @@
     "@common": "${workspaceRoot}/src/common",
     "@components": "${workspaceRoot}/src/components",
     "@constants": "${workspaceRoot}/src/constants"
-  }
+  },
+  "typescript.quickSuggestionsForPaths": false,
 }
