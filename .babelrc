@@ -6,7 +6,6 @@
       {
         "root": ["./"],
         "alias": {
-          "~": "./src",
           "@app": "./src/app",
           "@assets": "./src/assets",
           "@common": "./src/common",

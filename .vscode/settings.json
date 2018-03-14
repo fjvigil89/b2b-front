@@ -3,12 +3,11 @@
   "javascript.format.enable": false,
   "prettier.eslintIntegration": true,
   "path-intellisense.mappings": {
-    "~": "${workspaceRoot}/src",
     "@app": "${workspaceRoot}/src/app",
     "@assets": "${workspaceRoot}/src/assets",
     "@common": "${workspaceRoot}/src/common",
     "@components": "${workspaceRoot}/src/components",
     "@constants": "${workspaceRoot}/src/constants"
   },
-  "typescript.quickSuggestionsForPaths": false,
+  "typescript.quickSuggestionsForPaths": false
 }
