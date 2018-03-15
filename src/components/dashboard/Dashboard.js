@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Container } from "native-base";
+import { View, ScrollView } from "react-native";
+import { Container, Text, Content } from "native-base";
 
 // Components
 import LoginScreen from "@components/login/Login";
@@ -32,9 +33,83 @@ class Dashboard extends Component {
     return (
       <Container>
         <SalasHeader />
+        <Content style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+          <View style={{ flex: 0.3, backgroundColor: '#083D77' }}>
+            <Text>caquitaaaa</Text>
+          </View>
+          <View style={{ flex: 0.7 }}>
+            <ScrollView>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+              <Text>Hellooasdasdooo</Text>
+            </ScrollView>
+          </View>
+        </Content>
+      </Container>
+    );
+
+    /*
+    return (
+      <Container>
+        <SalasHeader />
         <SalasList />
       </Container>
     );
+    */
   };
 }
 
