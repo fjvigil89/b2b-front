@@ -5,22 +5,22 @@ import PropTypes from "prop-types";
 import SalasInfoHeader from "@components/salas_info/salas_info_header/SalasInfoHeader";
 import SalasInfoDetail from "@components/salas_info/salas_info_detail/SalasInfoDetail";
 import SalasInfoList from "@components/salas_info/salas_info_list/SalasInfoList";
+import { Actions } from "react-native-router-flux";
 
-import {
-  ListadoSalasInfo,
-} from "@components/salas_info/SalasInfoActions.js";
+import { ListadoSalasInfo } from "@components/salas_info/SalasInfoActions.js";
 
 class SalasInfo extends Component {
   static propTypes = {
     ListadoSalasInfo: PropTypes.func.isRequired,
-    detailsSalas: PropTypes.arrayOf,
+    detailsSalas: PropTypes.arrayOf
   };
 
   static defaultProps = {
-    detailsSalas: [],
+    detailsSalas: []
   };
 
   componentWillMount = () => {
+    console.log(Actions);
     this.props.ListadoSalasInfo();
   };
 
@@ -43,7 +43,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  ListadoSalasInfo,
+  ListadoSalasInfo
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalasInfo);

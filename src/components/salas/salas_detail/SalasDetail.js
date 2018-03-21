@@ -20,10 +20,10 @@ class SalasDetail extends React.Component {
       mide: PropTypes.number,
       realizada: PropTypes.number,
       fecha_visita: PropTypes.string,
-      direccion: PropTypes.string
+      direccion: PropTypes.string,
+      cod_local: PropTypes.string
     }),
-    delay: PropTypes.number,
-    key: PropTypes.string
+    delay: PropTypes.number
   };
 
   static defaultProps = {
@@ -34,14 +34,13 @@ class SalasDetail extends React.Component {
       mide: 0,
       realizada: 0,
       fecha_visita: "",
-      direccion: ""
+      direccion: "",
+      cod_local: ""
     },
-    delay: 100,
-    key: ""
+    delay: 100
   };
 
   render() {
-    console.log('key', this.props.key);
     let logo = "";
     let imagen = null;
     let fecha = "";
@@ -99,7 +98,7 @@ class SalasDetail extends React.Component {
         <TouchableOpacity
           style={{ flex: 1 }}
           onPress={() => {
-            Actions.salasInfo({key: this.props.key});
+            Actions.salasInfo();
           }}
         >
           {!_.isNull(imagen) && (
