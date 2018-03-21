@@ -7,7 +7,7 @@ import SalasInfoDetail from "@components/salas_info/salas_info_detail/SalasInfoD
 import SalasInfoList from "@components/salas_info/salas_info_list/SalasInfoList";
 import { Actions } from "react-native-router-flux";
 
-import { ListadoSalasInfo } from "@components/salas_info/SalasInfoActions.js";
+import  ListadoSalasInfo from "@components/salas_info/SalasInfoActions.js";
 
 class SalasInfo extends Component {
   static propTypes = {
@@ -21,12 +21,12 @@ class SalasInfo extends Component {
 
   componentWillMount = () => {
     console.log(Actions);
-    this.props.ListadoSalasInfo();
+    // this.props.ListadoSalasInfo();
   };
 
-  render() {
+  render = () => {
     const { detailsSalas } = this.props;
-    console.log(detailsSalas);
+    console.log('error: ', detailsSalas);
     return (
       <Container>
         <SalasInfoHeader />
@@ -39,7 +39,7 @@ class SalasInfo extends Component {
   }
 }
 const mapStateToProps = state => ({
-  detailsSalas: state.detailsSalas
+  detailsSalas: state.salasInfo.detailsSalas
 });
 
 const mapDispatchToProps = {

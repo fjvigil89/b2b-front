@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export default function ListadoSalasInfo() {
+  console.log('entro');
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
