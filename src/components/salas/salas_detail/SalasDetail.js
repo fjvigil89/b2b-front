@@ -98,7 +98,7 @@ class SalasDetail extends React.Component {
         <TouchableOpacity
           style={{ flex: 1 }}
           onPress={() => {
-            Actions.salasInfo();
+            Actions.salasInfo({data: this.props.data});
           }}
         >
           {!_.isNull(imagen) && (

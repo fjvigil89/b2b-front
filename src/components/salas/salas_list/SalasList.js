@@ -51,7 +51,7 @@ class SalasList extends Component {
 
     const delay = 200;
     const detailListadoSalas = salas.map((sala, i) => (
-      <SalasDetail data={sala} key="" delay={delay * i} />
+      <SalasDetail data={sala} key={sala.cod_local} delay={delay * i} />
     ));
 
     return (
