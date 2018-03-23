@@ -41,7 +41,8 @@ class SalasInfoListDetail extends React.Component {
               style={{
                 marginLeft: 5,
                 fontSize: 13,
-                fontFamily: "Questrial"
+                fontFamily: "Questrial",
+                fontWeight: "bold"
               }}
             >
               Chocolates de color amarillo con sabor a pajarito y de contextura
