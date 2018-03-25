@@ -24,6 +24,12 @@ class SalasInfoListDetail extends React.Component {
     };
   }
 
+  currency = (x) => {
+    const parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return parts.join(".");
+  };
+
   render() {
     const { data } = this.props;
     return (
@@ -89,11 +95,11 @@ class SalasInfoListDetail extends React.Component {
                 fontFamily: "Questrial"
               }}
             >
-              {data.venta_perdida}
+              ${this.currency(data.venta_perdida)}
             </Text>
           </View>
         </TouchableOpacity>
-        {this.state.aditionalPanel && <SalasInfoListAditional />}
+        {this.state.aditionalPanel && <SalasInfoListAditional acciones={data.acciones}/>}
       </View>
     );
   }
