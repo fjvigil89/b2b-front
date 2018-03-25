@@ -54,7 +54,6 @@ class SalasInfoListDetail extends React.Component {
                 marginLeft: 5,
                 fontSize: 13,
                 fontFamily: "Questrial",
-                fontWeight: "bold"
               }}
             >
               {data.categoria}

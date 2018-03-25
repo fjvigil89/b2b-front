@@ -41,6 +41,34 @@ class SalasInfoDetail extends React.Component {
     }
   };
 
+  formatter = (value) => {
+    const formatterNumber = (x) => {
+      const parts = x.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      return parts.join(".");
+    };
+
+    const format = formatterNumber(value).split('.');
+
+    if (value>999999 && value<1000000000) {
+      return {
+        number: `${format[0]}.${format[1].slice(0,1)} m`,
+        size: 35
+      };
+    } else if(value>=1000000000) {
+      return {
+        number: `${format[0]}.${format[1].slice(0,1)} m`,
+        size: 25
+      };
+    }
+
+    return {
+      number: value,
+      size: 35
+    };
+  };
+
+
   render() {
     const { data, report } = this.props;
     const backgroundImage = require("@assets/images/background-detalle-salas.png");
@@ -75,6 +103,7 @@ class SalasInfoDetail extends React.Component {
 
     const deviceFullWidth = Dimensions.get("window").width;
     const deviceWidth = deviceFullWidth - 30;
+    const formatter = this.formatter(report.ventaPerdida);
 
     return (
       <View
@@ -184,7 +213,7 @@ class SalasInfoDetail extends React.Component {
           >
             <Text
               style={{
-                fontSize: 35,
+                fontSize: formatter.size,
                 fontWeight: "bold",
                 fontFamily: "Questrial"
               }}
@@ -215,12 +244,12 @@ class SalasInfoDetail extends React.Component {
           >
             <Text
               style={{
-                fontSize: 35,
+                fontSize: formatter.size,
                 fontWeight: "bold",
                 fontFamily: "Questrial"
               }}
             >
-              {report.ventaPerdida}mm
+              {formatter.number}
             </Text>
             <Text style={{ fontFamily: "Questrial", fontSize: 12 }}>
               Venta Perdida

@@ -125,7 +125,7 @@ class SalasInfoListAditional extends React.Component {
               >
                 <Icon
                   ios="ios-arrow-dropright"
-                  android="md-arrow-dropright"
+                  android="ios-arrow-dropright"
                   style={{ fontSize: 30 }}
                 />
               </View>
@@ -212,7 +212,7 @@ class SalasInfoListAditional extends React.Component {
               >
                 <Icon
                   ios="ios-arrow-dropright"
-                  android="md-arrow-dropright"
+                  android="ios-arrow-dropright"
                   style={{ fontSize: 30 }}
                 />
               </View>
