@@ -104,6 +104,7 @@ class SalasInfoDetail extends React.Component {
     const deviceFullWidth = Dimensions.get("window").width;
     const deviceWidth = deviceFullWidth - 30;
     const formatter = this.formatter(report.ventaPerdida);
+    const fechaVisita = data.fecha_visita?moment(data.fecha_visita).fromNow():'-'
 
     return (
       <View
@@ -185,7 +186,7 @@ class SalasInfoDetail extends React.Component {
               fontFamily: "Questrial"
             }}
           >
-            Ult. medición Cadem : {moment(data.fecha_visita).fromNow()}
+            Ult. medición Cadem : {fechaVisita}
           </Text>
         </View>
 
