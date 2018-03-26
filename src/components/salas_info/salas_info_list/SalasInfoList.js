@@ -5,9 +5,7 @@ import SalasInfoListDetail from "@components/salas_info/salas_info_list/salas_in
 
 class SalasInfoList extends React.Component {
   static propTypes = {
-    data: PropTypes.oneOfType([
-      PropTypes.any
-    ]),
+    data: PropTypes.oneOfType([PropTypes.any])
   };
 
   static defaultProps = {
@@ -15,12 +13,12 @@ class SalasInfoList extends React.Component {
   };
 
   render() {
-    const detailSalaHeader = 180;
+    const detailSalaHeader = 220;
     const detailSalaScroll =
       Dimensions.get("window").height - detailSalaHeader - 80;
 
     const categoryDetailSala = this.props.data.detail.map(detail => (
-      <SalasInfoListDetail key={detail.categoria} data={detail}/>
+      <SalasInfoListDetail key={detail.categoria} data={detail} />
     ));
 
     return (

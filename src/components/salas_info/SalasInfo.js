@@ -6,15 +6,13 @@ import SalasInfoHeader from "@components/salas_info/salas_info_header/SalasInfoH
 import SalasInfoDetail from "@components/salas_info/salas_info_detail/SalasInfoDetail";
 import SalasInfoList from "@components/salas_info/salas_info_list/SalasInfoList";
 import Loading from "@components/loading/Loading";
-import  ListadoSalasInfo from "@components/salas_info/SalasInfoActions.js";
+import ListadoSalasInfo from "@components/salas_info/SalasInfoActions.js";
 
 class SalasInfo extends Component {
   static propTypes = {
     ListadoSalasInfo: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
-    dataDetail: PropTypes.oneOfType([
-      PropTypes.any
-    ]),
+    dataDetail: PropTypes.oneOfType([PropTypes.any]),
     data: PropTypes.shape({
       id: PropTypes.number,
       bandera: PropTypes.string,
@@ -24,8 +22,8 @@ class SalasInfo extends Component {
       fecha_visita: PropTypes.string,
       direccion: PropTypes.string,
       cod_local: PropTypes.string,
-      descripcion: PropTypes.string,
-    }),
+      descripcion: PropTypes.string
+    })
   };
 
   static defaultProps = {
@@ -40,18 +38,20 @@ class SalasInfo extends Component {
       fecha_visita: "",
       direccion: "",
       cod_local: "",
-      descripcion: "",
-    },
+      descripcion: ""
+    }
   };
 
   async componentWillMount() {
     await this.props.ListadoSalasInfo(this.props.data.cod_local);
-  };
+  }
 
   render = () => {
-    const { dataDetail, isLoading, data }   = this.props;
+    const { dataDetail, isLoading, data } = this.props;
     const report = {
-      cademsmartPorcentaje: dataDetail.cademsmart_porcentaje?`${dataDetail.cademsmart_porcentaje}%`: '-',
+      cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
+        ? `${dataDetail.cademsmart_porcentaje}%`
+        : "-",
       ventaPerdida: dataDetail.venta_perdida
     };
 
@@ -63,16 +63,16 @@ class SalasInfo extends Component {
       <Container>
         <SalasInfoHeader />
         <Content scrollEnabled={false} style={{ backgroundColor: "#FFF" }}>
-          <SalasInfoDetail data={data} report={report}/>
-          <SalasInfoList data={dataDetail}/>
+          <SalasInfoDetail data={data} report={report} />
+          <SalasInfoList data={dataDetail} />
         </Content>
       </Container>
     );
-  }
+  };
 }
 const mapStateToProps = state => ({
   dataDetail: state.salasInfo.detailsSalas,
-  isLoading: state.salasInfo.loading,
+  isLoading: state.salasInfo.loading
 });
 
 const mapDispatchToProps = {

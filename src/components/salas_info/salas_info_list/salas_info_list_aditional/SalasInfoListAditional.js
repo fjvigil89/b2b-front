@@ -6,16 +6,14 @@ import * as Animatable from "react-native-animatable";
 
 class SalasInfoListAditional extends React.Component {
   static propTypes = {
-    acciones: PropTypes.oneOfType([
-      PropTypes.any
-    ]),
+    acciones: PropTypes.oneOfType([PropTypes.any])
   };
 
   static defaultProps = {
-    acciones: [],
+    acciones: []
   };
 
-  currency = (x) => {
+  currency = x => {
     const parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return parts.join(".");
@@ -24,8 +22,12 @@ class SalasInfoListAditional extends React.Component {
   render() {
     const backgroundImage = require("@assets/images/background-detalle-sala-categoria.png");
 
-    const categoryDetailSala = this.props.acciones.map(data => (
-      <Animatable.View
+    let iterator = 0;
+    const categoryDetailSala = this.props.acciones.map(data => {
+      iterator += 1;
+
+      return (
+        <Animatable.View
           animation="fadeInRight"
           duration={1000}
           style={{
@@ -33,7 +35,7 @@ class SalasInfoListAditional extends React.Component {
             paddingBottom: 1,
             marginBottom: 4
           }}
-          key={data}
+          key={iterator}
         >
           <View
             style={{
@@ -112,7 +114,8 @@ class SalasInfoListAditional extends React.Component {
             </View>
           </View>
         </Animatable.View>
-    ));
+      );
+    });
 
     return (
       <View

@@ -15,12 +15,12 @@ class SalasInfoDetail extends React.Component {
       fecha_visita: PropTypes.string,
       direccion: PropTypes.string,
       cod_local: PropTypes.string,
-      descripcion: PropTypes.string,
+      descripcion: PropTypes.string
     }),
     report: PropTypes.shape({
       cademsmartPorcentaje: PropTypes.string,
-      ventaPerdida: PropTypes.number,
-    }),
+      ventaPerdida: PropTypes.number
+    })
   };
 
   static defaultProps = {
@@ -33,32 +33,41 @@ class SalasInfoDetail extends React.Component {
       fecha_visita: "",
       direccion: "",
       cod_local: "",
-      descripcion: "",
+      descripcion: ""
     },
     report: {
-      cademsmartPorcentaje: '',
-      ventaPerdida: 0,
+      cademsmartPorcentaje: "",
+      ventaPerdida: 0
     }
   };
 
-  formatter = (value) => {
-    const formatterNumber = (x) => {
+  formatter = value => {
+    const formatterNumber = x => {
       const parts = x.toString().split(".");
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       return parts.join(".");
     };
 
-    const format = formatterNumber(value).split('.');
+    if (value > 999999 && value < 1000000000) {
+      const format = formatterNumber(value).split(".");
 
-    if (value>999999 && value<1000000000) {
       return {
-        number: `${format[0]}.${format[1].slice(0,1)} m`,
+        number: `${format[0]}.${format[1].slice(0, 1)} m`,
         size: 35
       };
-    } else if(value>=1000000000) {
+    } else if (value >= 1000000000) {
+      const format = formatterNumber(value).split(".");
+
       return {
-        number: `${format[0]}.${format[1].slice(0,1)} m`,
+        number: `${format[0]}.${format[1].slice(0, 2)} mm`,
         size: 25
+      };
+    } else if (value < 1000000) {
+      const format = formatterNumber(value);
+
+      return {
+        number: `${format}`,
+        size: 35
       };
     }
 
@@ -68,7 +77,6 @@ class SalasInfoDetail extends React.Component {
     };
   };
 
-
   render() {
     const { data, report } = this.props;
     const backgroundImage = require("@assets/images/background-detalle-salas.png");
@@ -76,10 +84,7 @@ class SalasInfoDetail extends React.Component {
     let logo = "";
     if (data.bandera === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
-    } else if (
-      data.bandera === "LIDER EXPRESS" ||
-      data.bandera === "LIDER"
-    ) {
+    } else if (data.bandera === "LIDER EXPRESS" || data.bandera === "LIDER") {
       logo = require("@assets/images/lider.png");
     } else if (data.bandera === "CENTRAL MAYORISTA") {
       logo = require("@assets/images/central-mayorista.png");
@@ -104,7 +109,9 @@ class SalasInfoDetail extends React.Component {
     const deviceFullWidth = Dimensions.get("window").width;
     const deviceWidth = deviceFullWidth - 30;
     const formatter = this.formatter(report.ventaPerdida);
-    const fechaVisita = data.fecha_visita?moment(data.fecha_visita).fromNow():'-'
+    const fechaVisita = data.fecha_visita
+      ? moment(data.fecha_visita).fromNow()
+      : "-";
 
     return (
       <View
@@ -117,8 +124,7 @@ class SalasInfoDetail extends React.Component {
           style={{
             position: "absolute",
             top: 0,
-            width: deviceFullWidth,
-            height: 220
+            width: deviceFullWidth
           }}
           source={backgroundImage}
         />

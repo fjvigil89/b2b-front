@@ -21,7 +21,8 @@ class SalasDetail extends React.Component {
       realizada: PropTypes.number,
       fecha_visita: PropTypes.string,
       direccion: PropTypes.string,
-      cod_local: PropTypes.string
+      cod_local: PropTypes.string,
+      descripcion: PropTypes.string
     }),
     delay: PropTypes.number
   };
@@ -35,7 +36,8 @@ class SalasDetail extends React.Component {
       realizada: 0,
       fecha_visita: "",
       direccion: "",
-      cod_local: ""
+      cod_local: "",
+      descripcion: ""
     },
     delay: 100
   };
@@ -98,7 +100,7 @@ class SalasDetail extends React.Component {
         <TouchableOpacity
           style={{ flex: 1 }}
           onPress={() => {
-            Actions.salasInfo({data: this.props.data});
+            Actions.salasInfo({ data: this.props.data });
           }}
         >
           {!_.isNull(imagen) && (
@@ -134,19 +136,22 @@ class SalasDetail extends React.Component {
               style={{
                 flex: 0.75,
                 justifyContent: "center",
-                alignItems: "flex-start"
+                alignItems: "flex-start",
+                paddingRight: 10
               }}
             >
               <Text
                 style={{
-                  fontSize: 22,
+                  fontSize: 18,
                   fontFamily: "Questrial",
                   fontWeight: "bold"
                 }}
               >
-                {this.props.data.bandera}
+                {this.props.data.descripcion}
               </Text>
-              <Text note>{this.props.data.direccion}</Text>
+              <Text note style={{ fontSize: 12 }}>
+                {this.props.data.direccion}
+              </Text>
             </View>
           </View>
 
