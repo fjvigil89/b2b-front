@@ -117,7 +117,8 @@ class SalasInfoDetail extends React.Component {
       <View
         style={{
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
+          height: 220
         }}
       >
         <Image
@@ -215,7 +216,8 @@ class SalasInfoDetail extends React.Component {
               borderBottomColor: "#DEDEDE",
               borderBottomWidth: 1,
               borderLeftColor: "#DEDEDE",
-              borderLeftWidth: 1
+              borderLeftWidth: 1,
+              height: 70
             }}
           >
             <Text
@@ -245,8 +247,7 @@ class SalasInfoDetail extends React.Component {
               borderBottomWidth: 1,
               borderRightColor: "#DEDEDE",
               borderRightWidth: 1,
-              paddingTop: 10,
-              paddingBottom: 10
+              height: 70
             }}
           >
             <Text
@@ -267,25 +268,25 @@ class SalasInfoDetail extends React.Component {
         <View
           style={{
             flex: 1,
-            flexDirection: "row",
-            marginTop: 10
+            flexDirection: "row"
           }}
         >
           <View
             style={{
               flex: 0.5,
-              justifyContent: "center",
+              justifyContent: "flex-end",
               alignItems: "center",
               borderBottomColor: "#DEDEDE",
               borderBottomWidth: 1,
-              paddingBottom: 2
+              paddingBottom: 5
             }}
           >
             <Text
               style={{
                 fontSize: 12,
                 fontFamily: "Bree",
-                fontWeight: "bold"
+                fontWeight: "bold",
+                marginBottom: 0
               }}
             >
               Categoria
@@ -294,11 +295,11 @@ class SalasInfoDetail extends React.Component {
           <View
             style={{
               flex: 0.2,
-              justifyContent: "center",
+              justifyContent: "flex-end",
               alignItems: "center",
               borderBottomColor: "#DEDEDE",
               borderBottomWidth: 1,
-              paddingBottom: 2
+              paddingBottom: 5
             }}
           >
             <Text
@@ -314,11 +315,11 @@ class SalasInfoDetail extends React.Component {
           <View
             style={{
               flex: 0.3,
-              justifyContent: "center",
+              justifyContent: "flex-end",
               alignItems: "center",
               borderBottomColor: "#DEDEDE",
               borderBottomWidth: 1,
-              paddingBottom: 2
+              paddingBottom: 5
             }}
           >
             <Text

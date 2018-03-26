@@ -22,7 +22,12 @@ class SalasInfoList extends React.Component {
     ));
 
     return (
-      <View style={{ backgroundColor: "#FFFFFF", height: detailSalaScroll }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#FFFFFF"
+        }}
+      >
         <ScrollView>{categoryDetailSala}</ScrollView>
       </View>
     );

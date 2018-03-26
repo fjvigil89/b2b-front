@@ -62,7 +62,11 @@ class SalasInfo extends Component {
     return (
       <Container>
         <SalasInfoHeader />
-        <Content scrollEnabled={false} style={{ backgroundColor: "#FFF" }}>
+        <Content
+          scrollEnabled={false}
+          style={{ flex: 1, backgroundColor: "#FFF" }}
+          contentContainerStyle={{ flex: 1 }}
+        >
           <SalasInfoDetail data={data} report={report} />
           <SalasInfoList data={dataDetail} />
         </Content>
