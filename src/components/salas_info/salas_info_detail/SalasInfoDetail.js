@@ -139,7 +139,7 @@ class SalasInfoDetail extends React.Component {
         >
           <Text
             style={{
-              fontSize: 23,
+              fontSize: 20,
               fontFamily: "Bree",
               fontWeight: "bold",
               color: "#FFF",
