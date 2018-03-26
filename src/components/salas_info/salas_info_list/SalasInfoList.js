@@ -13,7 +13,7 @@ class SalasInfoList extends React.Component {
   };
 
   render() {
-    const detailSalaHeader = 220;
+    const detailSalaHeader = 210;
     const detailSalaScroll =
       Dimensions.get("window").height - detailSalaHeader - 80;
 
