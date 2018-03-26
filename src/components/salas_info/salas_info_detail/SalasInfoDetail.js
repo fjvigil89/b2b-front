@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, Image, Dimensions } from "react-native";
+import { View, Image, Dimensions, Platform } from "react-native";
 import { Text, Thumbnail } from "native-base";
 import moment from "moment";
 
@@ -113,6 +113,8 @@ class SalasInfoDetail extends React.Component {
       ? moment(data.fecha_visita).fromNow()
       : "-";
 
+    const sizeTittle = Platform.OS === "ios" ? 20 : 18;
+
     return (
       <View
         style={{
@@ -140,7 +142,7 @@ class SalasInfoDetail extends React.Component {
         >
           <Text
             style={{
-              fontSize: 20,
+              fontSize: sizeTittle,
               fontFamily: "Bree",
               fontWeight: "bold",
               color: "#FFF",
