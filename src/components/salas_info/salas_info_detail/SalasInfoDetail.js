@@ -1,14 +1,110 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View, Image, Dimensions } from "react-native";
 import { Text, Thumbnail } from "native-base";
+import moment from "moment";
 
 class SalasInfoDetail extends React.Component {
+  static propTypes = {
+    data: PropTypes.shape({
+      id: PropTypes.number,
+      bandera: PropTypes.string,
+      date_b2b: PropTypes.string,
+      mide: PropTypes.number,
+      realizada: PropTypes.number,
+      fecha_visita: PropTypes.string,
+      direccion: PropTypes.string,
+      cod_local: PropTypes.string,
+      descripcion: PropTypes.string,
+    }),
+    report: PropTypes.shape({
+      cademsmartPorcentaje: PropTypes.string,
+      ventaPerdida: PropTypes.number,
+    }),
+  };
+
+  static defaultProps = {
+    data: {
+      id: 0,
+      bandera: "",
+      date_b2b: "",
+      mide: 0,
+      realizada: 0,
+      fecha_visita: "",
+      direccion: "",
+      cod_local: "",
+      descripcion: "",
+    },
+    report: {
+      cademsmartPorcentaje: '',
+      ventaPerdida: 0,
+    }
+  };
+
+  formatter = (value) => {
+    const formatterNumber = (x) => {
+      const parts = x.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      return parts.join(".");
+    };
+
+    const format = formatterNumber(value).split('.');
+
+    if (value>999999 && value<1000000000) {
+      return {
+        number: `${format[0]}.${format[1].slice(0,1)} m`,
+        size: 35
+      };
+    } else if(value>=1000000000) {
+      return {
+        number: `${format[0]}.${format[1].slice(0,1)} m`,
+        size: 25
+      };
+    }
+
+    return {
+      number: value,
+      size: 35
+    };
+  };
+
+
   render() {
+    const { data, report } = this.props;
     const backgroundImage = require("@assets/images/background-detalle-salas.png");
-    const logo = require("@assets/images/jumbo.png");
+
+    let logo = "";
+    if (data.bandera === "JUMBO") {
+      logo = require("@assets/images/jumbo.png");
+    } else if (
+      data.bandera === "LIDER EXPRESS" ||
+      data.bandera === "LIDER"
+    ) {
+      logo = require("@assets/images/lider.png");
+    } else if (data.bandera === "CENTRAL MAYORISTA") {
+      logo = require("@assets/images/central-mayorista.png");
+    } else if (data.bandera === "TOTTUS") {
+      logo = require("@assets/images/tottus.png");
+    } else if (data.bandera === "EKONO") {
+      logo = require("@assets/images/ekono.png");
+    } else if (data.bandera === "ACUENTA") {
+      logo = require("@assets/images/acuenta.png");
+    } else if (data.bandera === "SANTA ISABEL") {
+      logo = require("@assets/images/santaisabel.png");
+    } else if (data.bandera === "UNIMARC") {
+      logo = require("@assets/images/unimarc.png");
+    } else if (data.bandera === "MAYORISTA 10") {
+      logo = require("@assets/images/mayorista10.png");
+    } else if (data.bandera === "ALVI") {
+      logo = require("@assets/images/alvi.png");
+    } else {
+      logo = require("@assets/images/alvi.png");
+    }
 
     const deviceFullWidth = Dimensions.get("window").width;
     const deviceWidth = deviceFullWidth - 30;
+    const formatter = this.formatter(report.ventaPerdida);
+    const fechaVisita = data.fecha_visita?moment(data.fecha_visita).fromNow():'-'
 
     return (
       <View
@@ -22,7 +118,7 @@ class SalasInfoDetail extends React.Component {
             position: "absolute",
             top: 0,
             width: deviceFullWidth,
-            height: 180
+            height: 220
           }}
           source={backgroundImage}
         />
@@ -40,10 +136,11 @@ class SalasInfoDetail extends React.Component {
               fontSize: 23,
               fontFamily: "Bree",
               fontWeight: "bold",
-              color: "#FFF"
+              color: "#FFF",
+              paddingRight: 70
             }}
           >
-            Jumbo Costanera Center
+            {data.descripcion}
           </Text>
         </View>
 
@@ -69,7 +166,7 @@ class SalasInfoDetail extends React.Component {
               marginBottom: 5
             }}
           >
-            Vicente Huidobro 4600, Santiago
+            {data.direccion}
           </Text>
           <Text
             style={{
@@ -79,7 +176,7 @@ class SalasInfoDetail extends React.Component {
               fontFamily: "Questrial"
             }}
           >
-            Actualización B2B : 12 de Febrero de 1984
+            Actualización B2B : {moment(data.date_b2b).fromNow()}
           </Text>
           <Text
             style={{
@@ -89,7 +186,7 @@ class SalasInfoDetail extends React.Component {
               fontFamily: "Questrial"
             }}
           >
-            Ult. medición Cadem : 13 de Noviembre de 2017
+            Ult. medición Cadem : {fechaVisita}
           </Text>
         </View>
 
@@ -117,12 +214,12 @@ class SalasInfoDetail extends React.Component {
           >
             <Text
               style={{
-                fontSize: 35,
+                fontSize: formatter.size,
                 fontWeight: "bold",
                 fontFamily: "Questrial"
               }}
             >
-              50%
+              {report.cademsmartPorcentaje}
             </Text>
             <Text style={{ fontFamily: "Questrial", fontSize: 12 }}>
               CademSmart
@@ -148,12 +245,12 @@ class SalasInfoDetail extends React.Component {
           >
             <Text
               style={{
-                fontSize: 35,
+                fontSize: formatter.size,
                 fontWeight: "bold",
                 fontFamily: "Questrial"
               }}
             >
-              1.4mm
+              {formatter.number}
             </Text>
             <Text style={{ fontFamily: "Questrial", fontSize: 12 }}>
               Venta Perdida

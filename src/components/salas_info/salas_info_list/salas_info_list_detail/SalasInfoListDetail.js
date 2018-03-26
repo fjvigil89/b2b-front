@@ -1,19 +1,37 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View, TouchableOpacity } from "react-native";
 import { Text } from "native-base";
 
 import SalasInfoListAditional from "@components/salas_info/salas_info_list/salas_info_list_aditional/SalasInfoListAditional";
 
 class SalasInfoListDetail extends React.Component {
-  constructor() {
-    super();
+  static propTypes = {
+    data: PropTypes.oneOfType([
+      PropTypes.any
+    ]),
+  };
 
+  static defaultProps = {
+    data: {},
+  };
+
+
+  constructor(props) {
+    super(props);
     this.state = {
-      aditionalPanel: false
+      aditionalPanel: false,
     };
   }
 
+  currency = (x) => {
+    const parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return parts.join(".");
+  };
+
   render() {
+    const { data } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <TouchableOpacity
@@ -42,11 +60,9 @@ class SalasInfoListDetail extends React.Component {
                 marginLeft: 5,
                 fontSize: 13,
                 fontFamily: "Questrial",
-                fontWeight: "bold"
               }}
             >
-              Chocolates de color amarillo con sabor a pajarito y de contextura
-              de mierda
+              {data.categoria}
             </Text>
           </View>
           <View
@@ -62,7 +78,7 @@ class SalasInfoListDetail extends React.Component {
                 fontFamily: "Questrial"
               }}
             >
-              123
+              {data.casos}
             </Text>
           </View>
           <View
@@ -79,12 +95,11 @@ class SalasInfoListDetail extends React.Component {
                 fontFamily: "Questrial"
               }}
             >
-              1.500.000
+              ${this.currency(data.venta_perdida)}
             </Text>
           </View>
         </TouchableOpacity>
-
-        {this.state.aditionalPanel && <SalasInfoListAditional />}
+        {this.state.aditionalPanel && <SalasInfoListAditional acciones={data.acciones}/>}
       </View>
     );
   }

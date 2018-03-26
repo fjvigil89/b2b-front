@@ -20,7 +20,8 @@ class SalasDetail extends React.Component {
       mide: PropTypes.number,
       realizada: PropTypes.number,
       fecha_visita: PropTypes.string,
-      direccion: PropTypes.string
+      direccion: PropTypes.string,
+      cod_local: PropTypes.string
     }),
     delay: PropTypes.number
   };
@@ -33,7 +34,8 @@ class SalasDetail extends React.Component {
       mide: 0,
       realizada: 0,
       fecha_visita: "",
-      direccion: ""
+      direccion: "",
+      cod_local: ""
     },
     delay: 100
   };
@@ -96,7 +98,7 @@ class SalasDetail extends React.Component {
         <TouchableOpacity
           style={{ flex: 1 }}
           onPress={() => {
-            Actions.salasInfo();
+            Actions.salasInfo({data: this.props.data});
           }}
         >
           {!_.isNull(imagen) && (
