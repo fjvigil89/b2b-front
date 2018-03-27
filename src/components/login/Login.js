@@ -66,10 +66,16 @@ class LoginScreen extends Component {
             style={{
               flex: 0.5,
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
+              backgroundColor: "#FFF"
             }}
           >
-            <Image source={logoCadem} />
+            <Image
+              style={{
+                backgroundColor: "transparent"
+              }}
+              source={logoCadem}
+            />
             <Text style={{ fontFamily: "Bree", fontSize: 22 }}>SmartB2B</Text>
             <Image
               style={{

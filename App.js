@@ -4,13 +4,15 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { StyleProvider } from "native-base";
 import { StatusBar, Platform } from "react-native";
+import { Router, Stack } from "react-native-router-flux";
 
 import getTheme from "@assets/native-base-theme/components";
 import theme from "@assets/native-base-theme/variables/commonColor";
 
 import configureStore from "@app/store";
 import Loading from "@components/loading/Loading";
-import Dashboard from "@components/dashboard/Dashboard";
+
+import Routes from "@routes/routes";
 
 const { persistor, store } = configureStore();
 
@@ -50,7 +52,9 @@ export default class App extends React.Component {
       <Provider store={store}>
         <PersistGate loading={<Loading />} persistor={persistor}>
           <StyleProvider style={getTheme(theme)}>
-            <Dashboard />
+            <Router>
+              <Stack key="root">{Routes}</Stack>
+            </Router>
           </StyleProvider>
         </PersistGate>
       </Provider>

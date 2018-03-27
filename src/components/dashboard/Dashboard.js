@@ -5,8 +5,8 @@ import { Container } from "native-base";
 
 // Components
 import LoginScreen from "@components/login/Login";
-import SalasHeader from "@components/salas/salas_header/SalasHeader";
 import Loading from "@components/loading//Loading";
+import SalasHeader from "@components/salas/salas_header/SalasHeader";
 import SalasList from "@components/salas/salas_list/SalasList";
 
 class Dashboard extends Component {

@@ -85,7 +85,7 @@ class SalasHeader extends React.Component {
     }
 
     return (
-      <Header>
+      <Header style={{ borderBottomWidth: 0 }}>
         <Left>
           <Button transparent onPress={this.props.Logout}>
             <Icon name="exit" />

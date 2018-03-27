@@ -2,6 +2,7 @@ import messages from "@common/messages/MessagesReducers";
 import user from "@components/login/LoginReducers";
 import salas from "@components/salas/salas_list//SalasListReducers";
 import salasHeader from "@components/salas/salas_header/SalasHeaderReducers";
+import salasInfo from "@components/salas_info/SalasInfoReducers";
 
 const rehydrated = (state = false, action) => {
   switch (action.type) {
@@ -17,5 +18,6 @@ export default {
   messages,
   user,
   salas,
-  salasHeader
+  salasHeader,
+  salasInfo
 };
