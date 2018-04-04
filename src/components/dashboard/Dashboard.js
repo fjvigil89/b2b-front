@@ -8,11 +8,13 @@ import LoginScreen from "@components/login/Login";
 import Loading from "@components/loading//Loading";
 import SalasHeader from "@components/salas/salas_header/SalasHeader";
 import SalasList from "@components/salas/salas_list/SalasList";
+import { SetToken } from "@components/login/LoginActions.js";
 
 class Dashboard extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    SetToken: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -20,9 +22,12 @@ class Dashboard extends Component {
     isLoading: true
   };
 
+  componentWillMount = () => {
+    this.props.SetToken();
+  };
+
   render = () => {
     const { isAuthenticated, isLoading } = this.props;
-
     if (!isAuthenticated) {
       return <LoginScreen />;
     } else if (isLoading) {
@@ -43,4 +48,8 @@ const mapStateToProps = state => ({
   isLoading: state.messages.loading
 });
 
-export default connect(mapStateToProps)(Dashboard);
+const mapDispatchToProps = {
+  SetToken
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

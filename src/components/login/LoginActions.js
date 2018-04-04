@@ -12,19 +12,17 @@ export function Login(email, password) {
       if (!password) return reject({ message: ErrorMessages.missingPassword });
 
       const formForSend = {
-        email,
+        userId: email,
         password
       };
 
       return axios({
         method: "POST",
-        url:
-          "https://gs8ciyujzj.execute-api.us-east-1.amazonaws.com/dev/users/login",
+        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/auth",
         data: formForSend
       })
         .then(async response => {
           await MessagesAction(dispatch, "loading", false);
-
           resolve(
             dispatch({
               type: "USER_LOGIN",
@@ -46,6 +44,21 @@ export function Logout() {
       resolve(
         dispatch({
           type: "USER_LOGOUT"
+        })
+      );
+    }).catch(async err => {
+      await MessagesAction(dispatch, "error", err.message);
+
+      throw err.message;
+    });
+}
+
+export function SetToken() {
+  return dispatch =>
+    new Promise(async resolve => {
+      resolve(
+        dispatch({
+          type: "SET_TOKEN"
         })
       );
     }).catch(async err => {

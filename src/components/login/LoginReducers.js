@@ -1,14 +1,21 @@
+import axios from "axios";
+
 export const initialState = {
   loading: false,
   error: null,
-  email: "boadude@gmail.com",
-  password: "slipknot"
+  email: "",
+  password: "",
+  token: ""
 };
 
 export default function user(state = initialState, action) {
   switch (action.type) {
     case "USER_LOGIN": {
       if (action.data) {
+        axios.defaults.headers.common.Authorization = `Bearer ${
+          action.data.token
+        }`;
+
         return {
           ...state,
           loading: false,
@@ -19,6 +26,23 @@ export default function user(state = initialState, action) {
       }
 
       return initialState;
+    }
+    case "SET_TOKEN": {
+      const validToken = !!state.token;
+
+      if (validToken) {
+        axios.defaults.headers.common.Authorization = `Bearer ${state.token}`;
+        return {
+          ...state,
+          isAuthenticated: true
+        };
+      }
+
+      delete axios.defaults.headers.common.Authorization;
+      return {
+        ...state,
+        isAuthenticated: false
+      };
     }
     case "USER_LOGOUT": {
       return {
