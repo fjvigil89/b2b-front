@@ -8,23 +8,28 @@ import SalasInfoListAditional from "@components/salas_info/salas_info_list/salas
 class SalasInfoListDetail extends React.Component {
   static propTypes = {
     data: PropTypes.oneOfType([
+      () => null,
       PropTypes.any
-    ]),
+    ]).isRequired,
+    sala: PropTypes.string,
+    nombreSala: PropTypes.string,
+    categoria: PropTypes.string
   };
 
   static defaultProps = {
-    data: {},
+    sala: "",
+    nombreSala: "",
+    categoria: ""
   };
-
 
   constructor(props) {
     super(props);
     this.state = {
-      aditionalPanel: false,
+      aditionalPanel: false
     };
   }
 
-  currency = (x) => {
+  currency = x => {
     const parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return parts.join(".");
@@ -59,7 +64,7 @@ class SalasInfoListDetail extends React.Component {
               style={{
                 marginLeft: 5,
                 fontSize: 13,
-                fontFamily: "Questrial",
+                fontFamily: "Questrial"
               }}
             >
               {data.categoria}
@@ -99,7 +104,14 @@ class SalasInfoListDetail extends React.Component {
             </Text>
           </View>
         </TouchableOpacity>
-        {this.state.aditionalPanel && <SalasInfoListAditional acciones={data.acciones}/>}
+        {this.state.aditionalPanel && (
+          <SalasInfoListAditional
+            acciones={data.acciones}
+            sala={this.props.sala}
+            nombreSala={this.props.nombreSala}
+            categoria={this.props.categoria}
+          />
+        )}
       </View>
     );
   }

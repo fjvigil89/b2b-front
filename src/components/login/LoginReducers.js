@@ -27,11 +27,12 @@ export default function user(state = initialState, action) {
 
       return initialState;
     }
-    case "SET_TOKEN": {
+    case "CHECK_TOKEN": {
       const validToken = !!state.token;
 
       if (validToken) {
         axios.defaults.headers.common.Authorization = `Bearer ${state.token}`;
+
         return {
           ...state,
           isAuthenticated: true
@@ -39,6 +40,7 @@ export default function user(state = initialState, action) {
       }
 
       delete axios.defaults.headers.common.Authorization;
+
       return {
         ...state,
         isAuthenticated: false

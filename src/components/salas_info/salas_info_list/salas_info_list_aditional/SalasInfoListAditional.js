@@ -7,11 +7,17 @@ import { Actions } from "react-native-router-flux";
 
 class SalasInfoListAditional extends React.Component {
   static propTypes = {
-    acciones: PropTypes.oneOfType([PropTypes.any])
+    acciones: PropTypes.oneOfType([PropTypes.any]),
+    sala: PropTypes.string,
+    nombreSala: PropTypes.string,
+    categoria: PropTypes.string
   };
 
   static defaultProps = {
-    acciones: []
+    acciones: [],
+    sala: "",
+    nombreSala: "",
+    categoria: ""
   };
 
   currency = x => {
@@ -41,7 +47,13 @@ class SalasInfoListAditional extends React.Component {
           <TouchableOpacity
             style={{ flex: 1 }}
             onPress={() => {
-              Actions.salasInfoDetailAction();
+              Actions.salasInfoDetailAction({
+                accion: data.accion,
+                monto: this.currency(data.monto),
+                sala: this.props.sala,
+                nombreSala: this.props.nombreSala,
+                categoria: this.props.categoria
+              });
             }}
           >
             <View

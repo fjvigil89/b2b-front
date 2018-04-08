@@ -5,14 +5,13 @@ import PropTypes from "prop-types";
 import SalasInfoHeader from "@components/salas_info/salas_info_header/SalasInfoHeader";
 import SalasInfoDetail from "@components/salas_info/salas_info_detail/SalasInfoDetail";
 import SalasInfoList from "@components/salas_info/salas_info_list/SalasInfoList";
-import Loading from "@components/loading/Loading";
 import ListadoSalasInfo from "@components/salas_info/SalasInfoActions.js";
 
 class SalasInfo extends Component {
   static propTypes = {
     ListadoSalasInfo: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
-    dataDetail: PropTypes.oneOfType([PropTypes.any]),
+    dataDetail: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     data: PropTypes.shape({
       id: PropTypes.number,
       bandera: PropTypes.string,
@@ -28,7 +27,6 @@ class SalasInfo extends Component {
 
   static defaultProps = {
     isLoading: true,
-    dataDetail: {},
     data: {
       id: 0,
       bandera: "",
@@ -47,16 +45,25 @@ class SalasInfo extends Component {
   }
 
   render = () => {
-    const { dataDetail, isLoading, data } = this.props;
-    const report = {
-      cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
-        ? `${dataDetail.cademsmart_porcentaje}%`
-        : "-",
-      ventaPerdida: dataDetail.venta_perdida
-    };
+    const { isLoading, data } = this.props;
+    let { dataDetail } = this.props;
+
+    let report = {};
 
     if (isLoading) {
-      return <Loading />;
+      report = {
+        cademsmartPorcentaje: "-",
+        ventaPerdida: 0
+      };
+
+      dataDetail = [];
+    } else {
+      report = {
+        cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
+          ? `${dataDetail.cademsmart_porcentaje}%`
+          : "-",
+        ventaPerdida: dataDetail.venta_perdida
+      };
     }
 
     return (
@@ -68,7 +75,11 @@ class SalasInfo extends Component {
           contentContainerStyle={{ flex: 1 }}
         >
           <SalasInfoDetail data={data} report={report} />
-          <SalasInfoList data={dataDetail} />
+          <SalasInfoList
+            data={dataDetail}
+            sala={this.props.data.cod_local}
+            nombreSala={this.props.data.descripcion}
+          />
         </Content>
       </Container>
     );

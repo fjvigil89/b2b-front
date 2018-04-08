@@ -1,6 +1,6 @@
 export const initialState = {
   loading: true,
-  detailsSalas: {},
+  detailsSalas: {}
 };
 
 export default function salasInfo(state = initialState, action) {
@@ -10,7 +10,7 @@ export default function salasInfo(state = initialState, action) {
         return {
           ...state,
           loading: false,
-          detailsSalas: action.data,
+          detailsSalas: action.data
         };
       }
 
@@ -19,10 +19,10 @@ export default function salasInfo(state = initialState, action) {
     case "SALAS_LIST_INFO_LOADING": {
       return {
         ...state,
-        loading: true,
+        loading: true
       };
     }
     default:
-      return initialState;
+      return state;
   }
 }

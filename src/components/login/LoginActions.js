@@ -53,12 +53,12 @@ export function Logout() {
     });
 }
 
-export function SetToken() {
+export function CheckToken() {
   return dispatch =>
     new Promise(async resolve => {
       resolve(
         dispatch({
-          type: "SET_TOKEN"
+          type: "CHECK_TOKEN"
         })
       );
     }).catch(async err => {
