@@ -4,7 +4,7 @@
     "name": "SmartB2B CademSmart",
     "slug": "SmartB2B-CademSmart",
     "icon": "src/assets/images/app-icon.png",
-    "privacy": "public",
+    "privacy": "unlisted",
     "ios": {
       "bundleIdentifier": "com.miguelmeza.me"
     },
