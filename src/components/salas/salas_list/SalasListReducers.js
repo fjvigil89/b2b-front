@@ -30,7 +30,8 @@ export default function salas(state = initialState, action) {
           salas_backup: action.data,
           groupCadena: group,
           indexCancel: cancel,
-          indexClean: clean
+          indexClean: clean,
+          refreshing: false,
         };
       }
 

@@ -8,16 +8,22 @@ import LoginScreen from "@components/login/Login";
 import Loading from "@components/loading//Loading";
 import SalasHeader from "@components/salas/salas_header/SalasHeader";
 import SalasList from "@components/salas/salas_list/SalasList";
+import { CheckToken } from "@components/login/LoginActions.js";
 
 class Dashboard extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    CheckToken: PropTypes.func.isRequired
   };
 
   static defaultProps = {
     isAuthenticated: false,
     isLoading: true
+  };
+
+  componentWillMount = () => {
+    this.props.CheckToken();
   };
 
   render = () => {
@@ -43,4 +49,8 @@ const mapStateToProps = state => ({
   isLoading: state.messages.loading
 });
 
-export default connect(mapStateToProps)(Dashboard);
+const mapDispatchToProps = {
+  CheckToken
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

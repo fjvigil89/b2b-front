@@ -5,7 +5,7 @@ export function ListadoSalas() {
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/store/12345"
+        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/store/"
       })
         .then(async response => {
           resolve(
@@ -15,7 +15,11 @@ export function ListadoSalas() {
             })
           );
         })
-        .catch(error => reject({ message: error.response.data.error }))
+        .catch(error =>
+          reject({
+            message: error.response.data.error
+          })
+        )
     );
 }
 
@@ -28,7 +32,7 @@ export function ListadoSalasWithRefresh() {
 
       return axios({
         method: "GET",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/store/12345"
+        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/store/"
       })
         .then(async response => {
           dispatch({

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import ActionSheet from "react-native-actionsheet";
 import { connect } from "react-redux";
 import * as Animatable from "react-native-animatable";
+import { Actions } from "react-native-router-flux";
 import {
   Header,
   Left,
@@ -22,7 +23,6 @@ import {
   FilterSection,
   ShowSearch
 } from "@components/salas/salas_header/SalasHeaderActions";
-import { Logout } from "@components/login/LoginActions";
 
 class SalasHeader extends React.Component {
   static propTypes = {
@@ -30,7 +30,6 @@ class SalasHeader extends React.Component {
     ShowSearch: PropTypes.func.isRequired,
     SearchByName: PropTypes.func.isRequired,
     FilterSection: PropTypes.func.isRequired,
-    Logout: PropTypes.func.isRequired,
     searchFilters: PropTypes.bool,
     isOpenSearch: PropTypes.bool,
     inputSearch: PropTypes.string,
@@ -87,8 +86,8 @@ class SalasHeader extends React.Component {
     return (
       <Header style={{ borderBottomWidth: 0 }}>
         <Left>
-          <Button transparent onPress={this.props.Logout}>
-            <Icon name="exit" />
+          <Button transparent onPress={Actions.drawerOpen}>
+            <Icon name="menu" />
           </Button>
         </Left>
         <Body>
@@ -133,8 +132,7 @@ const mapDispatchToProps = {
   ClearSearch,
   ShowSearch,
   SearchByName,
-  FilterSection,
-  Logout
+  FilterSection
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalasHeader);

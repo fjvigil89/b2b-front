@@ -96,7 +96,7 @@ class LoginScreen extends Component {
           >
             <Form style={styles.image}>
               <Item floatingLabel style={{ marginRight: 15 }}>
-                <Label style={{ fontFamily: "Questrial" }}>Email</Label>
+                <Label style={{ fontFamily: "Questrial" }}>Usuario</Label>
                 <Input
                   style={{ fontFamily: "Questrial" }}
                   autoCapitalize="none"

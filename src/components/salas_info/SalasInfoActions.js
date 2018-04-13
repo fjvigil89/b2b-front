@@ -9,7 +9,7 @@ export default function ListadoSalasInfo(id) {
 
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/store/detail/${id}`
+        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/store/${id}`
       })
         .then(async response => {
           resolve(
@@ -19,7 +19,6 @@ export default function ListadoSalasInfo(id) {
             })
           );
         })
-        .catch(error => reject({ message: error.response.data.error }))
-      }
-    );
+        .catch(error => reject({ message: error.response.data.error }));
+    });
 }
