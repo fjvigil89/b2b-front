@@ -9,9 +9,11 @@ class Producto extends React.Component {
       descripcion: PropTypes.string,
       ean: PropTypes.number,
       sventa: PropTypes.string,
-      stock_transito: PropTypes.oneOfType([() => null, PropTypes.number])
+      stock: PropTypes.number,
+      stock_transito: PropTypes.oneOfType([() => null, PropTypes.number]),
     }),
-    flag: PropTypes.bool
+    flag: PropTypes.bool,
+    accion: PropTypes.string
   };
 
   static defaultProps = {
@@ -21,12 +23,25 @@ class Producto extends React.Component {
       descripcion: "",
       ean: 0,
       sventa: "",
-      stock_transito: ""
-    }
+      stock: 0,
+      stock_transito: "",
+    },
+    accion: ""
   };
 
   render() {
-    const thumbImage = require("@assets/images/thumb.png");
+    let thumbImage;
+
+    if (this.props.data.cadem === 1) {
+      thumbImage = require("@assets/images/thumb.png");
+    } else if (this.props.data.cadem === 0) {
+      thumbImage = require("@assets/images/thumb-down.png");
+    }
+
+    let visibilityText = false;
+    if (this.props.accion === "Reponer" || this.props.accion === "Ajustar") {
+      visibilityText = true;
+    }
 
     return (
       <View
@@ -40,7 +55,7 @@ class Producto extends React.Component {
           paddingTop: 5
         }}
       >
-        {this.props.data.cadem === 1 && (
+        {(this.props.data.cadem === 1 || this.props.data.cadem === 0) && (
           <Image
             style={{
               position: "absolute",
@@ -64,7 +79,7 @@ class Producto extends React.Component {
           <Text
             style={{
               marginLeft: 5,
-              fontSize: 10,
+              fontSize: 12,
               fontFamily: "Questrial"
             }}
           >
@@ -110,6 +125,28 @@ class Producto extends React.Component {
             Días sin venta: {this.props.data.sventa}
           </Text>
         </View>
+        {visibilityText && (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            marginTop: 5
+          }}
+        >
+          <Text
+            style={{
+              marginLeft: 5,
+              fontSize: 12,
+              fontWeight: "bold",
+              fontFamily: "Questrial"
+            }}
+          >
+            Stock: {this.props.data.stock}
+          </Text>
+        </View>
+        )}
         {this.props.flag && (
           <View
             style={{
