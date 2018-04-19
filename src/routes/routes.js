@@ -5,6 +5,7 @@ import Dashboard from "@components/dashboard/Dashboard";
 import SalasInfo from "@components/salas_info/SalasInfo";
 import SalasInfoDetailAction from "@components/salas_info/salas_info_detal_action/SalasInfoDetailAction";
 import Menu from "@components/menu/Menu";
+import Wall from "@components/wall/Wall";
 
 const Index = (
   <Router>
@@ -19,6 +20,10 @@ const Index = (
               component={Dashboard}
               initial
             />
+          </Scene>
+
+          <Scene hideNavBar>
+            <Scene key="wall" title="Wall" component={Wall} />
           </Scene>
         </Scene>
       </Scene>
