@@ -20,10 +20,7 @@ import Producto from "@components/salas_info/salas_info_detal_action/Producto/Pr
 class SalasInfoDetailAction extends React.Component {
   static propTypes = {
     ListadoProductosPorCategoriaAcccion: PropTypes.func.isRequired,
-    productos: PropTypes.oneOfType([
-      () => null,
-      PropTypes.any
-    ]).isRequired,
+    productos: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     accion: PropTypes.string,
     monto: PropTypes.string,
     sala: PropTypes.string,
@@ -56,6 +53,7 @@ class SalasInfoDetailAction extends React.Component {
           key={detail.ean}
           data={detail}
           flag={this.props.productos.detail.flag}
+          accion={this.props.accion}
         />
       ));
     }

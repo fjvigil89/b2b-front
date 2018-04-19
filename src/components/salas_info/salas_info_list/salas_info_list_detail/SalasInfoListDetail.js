@@ -7,10 +7,7 @@ import SalasInfoListAditional from "@components/salas_info/salas_info_list/salas
 
 class SalasInfoListDetail extends React.Component {
   static propTypes = {
-    data: PropTypes.oneOfType([
-      () => null,
-      PropTypes.any
-    ]).isRequired,
+    data: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     sala: PropTypes.string,
     nombreSala: PropTypes.string,
     categoria: PropTypes.string
@@ -37,6 +34,7 @@ class SalasInfoListDetail extends React.Component {
 
   render() {
     const { data } = this.props;
+
     return (
       <View style={{ flex: 1 }}>
         <TouchableOpacity

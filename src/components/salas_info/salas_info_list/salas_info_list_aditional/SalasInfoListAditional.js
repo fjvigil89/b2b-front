@@ -104,7 +104,7 @@ class SalasInfoListAditional extends React.Component {
                       fontFamily: "Questrial"
                     }}
                   >
-                    {data.accion}
+                    {data.accion} ({data.cantidad})
                   </Text>
                   <Text
                     style={{
