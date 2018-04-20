@@ -31,7 +31,7 @@ export default function salas(state = initialState, action) {
           groupCadena: group,
           indexCancel: cancel,
           indexClean: clean,
-          refreshing: false,
+          refreshing: false
         };
       }
 
@@ -74,7 +74,7 @@ export default function salas(state = initialState, action) {
 
       if (action.text) {
         salasFiltradas = state.salas_backup.filter(item => {
-          const itemData = item.bandera.toUpperCase();
+          const itemData = item.descripcion.toUpperCase();
           const textData = action.text.toUpperCase();
 
           return itemData.indexOf(textData) > -1;
