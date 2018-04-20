@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import {
   Container,
   Header,
@@ -12,8 +10,9 @@ import {
   Title,
   Body
 } from "native-base";
-import Publication from "@components/wall/publication/Publication";
 import { Actions } from "react-native-router-flux";
+
+import Publication from "@components/wall/publication/Publication";
 
 class Wall extends Component {
   static propTypes = {};
@@ -26,19 +25,22 @@ class Wall extends Component {
     <Container>
       <Header style={{ borderBottomWidth: 0 }}>
         <Left>
-          <Button transparent onPress={Actions.drawerOpen}>
-            <Icon name="menu" />
+          <Button
+            transparent
+            onPress={() => {
+              Actions.pop();
+            }}
+          >
+            <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
           </Button>
         </Left>
         <Body>
-          <Title>Muro</Title>
+          <Title>Comments</Title>
         </Body>
         <Right />
       </Header>
 
       <Content>
-        <Publication />
-        <Publication />
         <Publication />
       </Content>
     </Container>
