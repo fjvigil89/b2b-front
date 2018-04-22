@@ -8,11 +8,14 @@ import {
   Button,
   Icon,
   Title,
-  Body
+  Body,
+  Text,
+  View
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 
 import Publication from "@components/wall/publication/Publication";
+import Comment from "@components/wall/comments/comment/Comment";
 
 class Wall extends Component {
   static propTypes = {};
@@ -42,6 +45,37 @@ class Wall extends Component {
 
       <Content>
         <Publication />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row"
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "flex-end",
+              alignItems: "center",
+              borderBottomColor: "#DEDEDE",
+              borderBottomWidth: 1,
+              paddingBottom: 5
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: "Bree",
+                fontWeight: "bold",
+                marginBottom: 0
+              }}
+            >
+              Comentarios
+            </Text>
+          </View>
+        </View>
+        <Comment />
+        <Comment />
+        <Comment subcomment />
       </Content>
     </Container>
   );
