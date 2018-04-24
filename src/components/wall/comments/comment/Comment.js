@@ -1,21 +1,30 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { View, Text } from "react-native";
 import * as Animatable from "react-native-animatable";
 
+import moment from "moment";
+import "moment/locale/es";
+
+moment.locale("es");
+
 class Comment extends Component {
   static propTypes = {
-    subcomment: PropTypes.bool
+    subcomment: PropTypes.bool,
+    data: PropTypes.oneOfType([PropTypes.any])
   };
 
   static defaultProps = {
-    subcomment: false
+    subcomment: false,
+    data: {}
   };
 
   componentWillMount = () => {};
 
   render = () => {
-    const subcomment = this.props.subcomment ? 50 : 10;
+    const { data, subcomment } = this.props;
+    const subComment = subcomment ? 50 : 10;
 
     return (
       <Animatable.View
@@ -23,7 +32,7 @@ class Comment extends Component {
         duration={1000}
         style={{
           margin: 10,
-          marginLeft: subcomment,
+          marginLeft: subComment,
           marginTop: 0,
           marginBottom: 5,
           padding: 0,
@@ -54,7 +63,7 @@ class Comment extends Component {
                 fontSize: 17
               }}
             >
-              Esteban Paredes
+              Admin
             </Text>
             <Text
               style={{
@@ -62,14 +71,14 @@ class Comment extends Component {
                 color: "#808080"
               }}
             >
-              Hace 2 horas
+              {moment(data.date).fromNow()}
             </Text>
             <Text
               style={{
                 paddingTop: 10
               }}
             >
-              Hola Juanito Perez, te he venido a saludas, que estes muy bien...
+              {data.content}
             </Text>
 
             <View
@@ -121,4 +130,8 @@ class Comment extends Component {
   };
 }
 
-export default Comment;
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);

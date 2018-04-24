@@ -4,6 +4,8 @@ import salas from "@components/salas/salas_list//SalasListReducers";
 import salasHeader from "@components/salas/salas_header/SalasHeaderReducers";
 import salasInfo from "@components/salas_info/SalasInfoReducers";
 import productos from "@components/salas_info/salas_info_detal_action/SalasInfoDetailActionReducers";
+import wall from "@components/wall/WallReducers";
+import comments from "@components/wall/comments/CommentsReducers";
 
 const rehydrated = (state = false, action) => {
   switch (action.type) {
@@ -21,5 +23,7 @@ export default {
   salas,
   salasHeader,
   salasInfo,
-  productos
+  productos,
+  wall,
+  comments
 };

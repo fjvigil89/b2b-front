@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import {
   Card,
   CardItem,
@@ -12,45 +14,58 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 
-class Publication extends Component {
-  static propTypes = {};
+import moment from "moment";
+import "moment/locale/es";
 
-  static defaultProps = {};
+moment.locale("es");
+
+class Publication extends Component {
+  static propTypes = {
+    data: PropTypes.oneOfType([PropTypes.any])
+  };
+
+  static defaultProps = {
+    data: {}
+  };
 
   render = () => {
+    const { data } = this.props;
     const profile = require("@assets/images/profile.png");
+
     return (
       <Card>
         <CardItem>
           <Left>
             <Thumbnail source={profile} />
             <Body>
-              <Text>Esteban Paredes</Text>
-              <Text note>Hace 3 min</Text>
+              <Text>{data.userName}</Text>
+              <Text note>{moment(data.date).fromNow()}</Text>
             </Body>
           </Left>
         </CardItem>
         <CardItem>
           <Body>
-            <Text>Hola, vengo a saludar a toda la gente de este canal.</Text>
+            <Text>{data.content}</Text>
           </Body>
         </CardItem>
         <CardItem>
           <Left>
             <Button transparent>
               <Icon active name="thumbs-up" />
-              <Text>12 Me gustas</Text>
+              <Text>{data.totalLikes} Me gustas</Text>
             </Button>
           </Left>
           <Right>
             <Button
               transparent
               onPress={() => {
-                Actions.wallComments();
+                if (data.totalComments > 0) {
+                  Actions.wallComments({ idComment: data.id, data });
+                }
               }}
             >
               <Icon active name="chatbubbles" />
-              <Text>4 Comentarios</Text>
+              <Text>{data.totalComments} Comentarios</Text>
             </Button>
           </Right>
         </CardItem>
@@ -59,4 +74,8 @@ class Publication extends Component {
   };
 }
 
-export default Publication;
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Publication);

@@ -23,6 +23,10 @@ class SideBar extends Component {
     Actions.wall();
   };
 
+  dashboard = () => {
+    Actions.dashboard();
+  };
+
   render() {
     const deviceHeight = Dimensions.get("window").height;
     const deviceWidth = Dimensions.get("window").width;
@@ -80,8 +84,7 @@ class SideBar extends Component {
               SmartB2B
             </Text>
           </View>
-
-          <ListItem button noBorder onPress={this.close}>
+          <ListItem button noBorder onPress={this.dashboard}>
             <Left>
               <Icon
                 active
@@ -96,11 +99,10 @@ class SideBar extends Component {
                   marginLeft: 20
                 }}
               >
-                Cerrar Sesión
+                Inicio
               </Text>
             </Left>
           </ListItem>
-
           <ListItem button noBorder onPress={this.wall}>
             <Left>
               <Icon
@@ -117,6 +119,25 @@ class SideBar extends Component {
                 }}
               >
                 Muro
+              </Text>
+            </Left>
+          </ListItem>
+          <ListItem button noBorder onPress={this.close}>
+            <Left>
+              <Icon
+                active
+                name="ios-exit-outline"
+                style={{ fontSize: 26, width: 30 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Cerrar Sesión
               </Text>
             </Left>
           </ListItem>

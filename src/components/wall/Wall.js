@@ -15,34 +15,53 @@ import {
 import Publication from "@components/wall/publication/Publication";
 import { Actions } from "react-native-router-flux";
 
+import { GetListPost } from "@components/wall/WallActions";
+
 class Wall extends Component {
-  static propTypes = {};
+  static propTypes = {
+    GetListPost: PropTypes.func.isRequired
+  };
 
-  static defaultProps = {};
+  static defaultProps = {
+    listPost: {}
+  };
 
-  componentWillMount = () => {};
+  componentWillMount = () => {
+    this.props.GetListPost();
+  };
 
-  render = () => (
-    <Container>
-      <Header style={{ borderBottomWidth: 0 }}>
-        <Left>
-          <Button transparent onPress={Actions.drawerOpen}>
-            <Icon name="menu" />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Muro</Title>
-        </Body>
-        <Right />
-      </Header>
+  render = () => {
+    const { listPost } = this.props;
+    const listWall = listPost.posts.map((detail, i) => (
+      <Publication data={detail} key={detail.id} />
+    ));
 
-      <Content>
-        <Publication />
-        <Publication />
-        <Publication />
-      </Content>
-    </Container>
-  );
+    return (
+      <Container>
+        <Header style={{ borderBottomWidth: 0 }}>
+          <Left>
+            <Button transparent onPress={Actions.drawerOpen}>
+              <Icon name="menu" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Muro</Title>
+          </Body>
+          <Right />
+        </Header>
+
+        <Content>{listWall}</Content>
+      </Container>
+    );
+  };
 }
 
-export default Wall;
+const mapStateToProps = state => ({
+  listPost: state.wall.listPost
+});
+
+const mapDispatchToProps = {
+  GetListPost
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wall);
