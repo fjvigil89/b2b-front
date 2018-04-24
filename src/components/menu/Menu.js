@@ -19,6 +19,14 @@ class SideBar extends Component {
     this.props.Logout();
   };
 
+  wall = () => {
+    Actions.wall();
+  };
+
+  dashboard = () => {
+    Actions.dashboard();
+  };
+
   render() {
     const deviceHeight = Dimensions.get("window").height;
     const deviceWidth = Dimensions.get("window").width;
@@ -76,7 +84,44 @@ class SideBar extends Component {
               SmartB2B
             </Text>
           </View>
-
+          <ListItem button noBorder onPress={this.dashboard}>
+            <Left>
+              <Icon
+                active
+                name="ios-exit-outline"
+                style={{ fontSize: 26, width: 30 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Inicio
+              </Text>
+            </Left>
+          </ListItem>
+          <ListItem button noBorder onPress={this.wall}>
+            <Left>
+              <Icon
+                active
+                name="ios-exit-outline"
+                style={{ fontSize: 26, width: 30 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Muro
+              </Text>
+            </Left>
+          </ListItem>
           <ListItem button noBorder onPress={this.close}>
             <Left>
               <Icon
