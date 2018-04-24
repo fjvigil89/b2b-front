@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function GetListComments(idComment) {
+export default function GetListComments(idComment) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({

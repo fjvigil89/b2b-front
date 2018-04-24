@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { View, Text } from "react-native";
 import * as Animatable from "react-native-animatable";
 
@@ -12,12 +11,14 @@ moment.locale("es");
 class Comment extends Component {
   static propTypes = {
     subcomment: PropTypes.bool,
-    data: PropTypes.oneOfType([PropTypes.any])
+    data: PropTypes.oneOfType([PropTypes.any]),
+    delay: PropTypes.number
   };
 
   static defaultProps = {
     subcomment: false,
-    data: {}
+    data: {},
+    delay: 0
   };
 
   componentWillMount = () => {};
@@ -30,6 +31,7 @@ class Comment extends Component {
       <Animatable.View
         animation="fadeInRight"
         duration={1000}
+        delay={this.props.delay}
         style={{
           margin: 10,
           marginLeft: subComment,
@@ -37,7 +39,6 @@ class Comment extends Component {
           marginBottom: 5,
           padding: 0,
           flex: 1,
-          backgroundColor: "transparent",
           borderBottomColor: "#DEDEDE",
           borderBottomWidth: 1
         }}
@@ -60,22 +61,26 @@ class Comment extends Component {
           >
             <Text
               style={{
-                fontSize: 17
+                fontSize: 17,
+                fontFamily: "Questrial",
+                fontWeight: "bold"
               }}
             >
               Admin
             </Text>
             <Text
               style={{
-                fontWeight: "200",
-                color: "#808080"
+                color: "#808080",
+                fontSize: 12
               }}
             >
               {moment(data.date).fromNow()}
             </Text>
             <Text
               style={{
-                paddingTop: 10
+                paddingTop: 10,
+                fontSize: 12,
+                fontFamily: "Questrial"
               }}
             >
               {data.content}
@@ -97,7 +102,7 @@ class Comment extends Component {
               >
                 <Text
                   style={{
-                    fontSize: 13,
+                    fontSize: 12,
                     fontFamily: "Questrial",
                     color: "#007aff"
                   }}
@@ -114,7 +119,7 @@ class Comment extends Component {
               >
                 <Text
                   style={{
-                    fontSize: 13,
+                    fontSize: 12,
                     fontFamily: "Questrial",
                     color: "#007aff"
                   }}
@@ -130,8 +135,4 @@ class Comment extends Component {
   };
 }
 
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default Comment;

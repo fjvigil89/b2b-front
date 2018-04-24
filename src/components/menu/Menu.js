@@ -88,7 +88,7 @@ class SideBar extends Component {
             <Left>
               <Icon
                 active
-                name="ios-exit-outline"
+                name="ios-barcode-outline"
                 style={{ fontSize: 26, width: 30 }}
               />
               <Text
@@ -107,7 +107,7 @@ class SideBar extends Component {
             <Left>
               <Icon
                 active
-                name="ios-exit-outline"
+                name="ios-chatboxes-outline"
                 style={{ fontSize: 26, width: 30 }}
               />
               <Text

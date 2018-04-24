@@ -18,18 +18,20 @@ import { Actions } from "react-native-router-flux";
 
 import Publication from "@components/wall/publication/Publication";
 import Comment from "@components/wall/comments/comment/Comment";
-import { GetListComments } from "@components/wall/comments/CommentsActions";
+import GetListComments from "@components/wall/comments/CommentsActions";
 
 class Comments extends Component {
   static propTypes = {
     GetListComments: PropTypes.func.isRequired,
-    idComment: PropTypes.number,
-    data: PropTypes.oneOfType([PropTypes.any])
+    listComments: PropTypes.oneOfType([PropTypes.any]),
+    data: PropTypes.oneOfType([PropTypes.any]),
+    idComment: PropTypes.number
   };
 
   static defaultProps = {
     listComments: {},
-    data: {}
+    data: {},
+    idComment: 0
   };
 
   componentWillMount = () => {
@@ -39,8 +41,9 @@ class Comments extends Component {
   render = () => {
     const { listComments, data } = this.props;
 
+    const delay = 200;
     const listComment = listComments.comments.map((detail, i) => (
-      <Comment data={detail} key={detail.id} />
+      <Comment data={detail} key={detail.id} delay={delay * i} />
     ));
 
     return (
