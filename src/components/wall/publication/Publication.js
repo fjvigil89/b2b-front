@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Text, View } from "native-base";
+import { Text, View, Thumbnail } from "native-base";
 import { Actions } from "react-native-router-flux";
 
 import moment from "moment";
@@ -19,6 +19,7 @@ class Publication extends Component {
 
   render = () => {
     const { data } = this.props;
+    const profile = require("@assets/images/profile.png");
 
     return (
       <View
@@ -50,32 +51,67 @@ class Publication extends Component {
               borderRadius: 10
             }}
           >
-            <Text
+            <View
               style={{
-                fontSize: 17,
-                fontFamily: "Questrial",
-                fontWeight: "bold"
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "flex-start"
               }}
             >
-              {data.userName}
-            </Text>
-            <Text
+              <View
+                style={{
+                  flex: 0.1,
+                  justifyContent: "center",
+                  alignItems: "flex-start"
+                }}
+              >
+                <Thumbnail small source={profile} />
+              </View>
+              <View
+                style={{
+                  flex: 0.9,
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  marginLeft: 10
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 17,
+                    fontFamily: "Questrial",
+                    fontWeight: "bold"
+                  }}
+                >
+                  {data.userName}
+                </Text>
+                <Text
+                  style={{
+                    color: "#808080",
+                    fontSize: 12
+                  }}
+                >
+                  {moment(data.date).fromNow()}
+                </Text>
+              </View>
+            </View>
+
+            <View
               style={{
-                color: "#808080",
-                fontSize: 12
+                flex: 1,
+                flexDirection: "row"
               }}
             >
-              {moment(data.date).fromNow()}
-            </Text>
-            <Text
-              style={{
-                paddingTop: 10,
-                fontSize: 12,
-                fontFamily: "Questrial"
-              }}
-            >
-              {data.content}
-            </Text>
+              <Text
+                style={{
+                  paddingTop: 10,
+                  fontSize: 12,
+                  fontFamily: "Questrial"
+                }}
+              >
+                {data.content}
+              </Text>
+            </View>
 
             <View
               style={{
