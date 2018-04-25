@@ -107,7 +107,7 @@ class Comment extends Component {
                     color: "#007aff"
                   }}
                 >
-                  12 Me gustas
+                  12 Me gusta
                 </Text>
               </View>
               <View
@@ -124,7 +124,7 @@ class Comment extends Component {
                     color: "#007aff"
                   }}
                 >
-                  Comentar
+                  Responder
                 </Text>
               </View>
             </View>

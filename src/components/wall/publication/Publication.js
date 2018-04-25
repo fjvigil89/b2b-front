@@ -141,6 +141,23 @@ class Publication extends Component {
                 style={{
                   flex: 0.5,
                   justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "Questrial",
+                    color: "#007aff"
+                  }}
+                >
+                  Comentar
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 0.5,
+                  justifyContent: "center",
                   alignItems: "flex-end"
                 }}
               >
