@@ -114,7 +114,7 @@ class Comment extends Component {
                 style={{
                   flex: 0.5,
                   justifyContent: "center",
-                  alignItems: "flex-end"
+                  alignItems: "center"
                 }}
               >
                 <Text
@@ -125,6 +125,23 @@ class Comment extends Component {
                   }}
                 >
                   Responder
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 0.5,
+                  justifyContent: "center",
+                  alignItems: "flex-end"
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "Questrial",
+                    color: "#007aff"
+                  }}
+                >
+                  14 Respuestas
                 </Text>
               </View>
             </View>
