@@ -23,13 +23,13 @@ import GetListComments from "@components/wall/comments/CommentsActions";
 class Comments extends Component {
   static propTypes = {
     GetListComments: PropTypes.func.isRequired,
-    listComments: PropTypes.oneOfType([PropTypes.any]),
+    listComments: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.any])),
     data: PropTypes.oneOfType([PropTypes.any]),
     idComment: PropTypes.number
   };
 
   static defaultProps = {
-    listComments: {},
+    listComments: [],
     data: {},
     idComment: 0
   };
@@ -40,9 +40,8 @@ class Comments extends Component {
 
   render = () => {
     const { listComments, data } = this.props;
-
     const delay = 200;
-    const listComment = listComments.comments.map((detail, i) => (
+    const listComment = listComments.map((detail, i) => (
       <Comment data={detail} key={detail.id} delay={delay * i} />
     ));
 

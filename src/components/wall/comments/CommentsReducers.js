@@ -1,5 +1,5 @@
 export const initialState = {
-  listComments: {}
+  listComments: []
 };
 
 export default function comments(state = initialState, action) {
@@ -8,7 +8,7 @@ export default function comments(state = initialState, action) {
       if (action.data) {
         return {
           ...state,
-          listComments: action.data
+          listComments: action.data.comments
         };
       }
 
