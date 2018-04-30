@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 export const initialState = {
-  listPost: {}
+  listPost: []
 };
 
 export default function wall(state = initialState, action) {
@@ -10,7 +10,7 @@ export default function wall(state = initialState, action) {
       if (action.data) {
         return {
           ...state,
-          listPost: action.data
+          listPost: action.data.posts
         };
       }
 

@@ -12,25 +12,27 @@ const Index = (
   <Router>
     <Modal>
       <Scene key="root" hideNavBar>
-        <Scene key="drawer" drawer contentComponent={Menu} initial>
+        <Scene key="drawer" drawer contentComponent={Menu}>
           <Scene key="main" hideNavBar>
             <Scene
+              initial
               key="dashboard"
               title="Dashboard"
               component={Dashboard}
-              initial
             />
             <Scene key="wall" title="Wall" component={Wall} />
+
             <Scene key="salasInfo" component={SalasInfo} title="SalasInfo" />
-            <Scene
-              key="wallComments"
-              component={Comments}
-              title="WallComments"
-            />
           </Scene>
         </Scene>
       </Scene>
 
+      <Scene
+        hideNavBar
+        key="wallComments"
+        component={Comments}
+        title="WallComments"
+      />
       <Scene
         hideNavBar
         key="salasInfoDetailAction"

@@ -20,11 +20,11 @@ import { GetListPost } from "@components/wall/WallActions";
 class Wall extends Component {
   static propTypes = {
     GetListPost: PropTypes.func.isRequired,
-    listPost: PropTypes.oneOfType([PropTypes.any])
+    listPost: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.any]))
   };
 
   static defaultProps = {
-    listPost: {}
+    listPost: []
   };
 
   componentWillMount = () => {
@@ -33,7 +33,7 @@ class Wall extends Component {
 
   render = () => {
     const { listPost } = this.props;
-    const listWall = listPost.posts.map(detail => (
+    const listWall = listPost.map(detail => (
       <Publication data={detail} key={detail.id} />
     ));
 
