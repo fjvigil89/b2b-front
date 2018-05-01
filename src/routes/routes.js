@@ -7,6 +7,7 @@ import SalasInfoDetailAction from "@components/salas_info/salas_info_detal_actio
 import Menu from "@components/menu/Menu";
 import Wall from "@components/wall/Wall";
 import Comments from "@components/wall/comments/Comments";
+import Maps from "@components/maps/Maps";
 
 const Index = (
   <Router>
@@ -21,8 +22,8 @@ const Index = (
               component={Dashboard}
             />
             <Scene key="wall" title="Wall" component={Wall} />
-
             <Scene key="salasInfo" component={SalasInfo} title="SalasInfo" />
+            <Scene key="maps" title="Maps" component={Maps} />
           </Scene>
         </Scene>
       </Scene>

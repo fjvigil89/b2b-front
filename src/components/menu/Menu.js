@@ -27,6 +27,10 @@ class SideBar extends Component {
     Actions.dashboard();
   };
 
+  maps = () => {
+    Actions.maps();
+  };
+
   render() {
     const deviceHeight = Dimensions.get("window").height;
     const deviceWidth = Dimensions.get("window").width;
@@ -119,6 +123,25 @@ class SideBar extends Component {
                 }}
               >
                 Muro
+              </Text>
+            </Left>
+          </ListItem>
+          <ListItem button noBorder onPress={this.maps}>
+            <Left>
+              <Icon
+                active
+                name="ios-chatboxes-outline"
+                style={{ fontSize: 26, width: 30 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Mapa
               </Text>
             </Left>
           </ListItem>
