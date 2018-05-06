@@ -8,6 +8,7 @@ import Menu from "@components/menu/Menu";
 import Wall from "@components/wall/Wall";
 import Comments from "@components/wall/comments/Comments";
 import Maps from "@components/maps/Maps";
+import CreatePublication from "@components/wall/create_publication/CreatePublication";
 
 const Index = (
   <Router>
@@ -39,6 +40,12 @@ const Index = (
         key="salasInfoDetailAction"
         component={SalasInfoDetailAction}
         title="SalasInfoDetailAction"
+      />
+      <Scene
+        hideNavBar
+        key="createPublication"
+        component={CreatePublication}
+        title="CreatePublicationAction"
       />
     </Modal>
   </Router>
