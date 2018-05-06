@@ -9,6 +9,8 @@ import Wall from "@components/wall/Wall";
 import Comments from "@components/wall/comments/Comments";
 import Maps from "@components/maps/Maps";
 import CreatePublication from "@components/wall/create_publication/CreatePublication";
+import CommentPublication from "@components/wall/comment_publication/CommentPublication";
+import RespondComment from "@components/wall/respond_comment/RespondComment";
 
 const Index = (
   <Router>
@@ -40,6 +42,20 @@ const Index = (
         key="createPublication"
         component={CreatePublication}
         title="CreatePublicationAction"
+      />
+
+      <Scene
+        hideNavBar
+        key="commentPublication"
+        component={CommentPublication}
+        title="CommentPublicationAction"
+      />
+
+      <Scene
+        hideNavBar
+        key="respondComment"
+        component={RespondComment}
+        title="RespondCommentAction"
       />
     </Modal>
   </Router>

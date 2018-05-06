@@ -11,14 +11,13 @@ import {
   Right,
   Header,
   Textarea,
-  Thumbnail,
-  Icon
+  Thumbnail
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 
 const deviceHeight = Dimensions.get("window").height;
 
-class CreatePublication extends React.Component {
+class CommentPublication extends React.Component {
   render() {
     const profile = require("@assets/images/profile.png");
 
@@ -41,12 +40,12 @@ class CreatePublication extends React.Component {
           </Left>
           <Body>
             <Title style={{ fontSize: 14, color: "#000" }}>
-              Crear publicación
+              Comentar publicación
             </Title>
           </Body>
           <Right>
             <Button transparent>
-              <Text style={{ fontSize: 14 }}>Publicar</Text>
+              <Text style={{ fontSize: 14 }}>Comentar</Text>
             </Button>
           </Right>
         </Header>
@@ -133,15 +132,10 @@ class CreatePublication extends React.Component {
             <Textarea
               style={{
                 fontSize: 18,
-                height: deviceHeight - 230
+                height: deviceHeight - 135
               }}
-              placeholder="Escribe lo que piensas..."
+              placeholder="Escribe tu comentario..."
             />
-
-            <Button iconLeft info full large bordered style={{ marginTop: 5 }}>
-              <Icon style={{ fontSize: 50 }} name="ios-camera-outline" />
-              <Text>Imagen</Text>
-            </Button>
           </View>
         </Content>
       </Container>
@@ -149,4 +143,4 @@ class CreatePublication extends React.Component {
   }
 }
 
-export default CreatePublication;
+export default CommentPublication;

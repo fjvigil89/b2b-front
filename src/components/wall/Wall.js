@@ -34,7 +34,7 @@ class Wall extends Component {
   render = () => {
     const { listPost } = this.props;
     const listWall = listPost.map(detail => (
-      <Publication data={detail} key={detail.id} />
+      <Publication data={detail} key={detail.id} margin />
     ));
 
     return (

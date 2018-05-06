@@ -46,7 +46,7 @@ class Comments extends Component {
     ));
 
     return (
-      <Container>
+      <Container style={{ backgroundColor: "#F4F4F4" }}>
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button
@@ -77,9 +77,13 @@ class Comments extends Component {
                 flex: 1,
                 justifyContent: "flex-end",
                 alignItems: "center",
-                borderBottomColor: "#DEDEDE",
-                borderBottomWidth: 1,
-                paddingBottom: 5
+                borderTopColor: "#F4F4F4",
+                borderTopWidth: 5,
+                borderBottomColor: "#F4F4F4",
+                borderBottomWidth: 5,
+                paddingTop: 5,
+                paddingBottom: 5,
+                backgroundColor: "#FFF"
               }}
             >
               <Text

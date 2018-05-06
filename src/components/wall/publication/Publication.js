@@ -10,16 +10,20 @@ moment.locale("es");
 
 class Publication extends Component {
   static propTypes = {
-    data: PropTypes.oneOfType([PropTypes.any])
+    data: PropTypes.oneOfType([PropTypes.any]),
+    margin: PropTypes.bool
   };
 
   static defaultProps = {
-    data: {}
+    data: {},
+    margin: false
   };
 
   render = () => {
     const { data } = this.props;
     const profile = require("@assets/images/profile.png");
+
+    const margin = this.props.margin ? 10 : 0;
 
     return (
       <View
@@ -32,7 +36,7 @@ class Publication extends Component {
           backgroundColor: "transparent",
           borderBottomColor: "#F0F0F0",
           borderBottomWidth: 1,
-          marginBottom: 10
+          marginBottom: margin
         }}
       >
         <View
@@ -192,8 +196,7 @@ class Publication extends Component {
                 style={{
                   flex: 0.5,
                   justifyContent: "center",
-                  alignItems: "center",
-                  paddingTop: 8
+                  alignItems: "center"
                 }}
               >
                 <Button
@@ -201,9 +204,7 @@ class Publication extends Component {
                   transparent
                   full
                   onPress={() => {
-                    if (data.totalComments > 0) {
-                      Actions.wallComments({ idComment: data.id, data });
-                    }
+                    Actions.commentPublication();
                   }}
                 >
                   <Icon name="ios-text-outline" />

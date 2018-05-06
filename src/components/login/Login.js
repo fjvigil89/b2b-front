@@ -61,6 +61,7 @@ class LoginScreen extends Component {
           style={{ flex: 1 }}
           contentContainerStyle={{ flex: 1 }}
           scrollEnabled={false}
+          enableAutoAutomaticScroll={false}
         >
           <View
             style={{
