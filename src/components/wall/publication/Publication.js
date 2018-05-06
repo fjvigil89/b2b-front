@@ -30,9 +30,9 @@ class Publication extends Component {
           padding: 0,
           flex: 1,
           backgroundColor: "transparent",
-          borderBottomColor: "#DEDEDE",
+          borderBottomColor: "#F0F0F0",
           borderBottomWidth: 1,
-          marginBottom: 5
+          marginBottom: 10
         }}
       >
         <View
@@ -141,23 +141,6 @@ class Publication extends Component {
                 style={{
                   flex: 0.5,
                   justifyContent: "center",
-                  alignItems: "center"
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "Questrial",
-                    color: "#007aff"
-                  }}
-                >
-                  Comentar
-                </Text>
-              </View>
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
                   alignItems: "flex-end"
                 }}
               >
@@ -174,6 +157,56 @@ class Publication extends Component {
                   }}
                 >
                   {data.totalComments} Comentarios
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                marginTop: 10
+              }}
+            >
+              <View
+                style={{
+                  flex: 0.5,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingTop: 8
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: "Questrial",
+                    fontWeight: "bold"
+                  }}
+                >
+                  Me gusta
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 0.5,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingTop: 8
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: "Questrial",
+                    fontWeight: "bold"
+                  }}
+                  onPress={() => {
+                    if (data.totalComments > 0) {
+                      Actions.wallComments({ idComment: data.id, data });
+                    }
+                  }}
+                >
+                  Comentar
                 </Text>
               </View>
             </View>

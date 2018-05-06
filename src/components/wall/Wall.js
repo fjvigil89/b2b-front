@@ -38,7 +38,7 @@ class Wall extends Component {
     ));
 
     return (
-      <Container>
+      <Container style={{ backgroundColor: "#F0F0F0" }}>
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button transparent onPress={Actions.drawerOpen}>
@@ -48,7 +48,16 @@ class Wall extends Component {
           <Body>
             <Title>Muro</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button
+              transparent
+              onPress={() => {
+                Actions.createPublication();
+              }}
+            >
+              <Icon name="menu" />
+            </Button>
+          </Right>
         </Header>
 
         <Content>{listWall}</Content>
