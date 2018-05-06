@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Text, View, Thumbnail } from "native-base";
+import { Text, View, Thumbnail, Button, Icon } from "native-base";
 import { Actions } from "react-native-router-flux";
 
 import moment from "moment";
@@ -47,6 +47,7 @@ class Publication extends Component {
               justifyContent: "center",
               alignItems: "flex-start",
               padding: 10,
+              paddingBottom: 0,
               backgroundColor: "#FFF",
               borderRadius: 10
             }}
@@ -164,27 +165,28 @@ class Publication extends Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row",
-                marginTop: 10
+                flexDirection: "row"
               }}
             >
               <View
                 style={{
                   flex: 0.5,
                   justifyContent: "center",
-                  alignItems: "center",
-                  paddingTop: 8
+                  alignItems: "center"
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 13,
-                    fontFamily: "Questrial",
-                    fontWeight: "bold"
-                  }}
-                >
-                  Me gusta
-                </Text>
+                <Button iconLeft transparent full>
+                  <Icon name="ios-thumbs-up-outline" />
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: "Questrial",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Me gusta
+                  </Text>
+                </Button>
               </View>
               <View
                 style={{
@@ -194,20 +196,27 @@ class Publication extends Component {
                   paddingTop: 8
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 13,
-                    fontFamily: "Questrial",
-                    fontWeight: "bold"
-                  }}
+                <Button
+                  iconLeft
+                  transparent
+                  full
                   onPress={() => {
                     if (data.totalComments > 0) {
                       Actions.wallComments({ idComment: data.id, data });
                     }
                   }}
                 >
-                  Comentar
-                </Text>
+                  <Icon name="ios-text-outline" />
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: "Questrial",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Comentar
+                  </Text>
+                </Button>
               </View>
             </View>
           </View>

@@ -4,14 +4,12 @@ import { connect } from "react-redux";
 import {
   Container,
   Header,
-  Content,
   Left,
   Right,
   Button,
   Icon,
   Title,
   Body,
-  Text
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { MapView } from "expo";
@@ -38,6 +36,7 @@ class Maps extends Component {
 
   render = () => {
     const { region } = this.props;
+    
     return (
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>

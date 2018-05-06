@@ -55,7 +55,7 @@ class Wall extends Component {
                 Actions.createPublication();
               }}
             >
-              <Icon name="menu" />
+              <Icon name="ios-create-outline" />
             </Button>
           </Right>
         </Header>

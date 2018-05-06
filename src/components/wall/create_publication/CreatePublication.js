@@ -12,7 +12,8 @@ import {
   Right,
   Header,
   Textarea,
-  Thumbnail
+  Thumbnail,
+  Icon
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 
@@ -27,7 +28,10 @@ class SalasInfoDetailAction extends React.Component {
     return (
       <Container style={{ backgroundColor: "#F4F4F4" }}>
         <StatusBar barStyle="dark-content" />
-        <Header style={{ borderBottomWidth: 0, backgroundColor: "#F4F4F4" }}>
+        <Header
+          style={{ borderBottomWidth: 0, backgroundColor: "#F4F4F4" }}
+          iosBarStyle="dark-content"
+        >
           <Left>
             <Button
               transparent
@@ -49,7 +53,7 @@ class SalasInfoDetailAction extends React.Component {
             </Button>
           </Right>
         </Header>
-        <Content>
+        <Content scrollEnabled={false}>
           <View
             style={{
               flex: 1,
@@ -103,8 +107,7 @@ class SalasInfoDetailAction extends React.Component {
                         flex: 0.9,
                         justifyContent: "center",
                         alignItems: "flex-start",
-                        marginLeft: 10,
-                        paddingTop: 8
+                        marginLeft: 10
                       }}
                     >
                       <Text
@@ -114,7 +117,15 @@ class SalasInfoDetailAction extends React.Component {
                           fontWeight: "bold"
                         }}
                       >
-                        Juanito Pere
+                        Juanito Perez
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#808080",
+                          fontSize: 12
+                        }}
+                      >
+                        dice...
                       </Text>
                     </View>
                   </View>
@@ -124,13 +135,16 @@ class SalasInfoDetailAction extends React.Component {
 
             <Textarea
               style={{
-                borderColor: "#F4F4F4",
-                borderWidth: 2,
-                height: deviceHeight - 250,
-                fontSize: 18
+                fontSize: 18,
+                height: deviceHeight - 250
               }}
               placeholder="Escribe lo que piensas..."
             />
+
+            <Button iconLeft info full large bordered style={{ marginTop: 5 }}>
+              <Icon style={{ fontSize: 50 }} name="ios-camera-outline" />
+              <Text>Imagen</Text>
+            </Button>
           </View>
         </Content>
       </Container>
