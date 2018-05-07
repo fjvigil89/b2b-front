@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { StyleProvider } from "native-base";
 import { StatusBar, Platform } from "react-native";
-import { Router, Stack } from "react-native-router-flux";
+import { Router } from "react-native-router-flux";
 
 import getTheme from "@assets/native-base-theme/components";
 import theme from "@assets/native-base-theme/variables/commonColor";
