@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Text, View, Thumbnail, Button, Icon } from "native-base";
-import { Actions } from "react-native-router-flux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Text, View, Thumbnail, Button, Icon } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
-import moment from "moment";
-import "moment/locale/es";
+import moment from 'moment';
+import 'moment/locale/es';
 
-moment.locale("es");
+moment.locale('es');
 
 class Publication extends Component {
   static propTypes = {
@@ -19,11 +19,29 @@ class Publication extends Component {
     margin: false
   };
 
-  render = () => {
-    const { data } = this.props;
-    const profile = require("@assets/images/profile.png");
+  state = {
+    data: this.props.data,
+    margin: this.props.margin,
+    like: false
+  };
 
-    const margin = this.props.margin ? 10 : 0;
+  likePublication = () => {
+    this.props.data.totalLikes += 1;
+
+    this.setState({ like: true, data: this.props.data });
+  };
+
+  unlikePublication = () => {
+    this.props.data.totalLikes -= 1;
+
+    this.setState({ like: false, data: this.props.data });
+  };
+
+  render = () => {
+    const { data } = this.state;
+    const profile = require('@assets/images/profile.png');
+
+    const margin = this.state.margin ? 10 : 0;
 
     return (
       <View
@@ -33,8 +51,8 @@ class Publication extends Component {
           margin: 0,
           padding: 0,
           flex: 1,
-          backgroundColor: "transparent",
-          borderBottomColor: "#F0F0F0",
+          backgroundColor: 'transparent',
+          borderBottomColor: '#F0F0F0',
           borderBottomWidth: 1,
           marginBottom: margin
         }}
@@ -42,33 +60,33 @@ class Publication extends Component {
         <View
           style={{
             flex: 1,
-            flexDirection: "row"
+            flexDirection: 'row'
           }}
         >
           <View
             style={{
               flex: 1,
-              justifyContent: "center",
-              alignItems: "flex-start",
+              justifyContent: 'center',
+              alignItems: 'flex-start',
               padding: 10,
               paddingBottom: 0,
-              backgroundColor: "#FFF",
+              backgroundColor: '#FFF',
               borderRadius: 10
             }}
           >
             <View
               style={{
                 flex: 1,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "flex-start"
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'flex-start'
               }}
             >
               <View
                 style={{
                   flex: 0.1,
-                  justifyContent: "center",
-                  alignItems: "flex-start"
+                  justifyContent: 'center',
+                  alignItems: 'flex-start'
                 }}
               >
                 <Thumbnail small source={profile} />
@@ -76,23 +94,23 @@ class Publication extends Component {
               <View
                 style={{
                   flex: 0.9,
-                  justifyContent: "center",
-                  alignItems: "flex-start",
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
                   marginLeft: 10
                 }}
               >
                 <Text
                   style={{
                     fontSize: 17,
-                    fontFamily: "Questrial",
-                    fontWeight: "bold"
+                    fontFamily: 'Questrial',
+                    fontWeight: 'bold'
                   }}
                 >
                   {data.userName}
                 </Text>
                 <Text
                   style={{
-                    color: "#808080",
+                    color: '#808080',
                     fontSize: 12
                   }}
                 >
@@ -104,14 +122,14 @@ class Publication extends Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row"
+                flexDirection: 'row'
               }}
             >
               <Text
                 style={{
                   paddingTop: 10,
                   fontSize: 12,
-                  fontFamily: "Questrial"
+                  fontFamily: 'Questrial'
                 }}
               >
                 {data.content}
@@ -121,22 +139,22 @@ class Publication extends Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row",
+                flexDirection: 'row',
                 marginTop: 15
               }}
             >
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-start"
+                  justifyContent: 'center',
+                  alignItems: 'flex-start'
                 }}
               >
                 <Text
                   style={{
                     fontSize: 12,
-                    fontFamily: "Questrial",
-                    color: "#007aff"
+                    fontFamily: 'Questrial',
+                    color: '#007aff'
                   }}
                 >
                   {data.totalLikes} Me gusta
@@ -145,15 +163,15 @@ class Publication extends Component {
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-end"
+                  justifyContent: 'center',
+                  alignItems: 'flex-end'
                 }}
               >
                 <Text
                   style={{
                     fontSize: 12,
-                    fontFamily: "Questrial",
-                    color: "#007aff"
+                    fontFamily: 'Questrial',
+                    color: '#007aff'
                   }}
                   onPress={() => {
                     if (data.totalComments > 0) {
@@ -169,34 +187,66 @@ class Publication extends Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row"
+                flexDirection: 'row'
               }}
             >
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "center"
+                  justifyContent: 'center',
+                  alignItems: 'center'
                 }}
               >
-                <Button iconLeft transparent full>
-                  <Icon name="ios-thumbs-up-outline" />
-                  <Text
-                    style={{
-                      fontSize: 13,
-                      fontFamily: "Questrial",
-                      fontWeight: "bold"
+                {this.state.like && (
+                  <Button
+                    iconLeft
+                    transparent
+                    full
+                    onPress={() => {
+                      this.unlikePublication();
                     }}
                   >
-                    Me gusta
-                  </Text>
-                </Button>
+                    <Icon name="ios-thumbs-up-outline" />
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        fontFamily: 'Questrial',
+                        fontWeight: 'bold',
+                        color: '#B2B2B2'
+                      }}
+                    >
+                      Me gusta
+                    </Text>
+                  </Button>
+                )}
+
+                {!this.state.like && (
+                  <Button
+                    iconLeft
+                    transparent
+                    full
+                    onPress={() => {
+                      this.likePublication();
+                    }}
+                  >
+                    <Icon name="ios-thumbs-up-outline" />
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        fontFamily: 'Questrial',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Me gusta
+                    </Text>
+                  </Button>
+                )}
               </View>
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "center"
+                  justifyContent: 'center',
+                  alignItems: 'center'
                 }}
               >
                 <Button
@@ -211,8 +261,8 @@ class Publication extends Component {
                   <Text
                     style={{
                       fontSize: 13,
-                      fontFamily: "Questrial",
-                      fontWeight: "bold"
+                      fontFamily: 'Questrial',
+                      fontWeight: 'bold'
                     }}
                   >
                     Comentar
