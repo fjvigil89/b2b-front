@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   Container,
   Header,
@@ -11,11 +11,11 @@ import {
   Icon,
   Title,
   Body
-} from "native-base";
-import Publication from "@components/wall/publication/Publication";
-import { Actions } from "react-native-router-flux";
+} from 'native-base';
+import Publication from '@components/wall/publication/Publication';
+import { Actions } from 'react-native-router-flux';
 
-import { GetListPost } from "@components/wall/WallActions";
+import GetListPost from '@components/wall/WallActions';
 
 class Wall extends Component {
   static propTypes = {
@@ -34,14 +34,12 @@ class Wall extends Component {
   render = () => {
     const { listPost } = this.props;
 
-    console.log(listPost);
-    
     const listWall = listPost.map(detail => (
       <Publication data={detail} key={detail.id} margin />
     ));
 
     return (
-      <Container style={{ backgroundColor: "#F0F0F0" }}>
+      <Container style={{ backgroundColor: '#F0F0F0' }}>
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button transparent onPress={Actions.drawerOpen}>
@@ -70,7 +68,8 @@ class Wall extends Component {
 }
 
 const mapStateToProps = state => ({
-  listPost: state.wall.listPost
+  listPost: state.wall.listPost,
+  refresh: state.wall.refresh
 });
 
 const mapDispatchToProps = {
