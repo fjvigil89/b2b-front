@@ -5,7 +5,7 @@ export const initialState = {
 
 export default function wall(state = initialState, action) {
   switch (action.type) {
-    case 'GET_LIST_POST': {
+    case "GET_LIST_POST": {
       if (action.data) {
         return {
           ...state,
@@ -16,7 +16,7 @@ export default function wall(state = initialState, action) {
       return initialState;
     }
 
-    case 'NEW_POST': {
+    case "NEW_POST": {
       if (action.data) {
         const newPost = {
           content: action.data.post.content,
@@ -28,7 +28,7 @@ export default function wall(state = initialState, action) {
           totalComments: 0,
           totalLikes: 0,
           userId: action.data.post.userId,
-          userName: 'Admin'
+          userName: "Admin"
         };
 
         const tempListPost = state.listPost;
