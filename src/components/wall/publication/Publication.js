@@ -3,10 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Text, View, Thumbnail, Button, Icon } from "native-base";
 import { Actions } from "react-native-router-flux";
-import {
-  LikePublication,
-  ReloadState
-} from "@components/wall/publication/PublicationActions";
+import LikePublication from "@components/wall/publication/PublicationActions";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -16,7 +13,6 @@ moment.locale("es");
 class Publication extends Component {
   static propTypes = {
     LikePublication: PropTypes.func.isRequired,
-    ReloadState: PropTypes.func.isRequired,
     data: PropTypes.oneOfType([PropTypes.any]),
     margin: PropTypes.bool
   };
@@ -26,21 +22,28 @@ class Publication extends Component {
     margin: false
   };
 
+  state = {
+    data: this.props.data,
+    margin: this.props.margin,
+    like: this.props.data.enableLike
+  };
+
   likePublication = () => {
-    this.props.data.totalLikes += 1;
-    this.props.data.enableLike = true;
-    // this.props.ReloadState();
     this.props.LikePublication(this.props.data.id);
+
+    this.props.data.totalLikes += 1;
+    this.setState({ like: true, data: this.props.data });
   };
 
   unlikePublication = () => {
     this.props.data.totalLikes -= 1;
-    this.props.data.enableLike = false;
+    this.setState({ like: false, data: this.props.data });
   };
 
   render = () => {
-    const { data, margin } = this.props;
+    const { data, margin } = this.state;
     const profile = require("@assets/images/profile.png");
+
     return (
       <View
         animation="fadeInRight"
@@ -195,7 +198,7 @@ class Publication extends Component {
                   alignItems: "center"
                 }}
               >
-                {data.enableLike && (
+                {!this.state.like && (
                   <Button
                     iconLeft
                     transparent
@@ -218,7 +221,7 @@ class Publication extends Component {
                   </Button>
                 )}
 
-                {!data.enableLike && (
+                {this.state.like && (
                   <Button
                     iconLeft
                     transparent
@@ -275,13 +278,8 @@ class Publication extends Component {
   };
 }
 
-const mapStateToProps = state => ({
-  flag: state.publication.flag
-});
-
 const mapDispatchToProps = {
-  LikePublication,
-  ReloadState
+  LikePublication
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Publication);
+export default connect(null, mapDispatchToProps)(Publication);

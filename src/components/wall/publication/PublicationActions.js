@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export function LikePublication(idPost) {
-  return dispatch =>
+export default function LikePublication(idPost) {
+  return () =>
     new Promise(async (resolve, reject) => {
       axios({
         method: "POST",
@@ -10,29 +10,13 @@ export function LikePublication(idPost) {
           post_id: idPost
         }
       })
-        .then(async response => {
-          resolve(
-            dispatch({
-              type: "LIKE_PUBLICATION",
-              data: response.data
-            })
-          );
+        .then(() => {
+          resolve(true);
         })
         .catch(error =>
           reject({
             message: error.response.data.error
           })
         );
-    });
-}
-
-export function ReloadState() {
-  return dispatch =>
-    new Promise(async resolve => {
-      dispatch({
-        type: "RELOAD_STATE_PUBLICATION"
-      });
-
-      resolve(true);
     });
 }
