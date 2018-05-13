@@ -1,5 +1,7 @@
 import React from "react";
 import { View, StatusBar, Dimensions } from "react-native";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import {
   Container,
   Button,
@@ -15,9 +17,36 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 
+import CreateComment from "@components/wall/comment_publication/CommentPublicationActions";
+
 const deviceHeight = Dimensions.get("window").height;
 
 class CommentPublication extends React.Component {
+  static propTypes = {
+    CreateComment: PropTypes.func.isRequired,
+    post: PropTypes.number
+  };
+
+  static defaultProps = {
+    post: 0
+  };
+
+  state = {
+    content: ""
+  };
+
+  createComment = () => {
+    this.props.CreateComment(this.props.post, this.state.content).then(() => {
+      Actions.pop();
+    });
+  };
+
+  changeText = v => {
+    this.setState({
+      content: v
+    });
+  };
+
   render() {
     const profile = require("@assets/images/profile.png");
 
@@ -44,7 +73,7 @@ class CommentPublication extends React.Component {
             </Title>
           </Body>
           <Right>
-            <Button transparent>
+            <Button transparent onPress={this.createComment}>
               <Text style={{ fontSize: 14 }}>Comentar</Text>
             </Button>
           </Right>
@@ -134,6 +163,8 @@ class CommentPublication extends React.Component {
                 fontSize: 18,
                 height: deviceHeight - 135
               }}
+              value={this.state.content}
+              onChangeText={v => this.changeText(v)}
               placeholder="Escribe tu comentario..."
             />
           </View>
@@ -143,4 +174,8 @@ class CommentPublication extends React.Component {
   }
 }
 
-export default CommentPublication;
+const mapDispatchToProps = {
+  CreateComment
+};
+
+export default connect(null, mapDispatchToProps)(CommentPublication);

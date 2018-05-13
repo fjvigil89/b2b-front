@@ -18,31 +18,41 @@ import { Actions } from "react-native-router-flux";
 
 import Publication from "@components/wall/publication/Publication";
 import Comment from "@components/wall/comments/comment/Comment";
-import GetListComments from "@components/wall/comments/CommentsActions";
+import FullCommentPage from "@components/wall/comments/CommentsActions";
 
 class Comments extends Component {
   static propTypes = {
-    GetListComments: PropTypes.func.isRequired,
+    FullCommentPage: PropTypes.func.isRequired,
     listComments: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.any])),
-    data: PropTypes.oneOfType([PropTypes.any]),
-    idComment: PropTypes.number
+    detailPublication: PropTypes.oneOfType([PropTypes.any]),
+    idPost: PropTypes.number
   };
 
   static defaultProps = {
     listComments: [],
-    data: {},
-    idComment: 0
+    detailPublication: [],
+    idPost: 0
   };
 
   componentWillMount = () => {
-    this.props.GetListComments(this.props.idComment);
+    this.props.FullCommentPage(this.props.idPost);
   };
 
   render = () => {
-    const { listComments, data } = this.props;
+    const { listComments, detailPublication } = this.props;
+
     const delay = 200;
     const listComment = listComments.map((detail, i) => (
-      <Comment data={detail} key={detail.id} delay={delay * i} />
+      <Comment
+        key={detail.id}
+        id={detail.id}
+        userName={detail.userName}
+        date={detail.date}
+        content={detail.content}
+        enableLike={detail.enableLike}
+        likes={detail.totalLikes}
+        delay={delay * i}
+      />
     ));
 
     return (
@@ -65,7 +75,16 @@ class Comments extends Component {
         </Header>
 
         <Content>
-          <Publication data={data} />
+          <Publication
+            key={detailPublication.id}
+            id={detailPublication.id}
+            userName={detailPublication.userName}
+            date={detailPublication.date}
+            content={detailPublication.content}
+            enableLike={detailPublication.enableLike}
+            likes={detailPublication.totalLikes}
+            comments={detailPublication.totalComments}
+          />
           <View
             style={{
               flex: 1,
@@ -108,11 +127,12 @@ class Comments extends Component {
 // <Comment subcomment /> Para agregar un sub comentario
 
 const mapStateToProps = state => ({
-  listComments: state.comments.listComments
+  listComments: state.comments.listComments,
+  detailPublication: state.publications.detailPublication
 });
 
 const mapDispatchToProps = {
-  GetListComments
+  FullCommentPage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments);

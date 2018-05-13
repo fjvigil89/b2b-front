@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Text, View, Thumbnail, Button, Icon } from "native-base";
 import { Actions } from "react-native-router-flux";
-import LikePublication from "@components/wall/publication/PublicationActions";
+import {
+  LikePublication,
+  UnLikePublication
+} from "@components/wall/publication/PublicationActions";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -13,35 +16,48 @@ moment.locale("es");
 class Publication extends Component {
   static propTypes = {
     LikePublication: PropTypes.func.isRequired,
-    data: PropTypes.oneOfType([PropTypes.any]),
+    UnLikePublication: PropTypes.func.isRequired,
+    id: PropTypes.number,
+    userName: PropTypes.string,
+    date: PropTypes.string,
+    content: PropTypes.string,
+    enableLike: PropTypes.bool,
+    likes: PropTypes.number,
+    comments: PropTypes.number,
     margin: PropTypes.bool
   };
 
   static defaultProps = {
-    data: {},
+    id: 0,
+    userName: "",
+    date: "",
+    content: "",
+    enableLike: false,
+    likes: 0,
+    comments: 0,
     margin: false
   };
 
-  state = {
-    data: this.props.data,
-    margin: this.props.margin,
-    like: this.props.data.enableLike
-  };
-
   likePublication = () => {
-    this.props.LikePublication(this.props.data.id);
-
-    this.props.data.totalLikes += 1;
-    this.setState({ like: true, data: this.props.data });
+    this.props.LikePublication(this.props.id);
   };
 
   unlikePublication = () => {
-    this.props.data.totalLikes -= 1;
-    this.setState({ like: false, data: this.props.data });
+    this.props.UnLikePublication(this.props.id);
   };
 
   render = () => {
-    const { data, margin } = this.state;
+    const {
+      id,
+      userName,
+      date,
+      content,
+      enableLike,
+      likes,
+      comments,
+      margin
+    } = this.props;
+
     const profile = require("@assets/images/profile.png");
 
     return (
@@ -107,7 +123,7 @@ class Publication extends Component {
                     fontWeight: "bold"
                   }}
                 >
-                  {data.userName}
+                  {userName}
                 </Text>
                 <Text
                   style={{
@@ -115,7 +131,7 @@ class Publication extends Component {
                     fontSize: 12
                   }}
                 >
-                  {moment(data.date).fromNow()}
+                  {moment(date).fromNow()}
                 </Text>
               </View>
             </View>
@@ -133,7 +149,7 @@ class Publication extends Component {
                   fontFamily: "Questrial"
                 }}
               >
-                {data.content}
+                {content}
               </Text>
             </View>
 
@@ -158,7 +174,7 @@ class Publication extends Component {
                     color: "#007aff"
                   }}
                 >
-                  {data.totalLikes} Me gusta
+                  {likes} Me gusta
                 </Text>
               </View>
               <View
@@ -175,12 +191,12 @@ class Publication extends Component {
                     color: "#007aff"
                   }}
                   onPress={() => {
-                    if (data.totalComments > 0) {
-                      Actions.wallComments({ idComment: data.id, data });
+                    if (comments > 0) {
+                      Actions.wallComments({ idPost: id });
                     }
                   }}
                 >
-                  {data.totalComments} Comentarios
+                  {comments} Comentarios
                 </Text>
               </View>
             </View>
@@ -198,7 +214,7 @@ class Publication extends Component {
                   alignItems: "center"
                 }}
               >
-                {!this.state.like && (
+                {!enableLike && (
                   <Button
                     iconLeft
                     transparent
@@ -207,7 +223,12 @@ class Publication extends Component {
                       this.unlikePublication();
                     }}
                   >
-                    <Icon name="ios-thumbs-up-outline" />
+                    <Icon
+                      style={{
+                        color: "#B2B2B2"
+                      }}
+                      name="ios-thumbs-up-outline"
+                    />
                     <Text
                       style={{
                         fontSize: 13,
@@ -221,7 +242,7 @@ class Publication extends Component {
                   </Button>
                 )}
 
-                {this.state.like && (
+                {enableLike && (
                   <Button
                     iconLeft
                     transparent
@@ -255,7 +276,7 @@ class Publication extends Component {
                   transparent
                   full
                   onPress={() => {
-                    Actions.commentPublication();
+                    Actions.commentPublication({ post: id });
                   }}
                 >
                   <Icon name="ios-text-outline" />
@@ -279,7 +300,8 @@ class Publication extends Component {
 }
 
 const mapDispatchToProps = {
-  LikePublication
+  LikePublication,
+  UnLikePublication
 };
 
 export default connect(null, mapDispatchToProps)(Publication);

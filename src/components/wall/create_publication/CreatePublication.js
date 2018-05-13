@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, StatusBar, Dimensions } from 'react-native';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from "react";
+import { View, StatusBar, Dimensions } from "react-native";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import {
   Container,
   Button,
@@ -15,12 +15,12 @@ import {
   Textarea,
   Thumbnail,
   Icon
-} from 'native-base';
-import { Actions } from 'react-native-router-flux';
+} from "native-base";
+import { Actions } from "react-native-router-flux";
 
-import CreatePost from '@components/wall/create_publication/CreatePublicationActions';
+import CreatePost from "@components/wall/create_publication/CreatePublicationActions";
 
-const deviceHeight = Dimensions.get('window').height;
+const deviceHeight = Dimensions.get("window").height;
 
 class CreatePublication extends React.Component {
   static propTypes = {
@@ -28,7 +28,7 @@ class CreatePublication extends React.Component {
   };
 
   state = {
-    content: ''
+    content: ""
   };
 
   createPost = () => {
@@ -44,13 +44,13 @@ class CreatePublication extends React.Component {
   };
 
   render() {
-    const profile = require('@assets/images/profile.png');
+    const profile = require("@assets/images/profile.png");
 
     return (
-      <Container style={{ backgroundColor: '#F4F4F4' }}>
+      <Container style={{ backgroundColor: "#F4F4F4" }}>
         <StatusBar barStyle="dark-content" />
         <Header
-          style={{ borderBottomWidth: 0, backgroundColor: '#F4F4F4' }}
+          style={{ borderBottomWidth: 0, backgroundColor: "#F4F4F4" }}
           iosBarStyle="dark-content"
         >
           <Left>
@@ -64,7 +64,7 @@ class CreatePublication extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title style={{ fontSize: 14, color: '#000' }}>
+            <Title style={{ fontSize: 14, color: "#000" }}>
               Crear publicación
             </Title>
           </Body>
@@ -78,7 +78,7 @@ class CreatePublication extends React.Component {
           <View
             style={{
               flex: 1,
-              backgroundColor: '#FFFFFF'
+              backgroundColor: "#FFFFFF"
             }}
           >
             <View
@@ -86,39 +86,39 @@ class CreatePublication extends React.Component {
                 margin: 0,
                 padding: 0,
                 flex: 1,
-                backgroundColor: 'transparent',
+                backgroundColor: "transparent",
                 marginBottom: 5
               }}
             >
               <View
                 style={{
                   flex: 1,
-                  flexDirection: 'row'
+                  flexDirection: "row"
                 }}
               >
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
+                    justifyContent: "center",
+                    alignItems: "flex-start",
                     padding: 10,
-                    backgroundColor: '#FFF',
+                    backgroundColor: "#FFF",
                     borderRadius: 10
                   }}
                 >
                   <View
                     style={{
                       flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'flex-start'
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "flex-start"
                     }}
                   >
                     <View
                       style={{
                         flex: 0.1,
-                        justifyContent: 'center',
-                        alignItems: 'flex-start'
+                        justifyContent: "center",
+                        alignItems: "flex-start"
                       }}
                     >
                       <Thumbnail small source={profile} />
@@ -126,23 +126,23 @@ class CreatePublication extends React.Component {
                     <View
                       style={{
                         flex: 0.9,
-                        justifyContent: 'center',
-                        alignItems: 'flex-start',
+                        justifyContent: "center",
+                        alignItems: "flex-start",
                         marginLeft: 10
                       }}
                     >
                       <Text
                         style={{
                           fontSize: 17,
-                          fontFamily: 'Questrial',
-                          fontWeight: 'bold'
+                          fontFamily: "Questrial",
+                          fontWeight: "bold"
                         }}
                       >
                         Juanito Perez
                       </Text>
                       <Text
                         style={{
-                          color: '#808080',
+                          color: "#808080",
                           fontSize: 12
                         }}
                       >

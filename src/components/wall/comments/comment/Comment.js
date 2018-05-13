@@ -12,20 +12,41 @@ moment.locale("es");
 class Comment extends Component {
   static propTypes = {
     subcomment: PropTypes.bool,
-    data: PropTypes.oneOfType([PropTypes.any]),
+    id: PropTypes.number,
+    userName: PropTypes.string,
+    date: PropTypes.string,
+    content: PropTypes.string,
+    enableLike: PropTypes.bool,
+    likes: PropTypes.number,
+    comments: PropTypes.number,
     delay: PropTypes.number
   };
 
   static defaultProps = {
     subcomment: false,
-    data: {},
+    id: 0,
+    userName: "",
+    date: "",
+    content: "",
+    enableLike: false,
+    likes: 0,
+    comments: 0,
     delay: 0
   };
 
   componentWillMount = () => {};
 
   render = () => {
-    const { data, subcomment } = this.props;
+    const {
+      id,
+      userName,
+      date,
+      content,
+      enableLike,
+      likes,
+      comments,
+      subcomment
+    } = this.props;
     const subComment = subcomment ? 50 : 0;
 
     return (
@@ -65,7 +86,7 @@ class Comment extends Component {
                 fontWeight: "bold"
               }}
             >
-              Admin
+              {userName}
             </Text>
             <Text
               style={{
@@ -74,7 +95,7 @@ class Comment extends Component {
                 fontFamily: "Questrial"
               }}
             >
-              {data.content}
+              {content}
             </Text>
 
             <View
@@ -98,7 +119,7 @@ class Comment extends Component {
                     color: "#007aff"
                   }}
                 >
-                  12 Me gusta
+                  {likes} Me gusta
                 </Text>
               </View>
             </View>
@@ -129,18 +150,15 @@ class Comment extends Component {
                 fontSize: 12
               }}
             >
-              {moment(data.date).fromNow()}
+              {moment(date).fromNow()}
             </Text>
           </View>
 
           <View
             style={{
-              width: 70,
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              paddingTop: 5,
-              paddingLeft: 10,
-              paddingBottom: 5
+              position: "absolute",
+              bottom: 5,
+              right: 90
             }}
           >
             <Text
@@ -154,11 +172,9 @@ class Comment extends Component {
 
           <View
             style={{
-              width: 70,
-              justifyContent: "flex-end",
-              alignItems: "flex-end",
-              paddingTop: 5,
-              paddingBottom: 5
+              position: "absolute",
+              bottom: 5,
+              right: 10
             }}
           >
             <Text
