@@ -223,18 +223,11 @@ class Publication extends Component {
                       this.unlikePublication();
                     }}
                   >
-                    <Icon
-                      style={{
-                        color: "#B2B2B2"
-                      }}
-                      name="ios-thumbs-up-outline"
-                    />
+                    <Icon color="#B2B2B2" name="ios-thumbs-up" />
                     <Text
                       style={{
                         fontSize: 13,
-                        fontFamily: "Questrial",
-                        fontWeight: "bold",
-                        color: "#B2B2B2"
+                        fontFamily: "Questrial"
                       }}
                     >
                       Me gusta
@@ -255,8 +248,7 @@ class Publication extends Component {
                     <Text
                       style={{
                         fontSize: 13,
-                        fontFamily: "Questrial",
-                        fontWeight: "bold"
+                        fontFamily: "Questrial"
                       }}
                     >
                       Me gusta
@@ -284,7 +276,6 @@ class Publication extends Component {
                     style={{
                       fontSize: 13,
                       fontFamily: "Questrial",
-                      fontWeight: "bold"
                     }}
                   >
                     Comentar
