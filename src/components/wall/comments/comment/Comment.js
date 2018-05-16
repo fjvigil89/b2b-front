@@ -1,8 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import * as Animatable from "react-native-animatable";
 import { Text, View } from "native-base";
 import { Actions } from "react-native-router-flux";
+
+import {
+  LikeComment,
+  UnLikeComment,
+  LikeReply,
+  UnLikeReply
+} from "@components/wall/comments/comment/CommentAction.js";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -11,6 +19,11 @@ moment.locale("es");
 
 class Comment extends Component {
   static propTypes = {
+    LikeComment: PropTypes.func.isRequired,
+    UnLikeComment: PropTypes.func.isRequired,
+    LikeReply: PropTypes.func.isRequired,
+    UnLikeReply: PropTypes.func.isRequired,
+    idPost: PropTypes.number,
     subcomment: PropTypes.bool,
     id: PropTypes.number,
     userName: PropTypes.string,
@@ -18,11 +31,11 @@ class Comment extends Component {
     content: PropTypes.string,
     enableLike: PropTypes.bool,
     likes: PropTypes.number,
-    comments: PropTypes.number,
     delay: PropTypes.number
   };
 
   static defaultProps = {
+    idPost: 0,
     subcomment: false,
     id: 0,
     userName: "",
@@ -30,21 +43,34 @@ class Comment extends Component {
     content: "",
     enableLike: false,
     likes: 0,
-    comments: 0,
     delay: 0
   };
 
-  componentWillMount = () => {};
+  likeComment = () => {
+    this.props.LikeComment(this.props.idPost, this.props.id);
+  };
+
+  unlikeComment = () => {
+    this.props.UnLikeComment(this.props.idPost, this.props.id);
+  };
+
+  likeReply = () => {
+    this.props.LikeReply(this.props.idPost, this.props.id);
+  };
+
+  unlikeReply = () => {
+    this.props.UnLikeReply(this.props.idPost, this.props.id);
+  };
 
   render = () => {
     const {
+      idPost,
       id,
       userName,
       date,
       content,
       enableLike,
       likes,
-      comments,
       subcomment
     } = this.props;
     const subComment = subcomment ? 50 : 0;
@@ -154,44 +180,82 @@ class Comment extends Component {
             </Text>
           </View>
 
-          <View
-            style={{
-              position: "absolute",
-              bottom: 5,
-              right: 90
-            }}
-          >
-            <Text
+          {enableLike && (
+            <View
               style={{
-                fontSize: 12
+                position: "absolute",
+                bottom: 5,
+                right: !subcomment ? 90 : 10
               }}
             >
-              Me gusta
-            </Text>
-          </View>
+              <Text
+                style={{
+                  fontSize: 12
+                }}
+                onPress={() => {
+                  if (!subcomment) this.likeComment();
+                  else this.likeReply();
+                }}
+              >
+                Me gusta
+              </Text>
+            </View>
+          )}
 
-          <View
-            style={{
-              position: "absolute",
-              bottom: 5,
-              right: 10
-            }}
-          >
-            <Text
+          {!enableLike && (
+            <View
               style={{
-                fontSize: 12
-              }}
-              onPress={() => {
-                Actions.respondComment();
+                position: "absolute",
+                bottom: 5,
+                right: !subcomment ? 90 : 10
               }}
             >
-              Responder
-            </Text>
-          </View>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: "#B2B2B2"
+                }}
+                onPress={() => {
+                  if (!subcomment) this.unlikeComment();
+                  else this.unlikeReply();
+                }}
+              >
+                Me gusta
+              </Text>
+            </View>
+          )}
+
+          {!subcomment && (
+            <View
+              style={{
+                position: "absolute",
+                bottom: 5,
+                right: 10
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12
+                }}
+                onPress={() => {
+                  Actions.respondComment({ post: idPost, comment: id });
+                }}
+              >
+                Responder
+              </Text>
+            </View>
+          )}
         </View>
       </Animatable.View>
     );
   };
 }
 
-export default Comment;
+const mapDispatchToProps = {
+  LikeComment,
+  UnLikeComment,
+  LikeReply,
+  UnLikeReply
+};
+
+export default connect(null, mapDispatchToProps)(Comment);
