@@ -27,11 +27,13 @@ const platform = Platform.OS;
 class RespondComment extends React.Component {
   static propTypes = {
     CreateReply: PropTypes.func.isRequired,
+    user: PropTypes.string,
     post: PropTypes.number,
     comment: PropTypes.number
   };
 
   static defaultProps = {
+    user: "",
     post: 0,
     comment: 0
   };
@@ -162,7 +164,7 @@ class RespondComment extends React.Component {
                           fontWeight: "bold"
                         }}
                       >
-                        Juanito Perez
+                        {this.props.user}
                       </Text>
                       <Text
                         style={{
@@ -194,8 +196,12 @@ class RespondComment extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+
 const mapDispatchToProps = {
   CreateReply
 };
 
-export default connect(null, mapDispatchToProps)(RespondComment);
+export default connect(mapStateToProps, mapDispatchToProps)(RespondComment);
