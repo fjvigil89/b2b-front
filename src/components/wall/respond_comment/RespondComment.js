@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StatusBar, Dimensions } from "react-native";
+import { View, StatusBar, Dimensions, Platform } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+
 import {
   Container,
   Button,
@@ -13,13 +14,15 @@ import {
   Right,
   Header,
   Textarea,
-  Thumbnail
+  Thumbnail,
+  Icon
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 
 import CreateReply from "@components/wall/respond_comment/RespondCommentAction";
 
 const deviceHeight = Dimensions.get("window").height;
+const platform = Platform.OS;
 
 class RespondComment extends React.Component {
   static propTypes = {
@@ -58,7 +61,10 @@ class RespondComment extends React.Component {
       <Container style={{ backgroundColor: "#F4F4F4" }}>
         <StatusBar barStyle="dark-content" />
         <Header
-          style={{ borderBottomWidth: 0, backgroundColor: "#F4F4F4" }}
+          style={{
+            borderBottomWidth: 0,
+            backgroundColor: platform === "android" ? "#083D77" : "#F4F4F4"
+          }}
           iosBarStyle="dark-content"
         >
           <Left>
@@ -68,12 +74,22 @@ class RespondComment extends React.Component {
                 Actions.pop();
               }}
             >
-              <Text style={{ fontSize: 13 }}>Cancelar</Text>
+              {platform === "android" && (
+                <Icon name="md-arrow-back" color="#B2B2B2" />
+              )}
+              {platform === "ios" && (
+                <Text style={{ fontSize: 14 }}>Cancelar</Text>
+              )}
             </Button>
           </Left>
           <Body>
-            <Title style={{ fontSize: 13, color: "#000" }}>
-              Responder comentario
+            <Title
+              style={{
+                fontSize: 13,
+                color: platform === "android" ? "#FFF" : "#000"
+              }}
+            >
+              RESPONDER COMENTARIO
             </Title>
           </Body>
           <Right>
