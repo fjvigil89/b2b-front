@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function GetListPost() {
+export default function GetListPost() {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({

@@ -7,7 +7,8 @@
     "@assets": "${workspaceRoot}/src/assets",
     "@common": "${workspaceRoot}/src/common",
     "@components": "${workspaceRoot}/src/components",
-    "@constants": "${workspaceRoot}/src/constants"
+    "@constants": "${workspaceRoot}/src/constants",
+    "@routes": "${workspaceRoot}/src/routes"
   },
   "typescript.quickSuggestionsForPaths": false
 }

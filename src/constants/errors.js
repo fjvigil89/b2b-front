@@ -12,4 +12,7 @@ export default {
   // Recipes
   recipe404: 'Recipe not found',
   missingMealId: 'Missing meal definition',
+
+  // Post Creation
+  noContent: 'Escribe lo que deseas publicar'
 };

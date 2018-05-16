@@ -18,35 +18,65 @@ import { Actions } from "react-native-router-flux";
 
 import Publication from "@components/wall/publication/Publication";
 import Comment from "@components/wall/comments/comment/Comment";
-import GetListComments from "@components/wall/comments/CommentsActions";
+import { FullCommentPage } from "@components/wall/comments/CommentsActions";
 
 class Comments extends Component {
   static propTypes = {
-    GetListComments: PropTypes.func.isRequired,
+    FullCommentPage: PropTypes.func.isRequired,
     listComments: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.any])),
-    data: PropTypes.oneOfType([PropTypes.any]),
-    idComment: PropTypes.number
+    detailPublication: PropTypes.oneOfType([PropTypes.any]),
+    idPost: PropTypes.number
   };
 
   static defaultProps = {
     listComments: [],
-    data: {},
-    idComment: 0
+    detailPublication: [],
+    idPost: 0
   };
 
   componentWillMount = () => {
-    this.props.GetListComments(this.props.idComment);
+    this.props.FullCommentPage(this.props.idPost);
   };
 
   render = () => {
-    const { listComments, data } = this.props;
+    const { listComments, detailPublication } = this.props;
+
     const delay = 200;
-    const listComment = listComments.map((detail, i) => (
-      <Comment data={detail} key={detail.id} delay={delay * i} />
-    ));
+    const listComment = listComments.map((detail, i) => {
+      const listReplies = detail.replies.map(reply => (
+        <Comment
+          key={reply.id * 1000}
+          idPost={this.props.idPost}
+          id={reply.id}
+          userName={reply.userName}
+          date={reply.date}
+          content={reply.content}
+          enableLike={reply.enableLike}
+          likes={reply.totalLikes}
+          delay={delay * i}
+          subcomment
+        />
+      ));
+
+      return (
+        <View key={detail.id}>
+          <Comment
+            idPost={this.props.idPost}
+            id={detail.id}
+            userName={detail.userName}
+            date={detail.date}
+            content={detail.content}
+            enableLike={detail.enableLike}
+            likes={detail.totalLikes}
+            delay={delay * i}
+          />
+          {listReplies}
+        </View>
+      );
+    });
 
     return (
-      <Container>
+      <Container style={{ backgroundColor: "#F4F4F4" }}>
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button
@@ -65,7 +95,16 @@ class Comments extends Component {
         </Header>
 
         <Content>
-          <Publication data={data} />
+          <Publication
+            key={detailPublication.id}
+            id={detailPublication.id}
+            userName={detailPublication.userName}
+            date={detailPublication.date}
+            content={detailPublication.content}
+            enableLike={detailPublication.enableLike}
+            likes={detailPublication.totalLikes}
+            comments={detailPublication.totalComments}
+          />
           <View
             style={{
               flex: 1,
@@ -77,9 +116,13 @@ class Comments extends Component {
                 flex: 1,
                 justifyContent: "flex-end",
                 alignItems: "center",
-                borderBottomColor: "#DEDEDE",
-                borderBottomWidth: 1,
-                paddingBottom: 5
+                borderTopColor: "#F4F4F4",
+                borderTopWidth: 5,
+                borderBottomColor: "#F4F4F4",
+                borderBottomWidth: 5,
+                paddingTop: 5,
+                paddingBottom: 5,
+                backgroundColor: "#FFF"
               }}
             >
               <Text
@@ -104,11 +147,12 @@ class Comments extends Component {
 // <Comment subcomment /> Para agregar un sub comentario
 
 const mapStateToProps = state => ({
-  listComments: state.comments.listComments
+  listComments: state.comments.listComments,
+  detailPublication: state.publications.detailPublication
 });
 
 const mapDispatchToProps = {
-  GetListComments
+  FullCommentPage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments);

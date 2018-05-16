@@ -15,7 +15,7 @@ import {
 import Publication from "@components/wall/publication/Publication";
 import { Actions } from "react-native-router-flux";
 
-import { GetListPost } from "@components/wall/WallActions";
+import GetListPost from "@components/wall/WallActions";
 
 class Wall extends Component {
   static propTypes = {
@@ -33,12 +33,23 @@ class Wall extends Component {
 
   render = () => {
     const { listPost } = this.props;
+
     const listWall = listPost.map(detail => (
-      <Publication data={detail} key={detail.id} />
+      <Publication
+        key={detail.id}
+        id={detail.id}
+        userName={detail.userName}
+        date={detail.date}
+        content={detail.content}
+        enableLike={detail.enableLike}
+        likes={detail.totalLikes}
+        comments={detail.totalComments}
+        margin
+      />
     ));
 
     return (
-      <Container>
+      <Container style={{ backgroundColor: "#F0F0F0" }}>
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button transparent onPress={Actions.drawerOpen}>
@@ -48,7 +59,16 @@ class Wall extends Component {
           <Body>
             <Title>Muro</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button
+              transparent
+              onPress={() => {
+                Actions.createPublication();
+              }}
+            >
+              <Icon name="ios-create-outline" />
+            </Button>
+          </Right>
         </Header>
 
         <Content>{listWall}</Content>
@@ -58,7 +78,8 @@ class Wall extends Component {
 }
 
 const mapStateToProps = state => ({
-  listPost: state.wall.listPost
+  listPost: state.wall.listPost,
+  refresh: state.wall.refresh
 });
 
 const mapDispatchToProps = {

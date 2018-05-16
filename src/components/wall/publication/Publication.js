@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Text, View, Thumbnail } from "native-base";
+import { connect } from "react-redux";
+import { Text, View, Thumbnail, Button, Icon } from "native-base";
 import { Actions } from "react-native-router-flux";
+import {
+  LikePublication,
+  UnLikePublication
+} from "@components/wall/publication/PublicationActions";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -10,15 +15,49 @@ moment.locale("es");
 
 class Publication extends Component {
   static propTypes = {
-    data: PropTypes.oneOfType([PropTypes.any])
+    LikePublication: PropTypes.func.isRequired,
+    UnLikePublication: PropTypes.func.isRequired,
+    id: PropTypes.number,
+    userName: PropTypes.string,
+    date: PropTypes.string,
+    content: PropTypes.string,
+    enableLike: PropTypes.bool,
+    likes: PropTypes.number,
+    comments: PropTypes.number,
+    margin: PropTypes.bool
   };
 
   static defaultProps = {
-    data: {}
+    id: 0,
+    userName: "",
+    date: "",
+    content: "",
+    enableLike: false,
+    likes: 0,
+    comments: 0,
+    margin: false
+  };
+
+  likePublication = () => {
+    this.props.LikePublication(this.props.id);
+  };
+
+  unlikePublication = () => {
+    this.props.UnLikePublication(this.props.id);
   };
 
   render = () => {
-    const { data } = this.props;
+    const {
+      id,
+      userName,
+      date,
+      content,
+      enableLike,
+      likes,
+      comments,
+      margin
+    } = this.props;
+
     const profile = require("@assets/images/profile.png");
 
     return (
@@ -30,9 +69,9 @@ class Publication extends Component {
           padding: 0,
           flex: 1,
           backgroundColor: "transparent",
-          borderBottomColor: "#DEDEDE",
+          borderBottomColor: "#F0F0F0",
           borderBottomWidth: 1,
-          marginBottom: 5
+          marginBottom: margin ? 10 : 0
         }}
       >
         <View
@@ -47,6 +86,7 @@ class Publication extends Component {
               justifyContent: "center",
               alignItems: "flex-start",
               padding: 10,
+              paddingBottom: 0,
               backgroundColor: "#FFF",
               borderRadius: 10
             }}
@@ -83,7 +123,7 @@ class Publication extends Component {
                     fontWeight: "bold"
                   }}
                 >
-                  {data.userName}
+                  {userName}
                 </Text>
                 <Text
                   style={{
@@ -91,7 +131,7 @@ class Publication extends Component {
                     fontSize: 12
                   }}
                 >
-                  {moment(data.date).fromNow()}
+                  {moment(date).fromNow()}
                 </Text>
               </View>
             </View>
@@ -109,7 +149,7 @@ class Publication extends Component {
                   fontFamily: "Questrial"
                 }}
               >
-                {data.content}
+                {content}
               </Text>
             </View>
 
@@ -134,24 +174,7 @@ class Publication extends Component {
                     color: "#007aff"
                   }}
                 >
-                  {data.totalLikes} Me gusta
-                </Text>
-              </View>
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "Questrial",
-                    color: "#007aff"
-                  }}
-                >
-                  Comentar
+                  {likes} Me gusta
                 </Text>
               </View>
               <View
@@ -168,13 +191,96 @@ class Publication extends Component {
                     color: "#007aff"
                   }}
                   onPress={() => {
-                    if (data.totalComments > 0) {
-                      Actions.wallComments({ idComment: data.id, data });
+                    if (comments > 0) {
+                      Actions.wallComments({ idPost: id });
                     }
                   }}
                 >
-                  {data.totalComments} Comentarios
+                  {comments} Comentarios
                 </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row"
+              }}
+            >
+              <View
+                style={{
+                  flex: 0.5,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                {!enableLike && (
+                  <Button
+                    iconLeft
+                    transparent
+                    full
+                    onPress={() => {
+                      this.unlikePublication();
+                    }}
+                  >
+                    <Icon color="#B2B2B2" name="ios-thumbs-up" />
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        fontFamily: "Questrial"
+                      }}
+                    >
+                      Me gusta
+                    </Text>
+                  </Button>
+                )}
+
+                {enableLike && (
+                  <Button
+                    iconLeft
+                    transparent
+                    full
+                    onPress={() => {
+                      this.likePublication();
+                    }}
+                  >
+                    <Icon name="ios-thumbs-up-outline" />
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        fontFamily: "Questrial"
+                      }}
+                    >
+                      Me gusta
+                    </Text>
+                  </Button>
+                )}
+              </View>
+              <View
+                style={{
+                  flex: 0.5,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Button
+                  iconLeft
+                  transparent
+                  full
+                  onPress={() => {
+                    Actions.commentPublication({ post: id });
+                  }}
+                >
+                  <Icon name="ios-text-outline" />
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: "Questrial",
+                    }}
+                  >
+                    Comentar
+                  </Text>
+                </Button>
               </View>
             </View>
           </View>
@@ -184,4 +290,9 @@ class Publication extends Component {
   };
 }
 
-export default Publication;
+const mapDispatchToProps = {
+  LikePublication,
+  UnLikePublication
+};
+
+export default connect(null, mapDispatchToProps)(Publication);

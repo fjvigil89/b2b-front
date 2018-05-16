@@ -1,16 +1,14 @@
 export const initialState = {
-  listPost: [],
-  refresh: false
+  detailPublication: {}
 };
 
-export default function wall(state = initialState, action) {
+export default function publications(state = initialState, action) {
   switch (action.type) {
-    case "GET_LIST_POST": {
+    case "DETAIL_PUBLICATION": {
       if (action.data) {
         return {
           ...state,
-          listPost: action.data.posts,
-          refresh: !state.refresh
+          detailPublication: action.data.post
         };
       }
 

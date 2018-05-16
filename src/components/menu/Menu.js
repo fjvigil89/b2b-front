@@ -130,7 +130,7 @@ class SideBar extends Component {
             <Left>
               <Icon
                 active
-                name="ios-chatboxes-outline"
+                name="ios-navigate-outline"
                 style={{ fontSize: 26, width: 30 }}
               />
               <Text
