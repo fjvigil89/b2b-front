@@ -9,7 +9,7 @@ function commentsList(idPost) {
   });
 }
 
-export default function FullCommentPage(idPost) {
+export function FullCommentPage(idPost) {
   return dispatch =>
     new Promise(resolve =>
       Promise.all([detailPost(idPost), commentsList(idPost)]).then(
@@ -30,5 +30,21 @@ export default function FullCommentPage(idPost) {
           resolve(true);
         }
       )
+    );
+}
+
+export function CommentList(idPost) {
+  return dispatch =>
+    new Promise(resolve =>
+      commentsList(idPost).then(async results => {
+        const listComments = results.data;
+
+        resolve(
+          dispatch({
+            type: "GET_LIST_COMMENTS",
+            data: listComments
+          })
+        );
+      })
     );
 }

@@ -5,7 +5,8 @@ export const initialState = {
   error: null,
   email: "",
   password: "",
-  token: ""
+  token: "",
+  user: ""
 };
 
 export default function user(state = initialState, action) {
@@ -21,7 +22,8 @@ export default function user(state = initialState, action) {
           loading: false,
           error: null,
           isAuthenticated: true,
-          token: action.data.token
+          token: action.data.token,
+          user: action.data.user
         };
       }
 
@@ -52,7 +54,8 @@ export default function user(state = initialState, action) {
         loading: false,
         error: null,
         isAuthenticated: false,
-        token: null
+        token: null,
+        user: null
       };
     }
     case "USER_CHANGE_INPUT": {

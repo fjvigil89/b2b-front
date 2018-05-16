@@ -18,7 +18,7 @@ import { Actions } from "react-native-router-flux";
 
 import Publication from "@components/wall/publication/Publication";
 import Comment from "@components/wall/comments/comment/Comment";
-import FullCommentPage from "@components/wall/comments/CommentsActions";
+import { FullCommentPage } from "@components/wall/comments/CommentsActions";
 
 class Comments extends Component {
   static propTypes = {
@@ -42,18 +42,38 @@ class Comments extends Component {
     const { listComments, detailPublication } = this.props;
 
     const delay = 200;
-    const listComment = listComments.map((detail, i) => (
-      <Comment
-        key={detail.id}
-        id={detail.id}
-        userName={detail.userName}
-        date={detail.date}
-        content={detail.content}
-        enableLike={detail.enableLike}
-        likes={detail.totalLikes}
-        delay={delay * i}
-      />
-    ));
+    const listComment = listComments.map((detail, i) => {
+      const listReplies = detail.replies.map(reply => (
+        <Comment
+          key={reply.id * 1000}
+          idPost={this.props.idPost}
+          id={reply.id}
+          userName={reply.userName}
+          date={reply.date}
+          content={reply.content}
+          enableLike={reply.enableLike}
+          likes={reply.totalLikes}
+          delay={delay * i}
+          subcomment
+        />
+      ));
+
+      return (
+        <View key={detail.id}>
+          <Comment
+            idPost={this.props.idPost}
+            id={detail.id}
+            userName={detail.userName}
+            date={detail.date}
+            content={detail.content}
+            enableLike={detail.enableLike}
+            likes={detail.totalLikes}
+            delay={delay * i}
+          />
+          {listReplies}
+        </View>
+      );
+    });
 
     return (
       <Container style={{ backgroundColor: "#F4F4F4" }}>
