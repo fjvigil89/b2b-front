@@ -25,7 +25,11 @@ const platform = Platform.OS;
 
 class CreatePublication extends React.Component {
   static propTypes = {
-    CreatePost: PropTypes.func.isRequired
+    CreatePost: PropTypes.func.isRequired,
+    user: PropTypes.string
+  };
+  static defaultProps = {
+    user: ""
   };
 
   state = {
@@ -152,7 +156,7 @@ class CreatePublication extends React.Component {
                           fontWeight: "bold"
                         }}
                       >
-                        Juanito Perez
+                        {this.props.user}
                       </Text>
                       <Text
                         style={{
@@ -189,8 +193,12 @@ class CreatePublication extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+
 const mapDispatchToProps = {
   CreatePost
 };
 
-export default connect(null, mapDispatchToProps)(CreatePublication);
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePublication);

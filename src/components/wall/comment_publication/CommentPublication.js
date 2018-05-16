@@ -26,10 +26,12 @@ const platform = Platform.OS;
 class CommentPublication extends React.Component {
   static propTypes = {
     CreateComment: PropTypes.func.isRequired,
+    user: PropTypes.string,
     post: PropTypes.number
   };
 
   static defaultProps = {
+    user: "",
     post: 0
   };
 
@@ -149,7 +151,7 @@ class CommentPublication extends React.Component {
                           fontWeight: "bold"
                         }}
                       >
-                        Juanito Perez
+                        {this.props.user}
                       </Text>
                       <Text
                         style={{
@@ -181,8 +183,12 @@ class CommentPublication extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+
 const mapDispatchToProps = {
   CreateComment
 };
 
-export default connect(null, mapDispatchToProps)(CommentPublication);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentPublication);

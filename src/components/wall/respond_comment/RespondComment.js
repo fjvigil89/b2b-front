@@ -1,5 +1,8 @@
 import React from "react";
 import { View, StatusBar, Dimensions, Platform } from "react-native";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
 import {
   Container,
   Button,
@@ -16,10 +19,41 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 
+import CreateReply from "@components/wall/respond_comment/RespondCommentAction";
+
 const deviceHeight = Dimensions.get("window").height;
 const platform = Platform.OS;
 
 class RespondComment extends React.Component {
+  static propTypes = {
+    CreateReply: PropTypes.func.isRequired,
+    post: PropTypes.number,
+    comment: PropTypes.number
+  };
+
+  static defaultProps = {
+    post: 0,
+    comment: 0
+  };
+
+  state = {
+    content: ""
+  };
+
+  createReply = () => {
+    this.props
+      .CreateReply(this.props.post, this.props.comment, this.state.content)
+      .then(() => {
+        Actions.pop();
+      });
+  };
+
+  changeText = v => {
+    this.setState({
+      content: v
+    });
+  };
+
   render() {
     const profile = require("@assets/images/profile.png");
 
@@ -59,7 +93,7 @@ class RespondComment extends React.Component {
             </Title>
           </Body>
           <Right>
-            <Button transparent>
+            <Button transparent onPress={this.createReply}>
               <Text style={{ fontSize: 13 }}>Respuesta</Text>
             </Button>
           </Right>
@@ -149,6 +183,8 @@ class RespondComment extends React.Component {
                 fontSize: 18,
                 height: deviceHeight - 135
               }}
+              alue={this.state.content}
+              onChangeText={v => this.changeText(v)}
               placeholder="Escribe tu respuesta..."
             />
           </View>
@@ -158,4 +194,8 @@ class RespondComment extends React.Component {
   }
 }
 
-export default RespondComment;
+const mapDispatchToProps = {
+  CreateReply
+};
+
+export default connect(null, mapDispatchToProps)(RespondComment);

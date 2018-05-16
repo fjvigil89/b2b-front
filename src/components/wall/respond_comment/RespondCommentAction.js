@@ -2,32 +2,27 @@ import axios from "axios";
 
 import ErrorMessages from "@constants/errors";
 
-import GetListPost from "@components/wall/WallActions";
-import { FullCommentPage } from "@components/wall/comments/CommentsActions";
+import { CommentList } from "@components/wall/comments/CommentsActions";
 
-export default function CreateComment(post, content) {
+export default function CreateReply(post, comment, content) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       if (!content) return reject({ message: ErrorMessages.noContent });
 
       const formForSend = {
-        post_id: post,
+        comment_id: comment,
         content
       };
 
       return axios({
         method: "POST",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/comment",
+        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/reply",
         data: formForSend
       })
         .then(async () => {
-          await dispatch(GetListPost());
-          await dispatch(FullCommentPage(post));
-
-          resolve(true);
+          resolve(dispatch(CommentList(post)));
         })
         .catch(() => {
-          console.log("Error?");
           reject();
         });
     }).catch(err => {
