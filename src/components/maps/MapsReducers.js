@@ -1,21 +1,25 @@
 export const initialState = {
   region: {}
 };
+let _getCurrentPositionAsync;
 
-export default function maps(state = initialState, action) {
+export default  function maps(state = initialState, action) {
   switch (action.type) {
-    case "GET_REGION_MAPS": {
-      return {
-        ...state,
-        region: {
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
-        }
-      };
+    case "GET_LOCATION_ASYNC": {
+      if (action.data) {
+        return {
+          ...state,
+          region: {
+            latitude: action.data.latitude,
+            longitude: action.data.longitude,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1
+          }
+        };
+      }
 
       return initialState;
+      
     }
 
     default:

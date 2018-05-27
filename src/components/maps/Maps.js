@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Image, Text, View } from "react-native";
 import {
   Container,
   Header,
@@ -13,12 +14,14 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { MapView } from "expo";
-import GetRegionMaps from "@components/maps/MapsAction";
+
+import GetLocationAsync from "@components/maps/MapsAction";
 import { ListadoSalas } from "@components/salas/salas_list/SalasListActions";
+
 
 class Maps extends Component {
   static propTypes = {
-    GetRegionMaps: PropTypes.func.isRequired,
+    GetLocationAsync: PropTypes.func.isRequired,
     ListadoSalas: PropTypes.func.isRequired,
     region: PropTypes.shape({
       latitude: PropTypes.number,
@@ -47,12 +50,13 @@ class Maps extends Component {
   };
 
   componentWillMount = () => {
-    this.props.GetRegionMaps();
+    this.props.GetLocationAsync();
     this.props.ListadoSalas();
   };
 
   render = () => {
     const { salas, region } = this.props;
+    console.log(salas);
     return (
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>
@@ -100,18 +104,22 @@ class Maps extends Component {
               } else {
                 logo = require("@assets/images/alvi.png");
               }
-
               return (
-                <MapView.Marker.Animated
+                <MapView.Marker.Animated draggable
                   key={sala.cod_local}
                   coordinate={{
-                    latitude: parseFloat(sala.latitud),
-                    longitude: parseFloat(sala.longitud)
+                    latitude: sala.latitud,
+                    longitude: sala.longitud
                   }}
-                  title={sala.bandera}
-                  description={sala.descripcion}
-                  image={logo}
-                />
+                  title={sala.descripcion}
+                  description={`Venta perdida: ${sala.venta_perdida}`}
+                  style={{ zIndex: 1000 }}
+                  onCalloutPress={() => {
+                    Actions.salasInfo({ data: sala });
+                  }}
+                >
+                  <Image source={logo} style={{  width: 70, height: 70, zIndex: -1 }} />
+                </MapView.Marker.Animated>
               );
             }
           })}
@@ -127,7 +135,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  GetRegionMaps,
+  GetLocationAsync,
   ListadoSalas
 };
 

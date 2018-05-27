@@ -7,6 +7,7 @@ import LoginScreen from "@components/login/Login";
 import Dashboard from "@components/dashboard/Dashboard";
 import { CheckToken } from "@components/login/LoginActions.js";
 
+import Maps from "@components/maps/Maps";
 class Check extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool,
@@ -32,7 +33,7 @@ class Check extends Component {
       return <LoginScreen />;
     }
 
-    return <Dashboard />;
+    return <Maps />;
   };
 }
 
