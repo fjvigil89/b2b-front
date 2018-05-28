@@ -12,10 +12,12 @@ import {
   Title,
   Body
 } from "native-base";
+import { RefreshControl } from "react-native";
 import Publication from "@components/wall/publication/Publication";
 import { Actions } from "react-native-router-flux";
 
 import GetListPost from "@components/wall/WallActions";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 class Wall extends Component {
   static propTypes = {
@@ -27,8 +29,21 @@ class Wall extends Component {
     listPost: []
   };
 
+  state = {
+    loading: false,
+    refreshing: false
+  };
+
   componentWillMount = () => {
-    this.props.GetListPost();
+    this.setState({
+      loading: true
+    });
+
+    this.props.GetListPost().then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   render = () => {
@@ -44,6 +59,7 @@ class Wall extends Component {
         enableLike={detail.enableLike}
         likes={detail.totalLikes}
         comments={detail.totalComments}
+        images={detail.images}
         margin
       />
     ));
@@ -71,7 +87,19 @@ class Wall extends Component {
           </Right>
         </Header>
 
-        <Content>{listWall}</Content>
+        <Content
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.componentWillMount}
+              title="Recargar..."
+            />
+          }
+        >
+          {listWall}
+        </Content>
+
+        {this.state.loading && <LoadingOverlay />}
       </Container>
     );
   };
