@@ -31,13 +31,15 @@ class SalasList extends Component {
         direccion: PropTypes.string
       })
     ),
-    refreshing: PropTypes.bool
+    refreshing: PropTypes.bool,
+    orderLostSale: PropTypes.bool,
   };
 
   static defaultProps = {
     isLoading: false,
     salas: [],
-    refreshing: false
+    refreshing: false,
+    orderLostSale: true
   };
 
   componentWillMount = () => {
@@ -46,7 +48,7 @@ class SalasList extends Component {
   };
 
   render = () => {
-    const { isLoading, salas, refreshing } = this.props;
+    const { isLoading, salas, refreshing, orderLostSale } = this.props;
 
     if (isLoading) {
       return <Loading />;
@@ -54,7 +56,7 @@ class SalasList extends Component {
 
     const delay = 200;
     const detailListadoSalas = salas.map((sala, i) => (
-      <SalasDetail data={sala} key={sala.cod_local} delay={delay * i} />
+      <SalasDetail data={sala} key={sala.cod_local} delay={delay * i} orderLostSale={orderLostSale}/>
     ));
 
     return (
@@ -77,7 +79,8 @@ class SalasList extends Component {
 const mapStateToProps = state => ({
   salas: state.salas.salas,
   isLoading: state.salas.loading,
-  refreshing: state.salas.refreshing
+  refreshing: state.salas.refreshing,
+  orderLostSale: state.salasHeader.orderLostSale
 });
 
 const mapDispatchToProps = {

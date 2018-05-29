@@ -24,7 +24,8 @@ class SalasDetail extends React.Component {
       cod_local: PropTypes.string,
       descripcion: PropTypes.string
     }),
-    delay: PropTypes.number
+    delay: PropTypes.number,
+    orderLostSale: PropTypes.bool
   };
 
   static defaultProps = {
@@ -86,7 +87,6 @@ class SalasDetail extends React.Component {
     } else if (this.props.data.mide === 1 && this.props.data.realizada === 0) {
       imagen = require("@assets/images/pendiente-visita.png");
     }
-
     return (
       <Animatable.View
         animation="fadeInRight"
@@ -272,7 +272,7 @@ class SalasDetail extends React.Component {
                   fontFamily: "Questrial"
                 }}
               >
-                Venta Perdida 
+                {this.props.orderLostSale? 'Distancia': 'Venta Perdida'}
               </Text>
             </View>
             <View
@@ -288,7 +288,7 @@ class SalasDetail extends React.Component {
                   fontFamily: "Questrial"
                 }}
               >
-             ${this.currency(this.props.data.venta_perdida)}
+              {this.props.orderLostSale? `${this.props.data.kilometers} K` : `$${this.currency(this.props.data.venta_perdida)}`}
               </Text>
             </View>
           </View>
