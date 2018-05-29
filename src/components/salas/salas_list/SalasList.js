@@ -10,11 +10,13 @@ import NoSalas from "@components/salas/salas_empty/SalasEmpty";
 
 import {
   ListadoSalas,
-  ListadoSalasWithRefresh
+  ListadoSalasWithRefresh,
+  GetLocationAsync
 } from "@components/salas/salas_list/SalasListActions";
 
 class SalasList extends Component {
   static propTypes = {
+    GetLocationAsync: PropTypes.func.isRequired,
     ListadoSalas: PropTypes.func.isRequired,
     ListadoSalasWithRefresh: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
@@ -39,6 +41,7 @@ class SalasList extends Component {
   };
 
   componentWillMount = () => {
+    this.props.GetLocationAsync();
     this.props.ListadoSalas();
   };
 
@@ -79,7 +82,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   ListadoSalas,
-  ListadoSalasWithRefresh
+  ListadoSalasWithRefresh,
+  GetLocationAsync
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalasList);

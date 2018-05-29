@@ -6,7 +6,6 @@ import salasInfo from "@components/salas_info/SalasInfoReducers";
 import productos from "@components/salas_info/salas_info_detal_action/SalasInfoDetailActionReducers";
 import wall from "@components/wall/WallReducers";
 import comments from "@components/wall/comments/CommentsReducers";
-import maps from "@components/maps/MapsReducers";
 import publications from "@components/wall/publication/PublicationReducers";
 
 const rehydrated = (state = false, action) => {
@@ -28,6 +27,5 @@ export default {
   productos,
   wall,
   comments,
-  maps,
   publications
 };

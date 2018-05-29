@@ -15,8 +15,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { MapView } from "expo";
 
-import GetLocationAsync from "@components/maps/MapsAction";
-import { ListadoSalas } from "@components/salas/salas_list/SalasListActions";
+import { ListadoSalas, GetLocationAsync } from "@components/salas/salas_list/SalasListActions";
 
 
 class Maps extends Component {
@@ -54,9 +53,14 @@ class Maps extends Component {
     this.props.ListadoSalas();
   };
 
+  currency = x => {
+    const parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return parts.join(".");
+  };
+
   render = () => {
     const { salas, region } = this.props;
-    console.log(salas);
     return (
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>
@@ -112,13 +116,13 @@ class Maps extends Component {
                     longitude: sala.longitud
                   }}
                   title={sala.descripcion}
-                  description={`Venta perdida: ${sala.venta_perdida}`}
+                  description={`Venta perdida: $${this.currency(sala.venta_perdida)}`}
                   style={{ zIndex: 1000 }}
                   onCalloutPress={() => {
                     Actions.salasInfo({ data: sala });
                   }}
                 >
-                  <Image source={logo} style={{  width: 70, height: 70, zIndex: -1 }} />
+                  <Image source={logo} style={{  width: 40, height: 40, zIndex: -1 }} />
                 </MapView.Marker.Animated>
               );
             }
@@ -130,7 +134,7 @@ class Maps extends Component {
 }
 
 const mapStateToProps = state => ({
-  region: state.maps.region,
+  region: state.salas.region,
   salas: state.salas.salas
 });
 

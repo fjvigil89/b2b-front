@@ -41,6 +41,11 @@ class SalasDetail extends React.Component {
     },
     delay: 100
   };
+  currency = x => {
+    const parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return parts.join(".");
+  };
 
   render() {
     let logo = "";
@@ -243,6 +248,50 @@ class SalasDetail extends React.Component {
               </View>
             </View>
           )}
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              paddingLeft: 10,
+              paddingRight: 10,
+              paddingBottom: 10,
+              marginTop: 10
+            }}
+          >
+            <View
+              style={{
+                flex: 0.5,
+                justifyContent: "center",
+                alignItems: "flex-start"
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Questrial"
+                }}
+              >
+                Venta Perdida 
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 0.5,
+                justifyContent: "center",
+                alignItems: "flex-end"
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Questrial"
+                }}
+              >
+             ${this.currency(this.props.data.venta_perdida)}
+              </Text>
+            </View>
+          </View>
         </TouchableOpacity>
       </Animatable.View>
     );
