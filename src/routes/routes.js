@@ -19,7 +19,7 @@ const Index = (
       <Scene key="root" hideNavBar>
         <Scene key="drawer" drawer contentComponent={Menu}>
           <Scene key="main" hideNavBar>
-            <Scene key="check" title="check" component={Check}/>
+            <Scene key="check" title="check" component={Check} initial/>
             <Scene key="wall" title="Wall" component={Wall} />
             <Scene
               hideNavBar
@@ -27,7 +27,7 @@ const Index = (
               component={Comments}
               title="WallComments"
             />
-            <Scene key="dashboard" title="Dashboard" component={Dashboard} initial/>
+            <Scene key="dashboard" title="Dashboard" component={Dashboard} />
             <Scene key="salasInfo" component={SalasInfo} title="SalasInfo" />
             <Scene key="maps" title="Maps" component={Maps}/>
           </Scene>
