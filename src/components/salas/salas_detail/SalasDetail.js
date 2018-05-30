@@ -24,7 +24,8 @@ class SalasDetail extends React.Component {
       cod_local: PropTypes.string,
       descripcion: PropTypes.string
     }),
-    delay: PropTypes.number
+    delay: PropTypes.number,
+    orderLostSale: PropTypes.bool
   };
 
   static defaultProps = {
@@ -40,6 +41,11 @@ class SalasDetail extends React.Component {
       descripcion: ""
     },
     delay: 100
+  };
+  currency = x => {
+    const parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return parts.join(".");
   };
 
   render() {
@@ -81,7 +87,6 @@ class SalasDetail extends React.Component {
     } else if (this.props.data.mide === 1 && this.props.data.realizada === 0) {
       imagen = require("@assets/images/pendiente-visita.png");
     }
-
     return (
       <Animatable.View
         animation="fadeInRight"
@@ -243,6 +248,50 @@ class SalasDetail extends React.Component {
               </View>
             </View>
           )}
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              paddingLeft: 10,
+              paddingRight: 10,
+              paddingBottom: 10,
+              marginTop: 10
+            }}
+          >
+            <View
+              style={{
+                flex: 0.5,
+                justifyContent: "center",
+                alignItems: "flex-start"
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Questrial"
+                }}
+              >
+                {this.props.orderLostSale? 'Distancia': 'Venta Perdida'}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 0.5,
+                justifyContent: "center",
+                alignItems: "flex-end"
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Questrial"
+                }}
+              >
+              {this.props.orderLostSale? `${this.props.data.kilometers} K` : `$${this.currency(this.props.data.venta_perdida)}`}
+              </Text>
+            </View>
+          </View>
         </TouchableOpacity>
       </Animatable.View>
     );

@@ -1,6 +1,7 @@
 export const initialState = {
   showSearch: false,
-  inputSearch: ""
+  inputSearch: "",
+  orderLostSale: true,
 };
 
 export default function salasHeader(state = initialState, action) {
@@ -22,6 +23,12 @@ export default function salasHeader(state = initialState, action) {
       return {
         ...state,
         inputSearch: action.text
+      };
+    }
+    case "SHOW_GEO_LOCATION": {
+      return {
+        ...state,
+        orderLostSale: !state.orderLostSale
       };
     }
     default:

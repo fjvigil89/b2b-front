@@ -11,6 +11,26 @@ export function ShowSearch() {
     });
 }
 
+export function ShowGeoLocation(validShowGeo) {
+  let typeSalas = 'SALAS_SHOW_GEO_LOCATION';
+  if(validShowGeo) {
+    typeSalas = 'SALAS_SHOW_LOST_SALE';
+  }
+
+  return dispatch =>
+    new Promise(async resolve => {
+      resolve(
+        dispatch({
+          type: "SHOW_GEO_LOCATION"
+        }),
+        
+        dispatch({
+          type: typeSalas
+        })
+      );
+    });
+}
+
 export function ClearSearch() {
   return dispatch =>
     new Promise(async resolve => {

@@ -21,13 +21,15 @@ import {
   ClearSearch,
   SearchByName,
   FilterSection,
-  ShowSearch
+  ShowSearch,
+  ShowGeoLocation
 } from "@components/salas/salas_header/SalasHeaderActions";
 
 class SalasHeader extends React.Component {
   static propTypes = {
     ClearSearch: PropTypes.func.isRequired,
     ShowSearch: PropTypes.func.isRequired,
+    ShowGeoLocation: PropTypes.func.isRequired,
     SearchByName: PropTypes.func.isRequired,
     FilterSection: PropTypes.func.isRequired,
     searchFilters: PropTypes.bool,
@@ -35,12 +37,14 @@ class SalasHeader extends React.Component {
     inputSearch: PropTypes.string,
     groupCadena: PropTypes.arrayOf(PropTypes.string),
     indexCancel: PropTypes.number,
-    indexClean: PropTypes.number
+    indexClean: PropTypes.number,
+    orderLostSale: PropTypes.bool,
   };
 
   static defaultProps = {
     searchFilters: false,
     isOpenSearch: false,
+    orderLostSale: true,
     inputSearch: "",
     groupCadena: ["Cancelar"],
     indexCancel: null,
@@ -51,10 +55,16 @@ class SalasHeader extends React.Component {
     this.ActionSheet.show();
   };
 
+  ShowGeoLocation = () => {
+    this.props.ShowGeoLocation(this.props.orderLostSale);
+  }
+
   render() {
     const iconFilters = this.props.searchFilters
       ? "ios-funnel"
       : "ios-funnel-outline";
+
+    const iconLocationLostSale = this.props.orderLostSale? 'logo-usd':'ios-navigate-outline';
 
     if (this.props.isOpenSearch) {
       return (
@@ -100,6 +110,9 @@ class SalasHeader extends React.Component {
           <Button transparent onPress={this.openFilter}>
             <Icon name={iconFilters} />
           </Button>
+          <Button transparent onPress={this.ShowGeoLocation}>
+            <Icon name={iconLocationLostSale} />
+          </Button>
 
           <ActionSheet
             ref={o => {
@@ -121,6 +134,7 @@ class SalasHeader extends React.Component {
 
 const mapStateToProps = state => ({
   isOpenSearch: state.salasHeader.showSearch,
+  orderLostSale: state.salasHeader.orderLostSale,
   inputSearch: state.salasHeader.inputSearch,
   searchFilters: state.salas.searchFilters,
   groupCadena: state.salas.groupCadena,
@@ -132,7 +146,8 @@ const mapDispatchToProps = {
   ClearSearch,
   ShowSearch,
   SearchByName,
-  FilterSection
+  FilterSection,
+  ShowGeoLocation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalasHeader);
