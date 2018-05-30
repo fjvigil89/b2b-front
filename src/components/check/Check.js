@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 // Components
 import LoginScreen from "@components/login/Login";
-import Dashboard from "@components/dashboard/Dashboard";
+import Wall from "@components/wall/Wall";
 import { CheckToken } from "@components/login/LoginActions.js";
 
 import Maps from "@components/maps/Maps";
@@ -33,7 +33,7 @@ class Check extends Component {
       return <LoginScreen />;
     }
 
-    return <Maps />;
+    return <Wall />;
   };
 }
 

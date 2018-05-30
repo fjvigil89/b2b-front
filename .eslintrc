@@ -35,5 +35,8 @@
     "react/no-multi-comp": "off",
     "linebreak-style": "off",
     "react/prefer-stateless-function": "off"
+  },
+  "globals": {
+    "FormData": true
   }
 }
