@@ -6,8 +6,8 @@ import { connect } from "react-redux";
 import LoginScreen from "@components/login/Login";
 import Wall from "@components/wall/Wall";
 import { CheckToken } from "@components/login/LoginActions.js";
-
 import Maps from "@components/maps/Maps";
+
 class Check extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool,
@@ -33,7 +33,7 @@ class Check extends Component {
       return <LoginScreen />;
     }
 
-    return <Wall />;
+    return <Maps />;
   };
 }
 
