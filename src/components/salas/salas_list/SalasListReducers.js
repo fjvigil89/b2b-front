@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { chain, orderBy } from "lodash";
 
 export const initialState = {
   loading: false,
@@ -12,13 +12,15 @@ export const initialState = {
   region: {}
 };
 
+import salasHeader from "@components/salas/salas_header/SalasHeaderReducers";
+
 export default function salas(state = initialState, action) {
   switch (action.type) {
     case "SALAS_LIST":
       {
         if (action.data) {
           let group = [];
-          group = _.chain(action.data)
+          group = chain(action.data)
             .groupBy("cadena")
             .map((obj, name) => name)
             .value();
@@ -28,7 +30,14 @@ export default function salas(state = initialState, action) {
 
           let dataSalas = [];
           action.data.map((sala, i) => {
-            sala.kilometers = getKilometros(sala.latitud, sala.longitud, state.region.latitude, state.region.longitude);
+            if(sala.latitud == 0 || sala.longitud == 0){
+              sala.kilometers = 'Sin distancia';
+              sala.prefijoKilometers = '';
+            } else {
+              sala.kilometers = getKilometros(sala.latitud, sala.longitud, state.region.latitude, state.region.longitude);
+              sala.prefijoKilometers = 'K';
+            }
+
             dataSalas.push(sala);
           });
 
@@ -56,7 +65,7 @@ export default function salas(state = initialState, action) {
       {
         return {
           ...state,
-          salas: _.orderBy(state.salas_backup, ['kilometers'], ['asc'])
+          salas: orderBy(state.salas_backup, ['kilometers'], ['asc'])
         };
       }
     case "SALAS_SHOW_LOST_SALE":
@@ -68,6 +77,10 @@ export default function salas(state = initialState, action) {
       }
     case "SALAS_FILTER_SECTION":
       {
+        let store = createStore(
+          salasHeader
+        );
+
         if (action.filter === state.indexCancel) {
           return state;
         }
@@ -106,6 +119,7 @@ export default function salas(state = initialState, action) {
           });
         } else {
           salasFiltradas = state.salas_backup;
+          sdfñljksdfklj
         }
 
         return {
@@ -143,7 +157,7 @@ export default function salas(state = initialState, action) {
 }
 
 export function getKilometros(lat1, lon1, lat2, lon2) {
-  rad = function (x) {
+  rad = (x) => {
     return x * Math.PI / 180;
   }
   var R = 6378.137;
