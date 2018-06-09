@@ -77,7 +77,7 @@ class Maps extends Component {
         <MapView
           style={{ flex: 1 }}
           region={region}
-          // onRegionChange={this.onRegionChange}
+          showsUserLocation={true}
         >
           {salas.map(sala => {
             if (sala.latitud && sala.longitud) {

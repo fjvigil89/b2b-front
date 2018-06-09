@@ -288,7 +288,7 @@ class SalasDetail extends React.Component {
                   fontFamily: "Questrial"
                 }}
               >
-              {this.props.orderLostSale? `${this.props.data.kilometers} K` : `$${this.currency(this.props.data.venta_perdida)}`}
+              {this.props.orderLostSale? `${this.props.data.kilometers}${this.props.data.prefijoKilometers}` : `$${this.currency(this.props.data.venta_perdida)}`}
               </Text>
             </View>
           </View>
