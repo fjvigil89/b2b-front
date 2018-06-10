@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Image, Text, View } from "react-native";
+import { Image } from "react-native";
 import {
   Container,
   Header,
