@@ -27,7 +27,6 @@ export default function CreateComment(post, content) {
           resolve(true);
         })
         .catch(() => {
-          console.log("Error?");
           reject();
         });
     }).catch(err => {
