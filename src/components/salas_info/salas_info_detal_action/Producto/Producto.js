@@ -8,9 +8,9 @@ class Producto extends React.Component {
       cadem: PropTypes.oneOfType([() => null, PropTypes.string]),
       descripcion: PropTypes.string,
       ean: PropTypes.number,
-      sventa: PropTypes.string,
+      sventa: PropTypes.number,
       stock: PropTypes.number,
-      stock_transito: PropTypes.oneOfType([() => null, PropTypes.number]),
+      stock_transito: PropTypes.oneOfType([() => null, PropTypes.number])
     }),
     flag: PropTypes.bool,
     accion: PropTypes.string
@@ -22,9 +22,9 @@ class Producto extends React.Component {
       cadem: null,
       descripcion: "",
       ean: 0,
-      sventa: "",
+      sventa: 0,
       stock: 0,
-      stock_transito: "",
+      stock_transito: ""
     },
     accion: ""
   };
@@ -126,26 +126,26 @@ class Producto extends React.Component {
           </Text>
         </View>
         {visibilityText && (
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            marginTop: 5
-          }}
-        >
-          <Text
+          <View
             style={{
-              marginLeft: 5,
-              fontSize: 12,
-              fontWeight: "bold",
-              fontFamily: "Questrial"
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              marginTop: 5
             }}
           >
-            Stock: {this.props.data.stock}
-          </Text>
-        </View>
+            <Text
+              style={{
+                marginLeft: 5,
+                fontSize: 12,
+                fontWeight: "bold",
+                fontFamily: "Questrial"
+              }}
+            >
+              Stock: {this.props.data.stock}
+            </Text>
+          </View>
         )}
         {this.props.flag && (
           <View
