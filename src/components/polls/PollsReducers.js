@@ -5,8 +5,10 @@ export const initialState = {
 
 export default function polls(state = initialState, action) {
   switch (action.type) {
+
     case "CURRENT_POSITION":
       {
+        console.log(action.data);
         return {
           ...state,
           position: action.data
