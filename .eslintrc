@@ -34,7 +34,9 @@
     "no-nested-ternary": "off",
     "react/no-multi-comp": "off",
     "linebreak-style": "off",
-    "react/prefer-stateless-function": "off"
+    "react/prefer-stateless-function": "off",
+    "no-restricted-syntax": "off",
+    "no-await-in-loop": "off"
   },
   "globals": {
     "FormData": true

@@ -15,10 +15,12 @@ import {
   View
 } from "native-base";
 import { Actions } from "react-native-router-flux";
+import { RefreshControl } from "react-native";
 
 import Publication from "@components/wall/publication/Publication";
 import Comment from "@components/wall/comments/comment/Comment";
 import { FullCommentPage } from "@components/wall/comments/CommentsActions";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 class Comments extends Component {
   static propTypes = {
@@ -34,14 +36,28 @@ class Comments extends Component {
     idPost: 0
   };
 
+  state = {
+    loading: false,
+    refreshing: false
+  };
+
   componentWillMount = () => {
-    this.props.FullCommentPage(this.props.idPost);
+    this.setState({
+      loading: true
+    });
+
+    this.props.FullCommentPage(this.props.idPost).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   render = () => {
     const { listComments, detailPublication } = this.props;
 
     const delay = 200;
+
     const listComment = listComments.map((detail, i) => {
       const listReplies = detail.replies.map(reply => (
         <Comment
@@ -55,6 +71,7 @@ class Comments extends Component {
           likes={reply.totalLikes}
           delay={delay * i}
           subcomment
+          image={reply.image}
         />
       ));
 
@@ -69,6 +86,7 @@ class Comments extends Component {
             enableLike={detail.enableLike}
             likes={detail.totalLikes}
             delay={delay * i}
+            image={detail.image}
           />
           {listReplies}
         </View>
@@ -94,7 +112,15 @@ class Comments extends Component {
           <Right />
         </Header>
 
-        <Content>
+        <Content
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.componentWillMount}
+              title="Recargar..."
+            />
+          }
+        >
           <Publication
             key={detailPublication.id}
             id={detailPublication.id}
@@ -104,6 +130,7 @@ class Comments extends Component {
             enableLike={detailPublication.enableLike}
             likes={detailPublication.totalLikes}
             comments={detailPublication.totalComments}
+            images={detailPublication.images}
           />
           <View
             style={{
@@ -139,6 +166,8 @@ class Comments extends Component {
           </View>
           {listComment}
         </Content>
+
+        {this.state.loading && <LoadingOverlay />}
       </Container>
     );
   };

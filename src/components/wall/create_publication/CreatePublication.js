@@ -279,12 +279,13 @@ class CreatePublication extends React.Component {
                 info
                 full
                 bordered
-                style={{ flex: 0.5, marginTop: 5 }}
+                style={{ flex: 1, marginTop: 5 }}
                 onPress={this.pickPhoto}
               >
                 <Icon style={{ fontSize: 30 }} name="ios-camera-outline" />
                 <Text>Tomar foto</Text>
               </Button>
+              {/*
               <Button
                 iconLeft
                 info
@@ -296,6 +297,7 @@ class CreatePublication extends React.Component {
                 <Icon style={{ fontSize: 30 }} name="ios-image-outline" />
                 <Text>Subir imagen</Text>
               </Button>
+              */}
             </View>
 
             {size(this.state.images) > 0 && (
