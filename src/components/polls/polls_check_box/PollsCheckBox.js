@@ -6,7 +6,6 @@ import {
     ListItem,
     Content,
     CheckBox,
-    View
   } from "native-base";
 
 
@@ -39,7 +38,6 @@ export default class PollsCheckBox extends React.Component {
                 data.item.config.map( (item, index) => 
                     {
                         return (<ListItem style={{width: '90%'}} onTouchStart={() => this.setState(state =>  {
-                            this.state.check.map((ch, i) => this.state.check[i] = false );
                             this.state.check[index] = !state.check[index];
                             return {
                                 check: state.check

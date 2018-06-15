@@ -16,6 +16,7 @@ import {
   Card,
   CardItem,
   Textarea,
+  Input,
 } from "native-base";
 
 import { StyleSheet, FlatList } from "react-native";
@@ -23,41 +24,67 @@ import { StyleSheet, FlatList } from "react-native";
 import StepIndicator from 'react-native-step-indicator';
 import SetCurrentPosition from "@components/polls/PollsActions";
 import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
+import PollsRadio from "@components/polls/polls_radio/PollsRadio";
 
 const dummyData = [
   {
     step: 1,
-    title: 'Usted está conforme con el desarrollo de B2B ?',
-    type: 'textArea',
-    config: []
+    title: 'Cuales son sus colores favoritos? ',
+    type: 'checkbox',
+    config: [
+      {
+        id: 14,
+        text: 'Azul'
+      },
+      {
+        id: 26,
+        text: 'Rojo'
+      },
+      {
+        id: 1,
+        text: 'Amarillo'
+      },
+      {
+        id: 23,
+        text: 'Verde'
+      },
+      {
+        id: 9,
+        text: 'Negro'
+      },
+      {
+        id: 2,
+        text: 'Verde'
+      }
+    ]
   },
   {
     step: 2,
+    title: 'Usted está conforme con el desarrollo de B2B ?',
+    type: 'textarea',
+    config: []
+  },
+  
+  {
+    step: 3,
     title: 'Le gusta la fluides de la apps? ',
     type: 'radio',
     config: [
       {
         id: 14,
-        text: 'Si'
+        text: 'Si',
+        config: {
+          title: '¿Por qué si?',
+          textArea: true
+        }
       },
       {
         id: 2,
-        text: 'No'
-      }
-    ]
-  },
-  {
-    step: 3,
-    title: 'Uffffffff? ',
-    type: 'radio',
-    config: [
-      {
-        id: 14,
-        text: 'Si'
-      },
-      {
-        id: 2,
-        text: 'No'
+        text: 'No',
+        config: {
+          title: '',
+          textArea: false
+        }
       }
     ]
   },
@@ -68,14 +95,28 @@ const dummyData = [
     config: [
       {
         id: 14,
-        text: 'Si'
+        text: 'Si',
+        config: {
+          title: '',
+          textArea: false
+        }
       },
       {
         id: 2,
-        text: 'No'
+        text: 'No',
+        config: {
+          title: 'Detalle sobre el porque no',
+          textArea: true
+        }
       }
     ]
-  }
+  },
+  {
+    step: 5,
+    title: '¿Cuál es su nombre?',
+    type: 'input',
+    config: []
+  },
 ];
 
 const styles = StyleSheet.create({
@@ -86,7 +127,7 @@ const styles = StyleSheet.create({
   },
   stepIndicator: {
     marginVertical:10,
-    paddingHorizontal:10
+    paddingHorizontal:10,
   },
   rowItem: {
     flex:5,
@@ -144,13 +185,12 @@ class Polls extends Component {
   componentWillMount = () => {
   };
 
-  onPageChange(position){
-    console.log('posicion; ',position);
+  onPageChange(position) {
+    console.log(position);
     this.props.SetCurrentPosition(position-1);
   }
 
   onViewableItemsChanged = ({ viewableItems}) => {
-    console.log(viewableItems);
     const visibleItemsCount = viewableItems.length;
     if(visibleItemsCount !== 0) {
       this.props.SetCurrentPosition(viewableItems[visibleItemsCount-1].index);
@@ -158,18 +198,48 @@ class Polls extends Component {
   }
 
   getContent = (data) => {
-    if(data.item.type === 'textArea') {
+    if(data.item.type === 'textarea') {
         return <View style= {{margin: 10}}>
-            <Textarea rowSpan={5}  bordered placeholder="Textarea" />
-        </View>
+                <Textarea rowSpan={5}  bordered placeholder="Textarea" />
+              </View>
+    } else if(data.item.type === 'radio') {
+      return <PollsRadio data={data}/>
+    } else if(data.item.type === 'input') {
+      return <View style= {{margin: 10}}>
+              <Input style={{ height: 35, borderColor: 'gray', borderWidth: 1}} />
+            </View>
     }
+    
 
     return <PollsCheckBox data={data}/>
   }
 
+  getButtonSend = (lengthData, index) => {
+    if(lengthData -1 === index) {
+      return <View
+                style={{
+                  paddingRight: 15,
+                  paddingTop: 30,
+                  flex: 1,
+                  alignSelf: 'flex-end'
+                }}
+              >
+                <Button
+                  onPress={() => {
+                    // Send form
+                  }}
+                  >
+                  <Text>Enviar encuesta</Text>
+                </Button>
+              </View>
+    }
+
+    return null;
+  }
+
   render = () => {
     const { position } = this.props;
-
+    const lengthData = dummyData.length;
     return (
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>
@@ -187,7 +257,7 @@ class Polls extends Component {
             <View style={styles.stepIndicator}>
               <StepIndicator
                 customStyles={stepIndicatorStyles}
-                stepCount={dummyData.length}
+                stepCount={lengthData}
                 direction='vertical'
                 currentPosition={position}
                 // labels={dummyData.map(item => item)}
@@ -209,12 +279,12 @@ class Polls extends Component {
                     </CardItem>
                   </Card>
                   
+                  {this.getButtonSend(lengthData, data.index)}
                 </View>
-              } 
+              }
               onViewableItemsChanged={this.onViewableItemsChanged}
               // viewabilityConfig={{itemVisiblePercentThreshold: 40}}
-              keyExtractor={item => item.title}
-            />
+              keyExtractor={item => item.title} />
         </View>
       </Container>
     );
