@@ -1,7 +1,16 @@
 import React from "react";
-import { View, StatusBar, Dimensions, Platform } from "react-native";
+import {
+  View,
+  StatusBar,
+  Dimensions,
+  Platform,
+  Alert,
+  ScrollView,
+  Image
+} from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { ImagePicker, Permissions } from "expo";
 import {
   Container,
   Button,
@@ -17,10 +26,13 @@ import {
   Icon
 } from "native-base";
 import { Actions } from "react-native-router-flux";
+import { size, isEmpty } from "lodash";
 
 import CreateComment from "@components/wall/comment_publication/CommentPublicationActions";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
-const deviceHeight = Dimensions.get("window").height;
+const { width } = Dimensions.get("window");
+
 const platform = Platform.OS;
 
 class CommentPublication extends React.Component {
@@ -36,13 +48,33 @@ class CommentPublication extends React.Component {
   };
 
   state = {
-    content: ""
+    content: "",
+    images: [],
+    loading: false,
+    buttonDisabled: false
   };
 
   createComment = () => {
-    this.props.CreateComment(this.props.post, this.state.content).then(() => {
-      Actions.pop();
+    this.setState({
+      loading: true
     });
+
+    this.props
+      .CreateComment(this.props.post, this.state.content, this.state.images)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
+
+        Actions.pop();
+      })
+      .catch(err => {
+        this.setState({
+          loading: false
+        });
+
+        Alert.alert("Error", err.message);
+      });
   };
 
   changeText = v => {
@@ -51,14 +83,76 @@ class CommentPublication extends React.Component {
     });
   };
 
+  pickImage = async () => {
+    const permissions = Permissions.CAMERA_ROLL;
+    const { status } = await Permissions.askAsync(permissions);
+
+    if (status === "granted") {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true
+      });
+
+      if (!result.cancelled) {
+        const tempImages = this.state.images;
+        const nextId = size(tempImages);
+
+        tempImages.push({ uri: result.uri, id: nextId + 1 });
+
+        this.setState({
+          buttonDisabled: true
+        });
+
+        this.setState({ images: tempImages });
+      }
+    } else {
+      Alert.alert(
+        "Acceso denegado",
+        "Habilita el acceso a la Camara en la configuración de tu dispositivo."
+      );
+    }
+  };
+
+  pickPhoto = async () => {
+    const permissions = Permissions.CAMERA_ROLL;
+    const permissionsCamera = Permissions.CAMERA;
+
+    const gallery = await Permissions.askAsync(permissions);
+    const camera = await Permissions.askAsync(permissionsCamera);
+
+    if (gallery.status === "granted" && camera.status === "granted") {
+      const result = await ImagePicker.launchCameraAsync();
+
+      if (!result.cancelled) {
+        const tempImages = this.state.images;
+        const nextId = size(tempImages);
+
+        tempImages.push({ uri: result.uri, id: nextId + 1 });
+
+        this.setState({
+          buttonDisabled: true
+        });
+
+        this.setState({ images: tempImages });
+      }
+    } else {
+      Alert.alert(
+        "Acceso denegado",
+        "Habilita el acceso a la Camara en la configuración de tu dispositivo."
+      );
+    }
+  };
+
   render() {
     const profile = require("@assets/images/profile.png");
 
     return (
-      <Container style={{ backgroundColor: "#F4F4F4" }}>
+      <Container style={{ backgroundColor: "#FFFFFF" }}>
         <StatusBar barStyle="dark-content" />
         <Header
-          style={{ borderBottomWidth: 0, backgroundColor: platform === "android" ? "#083D77" : "#F4F4F4" }}
+          style={{
+            borderBottomWidth: 0,
+            backgroundColor: platform === "android" ? "#083D77" : "#F4F4F4"
+          }}
           iosBarStyle="dark-content"
         >
           <Left>
@@ -77,7 +171,12 @@ class CommentPublication extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title style={{ fontSize: 14, color: platform === "android" ? "#FFF" : "#000" }}>
+            <Title
+              style={{
+                fontSize: 14,
+                color: platform === "android" ? "#FFF" : "#000"
+              }}
+            >
               COMENTAR PUBLICACION
             </Title>
           </Body>
@@ -87,7 +186,7 @@ class CommentPublication extends React.Component {
             </Button>
           </Right>
         </Header>
-        <Content scrollEnabled={false} enableAutoAutomaticScroll={false}>
+        <Content enableAutoAutomaticScroll={false}>
           <View
             style={{
               flex: 1,
@@ -170,14 +269,97 @@ class CommentPublication extends React.Component {
             <Textarea
               style={{
                 fontSize: 18,
-                height: deviceHeight - 135
+                height: 100
               }}
               value={this.state.content}
               onChangeText={v => this.changeText(v)}
               placeholder="Escribe tu comentario..."
             />
+
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row"
+              }}
+            >
+              <Button
+                iconLeft
+                info
+                full
+                bordered
+                disabled={this.state.buttonDisabled}
+                style={{ flex: 1, marginTop: 5 }}
+                onPress={this.pickPhoto}
+              >
+                <Icon style={{ fontSize: 30 }} name="ios-camera-outline" />
+                <Text>Tomar foto</Text>
+              </Button>
+              {/*
+              <Button
+                iconLeft
+                info
+                full
+                bordered
+                disabled={this.state.buttonDisabled}
+                style={{ flex: 0.5, marginTop: 5 }}
+                onPress={this.pickImage}
+              >
+                <Icon style={{ fontSize: 30 }} name="ios-image-outline" />
+                <Text>Subir imagen</Text>
+              </Button>
+              */}
+            </View>
+
+            {!isEmpty(this.state.images) && (
+              <View
+                style={{
+                  flex: 1
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 10
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#808080",
+                      fontSize: 12
+                    }}
+                  >
+                    1 Imagen para cargar
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row"
+                  }}
+                >
+                  <ScrollView
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    <Image
+                      style={{
+                        width,
+                        height: 250
+                      }}
+                      source={{ uri: this.state.images[0].uri }}
+                    />
+                  </ScrollView>
+                </View>
+              </View>
+            )}
           </View>
         </Content>
+
+        {this.state.loading && <LoadingOverlay />}
       </Container>
     );
   }

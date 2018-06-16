@@ -35,7 +35,7 @@ export default function salas(state = initialState, action) {
               sala.prefijoKilometers = '';
             } else {
               sala.kilometers = getKilometros(sala.latitud, sala.longitud, state.region.latitude, state.region.longitude);
-              sala.prefijoKilometers = 'K';
+              sala.prefijoKilometers = 'Km';
             }
 
             dataSalas.push(sala);

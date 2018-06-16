@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import * as Animatable from "react-native-animatable";
 import { Text, View } from "native-base";
 import { Actions } from "react-native-router-flux";
+import { isEmpty } from "lodash";
+import { Dimensions } from "react-native";
+import AutoHeightImage from "react-native-auto-height-image";
 
 import {
   LikeComment,
@@ -11,11 +14,14 @@ import {
   LikeReply,
   UnLikeReply
 } from "@components/wall/comments/comment/CommentAction.js";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 import moment from "moment";
 import "moment/locale/es";
 
 moment.locale("es");
+
+const width = Dimensions.get("window").width - 20;
 
 class Comment extends Component {
   static propTypes = {
@@ -31,7 +37,8 @@ class Comment extends Component {
     content: PropTypes.string,
     enableLike: PropTypes.bool,
     likes: PropTypes.number,
-    delay: PropTypes.number
+    delay: PropTypes.number,
+    image: PropTypes.string
   };
 
   static defaultProps = {
@@ -43,23 +50,60 @@ class Comment extends Component {
     content: "",
     enableLike: false,
     likes: 0,
-    delay: 0
+    delay: 0,
+    image: ""
+  };
+
+  state = {
+    loading: false
   };
 
   likeComment = () => {
-    this.props.LikeComment(this.props.idPost, this.props.id);
+    this.setState({
+      loading: true
+    });
+
+    this.props.LikeComment(this.props.idPost, this.props.id).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   unlikeComment = () => {
-    this.props.UnLikeComment(this.props.idPost, this.props.id);
+    this.setState({
+      loading: true
+    });
+
+    this.props.UnLikeComment(this.props.idPost, this.props.id).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   likeReply = () => {
-    this.props.LikeReply(this.props.idPost, this.props.id);
+    this.setState({
+      loading: true
+    });
+
+    this.props.LikeReply(this.props.idPost, this.props.id).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   unlikeReply = () => {
-    this.props.UnLikeReply(this.props.idPost, this.props.id);
+    this.setState({
+      loading: true
+    });
+
+    this.props.UnLikeReply(this.props.idPost, this.props.id).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   render = () => {
@@ -123,6 +167,28 @@ class Comment extends Component {
             >
               {content}
             </Text>
+
+            {!isEmpty(this.props.image) && (
+              <View
+                style={{
+                  flex: 1
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    marginTop: 10,
+                    marginBottom: 5
+                  }}
+                >
+                  <AutoHeightImage
+                    width={subcomment ? width - 50 : width}
+                    source={{ uri: this.props.image }}
+                  />
+                </View>
+              </View>
+            )}
 
             <View
               style={{
@@ -246,6 +312,7 @@ class Comment extends Component {
             </View>
           )}
         </View>
+        {this.state.loading && <LoadingOverlay />}
       </Animatable.View>
     );
   };

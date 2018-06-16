@@ -40,7 +40,8 @@ class SalasDetail extends React.Component {
       cod_local: "",
       descripcion: ""
     },
-    delay: 100
+    delay: 100,
+    orderLostSale: false
   };
   currency = x => {
     const parts = x.toString().split(".");

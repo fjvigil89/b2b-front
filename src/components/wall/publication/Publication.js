@@ -6,6 +6,7 @@ import { Actions } from "react-native-router-flux";
 import { isEmpty, size } from "lodash";
 import { ScrollView, Dimensions } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
+import AssetUtils from "expo-asset-utils";
 
 import {
   LikePublication,
@@ -48,8 +49,29 @@ class Publication extends Component {
   };
 
   state = {
-    loading: false
+    loading: false,
+    imagesArray: []
   };
+
+  async componentWillMount() {
+    const imagesArray = [];
+
+    if (!isEmpty(this.props.images)) {
+      let contador = 0;
+
+      for (const image of this.props.images) {
+        contador += 1;
+
+        const asset = await AssetUtils.resolveAsync(image.imagePath);
+
+        imagesArray.push({ uri: asset.localUri, id: contador });
+      }
+
+      this.setState({
+        imagesArray
+      });
+    }
+  }
 
   likePublication = () => {
     this.setState({
@@ -84,21 +106,10 @@ class Publication extends Component {
       enableLike,
       likes,
       comments,
-      margin,
-      images
+      margin
     } = this.props;
 
     const profile = require("@assets/images/profile.png");
-
-    const imagesArray = [];
-    if (!isEmpty(images)) {
-      let contador = 0;
-      images.forEach(image => {
-        contador += 1;
-
-        imagesArray.push({ uri: image.imagePath, id: contador });
-      });
-    }
 
     return (
       <View
@@ -193,13 +204,13 @@ class Publication extends Component {
               </Text>
             </View>
 
-            {!isEmpty(imagesArray) && (
+            {!isEmpty(this.state.imagesArray) && (
               <View
                 style={{
                   flex: 1
                 }}
               >
-                {size(imagesArray) > 1 && (
+                {size(this.state.imagesArray) > 1 && (
                   <View
                     style={{
                       flex: 1,
@@ -214,7 +225,7 @@ class Publication extends Component {
                         fontSize: 12
                       }}
                     >
-                      {size(imagesArray)} Imagenes
+                      {size(this.state.imagesArray)} Imagenes
                     </Text>
                   </View>
                 )}
@@ -223,7 +234,7 @@ class Publication extends Component {
                   style={{
                     flex: 1,
                     flexDirection: "row",
-                    marginTop: size(imagesArray) === 1 ? 10 : 0
+                    marginTop: size(this.state.imagesArray) === 1 ? 10 : 0
                   }}
                 >
                   <ScrollView
@@ -231,7 +242,7 @@ class Publication extends Component {
                     pagingEnabled
                     showsHorizontalScrollIndicator={false}
                   >
-                    {imagesArray.map(image => (
+                    {this.state.imagesArray.map(image => (
                       <AutoHeightImage
                         width={width}
                         source={{ uri: image.uri }}

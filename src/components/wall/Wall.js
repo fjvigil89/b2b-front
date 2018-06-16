@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import {
   Container,
   Header,
-  Content,
   Left,
   Right,
   Button,
@@ -12,57 +11,91 @@ import {
   Title,
   Body
 } from "native-base";
-import { RefreshControl } from "react-native";
+import {
+  RefreshControl,
+  ListView,
+  View,
+  ActivityIndicator
+} from "react-native";
 import Publication from "@components/wall/publication/Publication";
 import { Actions } from "react-native-router-flux";
+import { last, get } from "lodash";
 
-import GetListPost from "@components/wall/WallActions";
+import { GetListPost, GetMorePosts } from "@components/wall/WallActions";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 class Wall extends Component {
   static propTypes = {
     GetListPost: PropTypes.func.isRequired,
-    listPost: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.any]))
-  };
-
-  static defaultProps = {
-    listPost: []
+    GetMorePosts: PropTypes.func.isRequired
   };
 
   state = {
-    loading: false,
-    refreshing: false
+    refreshing: false,
+    isLoadingMore: false,
+    data: null,
+    dataSource: null,
+    isLoading: true,
+    lastId: 0
   };
 
-  componentWillMount = () => {
+  async componentWillMount() {
+    const listadoPosts = await this.props.GetListPost();
+
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
+
+    const lastId = get(last(listadoPosts.data.posts), "id");
+
     this.setState({
-      loading: true
+      isLoading: false,
+      dataSource: ds.cloneWithRows(listadoPosts.data.posts),
+      data: listadoPosts.data.posts,
+      lastId
+    });
+  }
+
+  async refreshWall() {
+    this.setState({
+      isLoading: true
     });
 
-    this.props.GetListPost().then(() => {
-      this.setState({
-        loading: false
-      });
+    const listadoPosts = await this.props.GetListPost();
+
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
     });
-  };
+
+    const lastId = get(last(listadoPosts.data.posts), "id");
+
+    this.setState({
+      isLoading: false,
+      dataSource: ds.cloneWithRows(listadoPosts.data.posts),
+      data: listadoPosts.data.posts,
+      lastId
+    });
+  }
+
+  async fetchMore() {
+    const morePosts = await this.props.GetMorePosts(this.state.lastId);
+
+    const fullPostsList = this.state.data.concat(morePosts.data.posts);
+
+    const lastId = get(last(morePosts.data.posts), "id");
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(fullPostsList),
+      isLoadingMore: false,
+      data: fullPostsList,
+      lastId
+    });
+  }
 
   render = () => {
-    const { listPost } = this.props;
-
-    const listWall = listPost.map(detail => (
-      <Publication
-        key={detail.id}
-        id={detail.id}
-        userName={detail.userName}
-        date={detail.date}
-        content={detail.content}
-        enableLike={detail.enableLike}
-        likes={detail.totalLikes}
-        comments={detail.totalComments}
-        images={detail.images}
-        margin
-      />
-    ));
+    if (this.state.isLoading) {
+      return <LoadingOverlay />;
+    }
 
     return (
       <Container style={{ backgroundColor: "#F0F0F0" }}>
@@ -86,20 +119,39 @@ class Wall extends Component {
             </Button>
           </Right>
         </Header>
-
-        <Content
+        <ListView
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
-              onRefresh={this.componentWillMount}
+              onRefresh={() => this.refreshWall()}
               title="Recargar..."
             />
           }
-        >
-          {listWall}
-        </Content>
-
-        {this.state.loading && <LoadingOverlay />}
+          dataSource={this.state.dataSource}
+          renderRow={detail => (
+            <Publication
+              id={detail.id}
+              userName={detail.userName}
+              date={detail.date}
+              content={detail.content}
+              enableLike={detail.enableLike}
+              likes={detail.totalLikes}
+              comments={detail.totalComments}
+              images={detail.images}
+              margin
+            />
+          )}
+          onEndReached={() =>
+            this.setState({ isLoadingMore: true }, () => this.fetchMore())
+          }
+          renderFooter={() =>
+            this.state.isLoadingMore && (
+              <View style={{ flex: 1, padding: 10 }}>
+                <ActivityIndicator size="small" />
+              </View>
+            )
+          }
+        />
       </Container>
     );
   };
@@ -111,7 +163,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  GetListPost
+  GetListPost,
+  GetMorePosts
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wall);

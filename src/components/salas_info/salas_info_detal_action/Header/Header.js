@@ -88,9 +88,9 @@ class Header extends React.Component {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "flex-start",
-            width: deviceWidth
+            width: deviceWidth,
+            marginTop: 30,
+            paddingRight: 90
           }}
         >
           <Text
@@ -99,8 +99,7 @@ class Header extends React.Component {
               fontFamily: "Questrial",
               fontWeight: "bold",
               marginBottom: 10,
-              marginTop: 70,
-              paddingRight: 90
+              alignItems: "flex-start"
             }}
           >
             {this.props.nombreSala}
@@ -108,8 +107,7 @@ class Header extends React.Component {
           <Text
             style={{
               fontSize: 14,
-              fontFamily: "Questrial",
-              paddingRight: 90
+              fontFamily: "Questrial"
             }}
           >
             Categoria : {this.props.categoria}
