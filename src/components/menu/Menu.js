@@ -31,6 +31,10 @@ class SideBar extends Component {
     Actions.maps();
   };
 
+  polls = () => {
+    Actions.polls();
+  };
+
   render() {
     const deviceHeight = Dimensions.get("window").height;
     const deviceWidth = Dimensions.get("window").width;
@@ -142,6 +146,25 @@ class SideBar extends Component {
                 }}
               >
                 Mapa
+              </Text>
+            </Left>
+          </ListItem>
+          <ListItem button noBorder onPress={this.polls}>
+            <Left>
+              <Icon
+                active
+                name="ios-navigate-outline"
+                style={{ fontSize: 26, width: 30 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Encuestas
               </Text>
             </Left>
           </ListItem>

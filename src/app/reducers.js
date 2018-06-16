@@ -7,6 +7,7 @@ import productos from "@components/salas_info/salas_info_detal_action/SalasInfoD
 import wall from "@components/wall/WallReducers";
 import comments from "@components/wall/comments/CommentsReducers";
 import publications from "@components/wall/publication/PublicationReducers";
+import polls from "@components/polls/PollsReducers";
 
 const rehydrated = (state = false, action) => {
   switch (action.type) {
@@ -27,5 +28,6 @@ export default {
   productos,
   wall,
   comments,
-  publications
+  publications,
+  polls
 };

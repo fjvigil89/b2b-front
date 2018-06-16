@@ -12,15 +12,12 @@ export default function CreateComment(postId, content) {
         content
       };
 
-      console.log(formForSend);
-
       return axios({
         method: "POST",
         url: "http://b2b-app.us-east-1.elasticbeanstalk.com/comment",
         data: formForSend
       })
         .then(response => {
-          console.log(response.data);
           resolve(
             dispatch({
               type: "NEW_COMMENT",
