@@ -2,7 +2,7 @@ import axios from "axios";
 import { size } from "lodash";
 
 import ErrorMessages from "@constants/errors";
-import GetListPost from "@components/wall/WallActions";
+import { GetListPost } from "@components/wall/WallActions";
 
 export default function CreatePost(content, imagenes) {
   return dispatch =>
@@ -58,7 +58,9 @@ export default function CreatePost(content, imagenes) {
         .then(() => {
           resolve(dispatch(GetListPost()));
         })
-        .catch(() => reject());
+        .catch(err => {
+          reject(err);
+        });
     }).catch(err => {
       throw err;
     });

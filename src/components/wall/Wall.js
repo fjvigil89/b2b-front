@@ -17,42 +17,40 @@ import {
   View,
   ActivityIndicator
 } from "react-native";
-import Publication from "@components/wall/publication/Publication";
 import { Actions } from "react-native-router-flux";
-import { last, get } from "lodash";
 
 import { GetListPost, GetMorePosts } from "@components/wall/WallActions";
+import Publication from "@components/wall/publication/Publication";
+import LoginScreen from "@components/login/Login";
+
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 class Wall extends Component {
   static propTypes = {
     GetListPost: PropTypes.func.isRequired,
-    GetMorePosts: PropTypes.func.isRequired
+    GetMorePosts: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
+    lastId: PropTypes.number,
+    data: PropTypes.oneOfType([PropTypes.any])
+  };
+
+  static defaultProps = {
+    isAuthenticated: false,
+    lastId: 0,
+    data: []
   };
 
   state = {
     refreshing: false,
     isLoadingMore: false,
-    data: null,
-    dataSource: null,
-    isLoading: true,
-    lastId: 0
+    isLoading: true
   };
 
   async componentWillMount() {
-    const listadoPosts = await this.props.GetListPost();
-
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-
-    const lastId = get(last(listadoPosts.data.posts), "id");
+    await this.props.GetListPost();
 
     this.setState({
-      isLoading: false,
-      dataSource: ds.cloneWithRows(listadoPosts.data.posts),
-      data: listadoPosts.data.posts,
-      lastId
+      isLoading: false
     });
   }
 
@@ -61,41 +59,37 @@ class Wall extends Component {
       isLoading: true
     });
 
-    const listadoPosts = await this.props.GetListPost();
+    await this.props.GetListPost();
+
+    this.setState({
+      isLoading: false
+    });
+  }
+
+  async fetchMore(lastId) {
+    await this.props.GetMorePosts(lastId);
+
+    this.setState({
+      isLoadingMore: false
+    });
+  }
+
+  render = () => {
+    const { isAuthenticated, data, lastId } = this.props;
+
+    if (!isAuthenticated) {
+      return <LoginScreen />;
+    }
+
+    if (this.state.isLoading) {
+      return <LoadingOverlay />;
+    }
 
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
 
-    const lastId = get(last(listadoPosts.data.posts), "id");
-
-    this.setState({
-      isLoading: false,
-      dataSource: ds.cloneWithRows(listadoPosts.data.posts),
-      data: listadoPosts.data.posts,
-      lastId
-    });
-  }
-
-  async fetchMore() {
-    const morePosts = await this.props.GetMorePosts(this.state.lastId);
-
-    const fullPostsList = this.state.data.concat(morePosts.data.posts);
-
-    const lastId = get(last(morePosts.data.posts), "id");
-
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(fullPostsList),
-      isLoadingMore: false,
-      data: fullPostsList,
-      lastId
-    });
-  }
-
-  render = () => {
-    if (this.state.isLoading) {
-      return <LoadingOverlay />;
-    }
+    const dsList = ds.cloneWithRows(data);
 
     return (
       <Container style={{ backgroundColor: "#F0F0F0" }}>
@@ -127,7 +121,7 @@ class Wall extends Component {
               title="Recargar..."
             />
           }
-          dataSource={this.state.dataSource}
+          dataSource={dsList}
           renderRow={detail => (
             <Publication
               id={detail.id}
@@ -142,7 +136,7 @@ class Wall extends Component {
             />
           )}
           onEndReached={() =>
-            this.setState({ isLoadingMore: true }, () => this.fetchMore())
+            this.setState({ isLoadingMore: true }, () => this.fetchMore(lastId))
           }
           renderFooter={() =>
             this.state.isLoadingMore && (
@@ -158,8 +152,9 @@ class Wall extends Component {
 }
 
 const mapStateToProps = state => ({
-  listPost: state.wall.listPost,
-  refresh: state.wall.refresh
+  isAuthenticated: state.user.isAuthenticated,
+  data: state.wall.data,
+  lastId: state.wall.lastId
 });
 
 const mapDispatchToProps = {
@@ -167,4 +162,7 @@ const mapDispatchToProps = {
   GetMorePosts
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wall);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Wall);

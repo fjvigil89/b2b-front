@@ -153,7 +153,7 @@ class SideBar extends Component {
             <Left>
               <Icon
                 active
-                name="ios-navigate-outline"
+                name="ios-list-box-outline"
                 style={{ fontSize: 26, width: 30 }}
               />
               <Text
@@ -197,4 +197,7 @@ const mapDispatchToProps = {
   Logout
 };
 
-export default connect(null, mapDispatchToProps)(SideBar);
+export default connect(
+  null,
+  mapDispatchToProps
+)(SideBar);

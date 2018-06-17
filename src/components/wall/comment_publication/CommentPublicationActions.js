@@ -3,7 +3,7 @@ import { size } from "lodash";
 
 import ErrorMessages from "@constants/errors";
 
-import GetListPost from "@components/wall/WallActions";
+import { GetListPost } from "@components/wall/WallActions";
 import { FullCommentPage } from "@components/wall/comments/CommentsActions";
 
 export default function CreateComment(post, content, imagenes) {

@@ -33,15 +33,13 @@ export function GetMorePosts(lastId) {
         .then(async response => {
           resolve(
             dispatch({
-              type: "GET_LIST_POST",
+              type: "GET_LIST_POST_MORE",
               data: response.data
             })
           );
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        )
+        .catch(error => {
+          reject(error);
+        })
     );
 }

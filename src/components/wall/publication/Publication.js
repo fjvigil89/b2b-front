@@ -397,4 +397,7 @@ const mapDispatchToProps = {
   UnLikePublication
 };
 
-export default connect(null, mapDispatchToProps)(Publication);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Publication);

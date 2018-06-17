@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import GetListPost from "@components/wall/WallActions";
+import { GetListPost } from "@components/wall/WallActions";
 
 export function detailPost(idPost) {
   return axios({
@@ -42,11 +42,9 @@ export function LikePublication(idPost) {
 
           resolve(true);
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        );
+        .catch(error => {
+          reject(error);
+        });
     });
 }
 

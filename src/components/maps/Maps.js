@@ -15,13 +15,17 @@ import {
 import { Actions } from "react-native-router-flux";
 import { MapView } from "expo";
 
-import { ListadoSalas, GetLocationAsync } from "@components/salas/salas_list/SalasListActions";
-
+import {
+  ListadoSalas,
+  GetLocationAsync
+} from "@components/salas/salas_list/SalasListActions";
+import LoginScreen from "@components/login/Login";
 
 class Maps extends Component {
   static propTypes = {
     GetLocationAsync: PropTypes.func.isRequired,
     ListadoSalas: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
     region: PropTypes.shape({
       latitude: PropTypes.number,
       longitude: PropTypes.number,
@@ -45,7 +49,8 @@ class Maps extends Component {
 
   static defaultProps = {
     region: {},
-    salas: []
+    salas: [],
+    isAuthenticated: false
   };
 
   componentWillMount = () => {
@@ -60,7 +65,12 @@ class Maps extends Component {
   };
 
   render = () => {
-    const { salas, region } = this.props;
+    const { salas, region, isAuthenticated } = this.props;
+
+    if (!isAuthenticated) {
+      return <LoginScreen />;
+    }
+
     return (
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>
@@ -74,11 +84,7 @@ class Maps extends Component {
           </Body>
           <Right />
         </Header>
-        <MapView
-          style={{ flex: 1 }}
-          region={region}
-          showsUserLocation={true}
-        >
+        <MapView style={{ flex: 1 }} region={region} showsUserLocation>
           {salas.map(sala => {
             if (sala.latitud && sala.longitud) {
               let logo = "";
@@ -108,24 +114,33 @@ class Maps extends Component {
               } else {
                 logo = require("@assets/images/alvi.png");
               }
+
               return (
-                <MapView.Marker.Animated draggable
+                <MapView.Marker.Animated
+                  draggable
                   key={sala.cod_local}
                   coordinate={{
                     latitude: sala.latitud,
                     longitude: sala.longitud
                   }}
                   title={sala.descripcion}
-                  description={`Venta perdida: $${this.currency(sala.venta_perdida)}`}
+                  description={`Venta perdida: $${this.currency(
+                    sala.venta_perdida
+                  )}`}
                   style={{ zIndex: 1000 }}
                   onCalloutPress={() => {
                     Actions.salasInfo({ data: sala });
                   }}
                 >
-                  <Image source={logo} style={{  width: 40, height: 40, zIndex: -1 }} />
+                  <Image
+                    source={logo}
+                    style={{ width: 40, height: 40, zIndex: -1 }}
+                  />
                 </MapView.Marker.Animated>
               );
             }
+
+            return false;
           })}
         </MapView>
       </Container>
@@ -134,6 +149,7 @@ class Maps extends Component {
 }
 
 const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated,
   region: state.salas.region,
   salas: state.salas.salas
 });
@@ -143,4 +159,7 @@ const mapDispatchToProps = {
   ListadoSalas
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Maps);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Maps);
