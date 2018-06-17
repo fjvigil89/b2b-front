@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default function GetListPost() {
+export function GetListPost() {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
@@ -20,5 +20,26 @@ export default function GetListPost() {
             message: error.response.data.error
           })
         )
+    );
+}
+
+export function GetMorePosts(lastId) {
+  return dispatch =>
+    new Promise(async (resolve, reject) =>
+      axios({
+        method: "GET",
+        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/post/skip/${lastId}`
+      })
+        .then(async response => {
+          resolve(
+            dispatch({
+              type: "GET_LIST_POST_MORE",
+              data: response.data
+            })
+          );
+        })
+        .catch(error => {
+          reject(error);
+        })
     );
 }

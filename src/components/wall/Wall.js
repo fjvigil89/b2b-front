@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import {
   Container,
   Header,
-  Content,
   Left,
   Right,
   Button,
@@ -12,41 +11,85 @@ import {
   Title,
   Body
 } from "native-base";
-import Publication from "@components/wall/publication/Publication";
+import {
+  RefreshControl,
+  ListView,
+  View,
+  ActivityIndicator
+} from "react-native";
 import { Actions } from "react-native-router-flux";
 
-import GetListPost from "@components/wall/WallActions";
+import { GetListPost, GetMorePosts } from "@components/wall/WallActions";
+import Publication from "@components/wall/publication/Publication";
+import LoginScreen from "@components/login/Login";
+
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 class Wall extends Component {
   static propTypes = {
     GetListPost: PropTypes.func.isRequired,
-    listPost: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.any]))
+    GetMorePosts: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
+    lastId: PropTypes.number,
+    data: PropTypes.oneOfType([PropTypes.any])
   };
 
   static defaultProps = {
-    listPost: []
+    isAuthenticated: false,
+    lastId: 0,
+    data: []
   };
 
-  componentWillMount = () => {
-    this.props.GetListPost();
+  state = {
+    refreshing: false,
+    isLoadingMore: false,
+    isLoading: true
   };
+
+  async componentWillMount() {
+    await this.props.GetListPost();
+
+    this.setState({
+      isLoading: false
+    });
+  }
+
+  async refreshWall() {
+    this.setState({
+      isLoading: true
+    });
+
+    await this.props.GetListPost();
+
+    this.setState({
+      isLoading: false
+    });
+  }
+
+  async fetchMore(lastId) {
+    await this.props.GetMorePosts(lastId);
+
+    this.setState({
+      isLoadingMore: false
+    });
+  }
 
   render = () => {
-    const { listPost } = this.props;
+    const { isAuthenticated, data, lastId } = this.props;
 
-    const listWall = listPost.map(detail => (
-      <Publication
-        key={detail.id}
-        id={detail.id}
-        userName={detail.userName}
-        date={detail.date}
-        content={detail.content}
-        enableLike={detail.enableLike}
-        likes={detail.totalLikes}
-        comments={detail.totalComments}
-        margin
-      />
-    ));
+    if (!isAuthenticated) {
+      return <LoginScreen />;
+    }
+
+    if (this.state.isLoading) {
+      return <LoadingOverlay />;
+    }
+
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
+
+    const dsList = ds.cloneWithRows(data);
 
     return (
       <Container style={{ backgroundColor: "#F0F0F0" }}>
@@ -70,20 +113,56 @@ class Wall extends Component {
             </Button>
           </Right>
         </Header>
-
-        <Content>{listWall}</Content>
+        <ListView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => this.refreshWall()}
+              title="Recargar..."
+            />
+          }
+          dataSource={dsList}
+          renderRow={detail => (
+            <Publication
+              id={detail.id}
+              userName={detail.userName}
+              date={detail.date}
+              content={detail.content}
+              enableLike={detail.enableLike}
+              likes={detail.totalLikes}
+              comments={detail.totalComments}
+              images={detail.images}
+              margin
+            />
+          )}
+          onEndReached={() =>
+            this.setState({ isLoadingMore: true }, () => this.fetchMore(lastId))
+          }
+          renderFooter={() =>
+            this.state.isLoadingMore && (
+              <View style={{ flex: 1, padding: 10 }}>
+                <ActivityIndicator size="small" />
+              </View>
+            )
+          }
+        />
       </Container>
     );
   };
 }
 
 const mapStateToProps = state => ({
-  listPost: state.wall.listPost,
-  refresh: state.wall.refresh
+  isAuthenticated: state.user.isAuthenticated,
+  data: state.wall.data,
+  lastId: state.wall.lastId
 });
 
 const mapDispatchToProps = {
-  GetListPost
+  GetListPost,
+  GetMorePosts
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wall);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Wall);

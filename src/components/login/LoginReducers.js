@@ -31,7 +31,6 @@ export default function user(state = initialState, action) {
     }
     case "CHECK_TOKEN": {
       const validToken = !!state.token;
-
       if (validToken) {
         axios.defaults.headers.common.Authorization = `Bearer ${state.token}`;
 

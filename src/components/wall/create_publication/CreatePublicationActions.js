@@ -1,12 +1,50 @@
 import axios from "axios";
+import { size } from "lodash";
 
 import ErrorMessages from "@constants/errors";
-import GetListPost from "@components/wall/WallActions";
+import { GetListPost } from "@components/wall/WallActions";
 
-export default function CreatePost(content) {
+export default function CreatePost(content, imagenes) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       if (!content) return reject({ message: ErrorMessages.noContent });
+
+      if (size(imagenes) > 0) {
+        const formData = new FormData();
+
+        let counter = 0;
+        imagenes.forEach(imagen => {
+          const uriParts = imagen.uri.split(".");
+          const fileType = uriParts[uriParts.length - 1];
+
+          formData.append(
+            `images`,
+            {
+              uri: imagen.uri,
+              name: `imagen.${fileType}`,
+              type: `image/${fileType}`
+            },
+            `imagen${counter}`
+          );
+
+          counter += 1;
+        });
+
+        formData.append("content", content);
+
+        return axios({
+          method: "POST",
+          url: "http://b2b-app.us-east-1.elasticbeanstalk.com/post",
+          data: formData,
+          config: { headers: { "Content-Type": "multipart/form-data" } }
+        })
+          .then(() => {
+            resolve(dispatch(GetListPost()));
+          })
+          .catch(err => {
+            reject(err);
+          });
+      }
 
       const formForSend = {
         content
@@ -20,8 +58,10 @@ export default function CreatePost(content) {
         .then(() => {
           resolve(dispatch(GetListPost()));
         })
-        .catch(() => reject());
+        .catch(err => {
+          reject(err);
+        });
     }).catch(err => {
-      throw err.message;
+      throw err;
     });
 }

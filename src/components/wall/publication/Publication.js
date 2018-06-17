@@ -3,15 +3,23 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Text, View, Thumbnail, Button, Icon } from "native-base";
 import { Actions } from "react-native-router-flux";
+import { isEmpty, size } from "lodash";
+import { ScrollView, Dimensions } from "react-native";
+import AutoHeightImage from "react-native-auto-height-image";
+import AssetUtils from "expo-asset-utils";
+
 import {
   LikePublication,
   UnLikePublication
 } from "@components/wall/publication/PublicationActions";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 import moment from "moment";
 import "moment/locale/es";
 
 moment.locale("es");
+
+const width = Dimensions.get("window").width - 20;
 
 class Publication extends Component {
   static propTypes = {
@@ -24,7 +32,8 @@ class Publication extends Component {
     enableLike: PropTypes.bool,
     likes: PropTypes.number,
     comments: PropTypes.number,
-    margin: PropTypes.bool
+    margin: PropTypes.bool,
+    images: PropTypes.oneOfType([PropTypes.any])
   };
 
   static defaultProps = {
@@ -35,15 +44,57 @@ class Publication extends Component {
     enableLike: false,
     likes: 0,
     comments: 0,
-    margin: false
+    margin: false,
+    images: []
   };
 
+  state = {
+    loading: false,
+    imagesArray: []
+  };
+
+  async componentWillMount() {
+    const imagesArray = [];
+
+    if (!isEmpty(this.props.images)) {
+      let contador = 0;
+
+      for (const image of this.props.images) {
+        contador += 1;
+
+        const asset = await AssetUtils.resolveAsync(image.imagePath);
+
+        imagesArray.push({ uri: asset.localUri, id: contador });
+      }
+
+      this.setState({
+        imagesArray
+      });
+    }
+  }
+
   likePublication = () => {
-    this.props.LikePublication(this.props.id);
+    this.setState({
+      loading: true
+    });
+
+    this.props.LikePublication(this.props.id).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   unlikePublication = () => {
-    this.props.UnLikePublication(this.props.id);
+    this.setState({
+      loading: true
+    });
+
+    this.props.UnLikePublication(this.props.id).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   render = () => {
@@ -152,6 +203,56 @@ class Publication extends Component {
                 {content}
               </Text>
             </View>
+
+            {!isEmpty(this.state.imagesArray) && (
+              <View
+                style={{
+                  flex: 1
+                }}
+              >
+                {size(this.state.imagesArray) > 1 && (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 10
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#808080",
+                        fontSize: 12
+                      }}
+                    >
+                      {size(this.state.imagesArray)} Imagenes
+                    </Text>
+                  </View>
+                )}
+
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    marginTop: size(this.state.imagesArray) === 1 ? 10 : 0
+                  }}
+                >
+                  <ScrollView
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    {this.state.imagesArray.map(image => (
+                      <AutoHeightImage
+                        width={width}
+                        source={{ uri: image.uri }}
+                        key={image.id}
+                      />
+                    ))}
+                  </ScrollView>
+                </View>
+              </View>
+            )}
 
             <View
               style={{
@@ -275,7 +376,7 @@ class Publication extends Component {
                   <Text
                     style={{
                       fontSize: 13,
-                      fontFamily: "Questrial",
+                      fontFamily: "Questrial"
                     }}
                   >
                     Comentar
@@ -285,6 +386,7 @@ class Publication extends Component {
             </View>
           </View>
         </View>
+        {this.state.loading && <LoadingOverlay />}
       </View>
     );
   };
@@ -295,4 +397,7 @@ const mapDispatchToProps = {
   UnLikePublication
 };
 
-export default connect(null, mapDispatchToProps)(Publication);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Publication);

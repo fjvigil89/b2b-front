@@ -12,6 +12,7 @@ import Maps from "@components/maps/Maps";
 import CreatePublication from "@components/wall/create_publication/CreatePublication";
 import CommentPublication from "@components/wall/comment_publication/CommentPublication";
 import RespondComment from "@components/wall/respond_comment/RespondComment";
+import Polls from "@components/polls/Polls";
 
 const Index = (
   <Router>
@@ -19,7 +20,7 @@ const Index = (
       <Scene key="root" hideNavBar>
         <Scene key="drawer" drawer contentComponent={Menu}>
           <Scene key="main" hideNavBar>
-            <Scene key="check" title="check" component={Check} initial />
+            <Scene key="check" title="check" component={Check} initial/>
             <Scene key="wall" title="Wall" component={Wall} />
             <Scene
               hideNavBar
@@ -29,7 +30,8 @@ const Index = (
             />
             <Scene key="dashboard" title="Dashboard" component={Dashboard} />
             <Scene key="salasInfo" component={SalasInfo} title="SalasInfo" />
-            <Scene key="maps" title="Maps" component={Maps} />
+            <Scene key="maps" title="Maps" component={Maps}/>
+            <Scene key="polls" title="Polls" component={Polls} />
           </Scene>
         </Scene>
       </Scene>

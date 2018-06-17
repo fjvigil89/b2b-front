@@ -10,11 +10,13 @@ import NoSalas from "@components/salas/salas_empty/SalasEmpty";
 
 import {
   ListadoSalas,
-  ListadoSalasWithRefresh
+  ListadoSalasWithRefresh,
+  GetLocationAsync
 } from "@components/salas/salas_list/SalasListActions";
 
 class SalasList extends Component {
   static propTypes = {
+    GetLocationAsync: PropTypes.func.isRequired,
     ListadoSalas: PropTypes.func.isRequired,
     ListadoSalasWithRefresh: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
@@ -29,21 +31,24 @@ class SalasList extends Component {
         direccion: PropTypes.string
       })
     ),
-    refreshing: PropTypes.bool
+    refreshing: PropTypes.bool,
+    orderLostSale: PropTypes.bool,
   };
 
   static defaultProps = {
     isLoading: false,
     salas: [],
-    refreshing: false
+    refreshing: false,
+    orderLostSale: true
   };
 
   componentWillMount = () => {
+    this.props.GetLocationAsync();
     this.props.ListadoSalas();
   };
 
   render = () => {
-    const { isLoading, salas, refreshing } = this.props;
+    const { isLoading, salas, refreshing, orderLostSale } = this.props;
 
     if (isLoading) {
       return <Loading />;
@@ -51,7 +56,7 @@ class SalasList extends Component {
 
     const delay = 200;
     const detailListadoSalas = salas.map((sala, i) => (
-      <SalasDetail data={sala} key={sala.cod_local} delay={delay * i} />
+      <SalasDetail data={sala} key={sala.cod_local} delay={delay * i} orderLostSale={orderLostSale}/>
     ));
 
     return (
@@ -74,12 +79,14 @@ class SalasList extends Component {
 const mapStateToProps = state => ({
   salas: state.salas.salas,
   isLoading: state.salas.loading,
-  refreshing: state.salas.refreshing
+  refreshing: state.salas.refreshing,
+  orderLostSale: state.salasHeader.orderLostSale
 });
 
 const mapDispatchToProps = {
   ListadoSalas,
-  ListadoSalasWithRefresh
+  ListadoSalasWithRefresh,
+  GetLocationAsync
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalasList);
