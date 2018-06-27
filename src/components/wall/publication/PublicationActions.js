@@ -36,9 +36,9 @@ export function LikePublication(idPost) {
         }
       })
         .then(async () => {
-          await dispatch(GetListPost());
+          // await dispatch(GetListPost());
 
-          await dispatch(DetailPublication(idPost));
+          // await dispatch(DetailPublication(idPost));
 
           resolve(true);
         })
@@ -56,9 +56,7 @@ export function UnLikePublication(idPost) {
         url: `http://b2b-app.us-east-1.elasticbeanstalk.com/likePost/${idPost}`
       })
         .then(async () => {
-          await dispatch(GetListPost());
-
-          await dispatch(DetailPublication(idPost));
+          // await dispatch(DetailPublication(idPost));
 
           resolve(true);
         })

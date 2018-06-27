@@ -6,7 +6,8 @@ import {
   Platform,
   Alert,
   ScrollView,
-  Image
+  Image,
+  DeviceEventEmitter
 } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -62,6 +63,8 @@ class CommentPublication extends React.Component {
     this.props
       .CreateComment(this.props.post, this.state.content, this.state.images)
       .then(() => {
+        DeviceEventEmitter.emit(`publicationsEvents-${this.props.post}`, {});
+
         this.setState({
           loading: false
         });

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { DeviceEventEmitter } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Text, View, Thumbnail, Button, Icon } from "native-base";
@@ -48,9 +49,25 @@ class Publication extends Component {
     images: []
   };
 
+  constructor(props) {
+    super(props);
+
+    DeviceEventEmitter.addListener(
+      `publicationsEvents-${this.props.id}`,
+      () => {
+        this.setState({
+          comments: this.state.comments + 1
+        });
+      }
+    );
+  }
+
   state = {
     loading: false,
-    imagesArray: []
+    imagesArray: [],
+    likes: this.props.likes,
+    enableLike: this.props.enableLike,
+    comments: this.props.comments
   };
 
   async componentWillMount() {
@@ -80,7 +97,9 @@ class Publication extends Component {
 
     this.props.LikePublication(this.props.id).then(() => {
       this.setState({
-        loading: false
+        loading: false,
+        likes: this.state.likes + 1,
+        enableLike: false
       });
     });
   };
@@ -92,22 +111,15 @@ class Publication extends Component {
 
     this.props.UnLikePublication(this.props.id).then(() => {
       this.setState({
-        loading: false
+        loading: false,
+        likes: this.state.likes - 1,
+        enableLike: true
       });
     });
   };
 
   render = () => {
-    const {
-      id,
-      userName,
-      date,
-      content,
-      enableLike,
-      likes,
-      comments,
-      margin
-    } = this.props;
+    const { id, userName, date, content, margin } = this.props;
 
     const profile = require("@assets/images/profile.png");
 
@@ -275,7 +287,7 @@ class Publication extends Component {
                     color: "#007aff"
                   }}
                 >
-                  {likes} Me gusta
+                  {this.state.likes} Me gusta
                 </Text>
               </View>
               <View
@@ -292,12 +304,12 @@ class Publication extends Component {
                     color: "#007aff"
                   }}
                   onPress={() => {
-                    if (comments > 0) {
+                    if (this.state.comments > 0) {
                       Actions.wallComments({ idPost: id });
                     }
                   }}
                 >
-                  {comments} Comentarios
+                  {this.state.comments} Comentarios
                 </Text>
               </View>
             </View>
@@ -315,7 +327,7 @@ class Publication extends Component {
                   alignItems: "center"
                 }}
               >
-                {!enableLike && (
+                {!this.state.enableLike && (
                   <Button
                     iconLeft
                     transparent
@@ -336,7 +348,7 @@ class Publication extends Component {
                   </Button>
                 )}
 
-                {enableLike && (
+                {this.state.enableLike && (
                   <Button
                     iconLeft
                     transparent
@@ -397,7 +409,4 @@ const mapDispatchToProps = {
   UnLikePublication
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Publication);
+export default connect(null, mapDispatchToProps)(Publication);

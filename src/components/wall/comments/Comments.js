@@ -112,60 +112,62 @@ class Comments extends Component {
           <Right />
         </Header>
 
-        <Content
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.componentWillMount}
-              title="Recargar..."
-            />
-          }
-        >
-          <Publication
-            key={detailPublication.id}
-            id={detailPublication.id}
-            userName={detailPublication.userName}
-            date={detailPublication.date}
-            content={detailPublication.content}
-            enableLike={detailPublication.enableLike}
-            likes={detailPublication.totalLikes}
-            comments={detailPublication.totalComments}
-            images={detailPublication.images}
-          />
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row"
-            }}
+        {!this.state.loading && (
+          <Content
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.componentWillMount}
+                title="Recargar..."
+              />
+            }
           >
+            <Publication
+              key={detailPublication.id}
+              id={detailPublication.id}
+              userName={detailPublication.userName}
+              date={detailPublication.date}
+              content={detailPublication.content}
+              enableLike={detailPublication.enableLike}
+              likes={detailPublication.totalLikes}
+              comments={detailPublication.totalComments}
+              images={detailPublication.images}
+            />
             <View
               style={{
                 flex: 1,
-                justifyContent: "flex-end",
-                alignItems: "center",
-                borderTopColor: "#F4F4F4",
-                borderTopWidth: 5,
-                borderBottomColor: "#F4F4F4",
-                borderBottomWidth: 5,
-                paddingTop: 5,
-                paddingBottom: 5,
-                backgroundColor: "#FFF"
+                flexDirection: "row"
               }}
             >
-              <Text
+              <View
                 style={{
-                  fontSize: 12,
-                  fontFamily: "Bree",
-                  fontWeight: "bold",
-                  marginBottom: 0
+                  flex: 1,
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  borderTopColor: "#F4F4F4",
+                  borderTopWidth: 5,
+                  borderBottomColor: "#F4F4F4",
+                  borderBottomWidth: 5,
+                  paddingTop: 5,
+                  paddingBottom: 5,
+                  backgroundColor: "#FFF"
                 }}
               >
-                Comentarios
-              </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "Bree",
+                    fontWeight: "bold",
+                    marginBottom: 0
+                  }}
+                >
+                  Comentarios
+                </Text>
+              </View>
             </View>
-          </View>
-          {listComment}
-        </Content>
+            {listComment}
+          </Content>
+        )}
 
         {this.state.loading && <LoadingOverlay />}
       </Container>
