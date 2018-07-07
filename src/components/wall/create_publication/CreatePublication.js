@@ -23,13 +23,16 @@ import {
   Header,
   Textarea,
   Thumbnail,
-  Icon
+  Icon,
+  List,
+  ListItem
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { ImagePicker, Permissions } from "expo";
-import { size } from "lodash";
+import { size, filter, take } from "lodash";
 
 import CreatePost from "@components/wall/create_publication/CreatePublicationActions";
+import { GetHashtags } from "@components/wall/WallActions";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 const platform = Platform.OS;
@@ -38,9 +41,12 @@ const { width } = Dimensions.get("window");
 class CreatePublication extends React.Component {
   static propTypes = {
     CreatePost: PropTypes.func.isRequired,
+    GetHashtags: PropTypes.func.isRequired,
+    hashtags: PropTypes.oneOfType([PropTypes.any]),
     user: PropTypes.string
   };
   static defaultProps = {
+    hashtags: [],
     user: ""
   };
 
@@ -54,8 +60,16 @@ class CreatePublication extends React.Component {
   state = {
     content: "",
     images: [],
-    loading: false
+    loading: false,
+    showHashtag: false,
+    hashtags: [],
+    inputHashtag: "",
+    auxText: ""
   };
+
+  async componentWillMount() {
+    await this.props.GetHashtags();
+  }
 
   createPost = () => {
     this.setState({
@@ -102,18 +116,75 @@ class CreatePublication extends React.Component {
     const previousMustBeSpace = this.previousChar.trim().length === 0;
 
     if (lastChar === "#" && previousMustBeSpace) {
-      // this.startTracking();
-      this.isTrackingStarted = true;
-      console.log("Empiezo con el #");
+      this.startTracking(v);
+      return;
     } else if ((lastChar === " " && this.isTrackingStarted) || v === "") {
-      console.log("Paro #");
-      // this.stopTracking();
+      this.stopTracking();
     }
 
     this.previousChar = lastChar;
 
-    console.log(previousMustBeSpace, lastChar, this.isTrackingStarted);
+    if (this.isTrackingStarted) {
+      this.identifyKeyword(v);
+    }
   };
+
+  startTracking(v) {
+    this.isTrackingStarted = true;
+
+    this.setState({
+      showHashtag: true,
+      inputHashtag: v
+    });
+  }
+
+  stopTracking() {
+    this.isTrackingStarted = false;
+
+    this.setState({
+      showHashtag: false,
+      hashtags: [],
+      inputHashtag: "",
+      auxText: ""
+    });
+  }
+
+  identifyKeyword(content) {
+    const sizeAuxContent = size(this.state.inputHashtag);
+
+    const val = content.slice(sizeAuxContent);
+
+    const validHashtags = take(
+      filter(this.props.hashtags, hash => {
+        if (hash.text.match(new RegExp(`^#${val}`, "gi"))) {
+          return true;
+        }
+        return false;
+      }),
+      5
+    );
+
+    this.setState({
+      hashtags: validHashtags,
+      auxText: val
+    });
+  }
+
+  autocompleteHashtag(hashtagSelected) {
+    const sizeInputHashtag = size(this.state.auxText);
+
+    const differenceHastagSelected = hashtagSelected.slice(
+      sizeInputHashtag + 1
+    );
+
+    this.stopTracking();
+
+    this.previousChar = " ";
+
+    this.setState({
+      content: `${this.state.content}${differenceHastagSelected} `
+    });
+  }
 
   pickImage = async () => {
     const permissions = Permissions.CAMERA_ROLL;
@@ -305,6 +376,23 @@ class CreatePublication extends React.Component {
               placeholder="Escribe lo que piensas..."
             />
 
+            {this.state.showHashtag && (
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                <List
+                  dataArray={this.state.hashtags}
+                  renderRow={item => (
+                    <ListItem
+                      onPress={() => {
+                        this.autocompleteHashtag(item.text);
+                      }}
+                    >
+                      <Text>{item.text}</Text>
+                    </ListItem>
+                  )}
+                />
+              </View>
+            )}
+
             <View
               style={{
                 flex: 1,
@@ -408,14 +496,13 @@ class CreatePublication extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user.user
+  user: state.user.user,
+  hashtags: state.wall.hashtags
 });
 
 const mapDispatchToProps = {
-  CreatePost
+  CreatePost,
+  GetHashtags
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreatePublication);
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePublication);

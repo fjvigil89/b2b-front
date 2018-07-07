@@ -3,7 +3,8 @@ import { get, last } from "lodash";
 export const initialState = {
   data: null,
   lastId: 0,
-  refresh: false
+  refresh: false,
+  hashtags: []
 };
 
 export default function wall(state = initialState, action) {
@@ -61,6 +62,17 @@ export default function wall(state = initialState, action) {
           ...state,
           data: newListOfPosts,
           refresh: !state.refresh
+        };
+      }
+
+      return initialState;
+    }
+
+    case "SET_HASHTAGS": {
+      if (action.data) {
+        return {
+          ...state,
+          hashtags: action.data.hashtags
         };
       }
 
