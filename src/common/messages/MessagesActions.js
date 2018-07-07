@@ -8,7 +8,7 @@ export default function(dispatch, type, val) {
     let message = val;
     if (!val) {
       if (type === "success") message = "Success";
-      if (type === "error") message = "Sorry, an error occurred";
+      if (type === "error") message = "Lo sentimos, ha ocurrido un error.";
       if (type === "info") message = "Something is happening...";
       if (type === "loading" && val !== false) message = true;
     }

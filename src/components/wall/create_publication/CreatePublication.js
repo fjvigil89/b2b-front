@@ -6,7 +6,8 @@ import {
   Platform,
   Alert,
   Image,
-  ScrollView
+  ScrollView,
+  DeviceEventEmitter
 } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -43,6 +44,13 @@ class CreatePublication extends React.Component {
     user: ""
   };
 
+  constructor() {
+    super();
+
+    this.previousChar = " ";
+    this.isTrackingStarted = false;
+  }
+
   state = {
     content: "",
     images: [],
@@ -55,13 +63,25 @@ class CreatePublication extends React.Component {
     });
 
     this.props
-      .CreatePost(this.state.content, this.state.images)
+      .CreatePost(this.state.content, this.state.images, this.props.user)
       .then(() => {
         this.setState({
           loading: false
         });
 
         Actions.pop();
+
+        setTimeout(() => {
+          Alert.alert("Exito", "La Publicación ha sido creada.", [
+            {
+              text: "Ver Publicación",
+              onPress: () => {
+                DeviceEventEmitter.emit(`wallEvent`, {});
+              }
+            },
+            { text: "Cancelar", style: "cancel" }
+          ]);
+        }, 500);
       })
       .catch(err => {
         this.setState({
@@ -76,6 +96,23 @@ class CreatePublication extends React.Component {
     this.setState({
       content: v
     });
+
+    const lastChar = v.substr(v.length - 1);
+
+    const previousMustBeSpace = this.previousChar.trim().length === 0;
+
+    if (lastChar === "#" && previousMustBeSpace) {
+      // this.startTracking();
+      this.isTrackingStarted = true;
+      console.log("Empiezo con el #");
+    } else if ((lastChar === " " && this.isTrackingStarted) || v === "") {
+      console.log("Paro #");
+      // this.stopTracking();
+    }
+
+    this.previousChar = lastChar;
+
+    console.log(previousMustBeSpace, lastChar, this.isTrackingStarted);
   };
 
   pickImage = async () => {
@@ -378,4 +415,7 @@ const mapDispatchToProps = {
   CreatePost
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatePublication);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreatePublication);

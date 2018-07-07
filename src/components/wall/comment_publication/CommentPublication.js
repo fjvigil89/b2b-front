@@ -63,13 +63,21 @@ class CommentPublication extends React.Component {
     this.props
       .CreateComment(this.props.post, this.state.content, this.state.images)
       .then(() => {
-        DeviceEventEmitter.emit(`publicationsEvents-${this.props.post}`, {});
-
         this.setState({
           loading: false
         });
 
         Actions.pop();
+
+        setTimeout(() => {
+          DeviceEventEmitter.emit(`publicationEvent-${this.props.post}`, {
+            event: "comment"
+          });
+
+          Alert.alert("Exito", "El Comentario ha sido realizado.", [
+            { text: "OK" }
+          ]);
+        }, 500);
       })
       .catch(err => {
         this.setState({
@@ -376,4 +384,7 @@ const mapDispatchToProps = {
   CreateComment
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentPublication);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CommentPublication);

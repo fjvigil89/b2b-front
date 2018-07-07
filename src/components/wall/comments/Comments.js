@@ -132,6 +132,7 @@ class Comments extends Component {
               likes={detailPublication.totalLikes}
               comments={detailPublication.totalComments}
               images={detailPublication.images}
+              flagComments
             />
             <View
               style={{
@@ -186,4 +187,7 @@ const mapDispatchToProps = {
   FullCommentPage
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Comments);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Comments);
