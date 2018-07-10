@@ -8,12 +8,14 @@ class PollsCheckBox extends Component {
   static propTypes = {
     ChangeInput: PropTypes.func.isRequired,
     data: PropTypes.oneOfType([PropTypes.any]),
-    position: PropTypes.number
+    position: PropTypes.number,
+    value: PropTypes.oneOfType([PropTypes.any])
   };
 
   static defaultProps = {
     data: {},
-    position: 0
+    position: 0,
+    value: null
   };
 
   state = {
@@ -21,9 +23,13 @@ class PollsCheckBox extends Component {
   };
 
   componentWillMount = () => {
-    this.props.data.config.map(
-      (item, index) => (this.state.check[index] = false)
-    );
+    if (this.props.value) {
+      this.state.check = this.props.value;
+    } else {
+      this.props.data.config.map(
+        (item, index) => (this.state.check[index] = false)
+      );
+    }
   };
 
   render = () => {
@@ -65,7 +71,9 @@ class PollsCheckBox extends Component {
   };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  value: state.polls.value
+});
 
 const mapDispatchToProps = {
   ChangeInput

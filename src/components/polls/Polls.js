@@ -23,11 +23,7 @@ import {
 } from "native-base";
 
 import StepIndicator from "react-native-step-indicator";
-import {
-  SetCurrentPosition,
-  SetValidForm,
-  ChangeInput
-} from "@components/polls/PollsActions";
+import { SetValidForm, ChangeInput } from "@components/polls/PollsActions";
 import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
 import PollsRadio from "@components/polls/polls_radio/PollsRadio";
 
@@ -124,7 +120,7 @@ const dummyData = [
   },
   {
     step: 6,
-    title: "¿Cuál es su nombre?",
+    title: "¿Cuál es su apellido?",
     type: "input",
     config: []
   }
@@ -156,7 +152,6 @@ const customStyles = {
 
 class Polls extends Component {
   static propTypes = {
-    SetCurrentPosition: PropTypes.func.isRequired,
     SetValidForm: PropTypes.func.isRequired,
     ChangeInput: PropTypes.func.isRequired,
     position: PropTypes.number,
@@ -180,7 +175,43 @@ class Polls extends Component {
     });
   };
 
-  getContent = (data, position) => {
+  getContent = position => {
+    if (this.state.lengthData === this.props.position) {
+      return (
+        <Content>
+          <Card>
+            <CardItem header>
+              <Text>Encuesta finalizada :)</Text>
+            </CardItem>
+          </Card>
+        </Content>
+      );
+    }
+
+    return (
+      <Content>
+        <View style={{ paddingVertical: 30 }}>
+          <StepIndicator
+            customStyles={customStyles}
+            currentPosition={position}
+            stepCount={this.state.lengthData}
+          />
+        </View>
+        <Card>
+          <CardItem header>
+            <Text>{dummyData[position].title}</Text>
+          </CardItem>
+          {this.getForm(dummyData[position], position)}
+
+          <CardItem footer>
+            <Text style={{ color: "red" }}>{this.errors()}</Text>
+          </CardItem>
+        </Card>
+      </Content>
+    );
+  };
+
+  getForm = (data, position) => {
     if (data.type === "textarea") {
       return (
         <View style={{ margin: 10 }}>
@@ -211,39 +242,12 @@ class Polls extends Component {
     return <PollsCheckBox data={data} position={position} />;
   };
 
-  getButtonSend = (lengthData, index) => {
-    if (lengthData - 1 === index) {
-      return (
-        <View
-          style={{
-            paddingRight: 15,
-            paddingTop: 30,
-            flex: 1,
-            alignSelf: "flex-end"
-          }}
-        >
-          <Button
-            onPress={() => {
-              // Send form
-            }}
-          >
-            <Text>Enviar encuesta</Text>
-          </Button>
-        </View>
-      );
-    }
-
-    return null;
-  };
   getFooter = () => {
-    if (this.state.lengthData - 1 === this.props.position) {
+    if (this.state.lengthData === this.props.position) {
       return (
         <Footer>
           <FooterTab>
-            <Button onPress={this.previousPosition}>
-              <Text>Anterior</Text>
-            </Button>
-            <Button active>
+            <Button active onPress={this.finish}>
               <Text>Finalizar</Text>
             </Button>
           </FooterTab>
@@ -277,14 +281,26 @@ class Polls extends Component {
   };
   nextPosition = () => {
     this.props.SetValidForm({
-      position: this.props.position + 1,
+      position: this.props.position,
       type: "NEXT_POSITION"
     });
   };
 
   previousPosition = () => {
     if (this.props.position > 0) {
-      this.props.SetCurrentPosition(this.props.position - 1);
+      this.props.SetValidForm({
+        position: this.props.position,
+        type: "PREVIOUS_POSITION"
+      });
+    }
+  };
+
+  finish = () => {
+    if (this.props.position > 0) {
+      this.props.SetValidForm({
+        position: this.props.position,
+        type: "FINISH"
+      });
     }
   };
 
@@ -307,24 +323,7 @@ class Polls extends Component {
           <Right />
         </Header>
 
-        <Content>
-          <View style={{ paddingVertical: 30 }}>
-            <StepIndicator
-              customStyles={customStyles}
-              currentPosition={position}
-            />
-          </View>
-          <Card>
-            <CardItem header>
-              <Text>{dummyData[position].title}</Text>
-            </CardItem>
-            {this.getContent(dummyData[position], position)}
-
-            <CardItem footer>
-              <Text style={{ color: "red" }}>{this.errors()}</Text>
-            </CardItem>
-          </Card>
-        </Content>
+        {this.getContent(position)}
         {this.getFooter()}
       </Container>
     );
@@ -338,7 +337,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  SetCurrentPosition,
   SetValidForm,
   ChangeInput
 };
