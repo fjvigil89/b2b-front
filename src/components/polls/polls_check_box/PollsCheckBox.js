@@ -23,6 +23,28 @@ class PollsCheckBox extends Component {
   };
 
   componentWillMount = () => {
+    this.state.position = this.props.position;
+    this.config();
+  };
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.position !== this.state.position) {
+      let check = [];
+      if (this.props.value) {
+        check = this.props.value;
+      } else {
+        this.props.data.config.map((item, index) => (check[index] = false));
+      }
+
+      this.setState(state => ({
+        ...state,
+        position: nextProps.position,
+        check
+      }));
+    }
+  }
+
+  config() {
     if (this.props.value) {
       this.state.check = this.props.value;
     } else {
@@ -30,7 +52,7 @@ class PollsCheckBox extends Component {
         (item, index) => (this.state.check[index] = false)
       );
     }
-  };
+  }
 
   render = () => {
     const { data } = this.props;

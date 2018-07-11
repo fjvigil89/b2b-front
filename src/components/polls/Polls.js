@@ -61,13 +61,36 @@ const dummyData = [
   },
   {
     step: 2,
+    title: "Cuales son sus ensaladas favoritas? ",
+    type: "checkbox",
+    config: [
+      {
+        id: 14,
+        text: "Repollo"
+      },
+      {
+        id: 26,
+        text: "Lechuga"
+      },
+      {
+        id: 1,
+        text: "Tomate"
+      },
+      {
+        id: 23,
+        text: "Pepino"
+      }
+    ]
+  },
+  {
+    step: 3,
     title: "Usted está conforme con el desarrollo de B2B ?",
     type: "textarea",
     config: []
   },
 
   {
-    step: 3,
+    step: 4,
     title: "Le gusta la fluides de la apps? ",
     type: "radio",
     config: [
@@ -90,7 +113,7 @@ const dummyData = [
     ]
   },
   {
-    step: 4,
+    step: 5,
     title: "Cuantas personas? ",
     type: "radio",
     config: [
@@ -113,13 +136,13 @@ const dummyData = [
     ]
   },
   {
-    step: 5,
+    step: 6,
     title: "¿Cuál es su nombre?",
     type: "input",
     config: []
   },
   {
-    step: 6,
+    step: 7,
     title: "¿Cuál es su apellido?",
     type: "input",
     config: []
@@ -247,6 +270,19 @@ class Polls extends Component {
       return (
         <Footer>
           <FooterTab>
+            <Button active>
+              <Text>Ir a encuesta</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      );
+    } else if (this.state.lengthData - 1 === this.props.position) {
+      return (
+        <Footer>
+          <FooterTab>
+            <Button onPress={this.previousPosition}>
+              <Text>Anterior</Text>
+            </Button>
             <Button active onPress={this.finish}>
               <Text>Finalizar</Text>
             </Button>

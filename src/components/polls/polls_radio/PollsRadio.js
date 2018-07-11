@@ -28,10 +28,33 @@ class PollsRadio extends Component {
   };
 
   state = {
-    check: []
+    check: [],
+    position: 0
   };
 
   componentWillMount = () => {
+    this.state.position = this.props.position;
+    this.config();
+  };
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.position !== this.state.position) {
+      let check = [];
+      if (this.props.value) {
+        check = this.props.value;
+      } else {
+        this.props.data.config.map((item, index) => (check[index] = false));
+      }
+
+      this.setState(state => ({
+        ...state,
+        position: nextProps.position,
+        check
+      }));
+    }
+  }
+
+  config() {
     if (this.props.value) {
       this.state.check = this.props.value;
     } else {
@@ -39,7 +62,7 @@ class PollsRadio extends Component {
         (item, index) => (this.state.check[index] = false)
       );
     }
-  };
+  }
 
   addTextArea = (item, state) => {
     if (item.config.textArea && state === true) {

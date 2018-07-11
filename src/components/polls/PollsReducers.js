@@ -1,4 +1,4 @@
-import { findIndex } from "lodash";
+import { findIndex, forEach } from "lodash";
 
 export const initialState = {
   position: 0,
@@ -20,9 +20,39 @@ export default function polls(state = initialState, action) {
       };
     }
     case "FINISH": {
-      console.log(state.form);
+      if (state.value) {
+        const index = findIndex(
+          state.form,
+          o => o.step === action.data.position
+        );
+
+        if (index === -1) {
+          state.form.push({
+            step: action.data.position,
+            value: state.value
+          });
+        } else {
+          state.form[index].value = state.value;
+        }
+        const position = action.data.position + 1;
+
+        const form = forEach(state.form, value => {
+          value.step += 1;
+          return value;
+        });
+        console.log(form);
+        return {
+          ...state,
+          position,
+          isError: false,
+          value: null,
+          form
+        };
+      }
+
       return {
-        ...state
+        ...state,
+        isError: true
       };
     }
 
