@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export function SetValidForm(obj) {
   return dispatch =>
     new Promise(async resolve => {
@@ -20,4 +22,27 @@ export function ChangeInput(obj) {
         })
       );
     });
+}
+
+export function GetPoll() {
+  return dispatch =>
+    new Promise(async (resolve, reject) =>
+      axios({
+        method: "GET",
+        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta"
+      })
+        .then(async response => {
+          resolve(
+            dispatch({
+              type: "GET_POLL",
+              data: response.data
+            })
+          );
+        })
+        .catch(error =>
+          reject({
+            message: error.response.data.error
+          })
+        )
+    );
 }

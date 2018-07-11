@@ -4,11 +4,29 @@ export const initialState = {
   position: 0,
   form: [],
   value: null,
-  isError: false
+  isError: false,
+  dataPoll: [],
+  lengthPoll: 0
 };
 
 export default function polls(state = initialState, action) {
   switch (action.type) {
+    case "GET_POLL": {
+      if (action.data) {
+        console.log(action.data);
+        return {
+          ...state,
+          position: 0,
+          form: [],
+          value: null,
+          isError: false,
+          dataPoll: action.data,
+          lengthPoll: action.data.length
+        };
+      }
+
+      return initialState;
+    }
     case "PREVIOUS_POSITION": {
       const position = action.data.position - 1;
       const value = objetPosition(position, state.form);
@@ -99,7 +117,9 @@ export default function polls(state = initialState, action) {
         position: 0,
         form: [],
         value: null,
-        isError: false
+        isError: false,
+        lengthPoll: 0,
+        dataPoll: []
       };
   }
 }

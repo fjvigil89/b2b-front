@@ -23,131 +23,13 @@ import {
 } from "native-base";
 
 import StepIndicator from "react-native-step-indicator";
-import { SetValidForm, ChangeInput } from "@components/polls/PollsActions";
+import {
+  SetValidForm,
+  ChangeInput,
+  GetPoll
+} from "@components/polls/PollsActions";
 import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
 import PollsRadio from "@components/polls/polls_radio/PollsRadio";
-
-const dummyData = [
-  {
-    step: 1,
-    title: "Cuales son sus colores favoritos? ",
-    type: "checkbox",
-    config: [
-      {
-        id: 14,
-        text: "Azul"
-      },
-      {
-        id: 26,
-        text: "Rojo"
-      },
-      {
-        id: 1,
-        text: "Amarillo"
-      },
-      {
-        id: 23,
-        text: "Verde"
-      },
-      {
-        id: 9,
-        text: "Negro"
-      },
-      {
-        id: 2,
-        text: "Verde"
-      }
-    ]
-  },
-  {
-    step: 2,
-    title: "Cuales son sus ensaladas favoritas? ",
-    type: "checkbox",
-    config: [
-      {
-        id: 14,
-        text: "Repollo"
-      },
-      {
-        id: 26,
-        text: "Lechuga"
-      },
-      {
-        id: 1,
-        text: "Tomate"
-      },
-      {
-        id: 23,
-        text: "Pepino"
-      }
-    ]
-  },
-  {
-    step: 3,
-    title: "Usted está conforme con el desarrollo de B2B ?",
-    type: "textarea",
-    config: []
-  },
-
-  {
-    step: 4,
-    title: "Le gusta la fluides de la apps? ",
-    type: "radio",
-    config: [
-      {
-        id: 14,
-        text: "Si",
-        config: {
-          title: "¿Por qué si?",
-          textArea: true
-        }
-      },
-      {
-        id: 2,
-        text: "No",
-        config: {
-          title: "",
-          textArea: false
-        }
-      }
-    ]
-  },
-  {
-    step: 5,
-    title: "Cuantas personas? ",
-    type: "radio",
-    config: [
-      {
-        id: 14,
-        text: "Si",
-        config: {
-          title: "",
-          textArea: false
-        }
-      },
-      {
-        id: 2,
-        text: "No",
-        config: {
-          title: "Detalle sobre el porque no",
-          textArea: true
-        }
-      }
-    ]
-  },
-  {
-    step: 6,
-    title: "¿Cuál es su nombre?",
-    type: "input",
-    config: []
-  },
-  {
-    step: 7,
-    title: "¿Cuál es su apellido?",
-    type: "input",
-    config: []
-  }
-];
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -177,29 +59,28 @@ class Polls extends Component {
   static propTypes = {
     SetValidForm: PropTypes.func.isRequired,
     ChangeInput: PropTypes.func.isRequired,
+    GetPoll: PropTypes.func.isRequired,
     position: PropTypes.number,
     isError: PropTypes.bool,
-    value: PropTypes.oneOfType([() => null, PropTypes.any])
+    value: PropTypes.oneOfType([() => null, PropTypes.any]),
+    dataPoll: PropTypes.oneOfType([() => null, PropTypes.any]),
+    lengthPoll: PropTypes.number
   };
 
   static defaultProps = {
     position: 0,
     value: null,
-    isError: false
-  };
-
-  state = {
-    lengthData: false
+    isError: false,
+    dataPoll: [],
+    lengthPoll: 0
   };
 
   componentWillMount = () => {
-    this.setState({
-      lengthData: dummyData.length
-    });
+    this.props.GetPoll();
   };
 
   getContent = position => {
-    if (this.state.lengthData === this.props.position) {
+    if (this.props.lengthPoll === this.props.position) {
       return (
         <Content>
           <Card>
@@ -217,14 +98,14 @@ class Polls extends Component {
           <StepIndicator
             customStyles={customStyles}
             currentPosition={position}
-            stepCount={this.state.lengthData}
+            stepCount={this.props.lengthPoll}
           />
         </View>
         <Card>
           <CardItem header>
-            <Text>{dummyData[position].title}</Text>
+            <Text>{this.props.dataPoll[position].title}</Text>
           </CardItem>
-          {this.getForm(dummyData[position], position)}
+          {this.getForm(this.props.dataPoll[position], position)}
 
           <CardItem footer>
             <Text style={{ color: "red" }}>{this.errors()}</Text>
@@ -266,7 +147,7 @@ class Polls extends Component {
   };
 
   getFooter = () => {
-    if (this.state.lengthData === this.props.position) {
+    if (this.props.lengthPoll === this.props.position) {
       return (
         <Footer>
           <FooterTab>
@@ -276,7 +157,7 @@ class Polls extends Component {
           </FooterTab>
         </Footer>
       );
-    } else if (this.state.lengthData - 1 === this.props.position) {
+    } else if (this.props.lengthPoll - 1 === this.props.position) {
       return (
         <Footer>
           <FooterTab>
@@ -369,12 +250,15 @@ class Polls extends Component {
 const mapStateToProps = state => ({
   position: state.polls.position,
   value: state.polls.value,
-  isError: state.polls.isError
+  isError: state.polls.isError,
+  dataPoll: state.polls.dataPoll,
+  lengthPoll: state.polls.lengthPoll
 });
 
 const mapDispatchToProps = {
   SetValidForm,
-  ChangeInput
+  ChangeInput,
+  GetPoll
 };
 
 export default connect(
