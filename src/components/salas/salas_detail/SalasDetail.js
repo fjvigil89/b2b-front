@@ -273,7 +273,7 @@ class SalasDetail extends React.Component {
                   fontFamily: "Questrial"
                 }}
               >
-                {this.props.orderLostSale? 'Distancia': 'Venta Perdida'}
+                {this.props.orderLostSale ? "Distancia" : "Venta Perdida"}
               </Text>
             </View>
             <View
@@ -289,7 +289,11 @@ class SalasDetail extends React.Component {
                   fontFamily: "Questrial"
                 }}
               >
-              {this.props.orderLostSale? `${this.props.data.kilometers}${this.props.data.prefijoKilometers}` : `$${this.currency(this.props.data.venta_perdida)}`}
+                {this.props.orderLostSale
+                  ? `${this.props.data.kilometers}${
+                      this.props.data.prefijoKilometers
+                    }`
+                  : `$${this.currency(this.props.data.venta_perdida)}`}
               </Text>
             </View>
           </View>

@@ -2,9 +2,8 @@ import axios from "axios";
 import { size } from "lodash";
 
 import ErrorMessages from "@constants/errors";
-import { GetListPost } from "@components/wall/WallActions";
 
-export default function CreatePost(content, imagenes) {
+export default function CreatePost(content, imagenes, user) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       if (!content) return reject({ message: ErrorMessages.noContent });
@@ -38,8 +37,14 @@ export default function CreatePost(content, imagenes) {
           data: formData,
           config: { headers: { "Content-Type": "multipart/form-data" } }
         })
-          .then(() => {
-            resolve(dispatch(GetListPost()));
+          .then(response => {
+            resolve(
+              dispatch({
+                type: "NEW_POST",
+                data: response.data,
+                user
+              })
+            );
           })
           .catch(err => {
             reject(err);
@@ -55,8 +60,14 @@ export default function CreatePost(content, imagenes) {
         url: "http://b2b-app.us-east-1.elasticbeanstalk.com/post",
         data: formForSend
       })
-        .then(() => {
-          resolve(dispatch(GetListPost()));
+        .then(response => {
+          resolve(
+            dispatch({
+              type: "NEW_POST",
+              data: response.data,
+              user
+            })
+          );
         })
         .catch(err => {
           reject(err);

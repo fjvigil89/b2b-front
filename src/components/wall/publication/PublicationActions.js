@@ -1,7 +1,5 @@
 import axios from "axios";
 
-import { GetListPost } from "@components/wall/WallActions";
-
 export function detailPost(idPost) {
   return axios({
     method: "GET",
@@ -27,7 +25,7 @@ export function DetailPublication(idPost) {
 
 export function LikePublication(idPost) {
   return dispatch =>
-    new Promise(async (resolve, reject) => {
+    new Promise((resolve, reject) => {
       axios({
         method: "POST",
         url: "http://b2b-app.us-east-1.elasticbeanstalk.com/likePost",
@@ -35,12 +33,12 @@ export function LikePublication(idPost) {
           post_id: idPost
         }
       })
-        .then(async () => {
-          await dispatch(GetListPost());
-
-          await dispatch(DetailPublication(idPost));
-
-          resolve(true);
+        .then(() => {
+          resolve(
+            dispatch({
+              type: "NO_CHANGE"
+            })
+          );
         })
         .catch(error => {
           reject(error);
@@ -50,22 +48,18 @@ export function LikePublication(idPost) {
 
 export function UnLikePublication(idPost) {
   return dispatch =>
-    new Promise(async (resolve, reject) => {
+    new Promise((resolve, reject) => {
       axios({
         method: "DELETE",
         url: `http://b2b-app.us-east-1.elasticbeanstalk.com/likePost/${idPost}`
       })
-        .then(async () => {
-          await dispatch(GetListPost());
-
-          await dispatch(DetailPublication(idPost));
-
-          resolve(true);
+        .then(() => {
+          resolve(
+            dispatch({
+              type: "NO_CHANGE"
+            })
+          );
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        );
+        .catch(error => reject(error));
     });
 }

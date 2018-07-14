@@ -3,7 +3,6 @@ import { size } from "lodash";
 
 import ErrorMessages from "@constants/errors";
 
-import { GetListPost } from "@components/wall/WallActions";
 import { FullCommentPage } from "@components/wall/comments/CommentsActions";
 
 export default function CreateComment(post, content, imagenes) {
@@ -41,7 +40,6 @@ export default function CreateComment(post, content, imagenes) {
           config: { headers: { "Content-Type": "multipart/form-data" } }
         })
           .then(async () => {
-            await dispatch(GetListPost());
             await dispatch(FullCommentPage(post));
 
             resolve(true);
@@ -64,7 +62,6 @@ export default function CreateComment(post, content, imagenes) {
         data: formForSend
       })
         .then(async () => {
-          await dispatch(GetListPost());
           await dispatch(FullCommentPage(post));
 
           resolve(true);

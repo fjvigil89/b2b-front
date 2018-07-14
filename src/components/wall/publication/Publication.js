@@ -4,7 +4,13 @@ import { connect } from "react-redux";
 import { Text, View, Thumbnail, Button, Icon } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { isEmpty, size } from "lodash";
-import { ScrollView, Dimensions } from "react-native";
+import {
+  ScrollView,
+  Dimensions,
+  DeviceEventEmitter,
+  Image,
+  TouchableOpacity
+} from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import AssetUtils from "expo-asset-utils";
 
@@ -20,6 +26,7 @@ import "moment/locale/es";
 moment.locale("es");
 
 const width = Dimensions.get("window").width - 20;
+const newPostImage = require("@assets/images/new-post.png");
 
 class Publication extends Component {
   static propTypes = {
@@ -33,7 +40,9 @@ class Publication extends Component {
     likes: PropTypes.number,
     comments: PropTypes.number,
     margin: PropTypes.bool,
-    images: PropTypes.oneOfType([PropTypes.any])
+    images: PropTypes.oneOfType([PropTypes.any]),
+    flagComments: PropTypes.bool,
+    newPost: PropTypes.bool
   };
 
   static defaultProps = {
@@ -45,12 +54,41 @@ class Publication extends Component {
     likes: 0,
     comments: 0,
     margin: false,
-    images: []
+    images: [],
+    flagComments: false,
+    newPost: false
   };
+
+  constructor(props) {
+    super(props);
+
+    if (!this.props.flagComments) {
+      DeviceEventEmitter.addListener(`publicationEvent-${this.props.id}`, e => {
+        if (e.event === "comment") {
+          this.setState({
+            comments: this.state.comments + 1
+          });
+        } else if (e.event === "like") {
+          this.setState({
+            likes: this.state.likes + 1,
+            enableLike: false
+          });
+        } else if (e.event === "unlike") {
+          this.setState({
+            likes: this.state.likes - 1,
+            enableLike: true
+          });
+        }
+      });
+    }
+  }
 
   state = {
     loading: false,
-    imagesArray: []
+    imagesArray: [],
+    likes: this.props.likes,
+    enableLike: this.props.enableLike,
+    comments: this.props.comments
   };
 
   async componentWillMount() {
@@ -80,8 +118,16 @@ class Publication extends Component {
 
     this.props.LikePublication(this.props.id).then(() => {
       this.setState({
-        loading: false
+        loading: false,
+        likes: this.state.likes + 1,
+        enableLike: false
       });
+
+      if (this.props.flagComments) {
+        DeviceEventEmitter.emit(`publicationEvent-${this.props.id}`, {
+          event: "like"
+        });
+      }
     });
   };
 
@@ -92,22 +138,21 @@ class Publication extends Component {
 
     this.props.UnLikePublication(this.props.id).then(() => {
       this.setState({
-        loading: false
+        loading: false,
+        likes: this.state.likes - 1,
+        enableLike: true
       });
+
+      if (this.props.flagComments) {
+        DeviceEventEmitter.emit(`publicationEvent-${this.props.id}`, {
+          event: "unlike"
+        });
+      }
     });
   };
 
   render = () => {
-    const {
-      id,
-      userName,
-      date,
-      content,
-      enableLike,
-      likes,
-      comments,
-      margin
-    } = this.props;
+    const { id, userName, date, content, margin, newPost } = this.props;
 
     const profile = require("@assets/images/profile.png");
 
@@ -125,268 +170,282 @@ class Publication extends Component {
           marginBottom: margin ? 10 : 0
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row"
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => {
+            Actions.wallComments({ idPost: id });
           }}
         >
+          {newPost && (
+            <Image
+              style={{
+                position: "absolute",
+                height: 62.5,
+                width: 100,
+                right: 0,
+                zIndex: 1000
+              }}
+              source={newPostImage}
+            />
+          )}
           <View
             style={{
               flex: 1,
-              justifyContent: "center",
-              alignItems: "flex-start",
-              padding: 10,
-              paddingBottom: 0,
-              backgroundColor: "#FFF",
-              borderRadius: 10
+              flexDirection: "row"
             }}
           >
             <View
               style={{
                 flex: 1,
-                flexDirection: "row",
                 justifyContent: "center",
-                alignItems: "flex-start"
+                alignItems: "flex-start",
+                padding: 10,
+                paddingBottom: 0,
+                backgroundColor: "#FFF",
+                borderRadius: 10
               }}
             >
               <View
                 style={{
-                  flex: 0.1,
+                  flex: 1,
+                  flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "flex-start"
                 }}
               >
-                <Thumbnail small source={profile} />
+                <View
+                  style={{
+                    flex: 0.1,
+                    justifyContent: "center",
+                    alignItems: "flex-start"
+                  }}
+                >
+                  <Thumbnail small source={profile} />
+                </View>
+                <View
+                  style={{
+                    flex: 0.9,
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    marginLeft: 10
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 17,
+                      fontFamily: "Questrial",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    {userName}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "#808080",
+                      fontSize: 12
+                    }}
+                  >
+                    {moment(date).fromNow()}
+                  </Text>
+                </View>
               </View>
+
               <View
                 style={{
-                  flex: 0.9,
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  marginLeft: 10
+                  flex: 1,
+                  flexDirection: "row"
                 }}
               >
                 <Text
                   style={{
-                    fontSize: 17,
-                    fontFamily: "Questrial",
-                    fontWeight: "bold"
+                    paddingTop: 10,
+                    fontSize: 12,
+                    fontFamily: "Questrial"
                   }}
                 >
-                  {userName}
-                </Text>
-                <Text
-                  style={{
-                    color: "#808080",
-                    fontSize: 12
-                  }}
-                >
-                  {moment(date).fromNow()}
+                  {content}
                 </Text>
               </View>
-            </View>
 
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row"
-              }}
-            >
-              <Text
-                style={{
-                  paddingTop: 10,
-                  fontSize: 12,
-                  fontFamily: "Questrial"
-                }}
-              >
-                {content}
-              </Text>
-            </View>
+              {!isEmpty(this.state.imagesArray) && (
+                <View
+                  style={{
+                    flex: 1
+                  }}
+                >
+                  {size(this.state.imagesArray) > 1 && (
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: 10
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "#808080",
+                          fontSize: 12
+                        }}
+                      >
+                        {size(this.state.imagesArray)} Imagenes
+                      </Text>
+                    </View>
+                  )}
 
-            {!isEmpty(this.state.imagesArray) && (
-              <View
-                style={{
-                  flex: 1
-                }}
-              >
-                {size(this.state.imagesArray) > 1 && (
                   <View
                     style={{
                       flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 10
+                      flexDirection: "row",
+                      marginTop: size(this.state.imagesArray) === 1 ? 10 : 0
                     }}
                   >
-                    <Text
-                      style={{
-                        color: "#808080",
-                        fontSize: 12
-                      }}
+                    <ScrollView
+                      horizontal
+                      pagingEnabled
+                      showsHorizontalScrollIndicator={false}
                     >
-                      {size(this.state.imagesArray)} Imagenes
-                    </Text>
+                      {this.state.imagesArray.map(image => (
+                        <AutoHeightImage
+                          width={width}
+                          source={{ uri: image.uri }}
+                          key={image.id}
+                        />
+                      ))}
+                    </ScrollView>
                   </View>
-                )}
+                </View>
+              )}
 
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  marginTop: 15
+                }}
+              >
                 <View
                   style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    marginTop: size(this.state.imagesArray) === 1 ? 10 : 0
+                    flex: 0.5,
+                    justifyContent: "center",
+                    alignItems: "flex-start"
                   }}
                 >
-                  <ScrollView
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    {this.state.imagesArray.map(image => (
-                      <AutoHeightImage
-                        width={width}
-                        source={{ uri: image.uri }}
-                        key={image.id}
-                      />
-                    ))}
-                  </ScrollView>
-                </View>
-              </View>
-            )}
-
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                marginTop: 15
-              }}
-            >
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-start"
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "Questrial",
-                    color: "#007aff"
-                  }}
-                >
-                  {likes} Me gusta
-                </Text>
-              </View>
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-end"
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "Questrial",
-                    color: "#007aff"
-                  }}
-                  onPress={() => {
-                    if (comments > 0) {
-                      Actions.wallComments({ idPost: id });
-                    }
-                  }}
-                >
-                  {comments} Comentarios
-                </Text>
-              </View>
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row"
-              }}
-            >
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-              >
-                {!enableLike && (
-                  <Button
-                    iconLeft
-                    transparent
-                    full
-                    onPress={() => {
-                      this.unlikePublication();
-                    }}
-                  >
-                    <Icon color="#B2B2B2" name="ios-thumbs-up" />
-                    <Text
-                      style={{
-                        fontSize: 13,
-                        fontFamily: "Questrial"
-                      }}
-                    >
-                      Me gusta
-                    </Text>
-                  </Button>
-                )}
-
-                {enableLike && (
-                  <Button
-                    iconLeft
-                    transparent
-                    full
-                    onPress={() => {
-                      this.likePublication();
-                    }}
-                  >
-                    <Icon name="ios-thumbs-up-outline" />
-                    <Text
-                      style={{
-                        fontSize: 13,
-                        fontFamily: "Questrial"
-                      }}
-                    >
-                      Me gusta
-                    </Text>
-                  </Button>
-                )}
-              </View>
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-              >
-                <Button
-                  iconLeft
-                  transparent
-                  full
-                  onPress={() => {
-                    Actions.commentPublication({ post: id });
-                  }}
-                >
-                  <Icon name="ios-text-outline" />
                   <Text
                     style={{
-                      fontSize: 13,
-                      fontFamily: "Questrial"
+                      fontSize: 12,
+                      fontFamily: "Questrial",
+                      color: "#007aff"
                     }}
                   >
-                    Comentar
+                    {this.state.likes} Me gusta
                   </Text>
-                </Button>
+                </View>
+                <View
+                  style={{
+                    flex: 0.5,
+                    justifyContent: "center",
+                    alignItems: "flex-end"
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontFamily: "Questrial",
+                      color: "#007aff"
+                    }}
+                  >
+                    {this.state.comments} Comentarios
+                  </Text>
+                </View>
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row"
+                }}
+              >
+                <View
+                  style={{
+                    flex: 0.5,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  {!this.state.enableLike && (
+                    <Button
+                      iconLeft
+                      transparent
+                      full
+                      onPress={() => {
+                        this.unlikePublication();
+                      }}
+                    >
+                      <Icon color="#B2B2B2" name="ios-thumbs-up" />
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "Questrial"
+                        }}
+                      >
+                        Me gusta
+                      </Text>
+                    </Button>
+                  )}
+
+                  {this.state.enableLike && (
+                    <Button
+                      iconLeft
+                      transparent
+                      full
+                      onPress={() => {
+                        this.likePublication();
+                      }}
+                    >
+                      <Icon name="ios-thumbs-up-outline" />
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "Questrial"
+                        }}
+                      >
+                        Me gusta
+                      </Text>
+                    </Button>
+                  )}
+                </View>
+                <View
+                  style={{
+                    flex: 0.5,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <Button
+                    iconLeft
+                    transparent
+                    full
+                    onPress={() => {
+                      Actions.commentPublication({ post: id });
+                    }}
+                  >
+                    <Icon name="ios-text-outline" />
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        fontFamily: "Questrial"
+                      }}
+                    >
+                      Comentar
+                    </Text>
+                  </Button>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-        {this.state.loading && <LoadingOverlay />}
+          {this.state.loading && <LoadingOverlay />}
+        </TouchableOpacity>
       </View>
     );
   };

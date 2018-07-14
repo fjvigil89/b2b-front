@@ -15,6 +15,10 @@ export default function publications(state = initialState, action) {
       return initialState;
     }
 
+    case "NO_CHANGE": {
+      return state;
+    }
+
     default:
       return state;
   }

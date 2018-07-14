@@ -12,10 +12,10 @@ import {
   Body
 } from "native-base";
 import {
-  RefreshControl,
-  ListView,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  DeviceEventEmitter,
+  FlatList
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 
@@ -40,9 +40,16 @@ class Wall extends Component {
     data: []
   };
 
+  constructor(props) {
+    super(props);
+
+    DeviceEventEmitter.addListener(`wallEvent`, () => {
+      this.listview.scrollToOffset({ x: 0, y: 0, animated: true });
+    });
+  }
+
   state = {
     refreshing: false,
-    isLoadingMore: false,
     isLoading: true
   };
 
@@ -68,10 +75,6 @@ class Wall extends Component {
 
   async fetchMore(lastId) {
     await this.props.GetMorePosts(lastId);
-
-    this.setState({
-      isLoadingMore: false
-    });
   }
 
   render = () => {
@@ -84,12 +87,6 @@ class Wall extends Component {
     if (this.state.isLoading) {
       return <LoadingOverlay />;
     }
-
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-
-    const dsList = ds.cloneWithRows(data);
 
     return (
       <Container style={{ backgroundColor: "#F0F0F0" }}>
@@ -113,38 +110,38 @@ class Wall extends Component {
             </Button>
           </Right>
         </Header>
-        <ListView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={() => this.refreshWall()}
-              title="Recargar..."
-            />
-          }
-          dataSource={dsList}
-          renderRow={detail => (
+
+        <FlatList
+          ref={ref => {
+            this.listview = ref;
+          }}
+          data={data}
+          renderItem={({ item }) => (
             <Publication
-              id={detail.id}
-              userName={detail.userName}
-              date={detail.date}
-              content={detail.content}
-              enableLike={detail.enableLike}
-              likes={detail.totalLikes}
-              comments={detail.totalComments}
-              images={detail.images}
+              id={item.id}
+              userName={item.userName}
+              date={item.date}
+              content={item.content}
+              enableLike={item.enableLike}
+              likes={item.totalLikes}
+              comments={item.totalComments}
+              images={item.images}
+              newPost={item.new}
               margin
             />
           )}
-          onEndReached={() =>
-            this.setState({ isLoadingMore: true }, () => this.fetchMore(lastId))
-          }
-          renderFooter={() =>
-            this.state.isLoadingMore && (
-              <View style={{ flex: 1, padding: 10 }}>
-                <ActivityIndicator size="small" />
-              </View>
-            )
-          }
+          keyExtractor={item => item.id.toString()}
+          ListFooterComponent={() => (
+            <View style={{ flex: 1, padding: 10 }}>
+              <ActivityIndicator size="small" />
+            </View>
+          )}
+          onRefresh={() => this.refreshWall()}
+          refreshing={this.state.refreshing}
+          onEndReached={() => {
+            this.fetchMore(lastId);
+          }}
+          onEndReachedThreshold={0}
         />
       </Container>
     );
@@ -154,7 +151,8 @@ class Wall extends Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
   data: state.wall.data,
-  lastId: state.wall.lastId
+  lastId: state.wall.lastId,
+  refresh: state.wall.refresh
 });
 
 const mapDispatchToProps = {
