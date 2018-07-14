@@ -1,57 +1,107 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-    Body,
-    Text,
-    ListItem,
-    Content,
-    CheckBox,
-  } from "native-base";
+import { Body, Text, ListItem, Content, CheckBox } from "native-base";
+import { connect } from "react-redux";
+import { ChangeInput } from "@components/polls/PollsActions";
 
+class PollsCheckBox extends Component {
+  static propTypes = {
+    ChangeInput: PropTypes.func.isRequired,
+    data: PropTypes.oneOfType([PropTypes.any]),
+    position: PropTypes.number,
+    value: PropTypes.oneOfType([PropTypes.any])
+  };
 
-export default class PollsCheckBox extends React.Component {
-    static propTypes = {
-        data: PropTypes.oneOfType([PropTypes.any]),
-    };
+  static defaultProps = {
+    data: {},
+    position: 0,
+    value: null
+  };
 
-    static defaultProps = { 
-        data: {},
-    };
+  state = {
+    check: []
+  };
 
-  constructor(props) {
-    super(props);
+  componentWillMount = () => {
+    this.state.position = this.props.position;
+    this.config();
+  };
 
-    this.state = { 
-        check: []
-    };
+  componentWillUpdate(nextProps) {
+    if (nextProps.position !== this.state.position) {
+      let check = [];
+      if (this.props.value) {
+        check = this.props.value;
+      } else {
+        this.props.data.config.map((item, index) => (check[index] = false));
+      }
+
+      this.setState(state => ({
+        ...state,
+        position: nextProps.position,
+        check
+      }));
+    }
   }
 
-  componentWillMount() { 
-    this.props.data.item.config.map( (item, index) => this.state.check[index] = false );
+  config() {
+    if (this.props.value) {
+      this.state.check = this.props.value;
+    } else {
+      this.props.data.config.map(
+        (item, index) => (this.state.check[index] = false)
+      );
+    }
   }
 
-  render() {
+  render = () => {
     const { data } = this.props;
     return (
-        <Content>
-            {
-                data.item.config.map( (item, index) => 
-                    {
-                        return (<ListItem style={{width: '90%'}} onTouchStart={() => this.setState(state =>  {
-                            this.state.check[index] = !state.check[index];
-                            return {
-                                check: state.check
-                            }
-                        } )} key={`${data.index}${item.id}`} >
-                            <CheckBox checked={this.state.check[index]} />
-                            <Body>
-                                <Text>{item.text}</Text>
-                            </Body>
-                        </ListItem>);
-                    }
-                )
-            }
-        </Content>
+      <Content>
+        {data.config.map((item, index) => (
+          <ListItem
+            style={{ width: "90%" }}
+            onTouchStart={() => {
+              this.setState(state => {
+                this.state.check[index] = !state.check[index];
+                this.props.ChangeInput({
+                  value: state.check,
+                  position: this.props.position
+                });
+                return {
+                  check: state.check
+                };
+              });
+            }}
+            key={`${data.index}${item.id}`}
+          >
+            <CheckBox
+              checked={this.state.check[index]}
+              /*
+              onPress={() =>
+                this.props.ChangeInput({ value: this.state.check, position })
+              }
+              */
+            />
+            <Body>
+              <Text>{item.text}</Text>
+            </Body>
+          </ListItem>
+        ))}
+      </Content>
     );
-  }
+  };
 }
+
+const mapStateToProps = state => ({
+  value: state.polls.value
+});
+
+const mapDispatchToProps = {
+  ChangeInput
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PollsCheckBox);
