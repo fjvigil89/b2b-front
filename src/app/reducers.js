@@ -8,6 +8,7 @@ import wall from "@components/wall/WallReducers";
 import comments from "@components/wall/comments/CommentsReducers";
 import publications from "@components/wall/publication/PublicationReducers";
 import polls from "@components/polls/PollsReducers";
+import hashtags from "@components/wall/hashtags/HashtagsReducers";
 
 const rehydrated = (state = false, action) => {
   switch (action.type) {
@@ -29,5 +30,6 @@ export default {
   wall,
   comments,
   publications,
-  polls
+  polls,
+  hashtags
 };

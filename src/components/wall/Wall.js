@@ -117,19 +117,19 @@ class Wall extends Component {
           }}
           data={data}
           renderItem={({ item }) => (
-            <Publication
-              id={item.id}
-              userName={item.userName}
-              date={item.date}
-              content={item.content}
-              enableLike={item.enableLike}
-              likes={item.totalLikes}
-              comments={item.totalComments}
-              images={item.images}
-              newPost={item.new}
-              margin
-            />
-          )}
+              <Publication
+                id={item.id}
+                userName={item.userName}
+                date={item.date}
+                content={item.content}
+                enableLike={item.enableLike}
+                likes={item.totalLikes}
+                comments={item.totalComments}
+                images={item.images}
+                newPost={item.new}
+                margin
+              />
+            )}
           keyExtractor={item => item.id.toString()}
           ListFooterComponent={() => (
             <View style={{ flex: 1, padding: 10 }}>

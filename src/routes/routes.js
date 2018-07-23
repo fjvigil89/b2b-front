@@ -13,6 +13,7 @@ import CreatePublication from "@components/wall/create_publication/CreatePublica
 import CommentPublication from "@components/wall/comment_publication/CommentPublication";
 import RespondComment from "@components/wall/respond_comment/RespondComment";
 import Polls from "@components/polls/Polls";
+import Hashtags from "@components/wall/hashtags/Hashtags";
 
 const Index = (
   <Router>
@@ -22,6 +23,11 @@ const Index = (
           <Scene key="main" hideNavBar>
             <Scene key="check" title="check" component={Check} initial />
             <Scene key="wall" title="Wall" component={Wall} />
+            <Scene
+              key="wallHashtags"
+              title="wallHashtags"
+              component={Hashtags}
+            />
             <Scene
               hideNavBar
               key="wallComments"
