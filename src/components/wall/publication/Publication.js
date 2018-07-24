@@ -155,20 +155,13 @@ class Publication extends Component {
     const { id, userName, date, content, margin, newPost } = this.props;
 
     const profile = require("@assets/images/profile.png");
-    const regex = /(?:^|\s)(?:#)([a-zA-Z\d]+)/gm;
-
     const arrayContent = content.split(" ");
 
     let contador = 0;
     const temp = arrayContent.map(line => {
       contador += 1;
 
-      console.log(line);
-      const esHashtag = regex.exec(line);
-
-      console.log(`${esHashtag}`);
-
-      if (esHashtag) {
+      if (line[0] === "#") {
         return (
           <Text
             style={{
