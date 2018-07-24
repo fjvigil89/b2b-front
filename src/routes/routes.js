@@ -13,6 +13,7 @@ import CreatePublication from "@components/wall/create_publication/CreatePublica
 import CommentPublication from "@components/wall/comment_publication/CommentPublication";
 import RespondComment from "@components/wall/respond_comment/RespondComment";
 import Polls from "@components/polls/Polls";
+import PollsList from "@components/polls/polls_list/PollsList";
 
 const Index = (
   <Router>
@@ -29,6 +30,7 @@ const Index = (
               title="WallComments"
             />
             <Scene key="dashboard" title="Dashboard" component={Dashboard} />
+            <Scene key="pollsList" title="PollsList" component={PollsList} />
             <Scene key="salasInfo" component={SalasInfo} title="SalasInfo" />
             <Scene key="maps" title="Maps" component={Maps} />
             <Scene key="polls" title="Polls" component={Polls} />
