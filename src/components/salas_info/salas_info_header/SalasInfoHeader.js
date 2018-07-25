@@ -19,7 +19,21 @@ class SalasInfoHeader extends React.Component {
         <Body>
           <Title>Detalle de Sala</Title>
         </Body>
-        <Right />
+        <Right>
+          <Button
+            transparent
+            onPress={() => {
+              Actions.polls();
+            }}
+          >
+            <Icon
+              style={{
+                color: "white"
+              }}
+              name="ios-create"
+            />
+          </Button>
+        </Right>
       </Header>
     );
   }

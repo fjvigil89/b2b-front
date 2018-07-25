@@ -37,6 +37,12 @@ class PollsListGrid extends React.Component {
             <Body>
               <Text>{data.name}</Text>
               <Text note>{data.description}</Text>
+              <Text
+                style={{ fontWeight: "bold", marginTop: 20, fontSize: 12 }}
+                note
+              >
+                Vigencia: {data.vigencia}
+              </Text>
             </Body>
           </TouchableOpacity>
         </ListItem>

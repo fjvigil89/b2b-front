@@ -16,15 +16,26 @@ class PollsListAditional extends React.Component {
 
   getContent = data => {
     if (data.state === "complete") {
-      return this.getContentComplete(data);
+      return this.getContentNotAvailable(data, {
+        color: "blue",
+        status: "Completado"
+      });
     } else if (data.state === "notAvailable") {
-      return this.getContentNotAvailable(data);
+      return this.getContentNotAvailable(data, {
+        color: "red",
+        status: "No disponible"
+      });
+    } else if (data.state === "expired") {
+      return this.getContentNotAvailable(data, {
+        color: "#9A7D0A",
+        status: "Expirado"
+      });
     }
 
     return this.getContentAvailable(data);
   };
 
-  getContentNotAvailable = data => (
+  getContentNotAvailable = (data, params) => (
     <TouchableOpacity style={{ flex: 1 }}>
       <View
         style={{
@@ -72,10 +83,10 @@ class PollsListAditional extends React.Component {
                 flex: 1,
                 fontSize: 13,
                 fontFamily: "Questrial",
-                color: "red"
+                color: params.color
               }}
             >
-              No disponible
+              {params.status}
             </Text>
             <Text
               style={{
@@ -175,76 +186,6 @@ class PollsListAditional extends React.Component {
               android="ios-arrow-dropright"
               style={{ fontSize: 30 }}
             />
-          </View>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
-  getContentComplete = data => (
-    <TouchableOpacity style={{ flex: 1 }}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "flex-start",
-          alignItems: "center"
-        }}
-      >
-        <View
-          style={{
-            flex: 0.1,
-            justifyContent: "flex-end",
-            alignItems: "center"
-          }}
-        >
-          <Icon
-            ios="ios-arrow-round-forward"
-            android="ios-arrow-round-forward"
-            style={{ fontSize: 30, margin: 0 }}
-          />
-        </View>
-        <View
-          style={{
-            flex: 0.9,
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            backgroundColor: "#FFF",
-            borderBottomColor: "#DEDEDE",
-            borderBottomWidth: 1,
-            borderRadius: 5,
-            padding: 10,
-            marginBottom: 0
-          }}
-        >
-          <View
-            style={{
-              flex: 0.8,
-              flexDirection: "column"
-            }}
-          >
-            <Text
-              style={{
-                flex: 1,
-                fontSize: 13,
-                fontFamily: "Questrial",
-                color: "blue"
-              }}
-            >
-              Completado
-            </Text>
-            <Text
-              style={{
-                flex: 1,
-                fontSize: 15,
-                fontFamily: "Questrial",
-                fontWeight: "bold",
-                marginTop: 5
-              }}
-            >
-              {data.descripcion}
-            </Text>
           </View>
         </View>
       </View>

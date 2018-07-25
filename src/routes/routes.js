@@ -33,10 +33,10 @@ const Index = (
             <Scene key="pollsList" title="PollsList" component={PollsList} />
             <Scene key="salasInfo" component={SalasInfo} title="SalasInfo" />
             <Scene key="maps" title="Maps" component={Maps} />
-            <Scene key="polls" title="Polls" component={Polls} />
           </Scene>
         </Scene>
       </Scene>
+      <Scene hideNavBar key="polls" title="Polls" component={Polls} />
       <Scene
         hideNavBar
         key="salasInfoDetailAction"
