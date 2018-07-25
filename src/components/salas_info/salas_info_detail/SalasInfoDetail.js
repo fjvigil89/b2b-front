@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { View, Image, Dimensions, Platform } from "react-native";
-import { Text, Thumbnail } from "native-base";
+import { Text, Thumbnail, Icon } from "native-base";
 import moment from "moment";
 
 class SalasInfoDetail extends React.Component {
@@ -158,7 +158,6 @@ class SalasInfoDetail extends React.Component {
           large
           source={logo}
         />
-
         <View
           style={{
             flex: 1,

@@ -32,7 +32,7 @@ class SideBar extends Component {
   };
 
   polls = () => {
-    Actions.polls();
+    Actions.pollsList();
   };
 
   render() {

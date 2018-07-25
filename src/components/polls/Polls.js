@@ -85,7 +85,14 @@ class Polls extends Component {
         <Content>
           <Card>
             <CardItem header>
-              <Text>Encuesta finalizada :)</Text>
+              <Button
+                transparent
+                onPress={() => {
+                  Actions.pop();
+                }}
+              >
+                <Text>Encuesta finalizada</Text>
+              </Button>
             </CardItem>
           </Card>
         </Content>
@@ -230,8 +237,13 @@ class Polls extends Component {
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
-            <Button transparent onPress={Actions.drawerOpen}>
-              <Icon name="menu" />
+            <Button
+              transparent
+              onPress={() => {
+                Actions.pop();
+              }}
+            >
+              <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
             </Button>
           </Left>
           <Body>
