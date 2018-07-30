@@ -100,9 +100,9 @@ class Publication extends Component {
       for (const image of this.props.images) {
         contador += 1;
 
-        const asset = await AssetUtils.resolveAsync(image.imagePath);
+        // const asset = await AssetUtils.resolveAsync(image.imagePath);
 
-        imagesArray.push({ uri: asset.localUri, id: contador });
+        imagesArray.push({ uri: image.imagePath, id: contador });
       }
 
       this.setState({
@@ -496,7 +496,4 @@ const mapDispatchToProps = {
   UnLikePublication
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Publication);
+export default connect(null, mapDispatchToProps)(Publication);

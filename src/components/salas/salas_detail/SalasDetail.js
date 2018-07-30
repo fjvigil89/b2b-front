@@ -22,10 +22,13 @@ class SalasDetail extends React.Component {
       fecha_visita: PropTypes.string,
       direccion: PropTypes.string,
       cod_local: PropTypes.string,
-      descripcion: PropTypes.string
+      descripcion: PropTypes.string,
+      venta_perdida: PropTypes.number,
+      kilometers: PropTypes.number,
+      prefijoKilometers: PropTypes.string
     }),
     delay: PropTypes.number,
-    orderLostSale: PropTypes.bool
+    lostSaleON: PropTypes.bool
   };
 
   static defaultProps = {
@@ -41,11 +44,13 @@ class SalasDetail extends React.Component {
       descripcion: ""
     },
     delay: 100,
-    orderLostSale: false
+    lostSaleON: true
   };
+
   currency = x => {
     const parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
     return parts.join(".");
   };
 
@@ -273,7 +278,7 @@ class SalasDetail extends React.Component {
                   fontFamily: "Questrial"
                 }}
               >
-                {this.props.orderLostSale ? "Distancia" : "Venta Perdida"}
+                {this.props.lostSaleON ? "Venta Perdida" : "Distancia"}
               </Text>
             </View>
             <View
@@ -289,11 +294,11 @@ class SalasDetail extends React.Component {
                   fontFamily: "Questrial"
                 }}
               >
-                {this.props.orderLostSale
-                  ? `${this.props.data.kilometers}${
+                {this.props.lostSaleON
+                  ? `$${this.currency(this.props.data.venta_perdida)}`
+                  : `${this.props.data.kilometers}${
                       this.props.data.prefijoKilometers
-                    }`
-                  : `$${this.currency(this.props.data.venta_perdida)}`}
+                    }`}
               </Text>
             </View>
           </View>
