@@ -44,7 +44,4 @@ const mapDispatchToProps = {
   CheckToken
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Check);
+export default connect(mapStateToProps, mapDispatchToProps)(Check);

@@ -11,10 +11,13 @@ import {
   Body,
   Right
 } from "native-base";
-import { FlatList } from "react-native";
+import { FlatList, View, ActivityIndicator } from "react-native";
 import { Actions } from "react-native-router-flux";
 
-import GetHashtags from "@components/wall/hashtags/HashtagsActions";
+import {
+  GetHashtags,
+  GetMoreHashtags
+} from "@components/wall/hashtags/HashtagsActions";
 import Publication from "@components/wall/publication/Publication";
 import LoginScreen from "@components/login/Login";
 
@@ -23,14 +26,17 @@ import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 class Hashtags extends Component {
   static propTypes = {
     GetHashtags: PropTypes.func.isRequired,
+    GetMoreHashtags: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
     data: PropTypes.oneOfType([PropTypes.any]),
-    hash: PropTypes.string
+    hash: PropTypes.string,
+    lastId: PropTypes.number
   };
 
   static defaultProps = {
     isAuthenticated: false,
     data: [],
+    lastId: 0,
     hash: ""
   };
 
@@ -48,8 +54,14 @@ class Hashtags extends Component {
     });
   }
 
+  async fetchMore(lastId) {
+    const hashtag = this.props.hash.replace("#", "");
+
+    await this.props.GetMoreHashtags(hashtag, lastId);
+  }
+
   render = () => {
-    const { isAuthenticated, data } = this.props;
+    const { isAuthenticated, data, lastId } = this.props;
 
     if (!isAuthenticated) {
       return <LoginScreen />;
@@ -98,6 +110,15 @@ class Hashtags extends Component {
             />
           )}
           keyExtractor={item => item.id.toString()}
+          ListFooterComponent={() => (
+            <View style={{ flex: 1, padding: 10 }}>
+              <ActivityIndicator size="small" />
+            </View>
+          )}
+          onEndReached={() => {
+            this.fetchMore(lastId);
+          }}
+          onEndReachedThreshold={0}
         />
       </Container>
     );
@@ -106,14 +127,13 @@ class Hashtags extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
-  data: state.hashtags.data
+  data: state.hashtags.data,
+  lastId: state.hashtags.lastId
 });
 
 const mapDispatchToProps = {
-  GetHashtags
+  GetHashtags,
+  GetMoreHashtags
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Hashtags);
+export default connect(mapStateToProps, mapDispatchToProps)(Hashtags);
