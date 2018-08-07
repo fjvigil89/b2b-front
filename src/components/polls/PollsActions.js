@@ -29,7 +29,7 @@ export function GetPoll() {
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta"
+        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta/1"
       })
         .then(async response => {
           resolve(

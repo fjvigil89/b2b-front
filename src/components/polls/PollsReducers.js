@@ -6,14 +6,14 @@ export const initialState = {
   value: null,
   isError: false,
   dataPoll: [],
-  lengthPoll: 0
+  lengthPoll: 0,
+  isLoading: true
 };
 
 export default function polls(state = initialState, action) {
   switch (action.type) {
     case "GET_POLL": {
       if (action.data) {
-        console.log(action.data);
         return {
           ...state,
           position: 0,
@@ -21,7 +21,8 @@ export default function polls(state = initialState, action) {
           value: null,
           isError: false,
           dataPoll: action.data,
-          lengthPoll: action.data.length
+          lengthPoll: action.data.length,
+          isLoading: false
         };
       }
 
@@ -119,7 +120,8 @@ export default function polls(state = initialState, action) {
         value: null,
         isError: false,
         lengthPoll: 0,
-        dataPoll: []
+        dataPoll: [],
+        isLoading: true
       };
   }
 }

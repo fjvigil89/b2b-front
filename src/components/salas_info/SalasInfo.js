@@ -41,6 +41,7 @@ class SalasInfo extends Component {
   };
 
   async componentWillMount() {
+    console.log(this.props.data);
     await this.props.ListadoSalasInfo(this.props.data.cod_local);
   }
 
@@ -94,4 +95,7 @@ const mapDispatchToProps = {
   ListadoSalasInfo
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SalasInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SalasInfo);
