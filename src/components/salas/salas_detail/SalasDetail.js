@@ -89,7 +89,9 @@ class SalasDetail extends React.Component {
     if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
       imagen = require("@assets/images/visita-realizada.png");
 
-      fecha = moment(this.props.data.fecha_visita).fromNow();
+      fecha = moment(this.props.data.fecha_visita)
+        .add(1, "d")
+        .fromNow();
     } else if (this.props.data.mide === 1 && this.props.data.realizada === 0) {
       imagen = require("@assets/images/pendiente-visita.png");
     }
@@ -205,7 +207,9 @@ class SalasDetail extends React.Component {
                   fontFamily: "Questrial"
                 }}
               >
-                {moment(this.props.data.date_b2b).fromNow()}
+                {moment(this.props.data.date_b2b)
+                  .add(1, "d")
+                  .fromNow()}
               </Text>
             </View>
           </View>

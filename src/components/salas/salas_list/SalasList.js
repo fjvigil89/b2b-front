@@ -54,6 +54,8 @@ class SalasList extends Component {
       return <Loading />;
     }
 
+    console.log(salas);
+
     const delay = 200;
     const detailListadoSalas = salas.map((sala, i) => (
       <SalasDetail

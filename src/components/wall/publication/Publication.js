@@ -276,7 +276,9 @@ class Publication extends Component {
                     fontSize: 12
                   }}
                 >
-                  {moment(date).fromNow()}
+                  {moment(date)
+                    .add(1, "d")
+                    .fromNow()}
                 </Text>
               </View>
             </View>
