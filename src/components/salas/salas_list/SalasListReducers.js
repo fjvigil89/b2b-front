@@ -13,7 +13,7 @@ export const initialState = {
 };
 
 function getKilometros(lat1, lon1, lat2, lon2) {
-  const rad = x => x * Math.PI / 180;
+  const rad = x => (x * Math.PI) / 180;
 
   const R = 6378.137;
   const dLat = rad(lat2 - lat1);

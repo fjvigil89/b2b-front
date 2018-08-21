@@ -23,7 +23,7 @@ class SalasInfoHeader extends React.Component {
           <Button
             transparent
             onPress={() => {
-              Actions.polls();
+              Actions.pollsList();
             }}
           >
             <Icon

@@ -7,7 +7,6 @@ export default function polls(state = initialState, action) {
   switch (action.type) {
     case "GET_LIST_POLLS": {
       if (action.data) {
-        console.log(action.data);
         return {
           ...state,
           listPolls: action.data,
@@ -20,8 +19,7 @@ export default function polls(state = initialState, action) {
     default:
       return {
         ...state,
-        listPolls: [],
-        isLoading: true
+        listPolls: []
       };
   }
 }

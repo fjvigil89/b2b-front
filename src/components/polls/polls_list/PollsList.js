@@ -19,6 +19,81 @@ import PollsListGrid from "@components/polls/polls_list/polls_list_grid/PollsLis
 import GetListPoll from "@components/polls/polls_list/PollsListActios";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
+const mocks = [
+  {
+    description: "JUMBO - SAN MIGUEL, EL LLANO SUBERCASEAUX ",
+    available: 2,
+    listPolls: [
+      {
+        title: "Encuesta dìa del padre",
+        description: "Levantamiento de promociones licores",
+        idPoll: 1,
+        state: "available"
+      },
+      {
+        title: "Encuesta dìa del padre",
+        description: "Levantamiento de promociones licores",
+        idPoll: 2,
+        state: "notAvailable"
+      },
+      {
+        title: "Encuesta dìa del padre",
+        description: "Levantamiento de promociones licores",
+        idPoll: 3,
+        state: "available"
+      }
+    ]
+  },
+  {
+    description: "JUMBO - SAN MIGUEL, EL LLANO SUBERCASEAUX ",
+    available: 2,
+    listPolls: [
+      {
+        title: "Encuesta dìa del padre",
+        description: "Levantamiento de promociones licores",
+        idPoll: 1,
+        state: "available"
+      },
+      {
+        title: "Encuesta dìa del padre",
+        description: "Levantamiento de promociones licores",
+        idPoll: 2,
+        state: "complete"
+      },
+      {
+        title: "Encuesta dìa del padre",
+        description: "Levantamiento de promociones licores",
+        idPoll: 3,
+        state: "available"
+      }
+    ]
+  },
+  {
+    description: "JUMBO - SAN MIGUEL, EL LLANO SUBERCASEAUX ",
+    available: 2,
+    listPolls: [
+      {
+        title: "Encuesta dìa del padre",
+        description: "Levantamiento de promociones licores",
+        idPoll: 1,
+        state: "complete"
+      },
+      {
+        title: "Encuesta dìa del padre",
+        description: "Levantamiento de promociones licores",
+        idPoll: 2,
+        state: "complete"
+      },
+      {
+        title: "Encuesta dìa del padre",
+        description: "Levantamiento de promociones licores",
+        idPoll: 3,
+        state: "available"
+      }
+    ]
+  }
+];
+
 class PollsList extends Component {
   static propTypes = {
     GetListPoll: PropTypes.func.isRequired,
@@ -36,13 +111,14 @@ class PollsList extends Component {
   };
 
   render = () => {
-    const { isLoading, listPolls } = this.props;
+    let { isLoading, listPolls } = this.props;
     if (isLoading) {
       return <LoadingOverlay />;
     }
 
-    const list = listPolls.map(data => (
-      <PollsListGrid key={data.id} data={data} />
+    listPolls = mocks;
+    const list = listPolls.map((data, index) => (
+      <PollsListGrid key={index} data={data} />
     ));
 
     return (
