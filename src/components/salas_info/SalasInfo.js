@@ -21,7 +21,8 @@ class SalasInfo extends Component {
       fecha_visita: PropTypes.string,
       direccion: PropTypes.string,
       cod_local: PropTypes.string,
-      descripcion: PropTypes.string
+      descripcion: PropTypes.string,
+      hasPoll: PropTypes.number
     })
   };
 
@@ -41,7 +42,6 @@ class SalasInfo extends Component {
   };
 
   async componentWillMount() {
-    console.log(this.props.data);
     await this.props.ListadoSalasInfo(this.props.data.cod_local);
   }
 
@@ -69,7 +69,7 @@ class SalasInfo extends Component {
 
     return (
       <Container>
-        <SalasInfoHeader />
+        <SalasInfoHeader hasPoll={data.hasPoll} />
         <Content
           scrollEnabled={false}
           style={{ flex: 1, backgroundColor: "#FFF" }}
