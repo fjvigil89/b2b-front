@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Content } from "native-base";
-import { RefreshControl } from "react-native";
+import { RefreshControl, Text, TouchableHighlight } from "react-native";
 
 import Loading from "@components/loading/Loading";
 import SalasDetail from "@components/salas/salas_detail/SalasDetail";
@@ -54,8 +54,6 @@ class SalasList extends Component {
       return <Loading />;
     }
 
-    console.log(salas);
-
     const delay = 200;
     const detailListadoSalas = salas.map((sala, i) => (
       <SalasDetail
@@ -96,4 +94,7 @@ const mapDispatchToProps = {
   GetLocationAsync
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SalasList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SalasList);
