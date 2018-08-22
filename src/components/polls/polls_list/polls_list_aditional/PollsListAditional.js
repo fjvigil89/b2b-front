@@ -97,7 +97,18 @@ class PollsListAditional extends React.Component {
                 marginTop: 5
               }}
             >
-              {data.descripcion}
+              {data.title}
+            </Text>
+            <Text
+              note
+              style={{
+                flex: 1,
+                fontSize: 12,
+                fontFamily: "Questrial",
+                marginTop: 5
+              }}
+            >
+              {data.description}
             </Text>
           </View>
         </View>
@@ -109,7 +120,7 @@ class PollsListAditional extends React.Component {
     <TouchableOpacity
       style={{ flex: 1 }}
       onPress={() => {
-        Actions.salasInfo({ data });
+        Actions.polls({});
       }}
     >
       <View
@@ -172,7 +183,18 @@ class PollsListAditional extends React.Component {
                 marginTop: 5
               }}
             >
-              {data.descripcion}
+              {data.title}
+            </Text>
+            <Text
+              note
+              style={{
+                flex: 1,
+                fontSize: 12,
+                fontFamily: "Questrial",
+                marginTop: 5
+              }}
+            >
+              {data.description}
             </Text>
           </View>
           <View
@@ -196,7 +218,7 @@ class PollsListAditional extends React.Component {
     const backgroundImage = require("@assets/images/background-detalle-sala-categoria.png");
 
     let iterator = 0;
-    const categoryDetailSala = this.props.data.salas.map(data => {
+    const categoryDetailSala = this.props.data.listPolls.map(data => {
       iterator += 1;
 
       return (

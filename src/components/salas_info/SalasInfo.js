@@ -28,6 +28,7 @@ class SalasInfo extends Component {
       direccion: PropTypes.string,
       cod_local: PropTypes.string,
       descripcion: PropTypes.string,
+      hasPoll: PropTypes.number,
       kilometers: PropTypes.number,
       visita_en_progreso: PropTypes.number
     })
@@ -104,7 +105,7 @@ class SalasInfo extends Component {
 
     return (
       <Container>
-        <SalasInfoHeader />
+        <SalasInfoHeader hasPoll={data.hasPoll} />
         <Content
           scrollEnabled={false}
           style={{ flex: 1, backgroundColor: "#FFF" }}

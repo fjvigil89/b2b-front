@@ -31,6 +31,7 @@ class SalasDetail extends React.Component {
       venta_perdida: PropTypes.number,
       kilometers: PropTypes.number,
       prefijoKilometers: PropTypes.string,
+      hasPoll: PropTypes.number,
       visita_en_progreso: PropTypes.number
     }),
     delay: PropTypes.number,
