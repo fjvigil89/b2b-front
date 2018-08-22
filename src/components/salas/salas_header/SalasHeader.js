@@ -22,14 +22,16 @@ import {
   SearchByName,
   FilterSection,
   ShowSearch,
-  ShowGeoLocation
+  ShowListForGeolocation,
+  ShowListForLostSale
 } from "@components/salas/salas_header/SalasHeaderActions";
 
 class SalasHeader extends React.Component {
   static propTypes = {
     ClearSearch: PropTypes.func.isRequired,
     ShowSearch: PropTypes.func.isRequired,
-    ShowGeoLocation: PropTypes.func.isRequired,
+    ShowListForGeolocation: PropTypes.func.isRequired,
+    ShowListForLostSale: PropTypes.func.isRequired,
     SearchByName: PropTypes.func.isRequired,
     FilterSection: PropTypes.func.isRequired,
     searchFilters: PropTypes.bool,
@@ -38,13 +40,13 @@ class SalasHeader extends React.Component {
     groupCadena: PropTypes.arrayOf(PropTypes.string),
     indexCancel: PropTypes.number,
     indexClean: PropTypes.number,
-    orderLostSale: PropTypes.bool,
+    lostSaleON: PropTypes.bool
   };
 
   static defaultProps = {
     searchFilters: false,
     isOpenSearch: false,
-    orderLostSale: true,
+    lostSaleON: true,
     inputSearch: "",
     groupCadena: ["Cancelar"],
     indexCancel: null,
@@ -55,16 +57,26 @@ class SalasHeader extends React.Component {
     this.ActionSheet.show();
   };
 
-  ShowGeoLocation = () => {
-    this.props.ShowGeoLocation(this.props.orderLostSale);
-  }
+  filterResults = e => {
+    this.props.FilterSection(e, this.props.lostSaleON);
+  };
+
+  LostSaleOrGeolocation = () => {
+    if (this.props.lostSaleON) {
+      this.props.ShowListForGeolocation();
+    } else {
+      this.props.ShowListForLostSale();
+    }
+  };
 
   render() {
     const iconFilters = this.props.searchFilters
       ? "ios-funnel"
       : "ios-funnel-outline";
 
-    const iconLocationLostSale = this.props.orderLostSale? 'logo-usd':'ios-navigate-outline';
+    const iconLocationLostSale = this.props.lostSaleON
+      ? "ios-navigate-outline"
+      : "logo-usd";
 
     if (this.props.isOpenSearch) {
       return (
@@ -110,7 +122,7 @@ class SalasHeader extends React.Component {
           <Button transparent onPress={this.openFilter}>
             <Icon name={iconFilters} />
           </Button>
-          <Button transparent onPress={this.ShowGeoLocation}>
+          <Button transparent onPress={this.LostSaleOrGeolocation}>
             <Icon name={iconLocationLostSale} />
           </Button>
 
@@ -120,7 +132,7 @@ class SalasHeader extends React.Component {
 
               return this.ActionSheet;
             }}
-            onPress={this.props.FilterSection}
+            onPress={this.filterResults}
             options={this.props.groupCadena}
             cancelButtonIndex={this.props.indexCancel}
             destructiveButtonIndex={this.props.indexClean}
@@ -134,7 +146,7 @@ class SalasHeader extends React.Component {
 
 const mapStateToProps = state => ({
   isOpenSearch: state.salasHeader.showSearch,
-  orderLostSale: state.salasHeader.orderLostSale,
+  lostSaleON: state.salasHeader.lostSaleON,
   inputSearch: state.salasHeader.inputSearch,
   searchFilters: state.salas.searchFilters,
   groupCadena: state.salas.groupCadena,
@@ -147,7 +159,8 @@ const mapDispatchToProps = {
   ShowSearch,
   SearchByName,
   FilterSection,
-  ShowGeoLocation,
+  ShowListForGeolocation,
+  ShowListForLostSale
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalasHeader);

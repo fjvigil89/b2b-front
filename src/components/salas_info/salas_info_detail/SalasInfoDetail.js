@@ -1,8 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, Image, Dimensions, Platform } from "react-native";
-import { Text, Thumbnail, Icon } from "native-base";
+import {
+  View,
+  Image,
+  Dimensions,
+  Platform,
+  TouchableOpacity
+} from "react-native";
+import { Text, Thumbnail } from "native-base";
 import moment from "moment";
+import { Actions } from "react-native-router-flux";
 
 class SalasInfoDetail extends React.Component {
   static propTypes = {
@@ -79,6 +86,7 @@ class SalasInfoDetail extends React.Component {
 
   render() {
     const { data, report } = this.props;
+
     const backgroundImage = require("@assets/images/background-detalle-salas.png");
 
     let logo = "";
@@ -110,7 +118,9 @@ class SalasInfoDetail extends React.Component {
     const deviceWidth = deviceFullWidth - 30;
     const formatter = this.formatter(report.ventaPerdida);
     const fechaVisita = data.fecha_visita
-      ? moment(data.fecha_visita).fromNow()
+      ? moment(data.fecha_visita)
+          .add(1, "d")
+          .fromNow()
       : "-";
 
     const sizeTittle = Platform.OS === "ios" ? 20 : 18;
@@ -184,7 +194,10 @@ class SalasInfoDetail extends React.Component {
               fontFamily: "Questrial"
             }}
           >
-            Actualización B2B : {moment(data.date_b2b).fromNow()}
+            Actualización B2B :{" "}
+            {moment(data.date_b2b)
+              .add(1, "d")
+              .fromNow()}
           </Text>
           <Text
             style={{
@@ -205,7 +218,7 @@ class SalasInfoDetail extends React.Component {
             marginTop: 10
           }}
         >
-          <View
+          <TouchableOpacity
             style={{
               flex: 0.5,
               justifyContent: "center",
@@ -220,20 +233,37 @@ class SalasInfoDetail extends React.Component {
               borderLeftWidth: 1,
               height: 70
             }}
+            onPress={() => {
+              Actions.productosCademsmart({
+                porcentaje: report.cademsmartPorcentaje,
+                visita: data.id_visita,
+                nombreSala: data.descripcion,
+                direccion: data.direccion,
+                ultimaMedicion: fechaVisita
+              });
+            }}
           >
-            <Text
+            <View
               style={{
-                fontSize: formatter.size,
-                fontWeight: "bold",
-                fontFamily: "Questrial"
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center"
               }}
             >
-              {report.cademsmartPorcentaje}
-            </Text>
-            <Text style={{ fontFamily: "Questrial", fontSize: 12 }}>
-              CademSmart
-            </Text>
-          </View>
+              <Text
+                style={{
+                  fontSize: formatter.size,
+                  fontWeight: "bold",
+                  fontFamily: "Questrial"
+                }}
+              >
+                {report.cademsmartPorcentaje}
+              </Text>
+              <Text style={{ fontFamily: "Questrial", fontSize: 12 }}>
+                CademSmart
+              </Text>
+            </View>
+          </TouchableOpacity>
 
           <View
             style={{

@@ -2,19 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import { View, Image, Dimensions, Text } from "react-native";
 
-class Header extends React.Component {
+class HeaderCademsmart extends React.Component {
   static propTypes = {
-    accion: PropTypes.string,
-    monto: PropTypes.string,
+    porcentaje: PropTypes.string,
     nombreSala: PropTypes.string,
-    categoria: PropTypes.string
+    direccion: PropTypes.string,
+    ultimaMedicion: PropTypes.string
   };
 
   static defaultProps = {
-    accion: "",
-    monto: "",
+    porcentaje: "",
     nombreSala: "",
-    categoria: ""
+    direccion: "",
+    ultimaMedicion: ""
   };
 
   render() {
@@ -22,15 +22,7 @@ class Header extends React.Component {
     const deviceWidth = deviceFullWidth - 30;
 
     const backgroundImage = require("@assets/images/background-detalle-accion.png");
-
-    let reponerImage;
-    if (this.props.accion === "Reponer") {
-      reponerImage = require("@assets/images/action_reponer.png");
-    } else if (this.props.accion === "Chequear pedidos") {
-      reponerImage = require("@assets/images/action_chequearpedidos.png");
-    } else {
-      reponerImage = require("@assets/images/action_ajustar.png");
-    }
+    const reponerImage = require("@assets/images/action_presencia.png");
 
     return (
       <View
@@ -65,12 +57,12 @@ class Header extends React.Component {
         >
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 24,
               fontFamily: "Questrial",
               fontWeight: "bold"
             }}
           >
-            ${this.props.monto}
+            {this.props.porcentaje}
           </Text>
         </View>
 
@@ -105,13 +97,23 @@ class Header extends React.Component {
           >
             {this.props.nombreSala}
           </Text>
+
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 12,
               fontFamily: "Questrial"
             }}
           >
-            Categoria : {this.props.categoria}
+            {this.props.direccion}
+          </Text>
+
+          <Text
+            style={{
+              fontSize: 12,
+              fontFamily: "Questrial"
+            }}
+          >
+            Ult. medición CademSmart : {this.props.ultimaMedicion}
           </Text>
         </View>
 
@@ -148,4 +150,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default HeaderCademsmart;

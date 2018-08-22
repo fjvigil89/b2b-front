@@ -5,6 +5,7 @@ import Check from "@components/check/Check";
 import Dashboard from "@components/dashboard/Dashboard";
 import SalasInfo from "@components/salas_info/SalasInfo";
 import SalasInfoDetailAction from "@components/salas_info/salas_info_detal_action/SalasInfoDetailAction";
+import ProductosCademsmart from "@components/salas_info/productos_cademsmart/ProductosCademsmart";
 import Menu from "@components/menu/Menu";
 import Wall from "@components/wall/Wall";
 import Comments from "@components/wall/comments/Comments";
@@ -49,6 +50,14 @@ const Index = (
         component={SalasInfoDetailAction}
         title="SalasInfoDetailAction"
       />
+
+      <Scene
+        hideNavBar
+        key="productosCademsmart"
+        component={ProductosCademsmart}
+        title="ProductosCademsmart"
+      />
+
       <Scene
         hideNavBar
         key="createPublication"

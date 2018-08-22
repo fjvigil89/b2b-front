@@ -8,7 +8,6 @@ import {
   Header,
   Left,
   Button,
-  Icon,
   Title,
   Body,
   Right,
@@ -30,6 +29,7 @@ import {
 } from "@components/polls/PollsActions";
 import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
 import PollsRadio from "@components/polls/polls_radio/PollsRadio";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -64,7 +64,8 @@ class Polls extends Component {
     isError: PropTypes.bool,
     value: PropTypes.oneOfType([() => null, PropTypes.any]),
     dataPoll: PropTypes.oneOfType([() => null, PropTypes.any]),
-    lengthPoll: PropTypes.number
+    lengthPoll: PropTypes.number,
+    isLoading: PropTypes.bool
   };
 
   static defaultProps = {
@@ -72,7 +73,8 @@ class Polls extends Component {
     value: null,
     isError: false,
     dataPoll: [],
-    lengthPoll: 0
+    lengthPoll: 0,
+    isLoading: true
   };
 
   componentWillMount = () => {
@@ -158,8 +160,8 @@ class Polls extends Component {
       return (
         <Footer>
           <FooterTab>
-            <Button active>
-              <Text>Ir a encuesta</Text>
+            <Button onPress={this.closed} active>
+              <Text>Cerrar</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -181,7 +183,9 @@ class Polls extends Component {
       return (
         <Footer>
           <FooterTab>
-            <Button>{}</Button>
+            <Button onPress={this.closed}>
+              <Text>Cancelar</Text>
+            </Button>
             <Button onPress={this.nextPosition}>
               <Text>Siguiente</Text>
             </Button>
@@ -219,6 +223,10 @@ class Polls extends Component {
     }
   };
 
+  closed = () => {
+    Actions.pop();
+  };
+
   finish = () => {
     if (this.props.position > 0) {
       this.props.SetValidForm({
@@ -231,21 +239,14 @@ class Polls extends Component {
   errors = () => (this.props.isError ? "* Debe completar el formulario" : "");
 
   render = () => {
-    const { position } = this.props;
-
+    const { position, isLoading } = this.props;
+    if (isLoading) {
+      return <LoadingOverlay />;
+    }
     return (
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>
-          <Left>
-            <Button
-              transparent
-              onPress={() => {
-                Actions.pop();
-              }}
-            >
-              <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
-            </Button>
-          </Left>
+          <Left />
           <Body>
             <Title>Encuestas</Title>
           </Body>
@@ -264,7 +265,8 @@ const mapStateToProps = state => ({
   value: state.polls.value,
   isError: state.polls.isError,
   dataPoll: state.polls.dataPoll,
-  lengthPoll: state.polls.lengthPoll
+  lengthPoll: state.polls.lengthPoll,
+  isLoading: state.polls.isLoading
 });
 
 const mapDispatchToProps = {

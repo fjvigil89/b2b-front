@@ -100,9 +100,9 @@ class Publication extends Component {
       for (const image of this.props.images) {
         contador += 1;
 
-        const asset = await AssetUtils.resolveAsync(image.imagePath);
+        // const asset = await AssetUtils.resolveAsync(image.imagePath);
 
-        imagesArray.push({ uri: asset.localUri, id: contador });
+        imagesArray.push({ uri: image.imagePath, id: contador });
       }
 
       this.setState({
@@ -276,7 +276,9 @@ class Publication extends Component {
                     fontSize: 12
                   }}
                 >
-                  {moment(date).fromNow()}
+                  {moment(date)
+                    .add(1, "d")
+                    .fromNow()}
                 </Text>
               </View>
             </View>
@@ -496,7 +498,4 @@ const mapDispatchToProps = {
   UnLikePublication
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Publication);
+export default connect(null, mapDispatchToProps)(Publication);
