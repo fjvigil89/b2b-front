@@ -118,7 +118,9 @@ class SalasInfoDetail extends React.Component {
     const deviceWidth = deviceFullWidth - 30;
     const formatter = this.formatter(report.ventaPerdida);
     const fechaVisita = data.fecha_visita
-      ? moment(data.fecha_visita).fromNow()
+      ? moment(data.fecha_visita)
+          .add(1, "d")
+          .fromNow()
       : "-";
 
     const sizeTittle = Platform.OS === "ios" ? 20 : 18;
@@ -192,7 +194,10 @@ class SalasInfoDetail extends React.Component {
               fontFamily: "Questrial"
             }}
           >
-            Actualización B2B : {moment(data.date_b2b).fromNow()}
+            Actualización B2B :{" "}
+            {moment(data.date_b2b)
+              .add(1, "d")
+              .fromNow()}
           </Text>
           <Text
             style={{

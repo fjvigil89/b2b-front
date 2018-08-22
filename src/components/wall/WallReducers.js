@@ -1,4 +1,4 @@
-import { get, last } from "lodash";
+import { get, last, isEmpty } from "lodash";
 
 export const initialState = {
   data: null,
@@ -25,15 +25,19 @@ export default function wall(state = initialState, action) {
 
     case "GET_LIST_POST_MORE": {
       if (action.data) {
-        const lastId = get(last(action.data.posts), "id");
+        if (!isEmpty(action.data.posts)) {
+          const lastId = get(last(action.data.posts), "id");
 
-        const fullPostsList = state.data.concat(action.data.posts);
+          const fullPostsList = state.data.concat(action.data.posts);
 
-        return {
-          ...state,
-          data: fullPostsList,
-          lastId
-        };
+          return {
+            ...state,
+            data: fullPostsList,
+            lastId
+          };
+        }
+
+        return state;
       }
 
       return initialState;

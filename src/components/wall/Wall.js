@@ -12,8 +12,6 @@ import {
   Body
 } from "native-base";
 import {
-  View,
-  ActivityIndicator,
   DeviceEventEmitter,
   FlatList
 } from "react-native";
@@ -117,25 +115,20 @@ class Wall extends Component {
           }}
           data={data}
           renderItem={({ item }) => (
-              <Publication
-                id={item.id}
-                userName={item.userName}
-                date={item.date}
-                content={item.content}
-                enableLike={item.enableLike}
-                likes={item.totalLikes}
-                comments={item.totalComments}
-                images={item.images}
-                newPost={item.new}
-                margin
-              />
-            )}
-          keyExtractor={item => item.id.toString()}
-          ListFooterComponent={() => (
-            <View style={{ flex: 1, padding: 10 }}>
-              <ActivityIndicator size="small" />
-            </View>
+            <Publication
+              id={item.id}
+              userName={item.userName}
+              date={item.date}
+              content={item.content}
+              enableLike={item.enableLike}
+              likes={item.totalLikes}
+              comments={item.totalComments}
+              images={item.images}
+              newPost={item.new}
+              margin
+            />
           )}
+          keyExtractor={item => item.id.toString()}
           onRefresh={() => this.refreshWall()}
           refreshing={this.state.refreshing}
           onEndReached={() => {
@@ -160,7 +153,4 @@ const mapDispatchToProps = {
   GetMorePosts
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Wall);
+export default connect(mapStateToProps, mapDispatchToProps)(Wall);

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Content } from "native-base";
-import { RefreshControl } from "react-native";
+import { RefreshControl, Text, TouchableHighlight } from "react-native";
 
 import Loading from "@components/loading/Loading";
 import SalasDetail from "@components/salas/salas_detail/SalasDetail";
