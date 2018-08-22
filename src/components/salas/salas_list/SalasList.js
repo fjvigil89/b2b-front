@@ -94,4 +94,7 @@ const mapDispatchToProps = {
   GetLocationAsync
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SalasList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SalasList);
