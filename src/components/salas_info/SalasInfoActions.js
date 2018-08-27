@@ -23,11 +23,12 @@ export function ListadoSalasInfo(id) {
     });
 }
 
-export function CheckINorCheckOUT(storeId) {
+export function CheckINorCheckOUT(storeId, type) {
   return () =>
     new Promise((resolve, reject) => {
       const formForSend = {
-        storeId
+        storeId,
+        type
       };
 
       axios({

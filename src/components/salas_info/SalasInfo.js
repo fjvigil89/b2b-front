@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Content } from "native-base";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Alert } from "react-native";
+import { Alert, DeviceEventEmitter } from "react-native";
 
 import SalasInfoHeader from "@components/salas_info/salas_info_header/SalasInfoHeader";
 import SalasInfoDetail from "@components/salas_info/salas_info_detail/SalasInfoDetail";
@@ -65,8 +65,14 @@ class SalasInfo extends Component {
             text: "Hacer CheckIN",
             onPress: () => {
               this.props
-                .CheckINorCheckOUT(this.props.data.cod_local)
+                .CheckINorCheckOUT(this.props.data.cod_local, "in")
                 .then(() => {
+                  console.log(this.props.data.id);
+                  DeviceEventEmitter.emit(
+                    `checkINEvent-${this.props.data.id}`,
+                    {}
+                  );
+
                   Alert.alert(
                     "Exito",
                     "CheckIN realizado. Recuerda hacer el CheckOUT cuando termines.",

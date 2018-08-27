@@ -2,7 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import { connect } from "react-redux";
-import { Image, View, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import {
+  Image,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  DeviceEventEmitter
+} from "react-native";
 import { Thumbnail, Text } from "native-base";
 import { Actions } from "react-native-router-flux";
 import Swipeable from "react-native-swipeable";
@@ -54,8 +61,20 @@ class SalasDetail extends React.Component {
     lostSaleON: true
   };
 
+  constructor(props) {
+    super(props);
+    console.log(this.props.data.id);
+    DeviceEventEmitter.addListener(`checkINEvent-${this.props.data.id}`, () => {
+      console.log("Entre");
+      this.setState({
+        visita_en_progreso: 1
+      });
+    });
+  }
+
   state = {
-    leftActionActivated: false
+    visita_en_progreso: this.props.data.visita_en_progreso,
+    swipeable: null
   };
 
   currency = x => {
@@ -63,6 +82,34 @@ class SalasDetail extends React.Component {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
     return parts.join(".");
+  };
+
+  makeCheckOut = () => {
+    Alert.alert(
+      "¿CheckOut?",
+      `¿Quieres hacer el CheckOUT en ${this.props.data.descripcion} ?`,
+      [
+        {
+          text: "SI, hacer CheckOUT",
+          onPress: () => {
+            this.props
+              .CheckINorCheckOUT(this.props.data.cod_local, "out")
+              .then(() => {
+                Alert.alert("Exito", "CheckOUT realizado.", [
+                  { text: "Super!" }
+                ]);
+
+                this.state.swipeable.recenter();
+
+                this.setState({
+                  visita_en_progreso: 0
+                });
+              });
+          }
+        },
+        { text: "NO", style: "cancel" }
+      ]
+    );
   };
 
   render() {
@@ -97,7 +144,7 @@ class SalasDetail extends React.Component {
       logo = require("@assets/images/alvi.png");
     }
 
-    if (this.props.data.visita_en_progreso === 1) {
+    if (this.state.visita_en_progreso === 1) {
       imagen = require("@assets/images/visita-en-progreso.png");
     } else if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
       imagen = require("@assets/images/visita-realizada.png");
@@ -109,16 +156,25 @@ class SalasDetail extends React.Component {
       imagen = require("@assets/images/pendiente-visita.png");
     }
 
-    const { leftActionActivated } = this.state;
-
     const styles = StyleSheet.create({
-      leftSwipeItem: {
+      rightSwipeItem: {
         flex: 1,
-        alignItems: "flex-end",
         justifyContent: "center",
-        paddingRight: 20
+        paddingLeft: 10
       }
     });
+
+    const rightButtons = [
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={[styles.rightSwipeItem, { backgroundColor: "#f3bc32" }]}
+        onPress={() => {
+          this.makeCheckOut();
+        }}
+      >
+        <Text>¿CheckOut?</Text>
+      </TouchableOpacity>
+    ];
 
     return (
       <Animatable.View
@@ -136,38 +192,14 @@ class SalasDetail extends React.Component {
         }}
       >
         <Swipeable
-          leftActionActivationDistance={200}
-          leftContent={
-            this.props.data.visita_en_progreso === 1 ? (
-              <View
-                style={[
-                  styles.leftSwipeItem,
-                  {
-                    backgroundColor: leftActionActivated ? "#f3bc32" : "#FFF"
-                  }
-                ]}
-              >
-                {leftActionActivated ? (
-                  <Text>¡Realizar Checkout!</Text>
-                ) : (
-                  <Text>¿CheckOUT?</Text>
-                )}
-              </View>
-            ) : null
-          }
-          onLeftActionActivate={() =>
-            this.setState({ leftActionActivated: true })
-          }
-          onLeftActionDeactivate={() =>
-            this.setState({ leftActionActivated: false })
-          }
-          onLeftActionComplete={() =>
-            this.props.CheckINorCheckOUT(this.props.data.cod_local).then(() => {
-              Alert.alert("Exito", "CheckOUT realizado.", [{ text: "Super!" }]);
-            })
-          }
+          onRef={ref => {
+            this.state.swipeable = ref;
+          }}
+          rightButtons={this.state.visita_en_progreso ? rightButtons : null}
+          rightButtonWidth={110}
         >
           <TouchableOpacity
+            activeOpacity={0.8}
             style={{ flex: 1 }}
             onPress={() => {
               Actions.salasInfo({ data: this.props.data });
