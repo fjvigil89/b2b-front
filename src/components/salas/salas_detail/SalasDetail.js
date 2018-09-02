@@ -63,9 +63,8 @@ class SalasDetail extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.data.id);
-    DeviceEventEmitter.addListener(`checkINEvent-${this.props.data.id}`, () => {
-      console.log("Entre");
+
+    DeviceEventEmitter.addListener(`checkINEvent-${this.props.data.folio}`, () => {
       this.setState({
         visita_en_progreso: 1
       });
@@ -104,6 +103,8 @@ class SalasDetail extends React.Component {
                 this.setState({
                   visita_en_progreso: 0
                 });
+
+                this.props.data.visita_en_progreso = 0;
               });
           }
         },
@@ -147,7 +148,7 @@ class SalasDetail extends React.Component {
     if (this.state.visita_en_progreso === 1) {
       imagen = require("@assets/images/visita-en-progreso.png");
     } else if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
-      imagen = require("@assets/images/visita-realizada.png");
+      imagen = require("@assets/images/visita-realizada-v2.png");
 
       fecha = moment(this.props.data.fecha_visita)
         .add(1, "d")

@@ -53,6 +53,8 @@ class SalasInfo extends Component {
     await this.props.ListadoSalasInfo(this.props.data.cod_local);
   }
   componentDidMount = () => {
+    console.log(this.props);
+
     if (
       this.props.data.kilometers < 5.5 &&
       !this.props.data.visita_en_progreso
@@ -67,9 +69,8 @@ class SalasInfo extends Component {
               this.props
                 .CheckINorCheckOUT(this.props.data.cod_local, "in")
                 .then(() => {
-                  console.log(this.props.data.id);
                   DeviceEventEmitter.emit(
-                    `checkINEvent-${this.props.data.id}`,
+                    `checkINEvent-${this.props.data.folio}`,
                     {}
                   );
 

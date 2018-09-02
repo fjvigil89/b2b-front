@@ -59,7 +59,7 @@ class SalasInfoDetailAction extends React.Component {
     }
 
     return (
-      <Container>
+      <Container style={{ backgroundColor: "#F4F4F4" }}>
         <StatusBar barStyle="dark-content" />
         <Content
           style={{ flex: 1, backgroundColor: "#FFF" }}
