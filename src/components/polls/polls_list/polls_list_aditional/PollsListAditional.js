@@ -120,7 +120,7 @@ class PollsListAditional extends React.Component {
     <TouchableOpacity
       style={{ flex: 1 }}
       onPress={() => {
-        Actions.polls({});
+        Actions.polls({ idPoll: data.idPoll });
       }}
     >
       <View

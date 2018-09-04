@@ -65,7 +65,8 @@ class Polls extends Component {
     value: PropTypes.oneOfType([() => null, PropTypes.any]),
     dataPoll: PropTypes.oneOfType([() => null, PropTypes.any]),
     lengthPoll: PropTypes.number,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    idPoll: PropTypes.number
   };
 
   static defaultProps = {
@@ -74,11 +75,12 @@ class Polls extends Component {
     isError: false,
     dataPoll: [],
     lengthPoll: 0,
-    isLoading: true
+    isLoading: true,
+    idPoll: 0
   };
 
   componentWillMount = () => {
-    this.props.GetPoll();
+    this.props.GetPoll(this.props.idPoll);
   };
 
   getContent = position => {
@@ -87,12 +89,7 @@ class Polls extends Component {
         <Content>
           <Card>
             <CardItem header>
-              <Button
-                transparent
-                onPress={() => {
-                  Actions.pop();
-                }}
-              >
+              <Button transparent onPress={Actions.pop}>
                 <Text>Encuesta finalizada</Text>
               </Button>
             </CardItem>

@@ -5,21 +5,24 @@ import PropTypes from "prop-types";
 
 class SalasInfoHeader extends React.Component {
   static propTypes = {
-    hasPoll: PropTypes.number
+    data: PropTypes.shape({
+      hasPoll: PropTypes.number,
+      cod_local: PropTypes.string
+    })
   };
 
   static defaultProps = {
-    hasPoll: 0
+    data: {}
   };
 
-  showPolls = hasPoll => {
-    if (hasPoll > 0) {
+  showPolls = data => {
+    if (data.hasPoll > 0) {
       return (
         <Right>
           <Button
             transparent
             onPress={() => {
-              Actions.pollsList();
+              Actions.pollsList({ cod_local: data.cod_local });
             }}
           >
             <Icon
@@ -28,7 +31,6 @@ class SalasInfoHeader extends React.Component {
               }}
               name="ios-create"
             />
-            {this.showPolls()}
           </Button>
         </Right>
       );
@@ -53,7 +55,7 @@ class SalasInfoHeader extends React.Component {
         <Body>
           <Title>Detalle de Sala</Title>
         </Body>
-        {this.showPolls(this.props.hasPoll)}
+        {this.showPolls(this.props.data)}
       </Header>
     );
   }

@@ -24,12 +24,12 @@ export function ChangeInput(obj) {
     });
 }
 
-export function GetPoll() {
+export function GetPoll(idPoll) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta/1"
+        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta/${idPoll}`
       })
         .then(async response => {
           resolve(

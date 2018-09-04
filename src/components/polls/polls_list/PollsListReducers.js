@@ -18,8 +18,7 @@ export default function polls(state = initialState, action) {
     }
     default:
       return {
-        ...state,
-        listPolls: []
+        ...state
       };
   }
 }
