@@ -24,12 +24,12 @@ export function ChangeInput(obj) {
     });
 }
 
-export function GetPoll() {
+export function GetPoll(idPoll) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta/1"
+        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta/${idPoll}`
       })
         .then(async response => {
           resolve(
@@ -42,6 +42,30 @@ export function GetPoll() {
         .catch(error =>
           reject({
             message: error.response.data.error
+          })
+        )
+    );
+}
+
+export function SavePoll(form) {
+  return dispatch =>
+    new Promise(async (resolve, reject) =>
+      axios({
+        method: "POST",
+        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta`,
+        data: form
+      })
+        .then(async response => {
+          resolve(
+            dispatch({
+              type: "SAVE_POLL",
+              data: response
+            })
+          );
+        })
+        .catch(error =>
+          reject({
+            message: "ha ocurrido un error"
           })
         )
     );

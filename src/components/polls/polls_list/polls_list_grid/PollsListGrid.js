@@ -54,13 +54,3 @@ class PollsListGrid extends React.Component {
 }
 
 export default PollsListGrid;
-
-/*
-<Left>
-              <Icon
-                style={{
-                  backgroundColor: data.state === "available" ? "green" : "red"
-                }}
-              />
-            </Left>
-*/

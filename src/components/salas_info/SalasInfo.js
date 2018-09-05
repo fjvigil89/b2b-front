@@ -109,10 +109,11 @@ class SalasInfo extends Component {
         ventaPerdida: dataDetail.venta_perdida
       };
     }
-
     return (
       <Container>
-        <SalasInfoHeader hasPoll={data.hasPoll} />
+        <SalasInfoHeader
+          data={{ hasPoll: data.hasPoll, cod_local: data.cod_local }}
+        />
         <Content
           scrollEnabled={false}
           style={{ flex: 1, backgroundColor: "#FFF" }}

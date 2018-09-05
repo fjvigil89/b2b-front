@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export default function GetListPoll() {
+export default function GetListPoll(params) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta"
+        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta${params}`
       })
         .then(async response => {
           resolve(
