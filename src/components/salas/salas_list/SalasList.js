@@ -43,6 +43,7 @@ class SalasList extends Component {
   };
 
   componentWillMount = () => {
+    console.log('SalasList', this.props);
     this.props.GetLocationAsync();
     this.props.ListadoSalas(this.props.lostSaleON);
   };
