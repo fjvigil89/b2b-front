@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Content } from "native-base";
-import { RefreshControl } from "react-native";
+import { RefreshControl, Text, TouchableHighlight } from "react-native";
 
 import Loading from "@components/loading/Loading";
 import SalasDetail from "@components/salas/salas_detail/SalasDetail";
@@ -32,23 +32,24 @@ class SalasList extends Component {
       })
     ),
     refreshing: PropTypes.bool,
-    orderLostSale: PropTypes.bool,
+    lostSaleON: PropTypes.bool
   };
 
   static defaultProps = {
     isLoading: false,
     salas: [],
     refreshing: false,
-    orderLostSale: true
+    lostSaleON: true
   };
 
   componentWillMount = () => {
+    console.log('SalasList', this.props);
     this.props.GetLocationAsync();
-    this.props.ListadoSalas();
+    this.props.ListadoSalas(this.props.lostSaleON);
   };
 
   render = () => {
-    const { isLoading, salas, refreshing, orderLostSale } = this.props;
+    const { isLoading, salas, refreshing, lostSaleON } = this.props;
 
     if (isLoading) {
       return <Loading />;
@@ -56,7 +57,12 @@ class SalasList extends Component {
 
     const delay = 200;
     const detailListadoSalas = salas.map((sala, i) => (
-      <SalasDetail data={sala} key={sala.cod_local} delay={delay * i} orderLostSale={orderLostSale}/>
+      <SalasDetail
+        data={sala}
+        key={sala.cod_local}
+        delay={delay * i}
+        lostSaleON={lostSaleON}
+      />
     ));
 
     return (
@@ -80,7 +86,7 @@ const mapStateToProps = state => ({
   salas: state.salas.salas,
   isLoading: state.salas.loading,
   refreshing: state.salas.refreshing,
-  orderLostSale: state.salasHeader.orderLostSale
+  lostSaleON: state.salasHeader.lostSaleON
 });
 
 const mapDispatchToProps = {
@@ -89,4 +95,7 @@ const mapDispatchToProps = {
   GetLocationAsync
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SalasList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SalasList);

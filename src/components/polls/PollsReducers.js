@@ -1,4 +1,5 @@
 import { findIndex, forEach } from "lodash";
+import Item from "@assets/native-base-theme/components/Item";
 
 export const initialState = {
   position: 0,
@@ -6,14 +7,15 @@ export const initialState = {
   value: null,
   isError: false,
   dataPoll: [],
-  lengthPoll: 0
+  lengthPoll: 0,
+  isLoading: true,
+  isFinish: false
 };
 
 export default function polls(state = initialState, action) {
   switch (action.type) {
     case "GET_POLL": {
       if (action.data) {
-        console.log(action.data);
         return {
           ...state,
           position: 0,
@@ -21,7 +23,8 @@ export default function polls(state = initialState, action) {
           value: null,
           isError: false,
           dataPoll: action.data,
-          lengthPoll: action.data.length
+          lengthPoll: action.data.length,
+          isLoading: false
         };
       }
 
@@ -37,6 +40,13 @@ export default function polls(state = initialState, action) {
         value
       };
     }
+    case "SAVE_POLL": {
+      return {
+        ...state,
+        form: null,
+        isFinish: false
+      };
+    }
     case "FINISH": {
       if (state.value) {
         const index = findIndex(
@@ -47,24 +57,26 @@ export default function polls(state = initialState, action) {
         if (index === -1) {
           state.form.push({
             step: action.data.position,
-            value: state.value
+            id: state.dataPoll[action.data.position].id,
+            respuesta: state.value
           });
         } else {
-          state.form[index].value = state.value;
+          state.form[index].respuesta = state.value;
         }
         const position = action.data.position + 1;
 
-        const form = forEach(state.form, value => {
-          value.step += 1;
-          return value;
-        });
-        console.log(form);
+        const form = state.form.map(item => ({
+          id: item.id,
+          respuesta: item.respuesta
+        }));
+
         return {
           ...state,
           position,
           isError: false,
           value: null,
-          form
+          form,
+          isFinish: true
         };
       }
 
@@ -84,10 +96,11 @@ export default function polls(state = initialState, action) {
         if (index === -1) {
           state.form.push({
             step: action.data.position,
-            value: state.value
+            id: state.dataPoll[action.data.position].id,
+            respuesta: state.value
           });
         } else {
-          state.form[index].value = state.value;
+          state.form[index].respuesta = state.value;
         }
         const position = action.data.position + 1;
         const value = objetPosition(position, state.form);
@@ -119,7 +132,8 @@ export default function polls(state = initialState, action) {
         value: null,
         isError: false,
         lengthPoll: 0,
-        dataPoll: []
+        dataPoll: [],
+        isLoading: true
       };
   }
 }
@@ -128,7 +142,7 @@ export function objetPosition(position, obj) {
   const index = findIndex(obj, o => o.step === position);
 
   if (index > -1) {
-    return obj[index].value;
+    return obj[index].respuesta;
   }
   return null;
 }

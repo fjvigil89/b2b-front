@@ -64,18 +64,6 @@ class PollsRadio extends Component {
     }
   }
 
-  addTextArea = (item, state) => {
-    if (item.config.textArea && state === true) {
-      return (
-        <View style={{ margin: 10 }}>
-          <Textarea rowSpan={5} bordered placeholder={item.config.title} />
-        </View>
-      );
-    }
-
-    return null;
-  };
-
   render = () => {
     const { data } = this.props;
     return (
@@ -108,7 +96,6 @@ class PollsRadio extends Component {
                 <Radio selected={this.state.check[index]} />
               </Right>
             </ListItem>
-            {this.addTextArea(item, this.state.check[index])}
           </View>
         ))}
       </Content>

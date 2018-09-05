@@ -16,258 +16,65 @@ import {
 } from "native-base";
 import PollsListGrid from "@components/polls/polls_list/polls_list_grid/PollsListGrid";
 
+import GetListPoll from "@components/polls/polls_list/PollsListActios";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+
 class PollsList extends Component {
-  static propTypes = {};
+  static propTypes = {
+    GetListPoll: PropTypes.func.isRequired,
+    listPolls: PropTypes.oneOfType([() => null, PropTypes.any]),
+    isLoading: PropTypes.bool,
+    cod_local: PropTypes.string
+  };
 
-  static defaultProps = {};
+  static defaultProps = {
+    listPolls: [],
+    isLoading: true,
+    cod_local: ""
+  };
 
-  componentWillMount = () => {};
+  componentWillMount = () => {
+    const params = this.props.cod_local ? `/store/${this.props.cod_local}` : "";
+    this.props.GetListPoll(params);
+  };
+
+  showBackMenu = show => {
+    if (show) {
+      return (
+        <Button transparent onPress={Actions.pop}>
+          <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
+        </Button>
+      );
+    }
+
+    return (
+      <Button transparent onPress={Actions.drawerOpen}>
+        <Icon name="menu" />
+      </Button>
+    );
+  };
 
   render = () => {
-    const maps = [
-      {
-        id: 1,
-        name: "Encuesta 1",
-        description: "Descripcion de encuesta 1.. Descripcion de encuesta 1 ",
-        vigencia: "23/09/2018",
-        salas: [
-          {
-            idPolls: 34,
-            state: "complete",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          }
-        ]
-      },
-      {
-        id: 2,
-        name: "Encuesta 2",
-        description: "Descripcion de encuesta 2.. Descripcion de encuesta 2 ",
-        vigencia: "23/09/2018",
-        salas: [
-          {
-            idPolls: 34,
-            state: "available",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          }
-        ]
-      },
-      {
-        id: 3,
-        name: "Encuesta 3",
-        description: "Descripcion de encuesta 3.. Descripcion de encuesta 3 ",
-        vigencia: "23/09/2018",
-        salas: [
-          {
-            idPolls: 34,
-            state: "notAvailable",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          },
-          {
-            idPolls: 34,
-            state: "available",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          },
-          {
-            idPolls: 34,
-            state: "complete",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          },
-          {
-            idPolls: 34,
-            state: "expired",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          }
-        ]
-      },
-      {
-        id: 4,
-        name: "Encuesta 4",
-        description: "Descripcion de encuesta 4.. Descripcion de encuesta 3 ",
-        vigencia: "23/09/2018",
-        salas: [
-          {
-            idPolls: 34,
-            state: "notAvailable",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          },
-          {
-            idPolls: 34,
-            state: "available",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          },
-          {
-            idPolls: 34,
-            state: "complete",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          },
-          {
-            idPolls: 34,
-            state: "expired",
-            bandera: "JUMBO",
-            cadena: "CENCOSUD",
-            cod_local: "J511",
-            date_b2b: "2018-07-22",
-            descripcion: "JUMBO - PROVIDENCIA, COSTANERA CENTER",
-            direccion: "AV. ANDRES BELLO #2465",
-            fecha_visita: "2018-07-23 00:00:00.000",
-            folio: 41065015,
-            kilometers: 5.4,
-            latitud: -33.4174979,
-            longitud: -70.6080864,
-            mide: 1,
-            osa: 71,
-            prefijoKilometers: "Km",
-            realizada: 1,
-            venta_perdida: 4885565
-          }
-        ]
-      }
-    ];
-    const list = maps.map(data => <PollsListGrid key={data.id} data={data} />);
+    console.log("hay que refrescar render");
+    const { isLoading, listPolls } = this.props;
+    if (isLoading) {
+      return <LoadingOverlay />;
+    }
+    let list;
+    let showBack = false;
+    if (listPolls instanceof Array) {
+      list = listPolls.map((data, index) => (
+        <PollsListGrid key={index} data={data} />
+      ));
+    } else {
+      showBack = true;
+      list = <PollsListGrid data={listPolls} />;
+    }
 
     return (
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>
-          <Left>
-            <Button transparent onPress={Actions.drawerOpen}>
-              <Icon name="menu" />
-            </Button>
-          </Left>
+          <Left>{this.showBackMenu(showBack)}</Left>
           <Body>
             <Title>Encuestas</Title>
           </Body>
@@ -281,9 +88,14 @@ class PollsList extends Component {
   };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  listPolls: state.pollsList.listPolls,
+  isLoading: state.pollsList.isLoading
+});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  GetListPoll
+};
 
 export default connect(
   mapStateToProps,

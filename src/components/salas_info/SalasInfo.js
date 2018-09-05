@@ -2,14 +2,20 @@ import React, { Component } from "react";
 import { Container, Content } from "native-base";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Alert, DeviceEventEmitter } from "react-native";
+
 import SalasInfoHeader from "@components/salas_info/salas_info_header/SalasInfoHeader";
 import SalasInfoDetail from "@components/salas_info/salas_info_detail/SalasInfoDetail";
 import SalasInfoList from "@components/salas_info/salas_info_list/SalasInfoList";
-import ListadoSalasInfo from "@components/salas_info/SalasInfoActions.js";
+import {
+  ListadoSalasInfo,
+  CheckINorCheckOUT
+} from "@components/salas_info/SalasInfoActions.js";
 
 class SalasInfo extends Component {
   static propTypes = {
     ListadoSalasInfo: PropTypes.func.isRequired,
+    CheckINorCheckOUT: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     dataDetail: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     data: PropTypes.shape({
@@ -21,7 +27,10 @@ class SalasInfo extends Component {
       fecha_visita: PropTypes.string,
       direccion: PropTypes.string,
       cod_local: PropTypes.string,
-      descripcion: PropTypes.string
+      descripcion: PropTypes.string,
+      hasPoll: PropTypes.number,
+      kilometers: PropTypes.number,
+      visita_en_progreso: PropTypes.number
     })
   };
 
@@ -43,6 +52,41 @@ class SalasInfo extends Component {
   async componentWillMount() {
     await this.props.ListadoSalasInfo(this.props.data.cod_local);
   }
+  componentDidMount = () => {
+    console.log(this.props);
+
+    if (
+      this.props.data.kilometers < 5.5 &&
+      !this.props.data.visita_en_progreso
+    ) {
+      Alert.alert(
+        "¿CheckIN?",
+        "Te encuentras cerca de esta sala. ¿Quieres hacer CheckIN?",
+        [
+          {
+            text: "Hacer CheckIN",
+            onPress: () => {
+              this.props
+                .CheckINorCheckOUT(this.props.data.cod_local, "in")
+                .then(() => {
+                  DeviceEventEmitter.emit(
+                    `checkINEvent-${this.props.data.folio}`,
+                    {}
+                  );
+
+                  Alert.alert(
+                    "Exito",
+                    "CheckIN realizado. Recuerda hacer el CheckOUT cuando termines.",
+                    [{ text: "Super!" }]
+                  );
+                });
+            }
+          },
+          { text: "NO", style: "cancel" }
+        ]
+      );
+    }
+  };
 
   render = () => {
     const { isLoading, data } = this.props;
@@ -65,10 +109,11 @@ class SalasInfo extends Component {
         ventaPerdida: dataDetail.venta_perdida
       };
     }
-
     return (
       <Container>
-        <SalasInfoHeader />
+        <SalasInfoHeader
+          data={{ hasPoll: data.hasPoll, cod_local: data.cod_local }}
+        />
         <Content
           scrollEnabled={false}
           style={{ flex: 1, backgroundColor: "#FFF" }}
@@ -91,7 +136,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  ListadoSalasInfo
+  ListadoSalasInfo,
+  CheckINorCheckOUT
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SalasInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SalasInfo);

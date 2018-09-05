@@ -11,21 +11,31 @@ export function ShowSearch() {
     });
 }
 
-export function ShowGeoLocation(validShowGeo) {
-  let typeSalas = 'SALAS_SHOW_GEO_LOCATION';
-  if(validShowGeo) {
-    typeSalas = 'SALAS_SHOW_LOST_SALE';
-  }
-
+export function ShowListForGeolocation() {
   return dispatch =>
     new Promise(async resolve => {
       resolve(
         dispatch({
           type: "SHOW_GEO_LOCATION"
         }),
-        
+
         dispatch({
-          type: typeSalas
+          type: "SALAS_SHOW_GEO_LOCATION"
+        })
+      );
+    });
+}
+
+export function ShowListForLostSale() {
+  return dispatch =>
+    new Promise(async resolve => {
+      resolve(
+        dispatch({
+          type: "SHOW_GEO_LOCATION"
+        }),
+
+        dispatch({
+          type: "SALAS_SHOW_LOST_SALE"
         })
       );
     });
@@ -46,13 +56,14 @@ export function ClearSearch() {
     });
 }
 
-export function FilterSection(i = CONSTANTES.CANCEL_INDEX) {
+export function FilterSection(i = CONSTANTES.CANCEL_INDEX, lostSaleON) {
   return dispatch =>
     new Promise(async resolve => {
       resolve(
         dispatch({
           type: "SALAS_FILTER_SECTION",
-          filter: i
+          filter: i,
+          lostSaleON
         })
       );
     });

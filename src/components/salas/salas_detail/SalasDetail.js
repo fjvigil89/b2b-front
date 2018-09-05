@@ -1,18 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
-import { Image, View, TouchableOpacity } from "react-native";
+import { connect } from "react-redux";
+import {
+  Image,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  DeviceEventEmitter
+} from "react-native";
 import { Thumbnail, Text } from "native-base";
 import { Actions } from "react-native-router-flux";
+import Swipeable from "react-native-swipeable";
 
 import _ from "lodash";
 import moment from "moment";
 import "moment/locale/es";
 
+import { CheckINorCheckOUT } from "@components/salas_info/SalasInfoActions.js";
+
 moment.locale("es");
 
 class SalasDetail extends React.Component {
   static propTypes = {
+    CheckINorCheckOUT: PropTypes.func.isRequired,
     data: PropTypes.shape({
       id: PropTypes.number,
       bandera: PropTypes.string,
@@ -22,10 +34,15 @@ class SalasDetail extends React.Component {
       fecha_visita: PropTypes.string,
       direccion: PropTypes.string,
       cod_local: PropTypes.string,
-      descripcion: PropTypes.string
+      descripcion: PropTypes.string,
+      venta_perdida: PropTypes.number,
+      kilometers: PropTypes.number,
+      prefijoKilometers: PropTypes.string,
+      hasPoll: PropTypes.number,
+      visita_en_progreso: PropTypes.number
     }),
     delay: PropTypes.number,
-    orderLostSale: PropTypes.bool
+    lostSaleON: PropTypes.bool
   };
 
   static defaultProps = {
@@ -41,12 +58,59 @@ class SalasDetail extends React.Component {
       descripcion: ""
     },
     delay: 100,
-    orderLostSale: false
+    lostSaleON: true
   };
+
+  constructor(props) {
+    super(props);
+
+    DeviceEventEmitter.addListener(`checkINEvent-${this.props.data.folio}`, () => {
+      this.setState({
+        visita_en_progreso: 1
+      });
+    });
+  }
+
+  state = {
+    visita_en_progreso: this.props.data.visita_en_progreso,
+    swipeable: null
+  };
+
   currency = x => {
     const parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
     return parts.join(".");
+  };
+
+  makeCheckOut = () => {
+    Alert.alert(
+      "¿CheckOut?",
+      `¿Quieres hacer el CheckOUT en ${this.props.data.descripcion} ?`,
+      [
+        {
+          text: "SI, hacer CheckOUT",
+          onPress: () => {
+            this.props
+              .CheckINorCheckOUT(this.props.data.cod_local, "out")
+              .then(() => {
+                Alert.alert("Exito", "CheckOUT realizado.", [
+                  { text: "Super!" }
+                ]);
+
+                this.state.swipeable.recenter();
+
+                this.setState({
+                  visita_en_progreso: 0
+                });
+
+                this.props.data.visita_en_progreso = 0;
+              });
+          }
+        },
+        { text: "NO", style: "cancel" }
+      ]
+    );
   };
 
   render() {
@@ -81,13 +145,38 @@ class SalasDetail extends React.Component {
       logo = require("@assets/images/alvi.png");
     }
 
-    if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
-      imagen = require("@assets/images/visita-realizada.png");
+    if (this.state.visita_en_progreso === 1) {
+      imagen = require("@assets/images/visita-en-progreso.png");
+    } else if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
+      imagen = require("@assets/images/visita-realizada-v2.png");
 
-      fecha = moment(this.props.data.fecha_visita).fromNow();
+      fecha = moment(this.props.data.fecha_visita)
+        .add(1, "d")
+        .fromNow();
     } else if (this.props.data.mide === 1 && this.props.data.realizada === 0) {
       imagen = require("@assets/images/pendiente-visita.png");
     }
+
+    const styles = StyleSheet.create({
+      rightSwipeItem: {
+        flex: 1,
+        justifyContent: "center",
+        paddingLeft: 10
+      }
+    });
+
+    const rightButtons = [
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={[styles.rightSwipeItem, { backgroundColor: "#f3bc32" }]}
+        onPress={() => {
+          this.makeCheckOut();
+        }}
+      >
+        <Text>¿CheckOut?</Text>
+      </TouchableOpacity>
+    ];
+
     return (
       <Animatable.View
         animation="fadeInRight"
@@ -103,116 +192,80 @@ class SalasDetail extends React.Component {
           marginBottom: 5
         }}
       >
-        <TouchableOpacity
-          style={{ flex: 1 }}
-          onPress={() => {
-            Actions.salasInfo({ data: this.props.data });
+        <Swipeable
+          onRef={ref => {
+            this.state.swipeable = ref;
           }}
+          rightButtons={this.state.visita_en_progreso ? rightButtons : null}
+          rightButtonWidth={110}
         >
-          {!_.isNull(imagen) && (
-            <Image
-              style={{
-                position: "absolute",
-                height: 110,
-                width: 110,
-                right: 0,
-                zIndex: 1000
-              }}
-              source={imagen}
-            />
-          )}
-
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row"
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={{ flex: 1 }}
+            onPress={() => {
+              Actions.salasInfo({ data: this.props.data });
             }}
           >
-            <View
-              style={{
-                flex: 0.25,
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <Thumbnail large source={logo} />
-            </View>
+            {!_.isNull(imagen) && (
+              <Image
+                style={{
+                  position: "absolute",
+                  height: 110,
+                  width: 110,
+                  right: 0,
+                  zIndex: 1000
+                }}
+                source={imagen}
+              />
+            )}
 
             <View
               style={{
-                flex: 0.75,
-                justifyContent: "center",
-                alignItems: "flex-start",
-                paddingRight: 10
+                flex: 1,
+                flexDirection: "row"
               }}
             >
-              <Text
+              <View
                 style={{
-                  fontSize: 18,
-                  fontFamily: "Questrial",
-                  fontWeight: "bold"
+                  flex: 0.25,
+                  justifyContent: "center",
+                  alignItems: "center"
                 }}
               >
-                {this.props.data.descripcion}
-              </Text>
-              <Text note style={{ fontSize: 12 }}>
-                {this.props.data.direccion}
-              </Text>
-            </View>
-          </View>
+                <Thumbnail large source={logo} />
+              </View>
 
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingBottom: 10,
-              marginTop: 10
-            }}
-          >
-            <View
-              style={{
-                flex: 0.5,
-                justifyContent: "center",
-                alignItems: "flex-start"
-              }}
-            >
-              <Text
+              <View
                 style={{
-                  fontSize: 12,
-                  fontFamily: "Questrial"
+                  flex: 0.75,
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  paddingRight: 10
                 }}
               >
-                Ultima actualización B2B
-              </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: "Questrial",
+                    fontWeight: "bold"
+                  }}
+                >
+                  {this.props.data.descripcion}
+                </Text>
+                <Text note style={{ fontSize: 12 }}>
+                  {this.props.data.direccion}
+                </Text>
+              </View>
             </View>
-            <View
-              style={{
-                flex: 0.5,
-                justifyContent: "center",
-                alignItems: "flex-end"
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontFamily: "Questrial"
-                }}
-              >
-                {moment(this.props.data.date_b2b).fromNow()}
-              </Text>
-            </View>
-          </View>
 
-          {!_.isEmpty(fecha) && (
             <View
               style={{
                 flex: 1,
                 flexDirection: "row",
                 paddingLeft: 10,
                 paddingRight: 10,
-                paddingBottom: 10
+                paddingBottom: 10,
+                marginTop: 10
               }}
             >
               <View
@@ -228,7 +281,7 @@ class SalasDetail extends React.Component {
                     fontFamily: "Questrial"
                   }}
                 >
-                  Fecha de visita
+                  Ultima actualización B2B
                 </Text>
               </View>
               <View
@@ -244,63 +297,117 @@ class SalasDetail extends React.Component {
                     fontFamily: "Questrial"
                   }}
                 >
-                  {fecha}
+                  {moment(this.props.data.date_b2b)
+                    .add(1, "d")
+                    .fromNow()}
                 </Text>
               </View>
             </View>
-          )}
 
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingBottom: 10,
-              marginTop: 10
-            }}
-          >
-            <View
-              style={{
-                flex: 0.5,
-                justifyContent: "center",
-                alignItems: "flex-start"
-              }}
-            >
-              <Text
+            {!_.isEmpty(fecha) && (
+              <View
                 style={{
-                  fontSize: 12,
-                  fontFamily: "Questrial"
+                  flex: 1,
+                  flexDirection: "row",
+                  paddingLeft: 10,
+                  paddingRight: 10,
+                  paddingBottom: 10
                 }}
               >
-                {this.props.orderLostSale ? "Distancia" : "Venta Perdida"}
-              </Text>
-            </View>
+                <View
+                  style={{
+                    flex: 0.5,
+                    justifyContent: "center",
+                    alignItems: "flex-start"
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontFamily: "Questrial"
+                    }}
+                  >
+                    Fecha de visita
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 0.5,
+                    justifyContent: "center",
+                    alignItems: "flex-end"
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontFamily: "Questrial"
+                    }}
+                  >
+                    {fecha}
+                  </Text>
+                </View>
+              </View>
+            )}
+
             <View
               style={{
-                flex: 0.5,
-                justifyContent: "center",
-                alignItems: "flex-end"
+                flex: 1,
+                flexDirection: "row",
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingBottom: 10,
+                marginTop: 10
               }}
             >
-              <Text
+              <View
                 style={{
-                  fontSize: 12,
-                  fontFamily: "Questrial"
+                  flex: 0.5,
+                  justifyContent: "center",
+                  alignItems: "flex-start"
                 }}
               >
-                {this.props.orderLostSale
-                  ? `${this.props.data.kilometers}${
-                      this.props.data.prefijoKilometers
-                    }`
-                  : `$${this.currency(this.props.data.venta_perdida)}`}
-              </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "Questrial"
+                  }}
+                >
+                  {this.props.lostSaleON ? "Venta Perdida" : "Distancia"}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 0.5,
+                  justifyContent: "center",
+                  alignItems: "flex-end"
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "Questrial"
+                  }}
+                >
+                  {this.props.lostSaleON
+                    ? `$${this.currency(this.props.data.venta_perdida)}`
+                    : `${this.props.data.kilometers}${
+                        this.props.data.prefijoKilometers
+                      }`}
+                </Text>
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </Swipeable>
       </Animatable.View>
     );
   }
 }
 
-export default SalasDetail;
+const mapDispatchToProps = {
+  CheckINorCheckOUT
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SalasDetail);

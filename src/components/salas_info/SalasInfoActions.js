@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default function ListadoSalasInfo(id) {
+export function ListadoSalasInfo(id) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       dispatch({
@@ -20,5 +20,25 @@ export default function ListadoSalasInfo(id) {
           );
         })
         .catch(error => reject({ message: error.response.data.error }));
+    });
+}
+
+export function CheckINorCheckOUT(storeId, type) {
+  return () =>
+    new Promise((resolve, reject) => {
+      const formForSend = {
+        storeId,
+        type
+      };
+
+      axios({
+        method: "POST",
+        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/check`,
+        data: formForSend
+      })
+        .then(() => {
+          resolve();
+        })
+        .catch(error => reject(error));
     });
 }

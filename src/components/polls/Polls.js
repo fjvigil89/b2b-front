@@ -8,7 +8,6 @@ import {
   Header,
   Left,
   Button,
-  Icon,
   Title,
   Body,
   Right,
@@ -26,10 +25,12 @@ import StepIndicator from "react-native-step-indicator";
 import {
   SetValidForm,
   ChangeInput,
-  GetPoll
+  GetPoll,
+  SavePoll
 } from "@components/polls/PollsActions";
 import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
 import PollsRadio from "@components/polls/polls_radio/PollsRadio";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -60,23 +61,32 @@ class Polls extends Component {
     SetValidForm: PropTypes.func.isRequired,
     ChangeInput: PropTypes.func.isRequired,
     GetPoll: PropTypes.func.isRequired,
+    SavePoll: PropTypes.func.isRequired,
     position: PropTypes.number,
     isError: PropTypes.bool,
     value: PropTypes.oneOfType([() => null, PropTypes.any]),
     dataPoll: PropTypes.oneOfType([() => null, PropTypes.any]),
-    lengthPoll: PropTypes.number
+    lengthPoll: PropTypes.number,
+    isLoading: PropTypes.bool,
+    isFinish: PropTypes.bool,
+    idPoll: PropTypes.number,
+    form: PropTypes.oneOfType([() => null, PropTypes.any])
   };
 
   static defaultProps = {
     position: 0,
     value: null,
+    form: null,
     isError: false,
     dataPoll: [],
-    lengthPoll: 0
+    lengthPoll: 0,
+    isLoading: true,
+    isFinish: false,
+    idPoll: 0
   };
 
   componentWillMount = () => {
-    this.props.GetPoll();
+    this.props.GetPoll(this.props.idPoll);
   };
 
   getContent = position => {
@@ -85,12 +95,7 @@ class Polls extends Component {
         <Content>
           <Card>
             <CardItem header>
-              <Button
-                transparent
-                onPress={() => {
-                  Actions.pop();
-                }}
-              >
+              <Button transparent onPress={Actions.pop}>
                 <Text>Encuesta finalizada</Text>
               </Button>
             </CardItem>
@@ -158,8 +163,8 @@ class Polls extends Component {
       return (
         <Footer>
           <FooterTab>
-            <Button active>
-              <Text>Ir a encuesta</Text>
+            <Button onPress={this.closed} active>
+              <Text>Cerrar</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -181,7 +186,9 @@ class Polls extends Component {
       return (
         <Footer>
           <FooterTab>
-            <Button>{}</Button>
+            <Button onPress={this.closed}>
+              <Text>Cancelar</Text>
+            </Button>
             <Button onPress={this.nextPosition}>
               <Text>Siguiente</Text>
             </Button>
@@ -203,6 +210,11 @@ class Polls extends Component {
       </Footer>
     );
   };
+
+  savePoll = () => {
+    this.props.SavePoll(this.props.form);
+  };
+
   nextPosition = () => {
     this.props.SetValidForm({
       position: this.props.position,
@@ -219,6 +231,10 @@ class Polls extends Component {
     }
   };
 
+  closed = () => {
+    Actions.pop({ refresh: true });
+  };
+
   finish = () => {
     if (this.props.position > 0) {
       this.props.SetValidForm({
@@ -231,21 +247,17 @@ class Polls extends Component {
   errors = () => (this.props.isError ? "* Debe completar el formulario" : "");
 
   render = () => {
-    const { position } = this.props;
-
+    const { position, isLoading, isFinish } = this.props;
+    if (isLoading) {
+      return <LoadingOverlay />;
+    } else if (isFinish) {
+      this.savePoll();
+      return <LoadingOverlay />;
+    }
     return (
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>
-          <Left>
-            <Button
-              transparent
-              onPress={() => {
-                Actions.pop();
-              }}
-            >
-              <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
-            </Button>
-          </Left>
+          <Left />
           <Body>
             <Title>Encuestas</Title>
           </Body>
@@ -264,13 +276,17 @@ const mapStateToProps = state => ({
   value: state.polls.value,
   isError: state.polls.isError,
   dataPoll: state.polls.dataPoll,
-  lengthPoll: state.polls.lengthPoll
+  lengthPoll: state.polls.lengthPoll,
+  isLoading: state.polls.isLoading,
+  isFinish: state.polls.isFinish,
+  form: state.polls.form
 });
 
 const mapDispatchToProps = {
   SetValidForm,
   ChangeInput,
-  GetPoll
+  GetPoll,
+  SavePoll
 };
 
 export default connect(

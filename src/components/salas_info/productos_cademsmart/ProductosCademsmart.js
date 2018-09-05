@@ -13,48 +13,39 @@ import {
 import { Actions } from "react-native-router-flux";
 import _ from "lodash";
 
-import ListadoProductosPorCategoriaAcccion from "@components/salas_info/salas_info_detal_action/SalasInfoDetailActionActions.js";
-import Header from "@components/salas_info/salas_info_detal_action/Header/Header";
-import Producto from "@components/salas_info/salas_info_detal_action/Producto/Producto";
+import ListadoProductosCademsmart from "@components/salas_info/productos_cademsmart/ProductosCademsmartActions";
+import HeaderCademsmart from "@components/salas_info/productos_cademsmart/header_cademsmart/HeaderCademsmart";
+import ProductoCademsmart from "@components/salas_info/productos_cademsmart/producto_cademsmart/ProductoCademsmart";
 
-class SalasInfoDetailAction extends React.Component {
+class ProductosCademsmart extends React.Component {
   static propTypes = {
-    ListadoProductosPorCategoriaAcccion: PropTypes.func.isRequired,
+    ListadoProductosCademsmart: PropTypes.func.isRequired,
     productos: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
-    accion: PropTypes.string,
-    monto: PropTypes.string,
-    sala: PropTypes.string,
+    porcentaje: PropTypes.string,
+    visita: PropTypes.number,
     nombreSala: PropTypes.string,
-    categoria: PropTypes.string
+    direccion: PropTypes.string,
+    ultimaMedicion: PropTypes.string
   };
 
   static defaultProps = {
-    accion: "",
-    monto: "",
-    sala: "",
+    porcentaje: "",
+    visita: 0,
     nombreSala: "",
-    categoria: ""
+    direccion: "",
+    ultimaMedicion: ""
   };
 
   componentWillMount = () => {
-    this.props.ListadoProductosPorCategoriaAcccion(
-      this.props.sala,
-      this.props.categoria,
-      this.props.accion
-    );
+    this.props.ListadoProductosCademsmart(this.props.visita);
   };
 
   render() {
     let productos = <Text />;
 
     if (!_.isEmpty(this.props.productos)) {
-      productos = this.props.productos.detail.data.map(detail => (
-        <Producto
-          key={detail.ean}
-          data={detail}
-          flag={this.props.productos.detail.flag}
-          accion={this.props.accion}
-        />
+      productos = this.props.productos.map(detail => (
+        <ProductoCademsmart key={detail.ean} data={detail} />
       ));
     }
 
@@ -67,12 +58,13 @@ class SalasInfoDetailAction extends React.Component {
           contentContainerStyle={{ flex: 1 }}
         >
           <SafeAreaView style={{ flex: 1, backgroundColor: "#fdf7c6" }}>
-            <Header
-              accion={this.props.accion}
-              monto={this.props.monto}
+            <HeaderCademsmart
+              porcentaje={this.props.porcentaje}
               nombreSala={this.props.nombreSala}
-              categoria={this.props.categoria}
+              direccion={this.props.direccion}
+              ultimaMedicion={this.props.ultimaMedicion}
             />
+
             <View
               style={{
                 flex: 1,
@@ -102,13 +94,13 @@ class SalasInfoDetailAction extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  productos: state.productos.productos
+  productos: state.productosCademsmart.productos
 });
 
 const mapDispatchToProps = {
-  ListadoProductosPorCategoriaAcccion
+  ListadoProductosCademsmart
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  SalasInfoDetailAction
+  ProductosCademsmart
 );
