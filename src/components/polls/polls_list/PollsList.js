@@ -55,6 +55,7 @@ class PollsList extends Component {
   };
 
   render = () => {
+    console.log("hay que refrescar render");
     const { isLoading, listPolls } = this.props;
     if (isLoading) {
       return <LoadingOverlay />;

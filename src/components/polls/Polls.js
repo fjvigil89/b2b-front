@@ -25,7 +25,8 @@ import StepIndicator from "react-native-step-indicator";
 import {
   SetValidForm,
   ChangeInput,
-  GetPoll
+  GetPoll,
+  SavePoll
 } from "@components/polls/PollsActions";
 import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
 import PollsRadio from "@components/polls/polls_radio/PollsRadio";
@@ -60,22 +61,27 @@ class Polls extends Component {
     SetValidForm: PropTypes.func.isRequired,
     ChangeInput: PropTypes.func.isRequired,
     GetPoll: PropTypes.func.isRequired,
+    SavePoll: PropTypes.func.isRequired,
     position: PropTypes.number,
     isError: PropTypes.bool,
     value: PropTypes.oneOfType([() => null, PropTypes.any]),
     dataPoll: PropTypes.oneOfType([() => null, PropTypes.any]),
     lengthPoll: PropTypes.number,
     isLoading: PropTypes.bool,
-    idPoll: PropTypes.number
+    isFinish: PropTypes.bool,
+    idPoll: PropTypes.number,
+    form: PropTypes.oneOfType([() => null, PropTypes.any])
   };
 
   static defaultProps = {
     position: 0,
     value: null,
+    form: null,
     isError: false,
     dataPoll: [],
     lengthPoll: 0,
     isLoading: true,
+    isFinish: false,
     idPoll: 0
   };
 
@@ -204,6 +210,11 @@ class Polls extends Component {
       </Footer>
     );
   };
+
+  savePoll = () => {
+    this.props.SavePoll(this.props.form);
+  };
+
   nextPosition = () => {
     this.props.SetValidForm({
       position: this.props.position,
@@ -221,7 +232,7 @@ class Polls extends Component {
   };
 
   closed = () => {
-    Actions.pop();
+    Actions.pop({ refresh: true });
   };
 
   finish = () => {
@@ -236,8 +247,11 @@ class Polls extends Component {
   errors = () => (this.props.isError ? "* Debe completar el formulario" : "");
 
   render = () => {
-    const { position, isLoading } = this.props;
+    const { position, isLoading, isFinish } = this.props;
     if (isLoading) {
+      return <LoadingOverlay />;
+    } else if (isFinish) {
+      this.savePoll();
       return <LoadingOverlay />;
     }
     return (
@@ -263,13 +277,16 @@ const mapStateToProps = state => ({
   isError: state.polls.isError,
   dataPoll: state.polls.dataPoll,
   lengthPoll: state.polls.lengthPoll,
-  isLoading: state.polls.isLoading
+  isLoading: state.polls.isLoading,
+  isFinish: state.polls.isFinish,
+  form: state.polls.form
 });
 
 const mapDispatchToProps = {
   SetValidForm,
   ChangeInput,
-  GetPoll
+  GetPoll,
+  SavePoll
 };
 
 export default connect(

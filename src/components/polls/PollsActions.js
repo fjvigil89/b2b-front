@@ -46,3 +46,27 @@ export function GetPoll(idPoll) {
         )
     );
 }
+
+export function SavePoll(form) {
+  return dispatch =>
+    new Promise(async (resolve, reject) =>
+      axios({
+        method: "POST",
+        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta`,
+        data: form
+      })
+        .then(async response => {
+          resolve(
+            dispatch({
+              type: "SAVE_POLL",
+              data: response
+            })
+          );
+        })
+        .catch(error =>
+          reject({
+            message: "ha ocurrido un error"
+          })
+        )
+    );
+}
