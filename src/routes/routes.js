@@ -16,6 +16,7 @@ import RespondComment from "@components/wall/respond_comment/RespondComment";
 import Polls from "@components/polls/Polls";
 import PollsList from "@components/polls/polls_list/PollsList";
 import Hashtags from "@components/wall/hashtags/Hashtags";
+import Report from "@components/report/Report";
 
 const Index = (
   <Router>
@@ -23,7 +24,7 @@ const Index = (
       <Scene key="root" hideNavBar>
         <Scene key="drawer" drawer contentComponent={Menu}>
           <Scene key="main" hideNavBar>
-            <Scene key="check" title="check" component={Check} initial />
+            <Scene key="check" title="check" component={Check} />
             <Scene key="wall" title="Wall" component={Wall} />
             <Scene
               key="wallHashtags"
@@ -40,6 +41,7 @@ const Index = (
             <Scene key="pollsList" title="PollsList" component={PollsList} />
             <Scene key="salasInfo" component={SalasInfo} title="SalasInfo" />
             <Scene key="maps" title="Maps" component={Maps} />
+            <Scene key="report" title="Report" component={Report} initial />
           </Scene>
         </Scene>
       </Scene>
