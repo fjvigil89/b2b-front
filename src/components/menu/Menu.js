@@ -35,6 +35,10 @@ class SideBar extends Component {
     Actions.pollsList();
   };
 
+  report = () => {
+    Actions.report();
+  };
+
   render() {
     return (
       <Container>
@@ -139,6 +143,25 @@ class SideBar extends Component {
                 }}
               >
                 Encuestas
+              </Text>
+            </Left>
+          </ListItem>
+          <ListItem button noBorder onPress={this.report}>
+            <Left>
+              <Icon
+                active
+                name="ios-images-outline"
+                style={{ fontSize: 26, width: 30 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Reporte
               </Text>
             </Left>
           </ListItem>
