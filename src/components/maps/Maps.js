@@ -44,18 +44,20 @@ class Maps extends Component {
         latitud: PropTypes.any,
         longitud: PropTypes.an
       })
-    )
+    ),
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
     region: {},
     salas: [],
-    isAuthenticated: false
+    isAuthenticated: false,
+    endpoint: ""
   };
 
   componentWillMount = () => {
     this.props.GetLocationAsync();
-    this.props.ListadoSalas();
+    this.props.ListadoSalas(this.props.endpoint);
   };
 
   currency = x => {
@@ -151,7 +153,8 @@ class Maps extends Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
   region: state.salas.region,
-  salas: state.salas.salas
+  salas: state.salas.salas,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {

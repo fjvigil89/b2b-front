@@ -1,11 +1,12 @@
 import axios from "axios";
 import { size } from "lodash";
+import Sentry from "sentry-expo";
 
 import ErrorMessages from "@constants/errors";
 
 import { FullCommentPage } from "@components/wall/comments/CommentsActions";
 
-export default function CreateComment(post, content, imagenes) {
+export default function CreateComment(url, post, content, imagenes) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       if (size(imagenes) > 0) {
@@ -35,7 +36,7 @@ export default function CreateComment(post, content, imagenes) {
 
         return axios({
           method: "POST",
-          url: "http://b2b-app.us-east-1.elasticbeanstalk.com/comment",
+          url: `${url}/comment`,
           data: formData,
           config: { headers: { "Content-Type": "multipart/form-data" } }
         })
@@ -44,8 +45,10 @@ export default function CreateComment(post, content, imagenes) {
 
             resolve(true);
           })
-          .catch(err => {
-            reject(err);
+          .catch(error => {
+            Sentry.captureException(error);
+
+            reject({ message: error.response.data.message });
           });
       }
 
@@ -58,7 +61,7 @@ export default function CreateComment(post, content, imagenes) {
 
       return axios({
         method: "POST",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/comment",
+        url: `${url}/comment`,
         data: formForSend
       })
         .then(async () => {
@@ -66,8 +69,10 @@ export default function CreateComment(post, content, imagenes) {
 
           resolve(true);
         })
-        .catch(err => {
-          reject(err);
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
         });
     }).catch(err => {
       throw err;

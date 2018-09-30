@@ -1,9 +1,10 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
-export function detailPost(idPost) {
+export function detailPost(url, idPost) {
   return axios({
     method: "GET",
-    url: `http://b2b-app.us-east-1.elasticbeanstalk.com/post/${idPost}`
+    url: `${url}/post/${idPost}`
   });
 }
 
@@ -23,12 +24,12 @@ export function DetailPublication(idPost) {
     );
 }
 
-export function LikePublication(idPost) {
+export function LikePublication(url, idPost) {
   return dispatch =>
     new Promise((resolve, reject) => {
       axios({
         method: "POST",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/likePost",
+        url: `${url}/likePost`,
         data: {
           post_id: idPost
         }
@@ -41,17 +42,19 @@ export function LikePublication(idPost) {
           );
         })
         .catch(error => {
-          reject(error);
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
         });
     });
 }
 
-export function UnLikePublication(idPost) {
+export function UnLikePublication(url, idPost) {
   return dispatch =>
     new Promise((resolve, reject) => {
       axios({
         method: "DELETE",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/likePost/${idPost}`
+        url: `${url}/likePost/${idPost}`
       })
         .then(() => {
           resolve(
@@ -60,6 +63,10 @@ export function UnLikePublication(idPost) {
             })
           );
         })
-        .catch(error => reject(error));
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     });
 }

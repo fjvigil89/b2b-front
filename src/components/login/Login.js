@@ -45,9 +45,7 @@ class LoginScreen extends Component {
   };
 
   handleSubmit = () => {
-    this.props
-      .Login(this.props.email, this.props.password)
-      .catch(e => console.log(`Error: ${e}`));
+    this.props.Login(this.props.email, this.props.password);
   };
 
   render() {
@@ -147,4 +145,7 @@ const mapDispatchToProps = {
   ChangeInputLogin
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginScreen);

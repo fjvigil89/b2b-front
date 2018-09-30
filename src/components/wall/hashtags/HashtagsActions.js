@@ -1,11 +1,12 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
-export function GetHashtags(hash) {
+export function GetHashtags(url, hash) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/post/hashtag/${hash}`
+        url: `${url}/post/hashtag/${hash}`
       })
         .then(async response => {
           resolve(
@@ -15,20 +16,20 @@ export function GetHashtags(hash) {
             })
           );
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        )
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        })
     );
 }
 
-export function GetMoreHashtags(hash, lastId) {
+export function GetMoreHashtags(url, hash, lastId) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/post/hashtag/${hash}/skip/${lastId}`
+        url: `${url}/post/hashtag/${hash}/skip/${lastId}`
       })
         .then(async response => {
           resolve(
@@ -39,7 +40,9 @@ export function GetMoreHashtags(hash, lastId) {
           );
         })
         .catch(error => {
-          reject(error);
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
         })
     );
 }

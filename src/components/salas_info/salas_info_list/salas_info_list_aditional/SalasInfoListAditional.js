@@ -8,7 +8,7 @@ import { Actions } from "react-native-router-flux";
 class SalasInfoListAditional extends React.Component {
   static propTypes = {
     acciones: PropTypes.oneOfType([PropTypes.any]),
-    sala: PropTypes.string,
+    sala: PropTypes.number,
     nombreSala: PropTypes.string,
     categoria: PropTypes.string
   };

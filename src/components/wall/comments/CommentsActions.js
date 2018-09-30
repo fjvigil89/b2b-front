@@ -2,10 +2,10 @@ import axios from "axios";
 
 import { detailPost } from "@components/wall/publication/PublicationActions";
 
-function commentsList(idPost) {
+function commentsList(url, idPost) {
   return axios({
     method: "GET",
-    url: `http://b2b-app.us-east-1.elasticbeanstalk.com/comment/post/${idPost}`
+    url: `${url}/comment/post/${idPost}`
   });
 }
 

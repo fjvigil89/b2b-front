@@ -6,7 +6,8 @@ export const initialState = {
   email: "",
   password: "",
   token: "",
-  user: ""
+  user: "",
+  endpoint: ""
 };
 
 export default function user(state = initialState, action) {
@@ -23,7 +24,8 @@ export default function user(state = initialState, action) {
           error: null,
           isAuthenticated: true,
           token: action.data.token,
-          user: action.data.user
+          user: action.data.user,
+          endpoint: action.data.endpoint
         };
       }
 
@@ -54,7 +56,8 @@ export default function user(state = initialState, action) {
         error: null,
         isAuthenticated: false,
         token: null,
-        user: null
+        user: null,
+        endpoint: null
       };
     }
     case "USER_CHANGE_INPUT": {

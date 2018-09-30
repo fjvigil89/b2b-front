@@ -43,11 +43,13 @@ class CreatePublication extends React.Component {
     CreatePost: PropTypes.func.isRequired,
     GetHashtags: PropTypes.func.isRequired,
     hashtags: PropTypes.oneOfType([PropTypes.any]),
-    user: PropTypes.string
+    user: PropTypes.string,
+    endpoint: PropTypes.string
   };
   static defaultProps = {
     hashtags: [],
-    user: ""
+    user: "",
+    endpoint: ""
   };
 
   constructor() {
@@ -68,7 +70,7 @@ class CreatePublication extends React.Component {
   };
 
   async componentWillMount() {
-    await this.props.GetHashtags();
+    await this.props.GetHashtags(this.props.endpoint);
   }
 
   createPost = () => {
@@ -77,7 +79,7 @@ class CreatePublication extends React.Component {
     });
 
     this.props
-      .CreatePost(this.state.content, this.state.images, this.props.user)
+      .CreatePost(this.props.endpoint, this.state.content, this.state.images, this.props.user)
       .then(() => {
         this.setState({
           loading: false
@@ -497,7 +499,8 @@ class CreatePublication extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.user.user,
-  hashtags: state.wall.hashtags
+  hashtags: state.wall.hashtags,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {
