@@ -120,7 +120,7 @@ class Maps extends Component {
               return (
                 <MapView.Marker.Animated
                   draggable
-                  key={sala.cod_local}
+                  key={sala.folio}
                   coordinate={{
                     latitude: sala.latitud,
                     longitude: sala.longitud

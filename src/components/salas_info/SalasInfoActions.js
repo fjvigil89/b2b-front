@@ -32,7 +32,7 @@ export function CheckINorCheckOUT(url, storeId, type) {
   return dispatch =>
     new Promise((resolve, reject) => {
       const formForSend = {
-        storeId,
+        folio: storeId,
         type
       };
 
