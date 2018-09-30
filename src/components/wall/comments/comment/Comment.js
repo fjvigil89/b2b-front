@@ -38,7 +38,8 @@ class Comment extends Component {
     enableLike: PropTypes.bool,
     likes: PropTypes.number,
     delay: PropTypes.number,
-    image: PropTypes.string
+    image: PropTypes.string,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
@@ -51,7 +52,8 @@ class Comment extends Component {
     enableLike: false,
     likes: 0,
     delay: 0,
-    image: ""
+    image: "",
+    endpoint: ""
   };
 
   state = {
@@ -63,11 +65,13 @@ class Comment extends Component {
       loading: true
     });
 
-    this.props.LikeComment(this.props.idPost, this.props.id).then(() => {
-      this.setState({
-        loading: false
+    this.props
+      .LikeComment(this.props.endpoint, this.props.idPost, this.props.id)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
       });
-    });
   };
 
   unlikeComment = () => {
@@ -75,11 +79,13 @@ class Comment extends Component {
       loading: true
     });
 
-    this.props.UnLikeComment(this.props.idPost, this.props.id).then(() => {
-      this.setState({
-        loading: false
+    this.props
+      .UnLikeComment(this.props.endpoint, this.props.idPost, this.props.id)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
       });
-    });
   };
 
   likeReply = () => {
@@ -87,11 +93,13 @@ class Comment extends Component {
       loading: true
     });
 
-    this.props.LikeReply(this.props.idPost, this.props.id).then(() => {
-      this.setState({
-        loading: false
+    this.props
+      .LikeReply(this.props.endpoint, this.props.idPost, this.props.id)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
       });
-    });
   };
 
   unlikeReply = () => {
@@ -99,11 +107,13 @@ class Comment extends Component {
       loading: true
     });
 
-    this.props.UnLikeReply(this.props.idPost, this.props.id).then(() => {
-      this.setState({
-        loading: false
+    this.props
+      .UnLikeReply(this.props.endpoint, this.props.idPost, this.props.id)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
       });
-    });
   };
 
   render = () => {
@@ -320,6 +330,10 @@ class Comment extends Component {
   };
 }
 
+const mapStateToProps = state => ({
+  endpoint: state.user.endpoint
+});
+
 const mapDispatchToProps = {
   LikeComment,
   UnLikeComment,
@@ -327,4 +341,7 @@ const mapDispatchToProps = {
   UnLikeReply
 };
 
-export default connect(null, mapDispatchToProps)(Comment);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Comment);

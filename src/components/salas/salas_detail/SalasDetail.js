@@ -39,10 +39,12 @@ class SalasDetail extends React.Component {
       kilometers: PropTypes.number,
       prefijoKilometers: PropTypes.string,
       hasPoll: PropTypes.number,
-      visita_en_progreso: PropTypes.number
+      visita_en_progreso: PropTypes.number,
+      folio: PropTypes.number
     }),
     delay: PropTypes.number,
-    lostSaleON: PropTypes.bool
+    lostSaleON: PropTypes.bool,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
@@ -55,24 +57,31 @@ class SalasDetail extends React.Component {
       fecha_visita: "",
       direccion: "",
       cod_local: "",
-      descripcion: ""
+      descripcion: "",
+      folio: 0
     },
     delay: 100,
-    lostSaleON: true
+    lostSaleON: true,
+    endpoint: ""
   };
 
   constructor(props) {
     super(props);
 
-    DeviceEventEmitter.addListener(`checkINEvent-${this.props.data.folio}`, () => {
-      this.setState({
-        visita_en_progreso: 1
-      });
-    });
+    DeviceEventEmitter.addListener(
+      `checkINEvent-${this.props.data.folio}`,
+      () => {
+        this.props.data.visita_en_progreso = 1;
+
+        this.setState({
+          refresh: !this.state.refresh
+        });
+      }
+    );
   }
 
   state = {
-    visita_en_progreso: this.props.data.visita_en_progreso,
+    refresh: false,
     swipeable: null
   };
 
@@ -92,7 +101,11 @@ class SalasDetail extends React.Component {
           text: "SI, hacer CheckOUT",
           onPress: () => {
             this.props
-              .CheckINorCheckOUT(this.props.data.cod_local, "out")
+              .CheckINorCheckOUT(
+                this.props.endpoint,
+                this.props.data.folio,
+                "out"
+              )
               .then(() => {
                 Alert.alert("Exito", "CheckOUT realizado.", [
                   { text: "Super!" }
@@ -100,11 +113,11 @@ class SalasDetail extends React.Component {
 
                 this.state.swipeable.recenter();
 
-                this.setState({
-                  visita_en_progreso: 0
-                });
-
                 this.props.data.visita_en_progreso = 0;
+
+                this.setState({
+                  refresh: !this.state.refresh
+                });
               });
           }
         },
@@ -145,9 +158,7 @@ class SalasDetail extends React.Component {
       logo = require("@assets/images/alvi.png");
     }
 
-    if (this.state.visita_en_progreso === 1) {
-      imagen = require("@assets/images/visita-en-progreso.png");
-    } else if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
+    if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
       imagen = require("@assets/images/visita-realizada-v2.png");
 
       fecha = moment(this.props.data.fecha_visita)
@@ -196,7 +207,9 @@ class SalasDetail extends React.Component {
           onRef={ref => {
             this.state.swipeable = ref;
           }}
-          rightButtons={this.state.visita_en_progreso ? rightButtons : null}
+          rightButtons={
+            this.props.data.visita_en_progreso ? rightButtons : null
+          }
           rightButtonWidth={110}
         >
           <TouchableOpacity
@@ -217,6 +230,35 @@ class SalasDetail extends React.Component {
                 }}
                 source={imagen}
               />
+            )}
+
+            {this.props.data.visita_en_progreso === 1 && (
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  backgroundColor: "#f3bc32",
+                  padding: 10
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontFamily: "Questrial",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    VISITA EN PROGRESO
+                  </Text>
+                </View>
+              </View>
             )}
 
             <View
@@ -403,11 +445,15 @@ class SalasDetail extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  endpoint: state.user.endpoint
+});
+
 const mapDispatchToProps = {
   CheckINorCheckOUT
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SalasDetail);

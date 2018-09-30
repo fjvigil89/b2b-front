@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, Dimensions, Platform, View } from "react-native";
+import { Image, View } from "react-native";
 import PropTypes from "prop-types";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
@@ -7,7 +7,7 @@ import { Content, Text, ListItem, Icon, Container, Left } from "native-base";
 
 import { Logout } from "@components/login/LoginActions";
 
-const drawerCover = require("@assets/images/background-sidebar.png");
+const logo = require("@assets/images/logo-cademsmart.png");
 
 class SideBar extends Component {
   static propTypes = {
@@ -36,62 +36,36 @@ class SideBar extends Component {
   };
 
   render() {
-    const deviceHeight = Dimensions.get("window").height;
-    const deviceWidth = Dimensions.get("window").width;
-
     return (
       <Container>
         <Content
           bounces={false}
           style={{ flex: 1, backgroundColor: "#fff", top: -1 }}
         >
-          <Image
-            source={drawerCover}
-            style={{
-              alignSelf: "stretch",
-              height: deviceHeight / 3.5,
-              width: null,
-              position: "relative",
-              marginBottom: 10
-            }}
-          />
           <View
             style={{
-              position: "absolute",
-              left:
-                Platform.OS === "android" ? deviceWidth / 10 : deviceWidth / 9,
-              top:
-                Platform.OS === "android"
-                  ? deviceHeight / 13
-                  : deviceHeight / 12,
-              width: 210,
-              height: 75,
-              flex: 1,
+              alignSelf: "stretch",
+              height: 200,
+              width: null,
+              position: "relative",
+              marginBottom: 10,
               justifyContent: "center",
               alignItems: "center"
             }}
           >
-            <Text
-              style={{
-                fontFamily: "Bree",
-                fontWeight: "500",
-                fontSize: 36,
-                color: "#FFF"
-              }}
-            >
-              CademSmart
-            </Text>
+            <Image source={logo} />
             <Text
               style={{
                 fontFamily: "Questrial",
                 fontWeight: "500",
                 fontSize: 16,
-                color: "#FFF"
+                color: "#000"
               }}
             >
               SmartB2B
             </Text>
           </View>
+
           <ListItem button noBorder onPress={this.dashboard}>
             <Left>
               <Icon

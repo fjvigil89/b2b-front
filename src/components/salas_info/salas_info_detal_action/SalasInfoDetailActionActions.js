@@ -1,6 +1,8 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
 export default function ListadoProductosPorCategoriaAcccion(
+  url,
   sala,
   categoria,
   accion
@@ -9,7 +11,7 @@ export default function ListadoProductosPorCategoriaAcccion(
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/item/${sala}/${categoria}/${accion}`
+        url: `${url}/item/${sala}/${categoria}/${accion}`
       })
         .then(async response => {
           resolve(
@@ -19,10 +21,10 @@ export default function ListadoProductosPorCategoriaAcccion(
             })
           );
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        )
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        })
     );
 }

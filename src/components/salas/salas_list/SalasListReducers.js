@@ -9,7 +9,8 @@ export const initialState = {
   indexClean: null,
   searchFilters: false,
   refreshing: false,
-  region: {}
+  region: {},
+  activeCheckIn: false
 };
 
 function getKilometros(lat1, lon1, lat2, lon2) {
@@ -175,6 +176,12 @@ export default function salas(state = initialState, action) {
       }
 
       return initialState;
+    }
+    case "SALAS_ACTIVE_CHECKIN": {
+      return {
+        ...state,
+        activeCheckIn: action.check
+      };
     }
     default:
       return state;

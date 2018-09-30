@@ -1,8 +1,9 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
 import ErrorMessages from "@constants/errors";
 
-export default function CreateComment(postId, content) {
+export default function CreateComment(url, postId, content) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       if (!content) return reject({ message: ErrorMessages.noContent });
@@ -14,7 +15,7 @@ export default function CreateComment(postId, content) {
 
       return axios({
         method: "POST",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/comment",
+        url: `${url}/comment`,
         data: formForSend
       })
         .then(response => {
@@ -25,7 +26,11 @@ export default function CreateComment(postId, content) {
             })
           );
         })
-        .catch(() => reject());
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     }).catch(err => {
       throw err.message;
     });

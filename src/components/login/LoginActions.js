@@ -1,4 +1,5 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
 import ErrorMessages from "@constants/errors";
 import MessagesAction from "@common/messages//MessagesActions";
@@ -30,7 +31,11 @@ export function Login(email, password) {
             })
           );
         })
-        .catch(error => reject({ message: error.response.data.error }));
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     }).catch(async err => {
       await MessagesAction(dispatch, "error", err.message);
 

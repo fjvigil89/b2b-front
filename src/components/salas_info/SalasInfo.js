@@ -30,8 +30,11 @@ class SalasInfo extends Component {
       descripcion: PropTypes.string,
       hasPoll: PropTypes.number,
       kilometers: PropTypes.number,
-      visita_en_progreso: PropTypes.number
-    })
+      visita_en_progreso: PropTypes.number,
+      folio: PropTypes.number
+    }),
+    endpoint: PropTypes.string,
+    activeCheckin: PropTypes.bool
   };
 
   static defaultProps = {
@@ -45,19 +48,25 @@ class SalasInfo extends Component {
       fecha_visita: "",
       direccion: "",
       cod_local: "",
-      descripcion: ""
-    }
+      descripcion: "",
+      folio: 0
+    },
+    endpoint: "",
+    activeCheckin: false
   };
 
   async componentWillMount() {
-    await this.props.ListadoSalasInfo(this.props.data.cod_local);
+    await this.props.ListadoSalasInfo(
+      this.props.endpoint,
+      this.props.data.folio
+    );
   }
   componentDidMount = () => {
-    console.log(this.props);
-
     if (
-      this.props.data.kilometers < 5.5 &&
-      !this.props.data.visita_en_progreso
+      this.props.data.kilometers < 5 &&
+      !this.props.data
+        .visita_en_progreso /* &&
+      !this.props.activeCheckin */
     ) {
       Alert.alert(
         "¿CheckIN?",
@@ -67,7 +76,11 @@ class SalasInfo extends Component {
             text: "Hacer CheckIN",
             onPress: () => {
               this.props
-                .CheckINorCheckOUT(this.props.data.cod_local, "in")
+                .CheckINorCheckOUT(
+                  this.props.endpoint,
+                  this.props.data.folio,
+                  "in"
+                )
                 .then(() => {
                   DeviceEventEmitter.emit(
                     `checkINEvent-${this.props.data.folio}`,
@@ -122,7 +135,7 @@ class SalasInfo extends Component {
           <SalasInfoDetail data={data} report={report} />
           <SalasInfoList
             data={dataDetail}
-            sala={this.props.data.cod_local}
+            sala={this.props.data.folio}
             nombreSala={this.props.data.descripcion}
           />
         </Content>
@@ -132,7 +145,9 @@ class SalasInfo extends Component {
 }
 const mapStateToProps = state => ({
   dataDetail: state.salasInfo.detailsSalas,
-  isLoading: state.salasInfo.loading
+  isLoading: state.salasInfo.loading,
+  endpoint: state.user.endpoint,
+  activeCheckin: state.salas.activeCheckIn
 });
 
 const mapDispatchToProps = {

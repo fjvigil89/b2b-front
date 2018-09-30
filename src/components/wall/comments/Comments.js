@@ -27,13 +27,15 @@ class Comments extends Component {
     FullCommentPage: PropTypes.func.isRequired,
     listComments: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.any])),
     detailPublication: PropTypes.oneOfType([PropTypes.any]),
-    idPost: PropTypes.number
+    idPost: PropTypes.number,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
     listComments: [],
     detailPublication: [],
-    idPost: 0
+    idPost: 0,
+    endpoint: ""
   };
 
   state = {
@@ -46,7 +48,7 @@ class Comments extends Component {
       loading: true
     });
 
-    this.props.FullCommentPage(this.props.idPost).then(() => {
+    this.props.FullCommentPage(this.props.endpoint, this.props.idPost).then(() => {
       this.setState({
         loading: false
       });
@@ -180,7 +182,8 @@ class Comments extends Component {
 
 const mapStateToProps = state => ({
   listComments: state.comments.listComments,
-  detailPublication: state.publications.detailPublication
+  detailPublication: state.publications.detailPublication,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
 export function SetValidForm(obj) {
   return dispatch =>
@@ -24,12 +25,12 @@ export function ChangeInput(obj) {
     });
 }
 
-export function GetPoll(idPoll) {
+export function GetPoll(url, idPoll) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta/${idPoll}`
+        url: `${url}/encuesta/${idPoll}`
       })
         .then(async response => {
           resolve(
@@ -39,20 +40,20 @@ export function GetPoll(idPoll) {
             })
           );
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        )
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        })
     );
 }
 
-export function SavePoll(form) {
+export function SavePoll(url, form) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "POST",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta`,
+        url: `${url}/encuesta`,
         data: form
       })
         .then(async response => {
@@ -63,10 +64,10 @@ export function SavePoll(form) {
             })
           );
         })
-        .catch(error =>
-          reject({
-            message: "ha ocurrido un error"
-          })
-        )
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        })
     );
 }

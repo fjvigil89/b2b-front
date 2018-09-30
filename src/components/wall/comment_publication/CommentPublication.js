@@ -45,13 +45,15 @@ class CommentPublication extends React.Component {
     GetHashtags: PropTypes.func.isRequired,
     hashtags: PropTypes.oneOfType([PropTypes.any]),
     user: PropTypes.string,
-    post: PropTypes.number
+    post: PropTypes.number,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
     hashtags: [],
     user: "",
-    post: 0
+    post: 0,
+    endpoint: ""
   };
 
   constructor() {
@@ -69,11 +71,11 @@ class CommentPublication extends React.Component {
     showHashtag: false,
     hashtags: [],
     inputHashtag: "",
-    auxText: ""
+    auxText: "",
   };
 
   async componentWillMount() {
-    await this.props.GetHashtags();
+    await this.props.GetHashtags(this.props.endpoint);
   }
 
   createComment = () => {
@@ -82,7 +84,7 @@ class CommentPublication extends React.Component {
     });
 
     this.props
-      .CreateComment(this.props.post, this.state.content, this.state.images)
+      .CreateComment(this.props.endpoint, this.props.post, this.state.content, this.state.images)
       .then(() => {
         this.setState({
           loading: false
@@ -490,7 +492,8 @@ class CommentPublication extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.user.user,
-  hashtags: state.wall.hashtags
+  hashtags: state.wall.hashtags,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {
