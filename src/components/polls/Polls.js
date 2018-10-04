@@ -64,6 +64,7 @@ class Polls extends Component {
     SavePoll: PropTypes.func.isRequired,
     position: PropTypes.number,
     isError: PropTypes.bool,
+    msg: PropTypes.string,
     value: PropTypes.oneOfType([() => null, PropTypes.any]),
     dataPoll: PropTypes.oneOfType([() => null, PropTypes.any]),
     lengthPoll: PropTypes.number,
@@ -79,6 +80,7 @@ class Polls extends Component {
     value: null,
     form: null,
     isError: false,
+    msg: '',
     dataPoll: [],
     lengthPoll: 0,
     isLoading: true,
@@ -171,6 +173,32 @@ class Polls extends Component {
           </FooterTab>
         </Footer>
       );
+    } else if (this.props.position === 0 && this.props.lengthPoll === 1) {
+      return (
+        <Footer>
+          <FooterTab>
+            <Button onPress={this.closed}>
+              <Text>Cancelar</Text>
+            </Button>
+            <Button active onPress={this.finish}>
+              <Text>Finalizar</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      );
+    } else if (this.props.position === 0 && this.props.lengthPoll > 1) {
+      return (
+        <Footer>
+          <FooterTab>
+            <Button onPress={this.closed}>
+              <Text>Cancelar</Text>
+            </Button>
+            <Button onPress={this.nextPosition}>
+              <Text>Siguiente</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      );
     } else if (this.props.lengthPoll - 1 === this.props.position) {
       return (
         <Footer>
@@ -180,19 +208,6 @@ class Polls extends Component {
             </Button>
             <Button active onPress={this.finish}>
               <Text>Finalizar</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      );
-    } else if (this.props.position === 0) {
-      return (
-        <Footer>
-          <FooterTab>
-            <Button onPress={this.closed}>
-              <Text>Cancelar</Text>
-            </Button>
-            <Button onPress={this.nextPosition}>
-              <Text>Siguiente</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -238,7 +253,7 @@ class Polls extends Component {
   };
 
   finish = () => {
-    if (this.props.position > 0) {
+    if (this.props.position > 0 || this.props.lengthPoll === 1) {
       this.props.SetValidForm({
         position: this.props.position,
         type: "FINISH"
@@ -246,7 +261,7 @@ class Polls extends Component {
     }
   };
 
-  errors = () => (this.props.isError ? "* Debe completar el formulario" : "");
+  errors = () => (this.props.isError ? this.props.msg : "");
 
   render = () => {
     const { position, isLoading, isFinish } = this.props;
@@ -277,6 +292,7 @@ const mapStateToProps = state => ({
   position: state.polls.position,
   value: state.polls.value,
   isError: state.polls.isError,
+  msg: state.polls.msg,
   dataPoll: state.polls.dataPoll,
   lengthPoll: state.polls.lengthPoll,
   isLoading: state.polls.isLoading,

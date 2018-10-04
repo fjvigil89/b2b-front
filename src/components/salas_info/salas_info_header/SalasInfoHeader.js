@@ -7,7 +7,7 @@ class SalasInfoHeader extends React.Component {
   static propTypes = {
     data: PropTypes.shape({
       hasPoll: PropTypes.number,
-      cod_local: PropTypes.string
+      folio: PropTypes.number
     })
   };
 
@@ -22,7 +22,7 @@ class SalasInfoHeader extends React.Component {
           <Button
             transparent
             onPress={() => {
-              Actions.pollsList({ cod_local: data.cod_local });
+              Actions.pollsList({ folio: data.folio });
             }}
           >
             <Icon

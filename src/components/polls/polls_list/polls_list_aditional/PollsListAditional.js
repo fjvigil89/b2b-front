@@ -273,7 +273,7 @@ class PollsListAditional extends React.Component {
               fontWeight: "bold"
             }}
           >
-            Detalle de la Categoria
+            Listado de Encuestas
           </Text>
         </View>
         {categoryDetailSala}

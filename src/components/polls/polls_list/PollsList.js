@@ -24,19 +24,19 @@ class PollsList extends Component {
     GetListPoll: PropTypes.func.isRequired,
     listPolls: PropTypes.oneOfType([() => null, PropTypes.any]),
     isLoading: PropTypes.bool,
-    cod_local: PropTypes.string,
+    folio: PropTypes.number,
     endpoint: PropTypes.string
   };
 
   static defaultProps = {
     listPolls: [],
     isLoading: true,
-    cod_local: "",
+    folio: 0,
     endpoint: ""
   };
 
   componentWillMount = () => {
-    const params = this.props.cod_local ? `/store/${this.props.cod_local}` : "";
+    const params = this.props.folio ? `/store/${this.props.folio}` : "";
     this.props.GetListPoll(this.props.endpoint, params);
   };
 
