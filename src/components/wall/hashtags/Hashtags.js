@@ -30,14 +30,16 @@ class Hashtags extends Component {
     isAuthenticated: PropTypes.bool,
     data: PropTypes.oneOfType([PropTypes.any]),
     hash: PropTypes.string,
-    lastId: PropTypes.number
+    lastId: PropTypes.number,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
     isAuthenticated: false,
     data: [],
     lastId: 0,
-    hash: ""
+    hash: "",
+    endpoint: ""
   };
 
   state = {
@@ -47,7 +49,7 @@ class Hashtags extends Component {
   async componentWillMount() {
     const hashtag = this.props.hash.replace("#", "");
 
-    await this.props.GetHashtags(hashtag);
+    await this.props.GetHashtags(this.props.endpoint, hashtag);
 
     this.setState({
       isLoading: false
@@ -57,7 +59,7 @@ class Hashtags extends Component {
   async fetchMore(lastId) {
     const hashtag = this.props.hash.replace("#", "");
 
-    await this.props.GetMoreHashtags(hashtag, lastId);
+    await this.props.GetMoreHashtags(this.props.endpoint, hashtag, lastId);
   }
 
   render = () => {
@@ -128,7 +130,8 @@ class Hashtags extends Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
   data: state.hashtags.data,
-  lastId: state.hashtags.lastId
+  lastId: state.hashtags.lastId,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {
@@ -136,4 +139,7 @@ const mapDispatchToProps = {
   GetMoreHashtags
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Hashtags);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Hashtags);

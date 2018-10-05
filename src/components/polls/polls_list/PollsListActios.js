@@ -1,11 +1,12 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
-export default function GetListPoll(params) {
+export default function GetListPoll(url, params) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/encuesta${params}`
+        url: `${url}/encuesta${params}`
       })
         .then(async response => {
           resolve(
@@ -15,10 +16,10 @@ export default function GetListPoll(params) {
             })
           );
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        )
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        })
     );
 }

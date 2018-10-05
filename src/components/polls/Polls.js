@@ -70,7 +70,8 @@ class Polls extends Component {
     isLoading: PropTypes.bool,
     isFinish: PropTypes.bool,
     idPoll: PropTypes.number,
-    form: PropTypes.oneOfType([() => null, PropTypes.any])
+    form: PropTypes.oneOfType([() => null, PropTypes.any]),
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
@@ -82,11 +83,12 @@ class Polls extends Component {
     lengthPoll: 0,
     isLoading: true,
     isFinish: false,
-    idPoll: 0
+    idPoll: 0,
+    endpoint: ""
   };
 
   componentWillMount = () => {
-    this.props.GetPoll(this.props.idPoll);
+    this.props.GetPoll(this.props.endpoint, this.props.idPoll);
   };
 
   getContent = position => {
@@ -212,7 +214,7 @@ class Polls extends Component {
   };
 
   savePoll = () => {
-    this.props.SavePoll(this.props.form);
+    this.props.SavePoll(this.props.endpoint, this.props.form);
   };
 
   nextPosition = () => {
@@ -279,7 +281,8 @@ const mapStateToProps = state => ({
   lengthPoll: state.polls.lengthPoll,
   isLoading: state.polls.isLoading,
   isFinish: state.polls.isFinish,
-  form: state.polls.form
+  form: state.polls.form,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {

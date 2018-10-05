@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Content } from "native-base";
-import { RefreshControl, Text, TouchableHighlight } from "react-native";
+import { RefreshControl } from "react-native";
 
 import Loading from "@components/loading/Loading";
 import SalasDetail from "@components/salas/salas_detail/SalasDetail";
@@ -32,20 +32,27 @@ class SalasList extends Component {
       })
     ),
     refreshing: PropTypes.bool,
-    lostSaleON: PropTypes.bool
+    lostSaleON: PropTypes.bool,
+    endpoint: PropTypes.string,
+    activeCheckin: PropTypes.bool
   };
 
   static defaultProps = {
     isLoading: false,
     salas: [],
     refreshing: false,
-    lostSaleON: true
+    lostSaleON: true,
+    endpoint: "",
+    activeCheckin: false
   };
 
   componentWillMount = () => {
-    console.log('SalasList', this.props);
     this.props.GetLocationAsync();
-    this.props.ListadoSalas(this.props.lostSaleON);
+    this.props.ListadoSalas(this.props.endpoint, this.props.lostSaleON);
+  };
+
+  RefreshListadoSalas = () => {
+    this.props.ListadoSalasWithRefresh(this.props.endpoint);
   };
 
   render = () => {
@@ -59,9 +66,10 @@ class SalasList extends Component {
     const detailListadoSalas = salas.map((sala, i) => (
       <SalasDetail
         data={sala}
-        key={sala.cod_local}
+        key={sala.folio}
         delay={delay * i}
         lostSaleON={lostSaleON}
+        activeCheckin={this.props.activeCheckin}
       />
     ));
 
@@ -71,7 +79,7 @@ class SalasList extends Component {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={this.props.ListadoSalasWithRefresh}
+            onRefresh={this.RefreshListadoSalas}
             title="Recargar Salas..."
           />
         }
@@ -86,7 +94,9 @@ const mapStateToProps = state => ({
   salas: state.salas.salas,
   isLoading: state.salas.loading,
   refreshing: state.salas.refreshing,
-  lostSaleON: state.salasHeader.lostSaleON
+  lostSaleON: state.salasHeader.lostSaleON,
+  endpoint: state.user.endpoint,
+  activeCheckin: state.salas.activeCheckIn
 });
 
 const mapDispatchToProps = {

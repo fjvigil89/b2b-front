@@ -5,6 +5,7 @@ import { PersistGate } from "redux-persist/es/integration/react";
 import { StyleProvider } from "native-base";
 import { StatusBar, Platform } from "react-native";
 import { Router } from "react-native-router-flux";
+import Sentry from "sentry-expo";
 
 import getTheme from "@assets/native-base-theme/components";
 import theme from "@assets/native-base-theme/variables/commonColor";
@@ -17,6 +18,11 @@ import Routes from "@routes/routes";
 const { persistor, store } = configureStore();
 
 if (Platform.OS === "android") StatusBar.setHidden(true);
+
+Sentry.enableInExpoDevelopment = true;
+Sentry.config(
+  "https://049b2d561db94f779b41bdc80cfcae0a@sentry.io/1284811"
+).install();
 
 export default class App extends React.Component {
   constructor(props) {

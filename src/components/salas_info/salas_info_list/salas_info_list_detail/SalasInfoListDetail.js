@@ -8,7 +8,7 @@ import SalasInfoListAditional from "@components/salas_info/salas_info_list/salas
 class SalasInfoListDetail extends React.Component {
   static propTypes = {
     data: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
-    sala: PropTypes.string,
+    sala: PropTypes.number,
     nombreSala: PropTypes.string,
     categoria: PropTypes.string
   };

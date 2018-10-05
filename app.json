@@ -8,6 +8,20 @@
     "ios": {
       "bundleIdentifier": "com.miguelmeza.me"
     },
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "spectros-l2",
+            "project": "b2b-cademsmart",
+            "authToken": "f788cb319dac4bda99c70bb7cc0ffd87d86b9042c677470c9a7f19e665656859"
+          }
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "description": ""
   }
 }

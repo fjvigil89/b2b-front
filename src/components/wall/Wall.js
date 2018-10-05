@@ -11,10 +11,7 @@ import {
   Title,
   Body
 } from "native-base";
-import {
-  DeviceEventEmitter,
-  FlatList
-} from "react-native";
+import { DeviceEventEmitter, FlatList } from "react-native";
 import { Actions } from "react-native-router-flux";
 
 import { GetListPost, GetMorePosts } from "@components/wall/WallActions";
@@ -29,13 +26,15 @@ class Wall extends Component {
     GetMorePosts: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
     lastId: PropTypes.number,
-    data: PropTypes.oneOfType([PropTypes.any])
+    data: PropTypes.oneOfType([PropTypes.any]),
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
     isAuthenticated: false,
     lastId: 0,
-    data: []
+    data: [],
+    endpoint: ""
   };
 
   constructor(props) {
@@ -52,7 +51,7 @@ class Wall extends Component {
   };
 
   async componentWillMount() {
-    await this.props.GetListPost();
+    await this.props.GetListPost(this.props.endpoint);
 
     this.setState({
       isLoading: false
@@ -64,7 +63,7 @@ class Wall extends Component {
       isLoading: true
     });
 
-    await this.props.GetListPost();
+    await this.props.GetListPost(this.props.endpoint);
 
     this.setState({
       isLoading: false
@@ -72,7 +71,7 @@ class Wall extends Component {
   }
 
   async fetchMore(lastId) {
-    await this.props.GetMorePosts(lastId);
+    await this.props.GetMorePosts(this.props.endpoint, lastId);
   }
 
   render = () => {
@@ -145,7 +144,8 @@ const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
   data: state.wall.data,
   lastId: state.wall.lastId,
-  refresh: state.wall.refresh
+  refresh: state.wall.refresh,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {
@@ -153,4 +153,7 @@ const mapDispatchToProps = {
   GetMorePosts
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wall);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Wall);

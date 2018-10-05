@@ -1,11 +1,12 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
-export default function ListadoProductosCademsmart(visita) {
+export default function ListadoProductosCademsmart(url, visita) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/item/supi/${visita}`
+        url: `${url}/item/supi/${visita}`
       })
         .then(async response => {
           resolve(
@@ -15,10 +16,10 @@ export default function ListadoProductosCademsmart(visita) {
             })
           );
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        )
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        })
     );
 }
