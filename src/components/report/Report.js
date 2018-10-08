@@ -16,304 +16,929 @@ import {
   View
 } from "native-base";
 import { Actions } from "react-native-router-flux";
-import { Image, StyleSheet } from "react-native";
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 5,
-    borderWidth: 1.5,
-    borderColor: "#067715",
-    margin: 10,
-    flex: 1,
-    flexDirection: "row"
-  },
-  left: {
-    borderLeftWidth: 1.5,
-    borderColor: "#067715",
-    flex: 1,
-    flexDirection: "column"
-  },
-  borderTop: {
-    borderBottomWidth: 1.5,
-    borderColor: "#067715",
-    flex: 1
-  }
-});
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import * as Animatable from "react-native-animatable";
 
 class Report extends Component {
   static propTypes = {};
 
   static defaultProps = {};
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      aditionalPanelFirst: false,
+      aditionalPanelSecond: false,
+      buttonCollapsedFirst: false,
+      buttonCollapsedSecond: false,
+      hoyActive: true,
+      semanaActive: false,
+      mesActive: false
+    };
+  }
+
   componentWillMount = () => {};
 
-  render = () => (
-    <Container>
-      <Header style={{ borderBottomWidth: 0 }}>
-        <Left>
-          <Button transparent onPress={Actions.drawerOpen}>
-            <Icon name="menu" />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Reporte</Title>
-        </Body>
-        <Right />
-      </Header>
-      <Content>
-        <View
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "row",
-            marginTop: 15
-          }}
-        >
+  render = () => {
+    const backgroundImage = require("@assets/images/background-detalle-sala-categoria.png");
+
+    return (
+      <Container>
+        <Header style={{ borderBottomWidth: 0 }}>
+          <Left>
+            <Button transparent onPress={Actions.drawerOpen}>
+              <Icon name="menu" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Reporte</Title>
+          </Body>
+          <Right />
+        </Header>
+        <Content style={{}}>
           <View
             style={{
               flex: 1,
-              justifyContent: "center",
-              alignItems: "center"
+              flexDirection: "row",
+              justifyContent: "space-between",
+              padding: 3,
+              backgroundColor: "#FFFFFF"
             }}
           >
-            <Icon
-              name="md-medal"
-              style={{
-                fontSize: 70,
-                color: "#0D1F81"
-              }}
-            />
-            <Text>56.7MM</Text>
-            <Text>Total Ventas</Text>
+            {this.state.hoyActive ? (
+              <Button
+                small
+                primary
+                style={{ flex: 0.33, justifyContent: "center" }}
+                onPress={() => {
+                  this.setState({
+                    hoyActive: true,
+                    semanaActive: false,
+                    mesActive: false
+                  });
+                }}
+              >
+                <Text>Hoy</Text>
+              </Button>
+            ) : (
+              <Button
+                small
+                primary
+                bordered
+                style={{ flex: 0.33, justifyContent: "center" }}
+                onPress={() => {
+                  this.setState({
+                    hoyActive: true,
+                    semanaActive: false,
+                    mesActive: false
+                  });
+                }}
+              >
+                <Text>Hoy</Text>
+              </Button>
+            )}
+
+            {this.state.semanaActive ? (
+              <Button
+                small
+                primary
+                style={{ flex: 0.33, justifyContent: "center" }}
+                onPress={() => {
+                  this.setState({
+                    hoyActive: false,
+                    semanaActive: true,
+                    mesActive: false
+                  });
+                }}
+              >
+                <Text>Semana</Text>
+              </Button>
+            ) : (
+              <Button
+                small
+                primary
+                bordered
+                style={{ flex: 0.33, justifyContent: "center" }}
+                onPress={() => {
+                  this.setState({
+                    hoyActive: false,
+                    semanaActive: true,
+                    mesActive: false
+                  });
+                }}
+              >
+                <Text>Semana</Text>
+              </Button>
+            )}
+
+            {this.state.mesActive ? (
+              <Button
+                small
+                primary
+                style={{ flex: 0.33, justifyContent: "center" }}
+                onPress={() => {
+                  this.setState({
+                    hoyActive: false,
+                    semanaActive: false,
+                    mesActive: true
+                  });
+                }}
+              >
+                <Text>Mes</Text>
+              </Button>
+            ) : (
+              <Button
+                small
+                primary
+                bordered
+                style={{ flex: 0.33, justifyContent: "center" }}
+                onPress={() => {
+                  this.setState({
+                    hoyActive: false,
+                    semanaActive: false,
+                    mesActive: true
+                  });
+                }}
+              >
+                <Text>Mes</Text>
+              </Button>
+            )}
           </View>
 
           <View
             style={{
               flex: 1,
-              justifyContent: "center",
-              alignItems: "center"
+              flexDirection: "row",
+              paddingTop: 5,
+              backgroundColor: "#FFFFFF"
             }}
           >
-            <Icon
-              name="logo-usd"
+            <View
               style={{
-                fontSize: 70,
-                color: "green"
+                flex: 0.5,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#FFFFFF",
+                margin: 10,
+                borderRadius: 5,
+                borderColor: "green",
+                borderWidth: 2,
+                height: 100
               }}
-            />
-            <Text>56.7MM</Text>
-            <Text>Venta Perdida</Text>
-          </View>
-        </View>
-
-        <View style={styles.container}>
-          <View>
-            <Image
-              style={{ height: 100, width: 100 }}
-              source={require("@assets/images/jumbo.png")}
-            />
-          </View>
-
-          <View style={styles.left}>
-            <View style={styles.borderTop}>
+            >
               <View
                 style={{
                   flex: 1,
-                  flexDirection: "row"
+                  justifyContent: "center",
+                  alignItems: "center"
                 }}
               >
-                <View
+                <Icon
+                  name="md-trophy"
                   style={{
-                    flex: 4,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "row"
+                    fontSize: 50,
+                    color: "green"
+                  }}
+                />
+
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    fontFamily: "Questrial",
+                    color: "green"
                   }}
                 >
-                  <Text>15,3 MM</Text>
-                  <Icon
-                    name="md-arrow-round-up"
-                    style={{
-                      fontSize: 20,
-                      color: "green",
-                      marginLeft: 10
-                    }}
-                  />
-                  <Text style={{ marginLeft: 10 }}>13%</Text>
-                </View>
-                <View
+                  56.7m
+                </Text>
+
+                <Text
                   style={{
-                    flex: 1,
-                    justifyContent: "center"
+                    marginTop: 2,
+                    fontFamily: "Questrial",
+                    fontSize: 12
                   }}
                 >
-                  <Icon
-                    name="ios-arrow-forward-outline"
-                    style={{
-                      fontSize: 30,
-                      color: "green",
-                      marginLeft: 10
-                    }}
-                  />
-                </View>
+                  Total de Ventas
+                </Text>
               </View>
             </View>
-            <View style={{ flex: 1 }}>
+
+            <View
+              style={{
+                flex: 0.5,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#FFFFFF",
+                margin: 10,
+                borderRadius: 5,
+                borderColor: "red",
+                borderWidth: 2,
+                height: 100
+              }}
+            >
               <View
                 style={{
                   flex: 1,
-                  flexDirection: "row"
+                  justifyContent: "center",
+                  alignItems: "center"
                 }}
               >
-                <View
+                <Icon
+                  name="md-stats"
                   style={{
-                    flex: 4,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "row"
+                    fontSize: 50,
+                    color: "red"
+                  }}
+                />
+
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    fontFamily: "Questrial",
+                    color: "red"
                   }}
                 >
-                  <Text>15,3 MM</Text>
-                  <Icon
-                    name="md-arrow-round-up"
-                    style={{
-                      fontSize: 20,
-                      color: "green",
-                      marginLeft: 10
-                    }}
-                  />
-                  <Text style={{ marginLeft: 10 }}>13%</Text>
-                </View>
-                <View
+                  56.7m
+                </Text>
+
+                <Text
                   style={{
-                    flex: 1,
-                    justifyContent: "center"
+                    marginTop: 2,
+                    fontFamily: "Questrial",
+                    fontSize: 12
                   }}
                 >
-                  <Icon
-                    name="ios-arrow-down-outline"
-                    style={{
-                      fontSize: 30,
-                      color: "green",
-                      marginLeft: 10
-                    }}
-                  />
-                </View>
+                  Venta Perdida
+                </Text>
               </View>
             </View>
           </View>
-        </View>
 
-        <View style={{ flex: 1, margin: 10, flexDirection: "row" }}>
           <View
             style={{
-              flex: 1.5,
-              justifyContent: "center",
-              alignItems: "center"
+              flex: 1,
+              flexDirection: "row"
             }}
           >
-            <Icon
-              name="md-arrow-round-up"
+            <View
               style={{
-                fontSize: 40,
-                color: "green",
-                marginLeft: 10
+                flex: 1,
+                justifyContent: "flex-end",
+                alignItems: "center",
+                borderBottomColor: "#DEDEDE",
+                borderBottomWidth: 1,
+                paddingBottom: 5,
+                paddingTop: 5
               }}
-            />
-          </View>
-          <View style={{ flex: 5 }}>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>0%</Text>
-              <Text style={{ marginLeft: 8 }}>Salas cerradas</Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>30%</Text>
-              <Text style={{ marginLeft: 8 }}>Salas nuevas</Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>0%</Text>
-              <Text style={{ marginLeft: 8 }}>Productos descatalogados</Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>0%</Text>
-              <Text style={{ marginLeft: 8 }}>Salas cerradas</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.container}>
-          <View>
-            <Image
-              style={{ height: 100, width: 100 }}
-              source={require("@assets/images/jumbo.png")}
-            />
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Text>10,3 MM</Text>
-            <View style={{ flexDirection: "row" }}>
-              <Icon
-                name="md-arrow-round-up"
+            >
+              <Text
                 style={{
-                  fontSize: 20,
-                  color: "green",
-                  marginLeft: 10
+                  fontSize: 12,
+                  fontFamily: "Bree",
+                  fontWeight: "bold",
+                  marginBottom: 0
                 }}
-              />
-              <Text style={{ marginLeft: 10 }}>13%</Text>
+              >
+                Detalle de Reporte
+              </Text>
             </View>
           </View>
 
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Text>10,3 MM</Text>
-            <View style={{ flexDirection: "row" }}>
-              <Icon
-                name="md-arrow-round-up"
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                backgroundColor: "#FFF",
+                borderBottomColor: "#DEDEDE",
+                borderBottomWidth: 1
+              }}
+            >
+              <View
                 style={{
-                  fontSize: 20,
-                  color: "green",
-                  marginLeft: 10
+                  flex: 0.25,
+                  justifyContent: "center",
+                  alignItems: "center"
                 }}
-              />
-              <Text style={{ marginLeft: 10 }}>13%</Text>
+              >
+                <Image
+                  style={{ height: 75, width: 75 }}
+                  source={require("@assets/images/jumbo.png")}
+                />
+              </View>
+
+              <View
+                style={{
+                  flex: 0.75,
+                  borderLeftColor: "#DEDEDE",
+                  borderLeftWidth: 1
+                }}
+              >
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    borderBottomColor: "#DEDEDE",
+                    borderBottomWidth: 1,
+                    paddingTop: 10,
+                    paddingBottom: 10
+                  }}
+                  onPress={() => {
+                    this.setState({
+                      aditionalPanelFirst: !this.state.aditionalPanelFirst,
+                      buttonCollapsedFirst: !this.state.buttonCollapsedFirst
+                    });
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 0.4,
+                      justifyContent: "center",
+                      alignItems: "flex-end"
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "Questrial",
+                        color: "green"
+                      }}
+                    >
+                      15.3 MM
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 0.4,
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      marginLeft: 15
+                    }}
+                  >
+                    <Icon
+                      name="md-arrow-round-up"
+                      style={{
+                        fontSize: 20,
+                        color: "green"
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "Questrial",
+                        marginLeft: 10,
+                        color: "green"
+                      }}
+                    >
+                      18%
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 0.2,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    {this.state.buttonCollapsedFirst ? (
+                      <Icon
+                        name="ios-arrow-down-outline"
+                        style={{
+                          fontSize: 20
+                        }}
+                      />
+                    ) : (
+                      <Icon
+                        name="ios-arrow-forward-outline"
+                        style={{
+                          fontSize: 20
+                        }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+
+                {this.state.aditionalPanelFirst && (
+                  <Animatable.View
+                    animation="fadeInRight"
+                    duration={1000}
+                    style={{
+                      flex: 1,
+                      paddingTop: 0
+                    }}
+                  >
+                    <Image
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        height: "100%"
+                      }}
+                      source={backgroundImage}
+                    />
+
+                    <View style={{ flex: 1, paddingBottom: 10, paddingTop: 5 }}>
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            100%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Salas cerradas
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            30%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Salas nuevas
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            100%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Productos descatalogados
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            100%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Productos nuevos
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            100%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Mismas salas / Mismos productos
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </Animatable.View>
+                )}
+
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    borderBottomColor: "#DEDEDE",
+                    borderBottomWidth: 1,
+                    paddingTop: 10,
+                    paddingBottom: 10
+                  }}
+                  onPress={() => {
+                    this.setState({
+                      aditionalPanelSecond: !this.state.aditionalPanelSecond,
+                      buttonCollapsedSecond: !this.state.buttonCollapsedSecond
+                    });
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 0.4,
+                      justifyContent: "center",
+                      alignItems: "flex-end"
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "Questrial",
+                        color: "red"
+                      }}
+                    >
+                      15.3 MM
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 0.4,
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      marginLeft: 15
+                    }}
+                  >
+                    <Icon
+                      name="md-arrow-round-down"
+                      style={{
+                        fontSize: 20,
+                        color: "red"
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "Questrial",
+                        marginLeft: 10,
+                        color: "red"
+                      }}
+                    >
+                      18%
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 0.2,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    {this.state.buttonCollapsedSecond ? (
+                      <Icon
+                        name="ios-arrow-down-outline"
+                        style={{
+                          fontSize: 20
+                        }}
+                      />
+                    ) : (
+                      <Icon
+                        name="ios-arrow-forward-outline"
+                        style={{
+                          fontSize: 20
+                        }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+
+                {this.state.aditionalPanelSecond && (
+                  <Animatable.View
+                    animation="fadeInRight"
+                    duration={1000}
+                    style={{
+                      flex: 1,
+                      paddingTop: 0
+                    }}
+                  >
+                    <Image
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        height: "100%"
+                      }}
+                      source={backgroundImage}
+                    />
+
+                    <View style={{ flex: 1, paddingBottom: 10, paddingTop: 5 }}>
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            100%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Salas cerradas
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            30%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Salas nuevas
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            100%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Productos descatalogados
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            100%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Productos nuevos
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          padding: 5,
+                          paddingBottom: 0
+                        }}
+                      >
+                        <View
+                          style={{
+                            flex: 0.2,
+                            justifyContent: "center",
+                            alignItems: "flex-end"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            100%
+                          </Text>
+                        </View>
+                        <View style={{ flex: 0.8, marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Questrial"
+                            }}
+                          >
+                            Mismas salas / Mismos productos
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </Animatable.View>
+                )}
+              </View>
             </View>
           </View>
-        </View>
-      </Content>
-      <Footer>
-        <FooterTab>
-          <Button>
-            <Text>Hoy</Text>
-          </Button>
-          <Button>
-            <Text>Semana</Text>
-          </Button>
-          <Button active>
-            <Text>Mes</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
-    </Container>
-  );
+        </Content>
+      </Container>
+    );
+  };
 }
-
-const mapStateToProps = state => ({});
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Report);
+export default connect(null, mapDispatchToProps)(Report);
