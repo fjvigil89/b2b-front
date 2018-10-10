@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
   Container,
@@ -9,20 +10,27 @@ import {
   Icon,
   Title,
   Body,
-  Footer,
-  FooterTab,
   Text,
   Content,
   View
 } from "native-base";
 import { Actions } from "react-native-router-flux";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
 
-class Report extends Component {
-  static propTypes = {};
+import ReportePorTipo from "@components/report/ReportActions";
 
-  static defaultProps = {};
+class Report extends Component {
+  static propTypes = {
+    ReportePorTipo: PropTypes.func.isRequired,
+    endpoint: PropTypes.string,
+    info: PropTypes.oneOfType([PropTypes.any])
+  };
+
+  static defaultProps = {
+    endpoint: "",
+    info: []
+  };
 
   constructor(props) {
     super(props);
@@ -38,10 +46,14 @@ class Report extends Component {
     };
   }
 
-  componentWillMount = () => {};
+  componentWillMount = () => {
+    this.props.ReportePorTipo(this.props.endpoint, "day");
+  };
 
   render = () => {
     const backgroundImage = require("@assets/images/background-detalle-sala-categoria.png");
+
+    console.log(this.props.info);
 
     return (
       <Container>
@@ -62,14 +74,15 @@ class Report extends Component {
               flex: 1,
               flexDirection: "row",
               justifyContent: "space-between",
-              padding: 3,
+              padding: 10,
+              paddingBottom: 0,
               backgroundColor: "#FFFFFF"
             }}
           >
             {this.state.hoyActive ? (
               <Button
                 small
-                primary
+                bordered
                 style={{ flex: 0.33, justifyContent: "center" }}
                 onPress={() => {
                   this.setState({
@@ -84,8 +97,7 @@ class Report extends Component {
             ) : (
               <Button
                 small
-                primary
-                bordered
+                transparent
                 style={{ flex: 0.33, justifyContent: "center" }}
                 onPress={() => {
                   this.setState({
@@ -102,7 +114,7 @@ class Report extends Component {
             {this.state.semanaActive ? (
               <Button
                 small
-                primary
+                bordered
                 style={{ flex: 0.33, justifyContent: "center" }}
                 onPress={() => {
                   this.setState({
@@ -117,8 +129,7 @@ class Report extends Component {
             ) : (
               <Button
                 small
-                primary
-                bordered
+                transparent
                 style={{ flex: 0.33, justifyContent: "center" }}
                 onPress={() => {
                   this.setState({
@@ -135,7 +146,7 @@ class Report extends Component {
             {this.state.mesActive ? (
               <Button
                 small
-                primary
+                bordered
                 style={{ flex: 0.33, justifyContent: "center" }}
                 onPress={() => {
                   this.setState({
@@ -150,8 +161,7 @@ class Report extends Component {
             ) : (
               <Button
                 small
-                primary
-                bordered
+                transparent
                 style={{ flex: 0.33, justifyContent: "center" }}
                 onPress={() => {
                   this.setState({
@@ -939,6 +949,13 @@ class Report extends Component {
   };
 }
 
-const mapDispatchToProps = {};
+const mapStateToProps = state => ({
+  info: state.reporte.info,
+  endpoint: state.user.endpoint
+});
 
-export default connect(null, mapDispatchToProps)(Report);
+const mapDispatchToProps = {
+  ReportePorTipo
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Report);
