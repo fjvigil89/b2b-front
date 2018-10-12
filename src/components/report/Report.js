@@ -19,6 +19,7 @@ import { Image, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
 
 import ReportePorTipo from "@components/report/ReportActions";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 class Report extends Component {
   static propTypes = {
@@ -46,14 +47,28 @@ class Report extends Component {
     };
   }
 
+  state = {
+    isLoading: true
+  };
+
   componentWillMount = () => {
-    this.props.ReportePorTipo(this.props.endpoint, "day");
+    this.props.ReportePorTipo(this.props.endpoint, "day").then(() => {
+      this.setState({
+        isLoading: false
+      });
+    });
   };
 
   render = () => {
-    const backgroundImage = require("@assets/images/background-detalle-sala-categoria.png");
+    const { isLoading } = this.state;
+
+    if (isLoading) {
+      return <LoadingOverlay />;
+    }
 
     console.log(this.props.info);
+
+    const backgroundImage = require("@assets/images/background-detalle-sala-categoria.png");
 
     return (
       <Container>
