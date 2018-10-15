@@ -41,7 +41,7 @@ export default function CreateComment(url, post, content, imagenes) {
           config: { headers: { "Content-Type": "multipart/form-data" } }
         })
           .then(async () => {
-            await dispatch(FullCommentPage(post));
+            await dispatch(FullCommentPage(url, post));
 
             resolve(true);
           })
@@ -65,7 +65,7 @@ export default function CreateComment(url, post, content, imagenes) {
         data: formForSend
       })
         .then(async () => {
-          await dispatch(FullCommentPage(post));
+          await dispatch(FullCommentPage(url, post));
 
           resolve(true);
         })

@@ -41,7 +41,7 @@ export default function CreateReply(url, post, comment, content, imagenes) {
           config: { headers: { "Content-Type": "multipart/form-data" } }
         })
           .then(async () => {
-            await dispatch(CommentList(post));
+            await dispatch(CommentList(url, post));
 
             resolve(true);
           })
@@ -65,7 +65,7 @@ export default function CreateReply(url, post, comment, content, imagenes) {
         data: formForSend
       })
         .then(async () => {
-          resolve(dispatch(CommentList(post)));
+          resolve(dispatch(CommentList(url, post)));
         })
         .catch(error => {
           Sentry.captureException(error);
