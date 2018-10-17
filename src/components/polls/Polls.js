@@ -31,6 +31,7 @@ import {
 import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
 import PollsRadio from "@components/polls/polls_radio/PollsRadio";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import GetListPoll from "@components/polls/polls_list/PollsListActios";
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -59,6 +60,7 @@ const customStyles = {
 class Polls extends Component {
   static propTypes = {
     SetValidForm: PropTypes.func.isRequired,
+    GetListPoll: PropTypes.func.isRequired,
     ChangeInput: PropTypes.func.isRequired,
     GetPoll: PropTypes.func.isRequired,
     SavePoll: PropTypes.func.isRequired,
@@ -70,7 +72,8 @@ class Polls extends Component {
     isLoading: PropTypes.bool,
     isFinish: PropTypes.bool,
     idPoll: PropTypes.number,
-    form: PropTypes.oneOfType([() => null, PropTypes.any])
+    form: PropTypes.oneOfType([() => null, PropTypes.any]),
+    paramsPoll: PropTypes.string
   };
 
   static defaultProps = {
@@ -82,7 +85,8 @@ class Polls extends Component {
     lengthPoll: 0,
     isLoading: true,
     isFinish: false,
-    idPoll: 0
+    idPoll: 0,
+    paramsPoll: ""
   };
 
   componentWillMount = () => {
@@ -252,6 +256,8 @@ class Polls extends Component {
   };
 
   closed = () => {
+    console.log(this.props.paramsPoll);
+    this.props.GetListPoll(this.props.paramsPoll);
     Actions.pop({ refresh: true });
   };
 
@@ -306,7 +312,8 @@ const mapDispatchToProps = {
   SetValidForm,
   ChangeInput,
   GetPoll,
-  SavePoll
+  SavePoll,
+  GetListPoll
 };
 
 export default connect(

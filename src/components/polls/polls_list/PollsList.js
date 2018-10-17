@@ -24,18 +24,22 @@ class PollsList extends Component {
     GetListPoll: PropTypes.func.isRequired,
     listPolls: PropTypes.oneOfType([() => null, PropTypes.any]),
     isLoading: PropTypes.bool,
-    cod_local: PropTypes.string
+    cod_local: PropTypes.string,
+    paramsPoll: PropTypes.string
   };
 
   static defaultProps = {
     listPolls: [],
     isLoading: true,
-    cod_local: ""
+    cod_local: "",
+    paramsPoll: ""
   };
 
   componentWillMount = () => {
-    const params = this.props.cod_local ? `/store/${this.props.cod_local}` : "";
-    this.props.GetListPoll(params);
+    this.props.paramsPoll = this.props.cod_local
+      ? `/store/${this.props.cod_local}`
+      : "";
+    this.props.GetListPoll(this.props.paramsPoll);
   };
 
   showBackMenu = show => {
@@ -55,8 +59,7 @@ class PollsList extends Component {
   };
 
   render = () => {
-    console.log("hay que refrescar render");
-    const { isLoading, listPolls } = this.props;
+    const { isLoading, listPolls, paramsPoll } = this.props;
     if (isLoading) {
       return <LoadingOverlay />;
     }
@@ -64,11 +67,11 @@ class PollsList extends Component {
     let showBack = false;
     if (listPolls instanceof Array) {
       list = listPolls.map((data, index) => (
-        <PollsListGrid key={index} data={data} />
+        <PollsListGrid key={index} data={data} paramsPoll={paramsPoll} />
       ));
     } else {
       showBack = true;
-      list = <PollsListGrid data={listPolls} />;
+      list = <PollsListGrid data={listPolls} paramsPoll={paramsPoll} />;
     }
 
     return (
