@@ -159,22 +159,16 @@ class Polls extends Component {
   };
 
   getFooter = () => {
-    if (this.props.lengthPoll === this.props.position) {
+    if (
+      this.props.lengthPoll === 1 ||
+      (this.props.lengthPoll === this.props.position + 1 &&
+        this.props.position === 0)
+    ) {
       return (
         <Footer>
           <FooterTab>
-            <Button onPress={this.closed} active>
-              <Text>Cerrar</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      );
-    } else if (this.props.lengthPoll - 1 === this.props.position) {
-      return (
-        <Footer>
-          <FooterTab>
-            <Button onPress={this.previousPosition}>
-              <Text>Anterior</Text>
+            <Button onPress={this.closed}>
+              <Text>Cancelar</Text>
             </Button>
             <Button active onPress={this.finish}>
               <Text>Finalizar</Text>
@@ -182,7 +176,10 @@ class Polls extends Component {
           </FooterTab>
         </Footer>
       );
-    } else if (this.props.position === 0) {
+    } else if (
+      this.props.position === 0 &&
+      this.props.lengthPoll > this.props.position + 1
+    ) {
       return (
         <Footer>
           <FooterTab>
@@ -195,16 +192,39 @@ class Polls extends Component {
           </FooterTab>
         </Footer>
       );
+    } else if (this.props.lengthPoll > this.props.position + 1) {
+      return (
+        <Footer>
+          <FooterTab>
+            <Button onPress={this.previousPosition}>
+              <Text>Anterior</Text>
+            </Button>
+            <Button onPress={this.nextPosition}>
+              <Text>Siguiente</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      );
+    } else if (this.props.lengthPoll === this.props.position + 1) {
+      return (
+        <Footer>
+          <FooterTab>
+            <Button onPress={this.previousPosition}>
+              <Text>Anterior</Text>
+            </Button>
+            <Button active onPress={this.finish}>
+              <Text>Finalizar</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      );
     }
 
     return (
       <Footer>
         <FooterTab>
-          <Button onPress={this.previousPosition}>
-            <Text>Anterior</Text>
-          </Button>
-          <Button onPress={this.nextPosition}>
-            <Text>Siguiente</Text>
+          <Button onPress={this.closed} active>
+            <Text>Cerrar</Text>
           </Button>
         </FooterTab>
       </Footer>
