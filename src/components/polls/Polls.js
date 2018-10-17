@@ -31,6 +31,7 @@ import {
 import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
 import PollsRadio from "@components/polls/polls_radio/PollsRadio";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import GetListPoll from "@components/polls/polls_list/PollsListActios";
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -59,6 +60,7 @@ const customStyles = {
 class Polls extends Component {
   static propTypes = {
     SetValidForm: PropTypes.func.isRequired,
+    GetListPoll: PropTypes.func.isRequired,
     ChangeInput: PropTypes.func.isRequired,
     GetPoll: PropTypes.func.isRequired,
     SavePoll: PropTypes.func.isRequired,
@@ -72,7 +74,8 @@ class Polls extends Component {
     isFinish: PropTypes.bool,
     idPoll: PropTypes.number,
     form: PropTypes.oneOfType([() => null, PropTypes.any]),
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
+    paramsPoll: PropTypes.string,
   };
 
   static defaultProps = {
@@ -86,7 +89,8 @@ class Polls extends Component {
     isLoading: true,
     isFinish: false,
     idPoll: 0,
-    endpoint: ""
+    endpoint: "",
+    paramsPoll: ""
   };
 
   componentWillMount = () => {
@@ -163,17 +167,11 @@ class Polls extends Component {
   };
 
   getFooter = () => {
-    if (this.props.lengthPoll === this.props.position) {
-      return (
-        <Footer>
-          <FooterTab>
-            <Button onPress={this.closed} active>
-              <Text>Cerrar</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      );
-    } else if (this.props.position === 0 && this.props.lengthPoll === 1) {
+    if (
+      (this.props.lengthPoll === 1 && this.props.position === 0)||
+      (this.props.lengthPoll === this.props.position + 1 &&
+        this.props.position === 0)
+    ) {
       return (
         <Footer>
           <FooterTab>
@@ -186,7 +184,10 @@ class Polls extends Component {
           </FooterTab>
         </Footer>
       );
-    } else if (this.props.position === 0 && this.props.lengthPoll > 1) {
+    } else if (
+      this.props.position === 0 &&
+      this.props.lengthPoll > this.props.position + 1
+    ) {
       return (
         <Footer>
           <FooterTab>
@@ -199,7 +200,20 @@ class Polls extends Component {
           </FooterTab>
         </Footer>
       );
-    } else if (this.props.lengthPoll - 1 === this.props.position) {
+    } else if (this.props.lengthPoll > this.props.position + 1) {
+      return (
+        <Footer>
+          <FooterTab>
+            <Button onPress={this.previousPosition}>
+              <Text>Anterior</Text>
+            </Button>
+            <Button onPress={this.nextPosition}>
+              <Text>Siguiente</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      );
+    } else if (this.props.lengthPoll === this.props.position + 1) {
       return (
         <Footer>
           <FooterTab>
@@ -217,11 +231,8 @@ class Polls extends Component {
     return (
       <Footer>
         <FooterTab>
-          <Button onPress={this.previousPosition}>
-            <Text>Anterior</Text>
-          </Button>
-          <Button onPress={this.nextPosition}>
-            <Text>Siguiente</Text>
+          <Button onPress={this.closed} active>
+            <Text>Cerrar</Text>
           </Button>
         </FooterTab>
       </Footer>
@@ -249,6 +260,7 @@ class Polls extends Component {
   };
 
   closed = () => {
+    this.props.GetListPoll(this.props.paramsPoll);
     Actions.pop({ refresh: true });
   };
 
@@ -305,7 +317,8 @@ const mapDispatchToProps = {
   SetValidForm,
   ChangeInput,
   GetPoll,
-  SavePoll
+  SavePoll,
+  GetListPoll
 };
 
 export default connect(

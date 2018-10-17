@@ -1,12 +1,13 @@
 import axios from "axios";
 import Sentry from "sentry-expo";
 
-export default function GetListPoll(url, params) {
+export default function GetListPoll(url) {
+  console.log("urlito: ", url);
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: `${url}/encuesta${params}`
+        url
       })
         .then(async response => {
           resolve(
