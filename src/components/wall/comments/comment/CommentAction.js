@@ -14,7 +14,7 @@ export function LikeComment(url, idPost, idComment) {
         }
       })
         .then(() => {
-          resolve(dispatch(CommentList(idPost)));
+          resolve(dispatch(CommentList(url, idPost)));
         })
         .catch(error => {
           Sentry.captureException(error);
@@ -32,7 +32,7 @@ export function UnLikeComment(url, idPost, idComment) {
         url: `${url}/likeComment/${idComment}`
       })
         .then(() => {
-          resolve(dispatch(CommentList(idPost)));
+          resolve(dispatch(CommentList(url, idPost)));
         })
         .catch(error => {
           Sentry.captureException(error);
@@ -53,7 +53,7 @@ export function LikeReply(url, idPost, idReply) {
         }
       })
         .then(() => {
-          resolve(dispatch(CommentList(idPost)));
+          resolve(dispatch(CommentList(url, idPost)));
         })
         .catch(error => {
           Sentry.captureException(error);
@@ -71,7 +71,7 @@ export function UnLikeReply(url, idPost, idReply) {
         url: `${url}/likeReply/${idReply}`
       })
         .then(() => {
-          resolve(dispatch(CommentList(idPost)));
+          resolve(dispatch(CommentList(url, idPost)));
         })
         .catch(error => {
           Sentry.captureException(error);

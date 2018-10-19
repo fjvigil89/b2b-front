@@ -11,6 +11,7 @@ import publications from "@components/wall/publication/PublicationReducers";
 import polls from "@components/polls/PollsReducers";
 import pollsList from "@components/polls/polls_list/PollsListReducers";
 import hashtags from "@components/wall/hashtags/HashtagsReducers";
+import reporte from "@components/report/ReportReducers";
 
 const rehydrated = (state = false, action) => {
   switch (action.type) {
@@ -35,5 +36,6 @@ export default {
   publications,
   polls,
   hashtags,
-  pollsList
+  pollsList,
+  reporte
 };

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { ScrollView, View } from "react-native";
 import {
   Container,
   Header,
@@ -9,309 +11,367 @@ import {
   Icon,
   Title,
   Body,
-  Footer,
-  FooterTab,
   Text,
-  Content,
-  View
+  Content
 } from "native-base";
 import { Actions } from "react-native-router-flux";
-import { Image, StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 5,
-    borderWidth: 1.5,
-    borderColor: "#067715",
-    margin: 10,
-    flex: 1,
-    flexDirection: "row"
-  },
-  left: {
-    borderLeftWidth: 1.5,
-    borderColor: "#067715",
-    flex: 1,
-    flexDirection: "column"
-  },
-  borderTop: {
-    borderBottomWidth: 1.5,
-    borderColor: "#067715",
-    flex: 1
-  }
-});
+import ReportePorTipo from "@components/report/ReportActions";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import DetailReport from "@components/report/detail_report/DetailReport";
 
 class Report extends Component {
-  static propTypes = {};
+  static propTypes = {
+    ReportePorTipo: PropTypes.func.isRequired,
+    endpoint: PropTypes.string,
+    info: PropTypes.oneOfType([PropTypes.any])
+  };
 
-  static defaultProps = {};
+  static defaultProps = {
+    endpoint: "",
+    info: []
+  };
 
-  componentWillMount = () => {};
+  constructor(props) {
+    super(props);
 
-  render = () => (
-    <Container>
-      <Header style={{ borderBottomWidth: 0 }}>
-        <Left>
-          <Button transparent onPress={Actions.drawerOpen}>
-            <Icon name="menu" />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Reporte</Title>
-        </Body>
-        <Right />
-      </Header>
-      <Content>
-        <View
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "row",
-            marginTop: 15
+    this.state = {
+      hoyActive: true,
+      semanaActive: false,
+      mesActive: false,
+      isLoading: true
+    };
+  }
+
+  componentWillMount = () => {
+    this.refreshReport("day");
+  };
+
+  refreshReport = type => {
+    this.setState({
+      isLoading: true
+    });
+
+    this.props.ReportePorTipo(this.props.endpoint, type).then(() => {
+      this.setState({
+        isLoading: false
+      });
+    });
+  };
+
+  formatter = value => {
+    const formatterNumber = x => {
+      const parts = x.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+      return parts.join(".");
+    };
+
+    if (value > 999999 && value < 1000000000) {
+      const format = formatterNumber(value).split(".");
+
+      return `${format[0]}.${format[1].slice(0, 1)} m`;
+    } else if (value >= 1000000000) {
+      const format = formatterNumber(value).split(".");
+
+      return `${format[0]}.${format[1].slice(0, 2)} mm`;
+    } else if (value < 1000000) {
+      const format = formatterNumber(value);
+
+      return `${format}`;
+    }
+
+    return value;
+  };
+
+  render = () => {
+    const { isLoading } = this.state;
+
+    if (isLoading) {
+      return <LoadingOverlay />;
+    }
+
+    const { info } = this.props;
+
+    const listReport = info.banderas.map(data => (
+      <DetailReport data={data} key={data.nombre} />
+    ));
+
+    return (
+      <Container>
+        <Header style={{ borderBottomWidth: 0 }}>
+          <Left>
+            <Button transparent onPress={Actions.drawerOpen}>
+              <Icon name="menu" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Reporte</Title>
+          </Body>
+          <Right />
+        </Header>
+        <Content
+          scrollEnabled={false}
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            flex: 1
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Icon
-              name="md-medal"
+          <View style={{ height: 180 }}>
+            <View
               style={{
-                fontSize: 70,
-                color: "#0D1F81"
+                flex: 200,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                padding: 10,
+                backgroundColor: "#FFF"
               }}
-            />
-            <Text>56.7MM</Text>
-            <Text>Total Ventas</Text>
-          </View>
+            >
+              {this.state.hoyActive ? (
+                <Button
+                  small
+                  bordered
+                  style={{ flex: 0.33, justifyContent: "center" }}
+                >
+                  <Text>Hoy</Text>
+                </Button>
+              ) : (
+                <Button
+                  small
+                  transparent
+                  style={{ flex: 0.33, justifyContent: "center" }}
+                  onPress={() => {
+                    this.refreshReport("day");
 
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Icon
-              name="logo-usd"
+                    this.setState({
+                      hoyActive: true,
+                      semanaActive: false,
+                      mesActive: false
+                    });
+                  }}
+                >
+                  <Text>Hoy</Text>
+                </Button>
+              )}
+
+              {this.state.semanaActive ? (
+                <Button
+                  small
+                  bordered
+                  style={{ flex: 0.33, justifyContent: "center" }}
+                >
+                  <Text>Semana</Text>
+                </Button>
+              ) : (
+                <Button
+                  small
+                  transparent
+                  style={{ flex: 0.33, justifyContent: "center" }}
+                  onPress={() => {
+                    this.refreshReport("week");
+
+                    this.setState({
+                      hoyActive: false,
+                      semanaActive: true,
+                      mesActive: false
+                    });
+                  }}
+                >
+                  <Text>Semana</Text>
+                </Button>
+              )}
+
+              {this.state.mesActive ? (
+                <Button
+                  small
+                  bordered
+                  style={{ flex: 0.33, justifyContent: "center" }}
+                >
+                  <Text>Mes</Text>
+                </Button>
+              ) : (
+                <Button
+                  small
+                  transparent
+                  style={{ flex: 0.33, justifyContent: "center" }}
+                  onPress={() => {
+                    this.refreshReport("month");
+
+                    this.setState({
+                      hoyActive: false,
+                      semanaActive: false,
+                      mesActive: true
+                    });
+                  }}
+                >
+                  <Text>Mes</Text>
+                </Button>
+              )}
+            </View>
+
+            <View
               style={{
-                fontSize: 70,
-                color: "green"
+                flex: 650,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                backgroundColor: "#FFF",
+                paddingTop: 0,
+                paddingBottom: 10
               }}
-            />
-            <Text>56.7MM</Text>
-            <Text>Venta Perdida</Text>
-          </View>
-        </View>
-
-        <View style={styles.container}>
-          <View>
-            <Image
-              style={{ height: 100, width: 100 }}
-              source={require("@assets/images/jumbo.png")}
-            />
-          </View>
-
-          <View style={styles.left}>
-            <View style={styles.borderTop}>
+            >
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: "row"
+                  flex: 0.5,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "#FFFFFF",
+                  margin: 10,
+                  marginTop: 0,
+                  borderRadius: 5,
+                  borderColor: "green",
+                  borderWidth: 2,
+                  height: 100
                 }}
               >
                 <View
                   style={{
-                    flex: 4,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "row"
-                  }}
-                >
-                  <Text>15,3 MM</Text>
-                  <Icon
-                    name="md-arrow-round-up"
-                    style={{
-                      fontSize: 20,
-                      color: "green",
-                      marginLeft: 10
-                    }}
-                  />
-                  <Text style={{ marginLeft: 10 }}>13%</Text>
-                </View>
-                <View
-                  style={{
                     flex: 1,
-                    justifyContent: "center"
+                    justifyContent: "center",
+                    alignItems: "center"
                   }}
                 >
                   <Icon
-                    name="ios-arrow-forward-outline"
+                    name="md-trophy"
                     style={{
-                      fontSize: 30,
-                      color: "green",
-                      marginLeft: 10
+                      fontSize: 50,
+                      color: "green"
                     }}
                   />
+
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      fontFamily: "Questrial",
+                      color: "green"
+                    }}
+                  >
+                    {this.formatter(info.total_ventas)}
+                  </Text>
+
+                  <Text
+                    style={{
+                      marginTop: 2,
+                      fontFamily: "Questrial",
+                      fontSize: 12
+                    }}
+                  >
+                    Total de Ventas
+                  </Text>
                 </View>
               </View>
-            </View>
-            <View style={{ flex: 1 }}>
+
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: "row"
+                  flex: 0.5,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "#FFFFFF",
+                  margin: 10,
+                  marginTop: 0,
+                  borderRadius: 5,
+                  borderColor: "red",
+                  borderWidth: 2,
+                  height: 100
                 }}
               >
                 <View
                   style={{
-                    flex: 4,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "row"
-                  }}
-                >
-                  <Text>15,3 MM</Text>
-                  <Icon
-                    name="md-arrow-round-up"
-                    style={{
-                      fontSize: 20,
-                      color: "green",
-                      marginLeft: 10
-                    }}
-                  />
-                  <Text style={{ marginLeft: 10 }}>13%</Text>
-                </View>
-                <View
-                  style={{
                     flex: 1,
-                    justifyContent: "center"
+                    justifyContent: "center",
+                    alignItems: "center"
                   }}
                 >
                   <Icon
-                    name="ios-arrow-down-outline"
+                    name="md-stats"
                     style={{
-                      fontSize: 30,
-                      color: "green",
-                      marginLeft: 10
+                      fontSize: 50,
+                      color: "red"
                     }}
                   />
+
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      fontFamily: "Questrial",
+                      color: "red"
+                    }}
+                  >
+                    {this.formatter(info.venta_perdida)}
+                  </Text>
+
+                  <Text
+                    style={{
+                      marginTop: 2,
+                      fontFamily: "Questrial",
+                      fontSize: 12
+                    }}
+                  >
+                    Venta Perdida
+                  </Text>
                 </View>
               </View>
             </View>
-          </View>
-        </View>
 
-        <View style={{ flex: 1, margin: 10, flexDirection: "row" }}>
-          <View
-            style={{
-              flex: 1.5,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Icon
-              name="md-arrow-round-up"
+            <View
               style={{
-                fontSize: 40,
-                color: "green",
-                marginLeft: 10
+                flex: 150,
+                flexDirection: "row"
               }}
-            />
-          </View>
-          <View style={{ flex: 5 }}>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>0%</Text>
-              <Text style={{ marginLeft: 8 }}>Salas cerradas</Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>30%</Text>
-              <Text style={{ marginLeft: 8 }}>Salas nuevas</Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>0%</Text>
-              <Text style={{ marginLeft: 8 }}>Productos descatalogados</Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>0%</Text>
-              <Text style={{ marginLeft: 8 }}>Salas cerradas</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.container}>
-          <View>
-            <Image
-              style={{ height: 100, width: 100 }}
-              source={require("@assets/images/jumbo.png")}
-            />
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Text>10,3 MM</Text>
-            <View style={{ flexDirection: "row" }}>
-              <Icon
-                name="md-arrow-round-up"
+            >
+              <View
                 style={{
-                  fontSize: 20,
-                  color: "green",
-                  marginLeft: 10
+                  flex: 1,
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  borderBottomColor: "#DEDEDE",
+                  borderBottomWidth: 1,
+                  paddingBottom: 5,
+                  paddingTop: 5
                 }}
-              />
-              <Text style={{ marginLeft: 10 }}>13%</Text>
+              >
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "Bree",
+                    fontWeight: "bold",
+                    marginBottom: 0
+                  }}
+                >
+                  Detalle de Reporte
+                </Text>
+              </View>
             </View>
           </View>
 
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Text>10,3 MM</Text>
-            <View style={{ flexDirection: "row" }}>
-              <Icon
-                name="md-arrow-round-up"
-                style={{
-                  fontSize: 20,
-                  color: "green",
-                  marginLeft: 10
-                }}
-              />
-              <Text style={{ marginLeft: 10 }}>13%</Text>
-            </View>
+          <View style={{ flex: 1 }}>
+            <ScrollView>{listReport}</ScrollView>
           </View>
-        </View>
-      </Content>
-      <Footer>
-        <FooterTab>
-          <Button>
-            <Text>Hoy</Text>
-          </Button>
-          <Button>
-            <Text>Semana</Text>
-          </Button>
-          <Button active>
-            <Text>Mes</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
-    </Container>
-  );
+        </Content>
+      </Container>
+    );
+  };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  info: state.reporte.info,
+  endpoint: state.user.endpoint
+});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  ReportePorTipo
+};
 
 export default connect(
   mapStateToProps,
