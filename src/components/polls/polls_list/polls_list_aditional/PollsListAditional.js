@@ -7,11 +7,13 @@ import { Actions } from "react-native-router-flux";
 
 class PollsListAditional extends React.Component {
   static propTypes = {
-    data: PropTypes.oneOfType([PropTypes.any])
+    data: PropTypes.oneOfType([PropTypes.any]),
+    paramsPoll: PropTypes.string
   };
 
   static defaultProps = {
-    data: []
+    data: [],
+    paramsPoll: ""
   };
 
   getContent = data => {
@@ -120,7 +122,10 @@ class PollsListAditional extends React.Component {
     <TouchableOpacity
       style={{ flex: 1 }}
       onPress={() => {
-        Actions.polls({ idPoll: data.idPoll });
+        Actions.polls({
+          idPoll: data.idPoll,
+          paramsPoll: this.props.paramsPoll
+        });
       }}
     >
       <View
@@ -273,7 +278,7 @@ class PollsListAditional extends React.Component {
               fontWeight: "bold"
             }}
           >
-            Detalle de la Categoria
+            Listado de Encuestas
           </Text>
         </View>
         {categoryDetailSala}

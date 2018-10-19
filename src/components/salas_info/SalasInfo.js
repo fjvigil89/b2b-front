@@ -125,7 +125,7 @@ class SalasInfo extends Component {
     return (
       <Container>
         <SalasInfoHeader
-          data={{ hasPoll: data.hasPoll, cod_local: data.cod_local }}
+          data={{ hasPoll: data.hasPoll, folio: data.folio }}
         />
         <Content
           scrollEnabled={false}

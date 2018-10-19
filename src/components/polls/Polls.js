@@ -31,6 +31,7 @@ import {
 import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
 import PollsRadio from "@components/polls/polls_radio/PollsRadio";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import GetListPoll from "@components/polls/polls_list/PollsListActios";
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -59,11 +60,13 @@ const customStyles = {
 class Polls extends Component {
   static propTypes = {
     SetValidForm: PropTypes.func.isRequired,
+    GetListPoll: PropTypes.func.isRequired,
     ChangeInput: PropTypes.func.isRequired,
     GetPoll: PropTypes.func.isRequired,
     SavePoll: PropTypes.func.isRequired,
     position: PropTypes.number,
     isError: PropTypes.bool,
+    msg: PropTypes.string,
     value: PropTypes.oneOfType([() => null, PropTypes.any]),
     dataPoll: PropTypes.oneOfType([() => null, PropTypes.any]),
     lengthPoll: PropTypes.number,
@@ -71,7 +74,8 @@ class Polls extends Component {
     isFinish: PropTypes.bool,
     idPoll: PropTypes.number,
     form: PropTypes.oneOfType([() => null, PropTypes.any]),
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
+    paramsPoll: PropTypes.string,
   };
 
   static defaultProps = {
@@ -79,12 +83,14 @@ class Polls extends Component {
     value: null,
     form: null,
     isError: false,
+    msg: '',
     dataPoll: [],
     lengthPoll: 0,
     isLoading: true,
     isFinish: false,
     idPoll: 0,
-    endpoint: ""
+    endpoint: "",
+    paramsPoll: ""
   };
 
   componentWillMount = () => {
@@ -161,22 +167,16 @@ class Polls extends Component {
   };
 
   getFooter = () => {
-    if (this.props.lengthPoll === this.props.position) {
+    if (
+      (this.props.lengthPoll === 1 && this.props.position === 0)||
+      (this.props.lengthPoll === this.props.position + 1 &&
+        this.props.position === 0)
+    ) {
       return (
         <Footer>
           <FooterTab>
-            <Button onPress={this.closed} active>
-              <Text>Cerrar</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      );
-    } else if (this.props.lengthPoll - 1 === this.props.position) {
-      return (
-        <Footer>
-          <FooterTab>
-            <Button onPress={this.previousPosition}>
-              <Text>Anterior</Text>
+            <Button onPress={this.closed}>
+              <Text>Cancelar</Text>
             </Button>
             <Button active onPress={this.finish}>
               <Text>Finalizar</Text>
@@ -184,7 +184,10 @@ class Polls extends Component {
           </FooterTab>
         </Footer>
       );
-    } else if (this.props.position === 0) {
+    } else if (
+      this.props.position === 0 &&
+      this.props.lengthPoll > this.props.position + 1
+    ) {
       return (
         <Footer>
           <FooterTab>
@@ -197,16 +200,39 @@ class Polls extends Component {
           </FooterTab>
         </Footer>
       );
+    } else if (this.props.lengthPoll > this.props.position + 1) {
+      return (
+        <Footer>
+          <FooterTab>
+            <Button onPress={this.previousPosition}>
+              <Text>Anterior</Text>
+            </Button>
+            <Button onPress={this.nextPosition}>
+              <Text>Siguiente</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      );
+    } else if (this.props.lengthPoll === this.props.position + 1) {
+      return (
+        <Footer>
+          <FooterTab>
+            <Button onPress={this.previousPosition}>
+              <Text>Anterior</Text>
+            </Button>
+            <Button active onPress={this.finish}>
+              <Text>Finalizar</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      );
     }
 
     return (
       <Footer>
         <FooterTab>
-          <Button onPress={this.previousPosition}>
-            <Text>Anterior</Text>
-          </Button>
-          <Button onPress={this.nextPosition}>
-            <Text>Siguiente</Text>
+          <Button onPress={this.closed} active>
+            <Text>Cerrar</Text>
           </Button>
         </FooterTab>
       </Footer>
@@ -234,11 +260,12 @@ class Polls extends Component {
   };
 
   closed = () => {
+    this.props.GetListPoll(this.props.paramsPoll);
     Actions.pop({ refresh: true });
   };
 
   finish = () => {
-    if (this.props.position > 0) {
+    if (this.props.position > 0 || this.props.lengthPoll === 1) {
       this.props.SetValidForm({
         position: this.props.position,
         type: "FINISH"
@@ -246,7 +273,7 @@ class Polls extends Component {
     }
   };
 
-  errors = () => (this.props.isError ? "* Debe completar el formulario" : "");
+  errors = () => (this.props.isError ? this.props.msg : "");
 
   render = () => {
     const { position, isLoading, isFinish } = this.props;
@@ -277,6 +304,7 @@ const mapStateToProps = state => ({
   position: state.polls.position,
   value: state.polls.value,
   isError: state.polls.isError,
+  msg: state.polls.msg,
   dataPoll: state.polls.dataPoll,
   lengthPoll: state.polls.lengthPoll,
   isLoading: state.polls.isLoading,
@@ -289,7 +317,8 @@ const mapDispatchToProps = {
   SetValidForm,
   ChangeInput,
   GetPoll,
-  SavePoll
+  SavePoll,
+  GetListPoll
 };
 
 export default connect(
