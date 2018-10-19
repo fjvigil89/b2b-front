@@ -9,10 +9,10 @@ function commentsList(url, idPost) {
   });
 }
 
-export function FullCommentPage(idPost) {
+export function FullCommentPage(url, idPost) {
   return dispatch =>
     new Promise(resolve =>
-      Promise.all([detailPost(idPost), commentsList(idPost)]).then(
+      Promise.all([detailPost(url, idPost), commentsList(url, idPost)]).then(
         async results => {
           const post = results[0].data;
           const listComments = results[1].data;
@@ -33,10 +33,10 @@ export function FullCommentPage(idPost) {
     );
 }
 
-export function CommentList(idPost) {
+export function CommentList(url, idPost) {
   return dispatch =>
     new Promise(resolve =>
-      commentsList(idPost).then(async results => {
+      commentsList(url, idPost).then(async results => {
         const listComments = results.data;
 
         resolve(
