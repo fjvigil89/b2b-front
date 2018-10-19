@@ -16,10 +16,14 @@ export default function polls(state = initialState, action) {
 
       return initialState;
     }
+    case "REFRESH_LIST_POLL": {
+      return {
+        ...state
+      };
+    }
     default:
       return {
-        ...state,
-        listPolls: []
+        ...state
       };
   }
 }

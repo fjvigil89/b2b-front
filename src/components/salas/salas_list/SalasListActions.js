@@ -1,12 +1,13 @@
 import axios from "axios";
 import { Location, Permissions } from "expo";
+import Sentry from "sentry-expo";
 
-export function ListadoSalas(lostSaleON) {
+export function ListadoSalas(url, lostSaleON) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/store/"
+        url: `${url}/store/`
       })
         .then(async response => {
           resolve(
@@ -17,15 +18,15 @@ export function ListadoSalas(lostSaleON) {
             })
           );
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        )
+        .catch(error => {
+          Sentry.captureException(new Error(error));
+
+          reject({ message: error.response.data.message });
+        })
     );
 }
 
-export function ListadoSalasWithRefresh() {
+export function ListadoSalasWithRefresh(url) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       dispatch({
@@ -34,7 +35,7 @@ export function ListadoSalasWithRefresh() {
 
       return axios({
         method: "GET",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/store/"
+        url: `${url}/store/`
       })
         .then(async response => {
           dispatch({
@@ -48,7 +49,11 @@ export function ListadoSalasWithRefresh() {
 
           resolve(true);
         })
-        .catch(error => reject({ message: error.response.data.error }));
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     });
 }
 

@@ -19,116 +19,67 @@ import PollsListGrid from "@components/polls/polls_list/polls_list_grid/PollsLis
 import GetListPoll from "@components/polls/polls_list/PollsListActios";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
-const mocks = [
-  {
-    description: "JUMBO - SAN MIGUEL, EL LLANO SUBERCASEAUX ",
-    available: 2,
-    listPolls: [
-      {
-        title: "Encuesta dìa del padre",
-        description: "Levantamiento de promociones licores",
-        idPoll: 1,
-        state: "available"
-      },
-      {
-        title: "Encuesta dìa del padre",
-        description: "Levantamiento de promociones licores",
-        idPoll: 2,
-        state: "notAvailable"
-      },
-      {
-        title: "Encuesta dìa del padre",
-        description: "Levantamiento de promociones licores",
-        idPoll: 3,
-        state: "available"
-      }
-    ]
-  },
-  {
-    description: "JUMBO - SAN MIGUEL, EL LLANO SUBERCASEAUX ",
-    available: 2,
-    listPolls: [
-      {
-        title: "Encuesta dìa del padre",
-        description: "Levantamiento de promociones licores",
-        idPoll: 1,
-        state: "available"
-      },
-      {
-        title: "Encuesta dìa del padre",
-        description: "Levantamiento de promociones licores",
-        idPoll: 2,
-        state: "complete"
-      },
-      {
-        title: "Encuesta dìa del padre",
-        description: "Levantamiento de promociones licores",
-        idPoll: 3,
-        state: "available"
-      }
-    ]
-  },
-  {
-    description: "JUMBO - SAN MIGUEL, EL LLANO SUBERCASEAUX ",
-    available: 2,
-    listPolls: [
-      {
-        title: "Encuesta dìa del padre",
-        description: "Levantamiento de promociones licores",
-        idPoll: 1,
-        state: "complete"
-      },
-      {
-        title: "Encuesta dìa del padre",
-        description: "Levantamiento de promociones licores",
-        idPoll: 2,
-        state: "complete"
-      },
-      {
-        title: "Encuesta dìa del padre",
-        description: "Levantamiento de promociones licores",
-        idPoll: 3,
-        state: "available"
-      }
-    ]
-  }
-];
+let params = "";
 
 class PollsList extends Component {
   static propTypes = {
     GetListPoll: PropTypes.func.isRequired,
     listPolls: PropTypes.oneOfType([() => null, PropTypes.any]),
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    folio: PropTypes.number,
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
     listPolls: [],
-    isLoading: true
+    isLoading: true,
+    folio: 0,
+    endpoint: "",
   };
 
-  componentWillMount = () => {
-    this.props.GetListPoll();
+  componentWillMount = () => {    
+    params = this.props.folio
+      ? `${this.props.endpoint}/encuesta/store/${this.props.folio}`
+      : `${this.props.endpoint}/encuesta`;    
+    this.props.GetListPoll(params);
+  };
+
+  showBackMenu = show => {
+    if (show) {
+      return (
+        <Button transparent onPress={Actions.pop}>
+          <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
+        </Button>
+      );
+    }
+
+    return (
+      <Button transparent onPress={Actions.drawerOpen}>
+        <Icon name="menu" />
+      </Button>
+    );
   };
 
   render = () => {
-    let { isLoading, listPolls } = this.props;
+    const { isLoading, listPolls } = this.props;
     if (isLoading) {
       return <LoadingOverlay />;
     }
-
-    listPolls = mocks;
-    const list = listPolls.map((data, index) => (
-      <PollsListGrid key={index} data={data} />
-    ));
+    let list;
+    let showBack = false;
+    if (listPolls instanceof Array) {
+      list = listPolls.map((data, index) => (
+        <PollsListGrid key={index} data={data} paramsPoll={params} />
+      ));
+    } else {
+      showBack = true;
+      list = <PollsListGrid data={listPolls} paramsPoll={params} />;
+    }
 
     return (
       <Container>
         <Header style={{ borderBottomWidth: 0 }}>
-          <Left>
-            <Button transparent onPress={Actions.drawerOpen}>
-              <Icon name="menu" />
-            </Button>
-          </Left>
+          <Left>{this.showBackMenu(showBack)}</Left>
           <Body>
             <Title>Encuestas</Title>
           </Body>
@@ -144,7 +95,8 @@ class PollsList extends Component {
 
 const mapStateToProps = state => ({
   listPolls: state.pollsList.listPolls,
-  isLoading: state.pollsList.isLoading
+  isLoading: state.pollsList.isLoading,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {

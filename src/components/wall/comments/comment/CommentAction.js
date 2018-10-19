@@ -1,81 +1,82 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
 import { CommentList } from "@components/wall/comments/CommentsActions";
 
-export function LikeComment(idPost, idComment) {
+export function LikeComment(url, idPost, idComment) {
   return dispatch =>
     new Promise((resolve, reject) => {
       axios({
         method: "POST",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/likeComment",
+        url: `${url}/likeComment`,
         data: {
           comment_id: idComment
         }
       })
         .then(() => {
-          resolve(dispatch(CommentList(idPost)));
+          resolve(dispatch(CommentList(url, idPost)));
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        );
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     });
 }
 
-export function UnLikeComment(idPost, idComment) {
+export function UnLikeComment(url, idPost, idComment) {
   return dispatch =>
     new Promise((resolve, reject) => {
       axios({
         method: "DELETE",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/likeComment/${idComment}`
+        url: `${url}/likeComment/${idComment}`
       })
         .then(() => {
-          resolve(dispatch(CommentList(idPost)));
+          resolve(dispatch(CommentList(url, idPost)));
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        );
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     });
 }
 
-export function LikeReply(idPost, idReply) {
+export function LikeReply(url, idPost, idReply) {
   return dispatch =>
     new Promise((resolve, reject) => {
       axios({
         method: "POST",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/likeReply",
+        url: `${url}/likeReply`,
         data: {
           reply_id: idReply
         }
       })
         .then(() => {
-          resolve(dispatch(CommentList(idPost)));
+          resolve(dispatch(CommentList(url, idPost)));
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        );
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     });
 }
 
-export function UnLikeReply(idPost, idReply) {
+export function UnLikeReply(url, idPost, idReply) {
   return dispatch =>
     new Promise((resolve, reject) => {
       axios({
         method: "DELETE",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/likeReply/${idReply}`
+        url: `${url}/likeReply/${idReply}`
       })
         .then(() => {
-          resolve(dispatch(CommentList(idPost)));
+          resolve(dispatch(CommentList(url, idPost)));
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        );
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     });
 }

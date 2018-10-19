@@ -1,9 +1,10 @@
 import axios from "axios";
 import { size } from "lodash";
+import Sentry from "sentry-expo";
 
 import ErrorMessages from "@constants/errors";
 
-export default function CreatePost(content, imagenes, user) {
+export default function CreatePost(url, content, imagenes, user) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       if (!content) return reject({ message: ErrorMessages.noContent });
@@ -33,7 +34,7 @@ export default function CreatePost(content, imagenes, user) {
 
         return axios({
           method: "POST",
-          url: "http://b2b-app.us-east-1.elasticbeanstalk.com/post",
+          url: `${url}/post`,
           data: formData,
           config: { headers: { "Content-Type": "multipart/form-data" } }
         })
@@ -46,8 +47,10 @@ export default function CreatePost(content, imagenes, user) {
               })
             );
           })
-          .catch(err => {
-            reject(err);
+          .catch(error => {
+            Sentry.captureException(error);
+
+            reject({ message: error.response.data.message });
           });
       }
 
@@ -57,7 +60,7 @@ export default function CreatePost(content, imagenes, user) {
 
       return axios({
         method: "POST",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/post",
+        url: `${url}/post`,
         data: formForSend
       })
         .then(response => {
@@ -69,8 +72,10 @@ export default function CreatePost(content, imagenes, user) {
             })
           );
         })
-        .catch(err => {
-          reject(err);
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
         });
     }).catch(err => {
       throw err;

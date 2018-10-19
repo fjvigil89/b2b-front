@@ -1,11 +1,12 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
-export function GetListPost() {
+export function GetListPost(url) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/post/"
+        url: `${url}/post`
       })
         .then(async response => {
           resolve(
@@ -15,20 +16,20 @@ export function GetListPost() {
             })
           );
         })
-        .catch(error =>
-          reject({
-            message: error.response.data.error
-          })
-        )
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        })
     );
 }
 
-export function GetMorePosts(lastId) {
+export function GetMorePosts(url, lastId) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/post/skip/${lastId}`
+        url: `${url}/post/skip/${lastId}`
       })
         .then(async response => {
           resolve(
@@ -39,17 +40,19 @@ export function GetMorePosts(lastId) {
           );
         })
         .catch(error => {
-          reject(error);
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
         })
     );
 }
 
-export function GetHashtags() {
+export function GetHashtags(url) {
   return dispatch =>
     new Promise(async (resolve, reject) =>
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/hashtag`
+        url: `${url}/hashtag`
       })
         .then(async response => {
           resolve(
@@ -60,7 +63,9 @@ export function GetHashtags() {
           );
         })
         .catch(error => {
-          reject(error);
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
         })
     );
 }

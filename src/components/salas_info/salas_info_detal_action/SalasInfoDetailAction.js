@@ -25,7 +25,8 @@ class SalasInfoDetailAction extends React.Component {
     monto: PropTypes.string,
     sala: PropTypes.string,
     nombreSala: PropTypes.string,
-    categoria: PropTypes.string
+    categoria: PropTypes.string,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
@@ -33,11 +34,13 @@ class SalasInfoDetailAction extends React.Component {
     monto: "",
     sala: "",
     nombreSala: "",
-    categoria: ""
+    categoria: "",
+    endpoint: ""
   };
 
   componentWillMount = () => {
     this.props.ListadoProductosPorCategoriaAcccion(
+      this.props.endpoint,
       this.props.sala,
       this.props.categoria,
       this.props.accion
@@ -59,7 +62,7 @@ class SalasInfoDetailAction extends React.Component {
     }
 
     return (
-      <Container>
+      <Container style={{ backgroundColor: "#F4F4F4" }}>
         <StatusBar barStyle="dark-content" />
         <Content
           style={{ flex: 1, backgroundColor: "#FFF" }}
@@ -102,13 +105,15 @@ class SalasInfoDetailAction extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  productos: state.productos.productos
+  productos: state.productos.productos,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {
   ListadoProductosPorCategoriaAcccion
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  SalasInfoDetailAction
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SalasInfoDetailAction);

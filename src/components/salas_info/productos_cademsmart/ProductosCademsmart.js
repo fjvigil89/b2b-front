@@ -25,7 +25,8 @@ class ProductosCademsmart extends React.Component {
     visita: PropTypes.number,
     nombreSala: PropTypes.string,
     direccion: PropTypes.string,
-    ultimaMedicion: PropTypes.string
+    ultimaMedicion: PropTypes.string,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
@@ -33,11 +34,15 @@ class ProductosCademsmart extends React.Component {
     visita: 0,
     nombreSala: "",
     direccion: "",
-    ultimaMedicion: ""
+    ultimaMedicion: "",
+    endpoint: ""
   };
 
   componentWillMount = () => {
-    this.props.ListadoProductosCademsmart(this.props.visita);
+    this.props.ListadoProductosCademsmart(
+      this.props.endpoint,
+      this.props.visita
+    );
   };
 
   render() {
@@ -94,13 +99,15 @@ class ProductosCademsmart extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  productos: state.productosCademsmart.productos
+  productos: state.productosCademsmart.productos,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {
   ListadoProductosCademsmart
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  ProductosCademsmart
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProductosCademsmart);

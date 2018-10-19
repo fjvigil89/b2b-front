@@ -12,7 +12,6 @@ import {
   TouchableOpacity
 } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
-import AssetUtils from "expo-asset-utils";
 
 import {
   LikePublication,
@@ -42,7 +41,8 @@ class Publication extends Component {
     margin: PropTypes.bool,
     images: PropTypes.oneOfType([PropTypes.any]),
     flagComments: PropTypes.bool,
-    newPost: PropTypes.bool
+    newPost: PropTypes.bool,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
@@ -56,7 +56,8 @@ class Publication extends Component {
     margin: false,
     images: [],
     flagComments: false,
-    newPost: false
+    newPost: false,
+    endpoint: ""
   };
 
   constructor(props) {
@@ -116,7 +117,7 @@ class Publication extends Component {
       loading: true
     });
 
-    this.props.LikePublication(this.props.id).then(() => {
+    this.props.LikePublication(this.props.endpoint, this.props.id).then(() => {
       this.setState({
         loading: false,
         likes: this.state.likes + 1,
@@ -136,7 +137,7 @@ class Publication extends Component {
       loading: true
     });
 
-    this.props.UnLikePublication(this.props.id).then(() => {
+    this.props.UnLikePublication(this.props.endpoint, this.props.id).then(() => {
       this.setState({
         loading: false,
         likes: this.state.likes - 1,
@@ -493,9 +494,13 @@ class Publication extends Component {
   };
 }
 
+const mapStateToProps = state => ({
+  endpoint: state.user.endpoint
+});
+
 const mapDispatchToProps = {
   LikePublication,
   UnLikePublication
 };
 
-export default connect(null, mapDispatchToProps)(Publication);
+export default connect(mapStateToProps, mapDispatchToProps)(Publication);

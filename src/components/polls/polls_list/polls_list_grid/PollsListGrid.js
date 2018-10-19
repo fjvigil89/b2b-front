@@ -6,11 +6,13 @@ import PollsListAditional from "@components/polls/polls_list/polls_list_aditiona
 
 class PollsListGrid extends React.Component {
   static propTypes = {
-    data: PropTypes.oneOfType([PropTypes.any])
+    data: PropTypes.oneOfType([PropTypes.any]),
+    paramsPoll: PropTypes.string
   };
 
   static defaultProps = {
-    data: []
+    data: [],
+    paramsPoll: ""
   };
 
   constructor(props) {
@@ -21,7 +23,7 @@ class PollsListGrid extends React.Component {
   }
 
   render() {
-    const { data } = this.props;
+    const { data, paramsPoll } = this.props;
     return (
       <View>
         <ListItem avatar>
@@ -46,7 +48,9 @@ class PollsListGrid extends React.Component {
           </TouchableOpacity>
         </ListItem>
         <View>
-          {this.state.aditionalPanel && <PollsListAditional data={data} />}
+          {this.state.aditionalPanel && (
+            <PollsListAditional data={data} paramsPoll={paramsPoll} />
+          )}
         </View>
       </View>
     );
@@ -54,13 +58,3 @@ class PollsListGrid extends React.Component {
 }
 
 export default PollsListGrid;
-
-/*
-<Left>
-              <Icon
-                style={{
-                  backgroundColor: data.state === "available" ? "green" : "red"
-                }}
-              />
-            </Left>
-*/

@@ -1,11 +1,12 @@
 import axios from "axios";
 import { size } from "lodash";
+import Sentry from "sentry-expo";
 
 import ErrorMessages from "@constants/errors";
 
 import { CommentList } from "@components/wall/comments/CommentsActions";
 
-export default function CreateReply(post, comment, content, imagenes) {
+export default function CreateReply(url, post, comment, content, imagenes) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       if (size(imagenes) > 0) {
@@ -35,17 +36,19 @@ export default function CreateReply(post, comment, content, imagenes) {
 
         return axios({
           method: "POST",
-          url: "http://b2b-app.us-east-1.elasticbeanstalk.com/reply",
+          url: `${url}/reply`,
           data: formData,
           config: { headers: { "Content-Type": "multipart/form-data" } }
         })
           .then(async () => {
-            await dispatch(CommentList(post));
+            await dispatch(CommentList(url, post));
 
             resolve(true);
           })
-          .catch(err => {
-            reject(err);
+          .catch(error => {
+            Sentry.captureException(error);
+
+            reject({ message: error.response.data.message });
           });
       }
 
@@ -58,14 +61,16 @@ export default function CreateReply(post, comment, content, imagenes) {
 
       return axios({
         method: "POST",
-        url: "http://b2b-app.us-east-1.elasticbeanstalk.com/reply",
+        url: `${url}/reply`,
         data: formForSend
       })
         .then(async () => {
-          resolve(dispatch(CommentList(post)));
+          resolve(dispatch(CommentList(url, post)));
         })
-        .catch(() => {
-          reject();
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
         });
     }).catch(err => {
       throw err.message;

@@ -45,14 +45,16 @@ class RespondComment extends React.Component {
     hashtags: PropTypes.oneOfType([PropTypes.any]),
     user: PropTypes.string,
     post: PropTypes.number,
-    comment: PropTypes.number
+    comment: PropTypes.number,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
     hashtags: [],
     user: "",
     post: 0,
-    comment: 0
+    comment: 0,
+    endpoint: ""
   };
 
   constructor() {
@@ -74,7 +76,7 @@ class RespondComment extends React.Component {
   };
 
   async componentWillMount() {
-    await this.props.GetHashtags();
+    await this.props.GetHashtags(this.props.endpoint);
   }
 
   createReply = () => {
@@ -84,6 +86,7 @@ class RespondComment extends React.Component {
 
     this.props
       .CreateReply(
+        this.props.endpoint,
         this.props.post,
         this.props.comment,
         this.state.content,
@@ -457,7 +460,8 @@ class RespondComment extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.user.user,
-  hashtags: state.wall.hashtags
+  hashtags: state.wall.hashtags,
+  endpoint: state.user.endpoint
 });
 
 const mapDispatchToProps = {
@@ -465,4 +469,7 @@ const mapDispatchToProps = {
   GetHashtags
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RespondComment);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RespondComment);

@@ -1,6 +1,7 @@
 import axios from "axios";
+import Sentry from "sentry-expo";
 
-export function ListadoSalasInfo(id) {
+export function ListadoSalasInfo(url, id) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       dispatch({
@@ -9,7 +10,7 @@ export function ListadoSalasInfo(id) {
 
       axios({
         method: "GET",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/store/${id}`
+        url: `${url}/store/${id}`
       })
         .then(async response => {
           resolve(
@@ -19,25 +20,39 @@ export function ListadoSalasInfo(id) {
             })
           );
         })
-        .catch(error => reject({ message: error.response.data.error }));
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     });
 }
 
-export function CheckINorCheckOUT(storeId) {
-  return () =>
+export function CheckINorCheckOUT(url, storeId, type) {
+  return dispatch =>
     new Promise((resolve, reject) => {
       const formForSend = {
-        storeId
+        folio: storeId,
+        type
       };
 
       axios({
         method: "POST",
-        url: `http://b2b-app.us-east-1.elasticbeanstalk.com/check`,
+        url: `${url}/check`,
         data: formForSend
       })
         .then(() => {
-          resolve();
+          resolve(
+            dispatch({
+              type: "SALAS_ACTIVE_CHECKIN",
+              check: type === "in"
+            })
+          );
         })
-        .catch(error => reject(error));
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
     });
 }

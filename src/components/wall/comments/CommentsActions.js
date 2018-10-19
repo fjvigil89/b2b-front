@@ -2,17 +2,17 @@ import axios from "axios";
 
 import { detailPost } from "@components/wall/publication/PublicationActions";
 
-function commentsList(idPost) {
+function commentsList(url, idPost) {
   return axios({
     method: "GET",
-    url: `http://b2b-app.us-east-1.elasticbeanstalk.com/comment/post/${idPost}`
+    url: `${url}/comment/post/${idPost}`
   });
 }
 
-export function FullCommentPage(idPost) {
+export function FullCommentPage(url, idPost) {
   return dispatch =>
     new Promise(resolve =>
-      Promise.all([detailPost(idPost), commentsList(idPost)]).then(
+      Promise.all([detailPost(url, idPost), commentsList(url, idPost)]).then(
         async results => {
           const post = results[0].data;
           const listComments = results[1].data;
@@ -33,10 +33,10 @@ export function FullCommentPage(idPost) {
     );
 }
 
-export function CommentList(idPost) {
+export function CommentList(url, idPost) {
   return dispatch =>
     new Promise(resolve =>
-      commentsList(idPost).then(async results => {
+      commentsList(url, idPost).then(async results => {
         const listComments = results.data;
 
         resolve(

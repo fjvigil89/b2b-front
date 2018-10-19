@@ -2,7 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import { connect } from "react-redux";
-import { Image, View, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import {
+  Image,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  DeviceEventEmitter
+} from "react-native";
 import { Thumbnail, Text } from "native-base";
 import { Actions } from "react-native-router-flux";
 import Swipeable from "react-native-swipeable";
@@ -32,10 +39,12 @@ class SalasDetail extends React.Component {
       kilometers: PropTypes.number,
       prefijoKilometers: PropTypes.string,
       hasPoll: PropTypes.number,
-      visita_en_progreso: PropTypes.number
+      visita_en_progreso: PropTypes.number,
+      folio: PropTypes.number
     }),
     delay: PropTypes.number,
-    lostSaleON: PropTypes.bool
+    lostSaleON: PropTypes.bool,
+    endpoint: PropTypes.string
   };
 
   static defaultProps = {
@@ -48,14 +57,32 @@ class SalasDetail extends React.Component {
       fecha_visita: "",
       direccion: "",
       cod_local: "",
-      descripcion: ""
+      descripcion: "",
+      folio: 0
     },
     delay: 100,
-    lostSaleON: true
+    lostSaleON: true,
+    endpoint: ""
   };
 
+  constructor(props) {
+    super(props);
+
+    DeviceEventEmitter.addListener(
+      `checkINEvent-${this.props.data.folio}`,
+      () => {
+        this.props.data.visita_en_progreso = 1;
+
+        this.setState({
+          refresh: !this.state.refresh
+        });
+      }
+    );
+  }
+
   state = {
-    leftActionActivated: false
+    refresh: false,
+    swipeable: null
   };
 
   currency = x => {
@@ -63,6 +90,40 @@ class SalasDetail extends React.Component {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
     return parts.join(".");
+  };
+
+  makeCheckOut = () => {
+    Alert.alert(
+      "¿CheckOut?",
+      `¿Quieres hacer el CheckOUT en ${this.props.data.descripcion} ?`,
+      [
+        {
+          text: "SI, hacer CheckOUT",
+          onPress: () => {
+            this.props
+              .CheckINorCheckOUT(
+                this.props.endpoint,
+                this.props.data.folio,
+                "out"
+              )
+              .then(() => {
+                Alert.alert("Exito", "CheckOUT realizado.", [
+                  { text: "Super!" }
+                ]);
+
+                this.state.swipeable.recenter();
+
+                this.props.data.visita_en_progreso = 0;
+
+                this.setState({
+                  refresh: !this.state.refresh
+                });
+              });
+          }
+        },
+        { text: "NO", style: "cancel" }
+      ]
+    );
   };
 
   render() {
@@ -97,10 +158,8 @@ class SalasDetail extends React.Component {
       logo = require("@assets/images/alvi.png");
     }
 
-    if (this.props.data.visita_en_progreso === 1) {
-      imagen = require("@assets/images/visita-en-progreso.png");
-    } else if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
-      imagen = require("@assets/images/visita-realizada.png");
+    if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
+      imagen = require("@assets/images/visita-realizada-v2.png");
 
       fecha = moment(this.props.data.fecha_visita)
         .add(1, "d")
@@ -109,16 +168,25 @@ class SalasDetail extends React.Component {
       imagen = require("@assets/images/pendiente-visita.png");
     }
 
-    const { leftActionActivated } = this.state;
-
     const styles = StyleSheet.create({
-      leftSwipeItem: {
+      rightSwipeItem: {
         flex: 1,
-        alignItems: "flex-end",
         justifyContent: "center",
-        paddingRight: 20
+        paddingLeft: 10
       }
     });
+
+    const rightButtons = [
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={[styles.rightSwipeItem, { backgroundColor: "#f3bc32" }]}
+        onPress={() => {
+          this.makeCheckOut();
+        }}
+      >
+        <Text>¿CheckOut?</Text>
+      </TouchableOpacity>
+    ];
 
     return (
       <Animatable.View
@@ -136,38 +204,16 @@ class SalasDetail extends React.Component {
         }}
       >
         <Swipeable
-          leftActionActivationDistance={200}
-          leftContent={
-            this.props.data.visita_en_progreso === 1 ? (
-              <View
-                style={[
-                  styles.leftSwipeItem,
-                  {
-                    backgroundColor: leftActionActivated ? "#f3bc32" : "#FFF"
-                  }
-                ]}
-              >
-                {leftActionActivated ? (
-                  <Text>¡Realizar Checkout!</Text>
-                ) : (
-                  <Text>¿CheckOUT?</Text>
-                )}
-              </View>
-            ) : null
+          onRef={ref => {
+            this.state.swipeable = ref;
+          }}
+          rightButtons={
+            this.props.data.visita_en_progreso ? rightButtons : null
           }
-          onLeftActionActivate={() =>
-            this.setState({ leftActionActivated: true })
-          }
-          onLeftActionDeactivate={() =>
-            this.setState({ leftActionActivated: false })
-          }
-          onLeftActionComplete={() =>
-            this.props.CheckINorCheckOUT(this.props.data.cod_local).then(() => {
-              Alert.alert("Exito", "CheckOUT realizado.", [{ text: "Super!" }]);
-            })
-          }
+          rightButtonWidth={110}
         >
           <TouchableOpacity
+            activeOpacity={0.8}
             style={{ flex: 1 }}
             onPress={() => {
               Actions.salasInfo({ data: this.props.data });
@@ -184,6 +230,35 @@ class SalasDetail extends React.Component {
                 }}
                 source={imagen}
               />
+            )}
+
+            {this.props.data.visita_en_progreso === 1 && (
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  backgroundColor: "#f3bc32",
+                  padding: 10
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontFamily: "Questrial",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    VISITA EN PROGRESO
+                  </Text>
+                </View>
+              </View>
             )}
 
             <View
@@ -370,11 +445,15 @@ class SalasDetail extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  endpoint: state.user.endpoint
+});
+
 const mapDispatchToProps = {
   CheckINorCheckOUT
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SalasDetail);
