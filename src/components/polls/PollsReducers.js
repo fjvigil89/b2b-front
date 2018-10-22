@@ -6,7 +6,7 @@ export const initialState = {
   form: [],
   value: null,
   isError: false,
-  msg: '',
+  msg: "",
   dataPoll: [],
   lengthPoll: 0,
   isLoading: true,
@@ -23,10 +23,10 @@ export default function polls(state = initialState, action) {
           form: [],
           value: null,
           isError: false,
-          msg: '',
+          msg: "",
           dataPoll: action.data,
           lengthPoll: action.data.length,
-          isLoading: false,
+          isLoading: false
         };
       }
 
@@ -39,7 +39,7 @@ export default function polls(state = initialState, action) {
         ...state,
         position,
         isError: false,
-        msg: '',
+        msg: "",
         value
       };
     }
@@ -55,20 +55,22 @@ export default function polls(state = initialState, action) {
         return {
           ...state,
           isError: true,
-          msg: '* Debe completar el formulario'
+          msg: "* Debe completar el formulario"
         };
-      } else if (validErrorInput(state.value, state.dataPoll[action.data.position].response)) {
+      } else if (
+        validErrorInput(
+          state.value,
+          state.dataPoll[action.data.position].response
+        )
+      ) {
         return {
           ...state,
-          msg: '* Debe ingresar el dato correcto',
+          msg: "* Debe ingresar el dato correcto",
           isError: true
         };
       }
 
-      const index = findIndex(
-        state.form,
-        o => o.step === action.data.position
-      );
+      const index = findIndex(state.form, o => o.step === action.data.position);
 
       if (index === -1) {
         state.form.push({
@@ -90,12 +92,11 @@ export default function polls(state = initialState, action) {
         ...state,
         position,
         isError: false,
-        msg: '',
+        msg: "",
         value: null,
         form,
         isFinish: true
       };
-
     }
 
     case "NEXT_POSITION": {
@@ -103,20 +104,22 @@ export default function polls(state = initialState, action) {
         return {
           ...state,
           isError: true,
-          msg: '* Debe completar el formulario'
+          msg: "* Debe completar el formulario"
         };
-      } else if (validErrorInput(state.value, state.dataPoll[action.data.position].response)) {
+      } else if (
+        validErrorInput(
+          state.value,
+          state.dataPoll[action.data.position].response
+        )
+      ) {
         return {
           ...state,
-          msg: '* Debe ingresar el dato correcto',
+          msg: "* Debe ingresar el dato correcto",
           isError: true
         };
       }
 
-      const index = findIndex(
-        state.form,
-        o => o.step === action.data.position
-      );
+      const index = findIndex(state.form, o => o.step === action.data.position);
 
       if (index === -1) {
         state.form.push({
@@ -133,10 +136,9 @@ export default function polls(state = initialState, action) {
         ...state,
         position,
         isError: false,
-        msg: '',
+        msg: "",
         value
       };
-      
     }
     case "CHANGE_INPUT": {
       return {
@@ -152,7 +154,7 @@ export default function polls(state = initialState, action) {
         form: [],
         value: null,
         isError: false,
-        msg: '',
+        msg: "",
         lengthPoll: 0,
         dataPoll: [],
         isLoading: true
@@ -169,10 +171,9 @@ export function objetPosition(position, obj) {
   return null;
 }
 
-
 export function validErrorInput(input, type) {
   if (type === "number") {
-    return isNaN(input);
+    return /\s/.test(input) || isNaN(input) || parseInt(input) < 0;
   }
 
   return !input;
