@@ -36,7 +36,8 @@ class SalasInfo extends Component {
       folio: PropTypes.number
     }),
     endpoint: PropTypes.string,
-    activeCheckin: PropTypes.bool
+    activeCheckin: PropTypes.bool,
+    km: PropTypes.number
   };
 
   static defaultProps = {
@@ -55,7 +56,8 @@ class SalasInfo extends Component {
       folio: 0
     },
     endpoint: "",
-    activeCheckin: false
+    activeCheckin: false,
+    km: 0
   };
 
   async componentWillMount() {
@@ -66,7 +68,7 @@ class SalasInfo extends Component {
   }
   componentDidMount = () => {
     if (
-      this.props.data.kilometers < 5 &&
+      this.props.data.kilometers < this.props.km &&
       !this.props.data
         .visita_en_progreso /* &&
       !this.props.activeCheckin */
@@ -106,7 +108,7 @@ class SalasInfo extends Component {
 
   render = () => {
     const { isAuthenticated, isLoading, data } = this.props;
-    
+
     if (!isAuthenticated) {
       return <LoginScreen />;
     }
@@ -132,9 +134,7 @@ class SalasInfo extends Component {
     }
     return (
       <Container>
-        <SalasInfoHeader
-          data={{ hasPoll: data.hasPoll, folio: data.folio }}
-        />
+        <SalasInfoHeader data={{ hasPoll: data.hasPoll, folio: data.folio }} />
         <Content
           scrollEnabled={false}
           style={{ flex: 1, backgroundColor: "#FFF" }}
@@ -156,7 +156,8 @@ const mapStateToProps = state => ({
   dataDetail: state.salasInfo.detailsSalas,
   isLoading: state.salasInfo.loading,
   endpoint: state.user.endpoint,
-  activeCheckin: state.salas.activeCheckIn
+  activeCheckin: state.salas.activeCheckIn,
+  km: state.user.km
 });
 
 const mapDispatchToProps = {
@@ -164,7 +165,4 @@ const mapDispatchToProps = {
   CheckINorCheckOUT
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SalasInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(SalasInfo);
