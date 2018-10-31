@@ -1,5 +1,4 @@
-import { findIndex, forEach } from "lodash";
-import Item from "@assets/native-base-theme/components/Item";
+import { findIndex, parseInt } from "lodash";
 
 export const initialState = {
   position: 0,
@@ -12,6 +11,18 @@ export const initialState = {
   isLoading: true,
   isFinish: false
 };
+
+function validErrorInput(input, type) {
+  if (type === "number") {
+    return (
+      !/^[0-9]*$/.test(input) ||
+      Number.isNaN(parseInt(input)) ||
+      parseInt(input) < 0
+    );
+  }
+
+  return false;
+}
 
 export default function polls(state = initialState, action) {
   switch (action.type) {
@@ -130,8 +141,10 @@ export default function polls(state = initialState, action) {
       } else {
         state.form[index].respuesta = state.value;
       }
+
       const position = action.data.position + 1;
       const value = objetPosition(position, state.form);
+
       return {
         ...state,
         position,
@@ -169,12 +182,4 @@ export function objetPosition(position, obj) {
     return obj[index].respuesta;
   }
   return null;
-}
-
-export function validErrorInput(input, type) {
-  if (type === "number") {
-    return /\s/.test(input) || isNaN(input) || parseInt(input) < 0;
-  }
-
-  return !input;
 }

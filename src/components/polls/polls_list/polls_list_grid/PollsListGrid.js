@@ -17,6 +17,7 @@ class PollsListGrid extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       aditionalPanel: false
     };
@@ -24,6 +25,7 @@ class PollsListGrid extends React.Component {
 
   render() {
     const { data, paramsPoll } = this.props;
+
     return (
       <View>
         <ListItem avatar>
@@ -42,7 +44,7 @@ class PollsListGrid extends React.Component {
                 style={{ fontWeight: "bold", marginTop: 20, fontSize: 12 }}
                 note
               >
-                {data.available} Encuentas disponibles
+                {data.available} Encuestas disponibles
               </Text>
             </Body>
           </TouchableOpacity>

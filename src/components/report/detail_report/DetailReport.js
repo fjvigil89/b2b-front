@@ -11,10 +11,12 @@ moment.locale("es");
 
 class DetailReport extends React.Component {
   static propTypes = {
+    colorVentas: PropTypes.string,
+    colorVentasPerdidas: PropTypes.string,
     data: PropTypes.shape({
       nombre: PropTypes.string,
       ventas: PropTypes.shape({
-        total: PropTypes.number,
+        total: PropTypes.string,
         variacion: PropTypes.string,
         causas: PropTypes.shape({
           mismas_salas: PropTypes.number,
@@ -25,7 +27,7 @@ class DetailReport extends React.Component {
         })
       }),
       ventas_perdidas: PropTypes.shape({
-        total: PropTypes.number,
+        total: PropTypes.string,
         variacion: PropTypes.string,
         causas: PropTypes.shape({
           chequear_pedidos: PropTypes.number,
@@ -38,6 +40,8 @@ class DetailReport extends React.Component {
   };
 
   static defaultProps = {
+    colorVentas: "",
+    colorVentasPerdidas: "",
     data: {
       nombre: "",
       ventas: {
@@ -177,51 +181,56 @@ class DetailReport extends React.Component {
               <View
                 style={{
                   flex: 0.4,
-                  justifyContent: "center",
-                  alignItems: "flex-end"
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontFamily: "Questrial",
-                    color: "green"
-                  }}
-                >
-                  {this.formatter(ventas.total)}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flex: 0.4,
                   flexDirection: "row",
-                  justifyContent: "flex-start",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  marginLeft: 15
+                  marginLeft: 10
                 }}
               >
                 <Icon
-                  name="md-arrow-round-up"
+                  name="logo-usd"
                   style={{
                     fontSize: 20,
-                    color: "green"
+                    color: this.props.colorVentas
                   }}
                 />
                 <Text
                   style={{
                     fontSize: 18,
                     fontFamily: "Questrial",
+                    color: this.props.colorVentas,
+                    marginLeft: 10
+                  }}
+                >
+                  {this.formatter(ventas.total)}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flex: 0.4,
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  marginLeft: 25
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: "Questrial",
                     marginLeft: 10,
-                    color: "green"
+                    color: this.props.colorVentas
                   }}
                 >
                   {ventas.variacion}
                 </Text>
               </View>
+
               <View
                 style={{
                   flex: 0.2,
-                  justifyContent: "center",
+                  justifyContent: "flex-end",
                   alignItems: "center"
                 }}
               >
@@ -474,15 +483,24 @@ class DetailReport extends React.Component {
               <View
                 style={{
                   flex: 0.4,
-                  justifyContent: "center",
-                  alignItems: "flex-end"
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginLeft: 10
                 }}
               >
+                <Icon
+                  name="ios-search"
+                  style={{
+                    fontSize: 20,
+                    color: this.props.colorVentasPerdidas
+                  }}
+                />
                 <Text
                   style={{
                     fontSize: 18,
                     fontFamily: "Questrial",
-                    color: "red"
+                    color: this.props.colorVentasPerdidas
                   }}
                 >
                   {this.formatter(ventasPerdidas.total)}
@@ -494,22 +512,15 @@ class DetailReport extends React.Component {
                   flexDirection: "row",
                   justifyContent: "flex-start",
                   alignItems: "center",
-                  marginLeft: 15
+                  marginLeft: 25
                 }}
               >
-                <Icon
-                  name="md-arrow-round-down"
-                  style={{
-                    fontSize: 20,
-                    color: "red"
-                  }}
-                />
                 <Text
                   style={{
                     fontSize: 18,
                     fontFamily: "Questrial",
                     marginLeft: 10,
-                    color: "red"
+                    color: this.props.colorVentasPerdidas
                   }}
                 >
                   {ventasPerdidas.variacion}

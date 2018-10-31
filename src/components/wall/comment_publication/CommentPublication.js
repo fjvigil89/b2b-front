@@ -71,7 +71,7 @@ class CommentPublication extends React.Component {
     showHashtag: false,
     hashtags: [],
     inputHashtag: "",
-    auxText: "",
+    auxText: ""
   };
 
   async componentWillMount() {
@@ -84,7 +84,12 @@ class CommentPublication extends React.Component {
     });
 
     this.props
-      .CreateComment(this.props.endpoint, this.props.post, this.state.content, this.state.images)
+      .CreateComment(
+        this.props.endpoint,
+        this.props.post,
+        this.state.content,
+        this.state.images
+      )
       .then(() => {
         this.setState({
           loading: false
