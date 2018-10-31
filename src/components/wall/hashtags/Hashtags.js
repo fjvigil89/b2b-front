@@ -11,7 +11,7 @@ import {
   Body,
   Right
 } from "native-base";
-import { FlatList, View, ActivityIndicator } from "react-native";
+import { FlatList } from "react-native";
 import { Actions } from "react-native-router-flux";
 
 import {
@@ -112,11 +112,6 @@ class Hashtags extends Component {
             />
           )}
           keyExtractor={item => item.id.toString()}
-          ListFooterComponent={() => (
-            <View style={{ flex: 1, padding: 10 }}>
-              <ActivityIndicator size="small" />
-            </View>
-          )}
           onEndReached={() => {
             this.fetchMore(lastId);
           }}
@@ -139,7 +134,4 @@ const mapDispatchToProps = {
   GetMoreHashtags
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Hashtags);
+export default connect(mapStateToProps, mapDispatchToProps)(Hashtags);

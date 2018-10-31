@@ -52,7 +52,10 @@ class SalasList extends Component {
   };
 
   RefreshListadoSalas = () => {
-    this.props.ListadoSalasWithRefresh(this.props.endpoint);
+    this.props.ListadoSalasWithRefresh(
+      this.props.endpoint,
+      this.props.lostSaleON
+    );
   };
 
   render = () => {
@@ -105,7 +108,4 @@ const mapDispatchToProps = {
   GetLocationAsync
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SalasList);
+export default connect(mapStateToProps, mapDispatchToProps)(SalasList);

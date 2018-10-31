@@ -11,11 +11,13 @@ import {
   ListadoSalasInfo,
   CheckINorCheckOUT
 } from "@components/salas_info/SalasInfoActions.js";
+import LoginScreen from "@components/login/Login";
 
 class SalasInfo extends Component {
   static propTypes = {
     ListadoSalasInfo: PropTypes.func.isRequired,
     CheckINorCheckOUT: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
     isLoading: PropTypes.bool,
     dataDetail: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     data: PropTypes.shape({
@@ -38,6 +40,7 @@ class SalasInfo extends Component {
   };
 
   static defaultProps = {
+    isAuthenticated: false,
     isLoading: true,
     data: {
       id: 0,
@@ -102,7 +105,12 @@ class SalasInfo extends Component {
   };
 
   render = () => {
-    const { isLoading, data } = this.props;
+    const { isAuthenticated, isLoading, data } = this.props;
+    
+    if (!isAuthenticated) {
+      return <LoginScreen />;
+    }
+
     let { dataDetail } = this.props;
 
     let report = {};
@@ -144,6 +152,7 @@ class SalasInfo extends Component {
   };
 }
 const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated,
   dataDetail: state.salasInfo.detailsSalas,
   isLoading: state.salasInfo.loading,
   endpoint: state.user.endpoint,

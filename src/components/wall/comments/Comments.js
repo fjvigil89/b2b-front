@@ -21,10 +21,12 @@ import Publication from "@components/wall/publication/Publication";
 import Comment from "@components/wall/comments/comment/Comment";
 import { FullCommentPage } from "@components/wall/comments/CommentsActions";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import LoginScreen from "@components/login/Login";
 
 class Comments extends Component {
   static propTypes = {
     FullCommentPage: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
     listComments: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.any])),
     detailPublication: PropTypes.oneOfType([PropTypes.any]),
     idPost: PropTypes.number,
@@ -32,6 +34,7 @@ class Comments extends Component {
   };
 
   static defaultProps = {
+    isAuthenticated: false,
     listComments: [],
     detailPublication: [],
     idPost: 0,
@@ -48,15 +51,21 @@ class Comments extends Component {
       loading: true
     });
 
-    this.props.FullCommentPage(this.props.endpoint, this.props.idPost).then(() => {
-      this.setState({
-        loading: false
+    this.props
+      .FullCommentPage(this.props.endpoint, this.props.idPost)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
       });
-    });
   };
 
   render = () => {
-    const { listComments, detailPublication } = this.props;
+    const { isAuthenticated, listComments, detailPublication } = this.props;
+
+    if (!isAuthenticated) {
+      return <LoginScreen />;
+    }
 
     const delay = 200;
 
@@ -181,6 +190,7 @@ class Comments extends Component {
 // <Comment subcomment /> Para agregar un sub comentario
 
 const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated,
   listComments: state.comments.listComments,
   detailPublication: state.publications.detailPublication,
   endpoint: state.user.endpoint
@@ -190,7 +200,4 @@ const mapDispatchToProps = {
   FullCommentPage
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Comments);
+export default connect(mapStateToProps, mapDispatchToProps)(Comments);
