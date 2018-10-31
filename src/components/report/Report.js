@@ -131,7 +131,7 @@ class Report extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Reporte</Title>
+            <Title>Dashboard</Title>
           </Body>
           <Right />
         </Header>
@@ -158,7 +158,7 @@ class Report extends Component {
                   bordered
                   style={{ flex: 0.33, justifyContent: "center" }}
                 >
-                  <Text>Hoy</Text>
+                  <Text>Día</Text>
                 </Button>
               ) : (
                 <Button
@@ -175,7 +175,7 @@ class Report extends Component {
                     });
                   }}
                 >
-                  <Text>Hoy</Text>
+                  <Text>Día</Text>
                 </Button>
               )}
 

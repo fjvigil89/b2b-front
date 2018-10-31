@@ -69,7 +69,25 @@ class SideBar extends Component {
               SmartB2B
             </Text>
           </View>
-
+          <ListItem button noBorder onPress={this.report}>
+            <Left>
+              <Icon
+                active
+                name="ios-images-outline"
+                style={{ fontSize: 26, width: 30 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Dashboard
+              </Text>
+            </Left>
+          </ListItem>
           <ListItem button noBorder onPress={this.dashboard}>
             <Left>
               <Icon
@@ -85,29 +103,11 @@ class SideBar extends Component {
                   marginLeft: 20
                 }}
               >
-                Inicio
+                Salas
               </Text>
             </Left>
           </ListItem>
-          <ListItem button noBorder onPress={this.wall}>
-            <Left>
-              <Icon
-                active
-                name="ios-chatboxes-outline"
-                style={{ fontSize: 26, width: 30 }}
-              />
-              <Text
-                style={{
-                  fontFamily: "Questrial",
-                  fontWeight: "500",
-                  fontSize: 16,
-                  marginLeft: 20
-                }}
-              >
-                Muro
-              </Text>
-            </Left>
-          </ListItem>
+
           <ListItem button noBorder onPress={this.maps}>
             <Left>
               <Icon
@@ -127,6 +127,27 @@ class SideBar extends Component {
               </Text>
             </Left>
           </ListItem>
+
+          <ListItem button noBorder onPress={this.wall}>
+            <Left>
+              <Icon
+                active
+                name="ios-chatboxes-outline"
+                style={{ fontSize: 26, width: 30 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Muro
+              </Text>
+            </Left>
+          </ListItem>
+
           <ListItem button noBorder onPress={this.polls}>
             <Left>
               <Icon
@@ -146,25 +167,7 @@ class SideBar extends Component {
               </Text>
             </Left>
           </ListItem>
-          <ListItem button noBorder onPress={this.report}>
-            <Left>
-              <Icon
-                active
-                name="ios-images-outline"
-                style={{ fontSize: 26, width: 30 }}
-              />
-              <Text
-                style={{
-                  fontFamily: "Questrial",
-                  fontWeight: "500",
-                  fontSize: 16,
-                  marginLeft: 20
-                }}
-              >
-                Reporte
-              </Text>
-            </Left>
-          </ListItem>
+
           <ListItem button noBorder onPress={this.close}>
             <Left>
               <Icon
