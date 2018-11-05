@@ -8,9 +8,6 @@
     "ios": {
       "bundleIdentifier": "com.miguelmeza.me"
     },
-    "packagerOpts": {
-      "nonPersistent": true
-    },
     "orientation": "portrait",
     "hooks": {
       "postPublish": [

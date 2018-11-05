@@ -1,17 +1,28 @@
-import { findIndex, forEach } from "lodash";
-import Item from "@assets/native-base-theme/components/Item";
+import { findIndex, parseInt } from "lodash";
 
 export const initialState = {
   position: 0,
   form: [],
   value: null,
   isError: false,
-  msg: '',
+  msg: "",
   dataPoll: [],
   lengthPoll: 0,
   isLoading: true,
   isFinish: false
 };
+
+function validErrorInput(input, type) {
+  if (type === "number") {
+    return (
+      !/^[0-9]*$/.test(input) ||
+      Number.isNaN(parseInt(input)) ||
+      parseInt(input) < 0
+    );
+  }
+
+  return false;
+}
 
 export default function polls(state = initialState, action) {
   switch (action.type) {
@@ -23,10 +34,10 @@ export default function polls(state = initialState, action) {
           form: [],
           value: null,
           isError: false,
-          msg: '',
+          msg: "",
           dataPoll: action.data,
           lengthPoll: action.data.length,
-          isLoading: false,
+          isLoading: false
         };
       }
 
@@ -39,7 +50,7 @@ export default function polls(state = initialState, action) {
         ...state,
         position,
         isError: false,
-        msg: '',
+        msg: "",
         value
       };
     }
@@ -55,20 +66,22 @@ export default function polls(state = initialState, action) {
         return {
           ...state,
           isError: true,
-          msg: '* Debe completar el formulario'
+          msg: "* Debe completar el formulario"
         };
-      } else if (validErrorInput(state.value, state.dataPoll[action.data.position].response)) {
+      } else if (
+        validErrorInput(
+          state.value,
+          state.dataPoll[action.data.position].response
+        )
+      ) {
         return {
           ...state,
-          msg: '* Debe ingresar el dato correcto',
+          msg: "* Debe ingresar el dato correcto",
           isError: true
         };
       }
 
-      const index = findIndex(
-        state.form,
-        o => o.step === action.data.position
-      );
+      const index = findIndex(state.form, o => o.step === action.data.position);
 
       if (index === -1) {
         state.form.push({
@@ -90,12 +103,11 @@ export default function polls(state = initialState, action) {
         ...state,
         position,
         isError: false,
-        msg: '',
+        msg: "",
         value: null,
         form,
         isFinish: true
       };
-
     }
 
     case "NEXT_POSITION": {
@@ -103,20 +115,22 @@ export default function polls(state = initialState, action) {
         return {
           ...state,
           isError: true,
-          msg: '* Debe completar el formulario'
+          msg: "* Debe completar el formulario"
         };
-      } else if (validErrorInput(state.value, state.dataPoll[action.data.position].response)) {
+      } else if (
+        validErrorInput(
+          state.value,
+          state.dataPoll[action.data.position].response
+        )
+      ) {
         return {
           ...state,
-          msg: '* Debe ingresar el dato correcto',
+          msg: "* Debe ingresar el dato correcto",
           isError: true
         };
       }
 
-      const index = findIndex(
-        state.form,
-        o => o.step === action.data.position
-      );
+      const index = findIndex(state.form, o => o.step === action.data.position);
 
       if (index === -1) {
         state.form.push({
@@ -127,16 +141,17 @@ export default function polls(state = initialState, action) {
       } else {
         state.form[index].respuesta = state.value;
       }
+
       const position = action.data.position + 1;
       const value = objetPosition(position, state.form);
+
       return {
         ...state,
         position,
         isError: false,
-        msg: '',
+        msg: "",
         value
       };
-      
     }
     case "CHANGE_INPUT": {
       return {
@@ -152,7 +167,7 @@ export default function polls(state = initialState, action) {
         form: [],
         value: null,
         isError: false,
-        msg: '',
+        msg: "",
         lengthPoll: 0,
         dataPoll: [],
         isLoading: true
@@ -167,13 +182,4 @@ export function objetPosition(position, obj) {
     return obj[index].respuesta;
   }
   return null;
-}
-
-
-export function validErrorInput(input, type) {
-  if (type === "number") {
-    return isNaN(input);
-  }
-
-  return !input;
 }

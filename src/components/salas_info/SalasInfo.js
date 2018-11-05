@@ -11,11 +11,13 @@ import {
   ListadoSalasInfo,
   CheckINorCheckOUT
 } from "@components/salas_info/SalasInfoActions.js";
+import LoginScreen from "@components/login/Login";
 
 class SalasInfo extends Component {
   static propTypes = {
     ListadoSalasInfo: PropTypes.func.isRequired,
     CheckINorCheckOUT: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
     isLoading: PropTypes.bool,
     dataDetail: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     data: PropTypes.shape({
@@ -34,10 +36,12 @@ class SalasInfo extends Component {
       folio: PropTypes.number
     }),
     endpoint: PropTypes.string,
-    activeCheckin: PropTypes.bool
+    activeCheckin: PropTypes.bool,
+    km: PropTypes.number
   };
 
   static defaultProps = {
+    isAuthenticated: false,
     isLoading: true,
     data: {
       id: 0,
@@ -52,7 +56,8 @@ class SalasInfo extends Component {
       folio: 0
     },
     endpoint: "",
-    activeCheckin: false
+    activeCheckin: false,
+    km: 0
   };
 
   async componentWillMount() {
@@ -63,7 +68,7 @@ class SalasInfo extends Component {
   }
   componentDidMount = () => {
     if (
-      this.props.data.kilometers < 5 &&
+      this.props.data.kilometers < this.props.km &&
       !this.props.data
         .visita_en_progreso /* &&
       !this.props.activeCheckin */
@@ -102,7 +107,12 @@ class SalasInfo extends Component {
   };
 
   render = () => {
-    const { isLoading, data } = this.props;
+    const { isAuthenticated, isLoading, data } = this.props;
+
+    if (!isAuthenticated) {
+      return <LoginScreen />;
+    }
+
     let { dataDetail } = this.props;
 
     let report = {};
@@ -124,9 +134,7 @@ class SalasInfo extends Component {
     }
     return (
       <Container>
-        <SalasInfoHeader
-          data={{ hasPoll: data.hasPoll, folio: data.folio }}
-        />
+        <SalasInfoHeader data={{ hasPoll: data.hasPoll, folio: data.folio }} />
         <Content
           scrollEnabled={false}
           style={{ flex: 1, backgroundColor: "#FFF" }}
@@ -144,10 +152,12 @@ class SalasInfo extends Component {
   };
 }
 const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated,
   dataDetail: state.salasInfo.detailsSalas,
   isLoading: state.salasInfo.loading,
   endpoint: state.user.endpoint,
-  activeCheckin: state.salas.activeCheckIn
+  activeCheckin: state.salas.activeCheckIn,
+  km: state.user.km
 });
 
 const mapDispatchToProps = {
@@ -155,7 +165,4 @@ const mapDispatchToProps = {
   CheckINorCheckOUT
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SalasInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(SalasInfo);

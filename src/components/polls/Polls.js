@@ -75,7 +75,7 @@ class Polls extends Component {
     idPoll: PropTypes.number,
     form: PropTypes.oneOfType([() => null, PropTypes.any]),
     endpoint: PropTypes.string,
-    paramsPoll: PropTypes.string,
+    paramsPoll: PropTypes.string
   };
 
   static defaultProps = {
@@ -83,7 +83,7 @@ class Polls extends Component {
     value: null,
     form: null,
     isError: false,
-    msg: '',
+    msg: "",
     dataPoll: [],
     lengthPoll: 0,
     isLoading: true,
@@ -168,7 +168,7 @@ class Polls extends Component {
 
   getFooter = () => {
     if (
-      (this.props.lengthPoll === 1 && this.props.position === 0)||
+      (this.props.lengthPoll === 1 && this.props.position === 0) ||
       (this.props.lengthPoll === this.props.position + 1 &&
         this.props.position === 0)
     ) {
@@ -277,10 +277,12 @@ class Polls extends Component {
 
   render = () => {
     const { position, isLoading, isFinish } = this.props;
+
     if (isLoading) {
       return <LoadingOverlay />;
     } else if (isFinish) {
       this.savePoll();
+
       return <LoadingOverlay />;
     }
     return (
@@ -321,7 +323,4 @@ const mapDispatchToProps = {
   GetListPoll
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Polls);
+export default connect(mapStateToProps, mapDispatchToProps)(Polls);

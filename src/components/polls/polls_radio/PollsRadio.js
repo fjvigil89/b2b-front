@@ -1,16 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {
-  Right,
-  Left,
-  Radio,
-  Text,
-  ListItem,
-  Content,
-  View,
-  Textarea
-} from "native-base";
+import { Right, Left, Radio, Text, ListItem, Content, View } from "native-base";
 import { ChangeInput } from "@components/polls/PollsActions";
 
 class PollsRadio extends Component {
@@ -72,21 +63,28 @@ class PollsRadio extends Component {
           <View key={item.id}>
             <ListItem
               style={{ width: "90%" }}
-              onTouchStart={() =>
+              onTouchStart={() => {
                 this.setState(state => {
                   this.state.check.map(
                     (ch, i) => (this.state.check[i] = false)
                   );
                   this.state.check[index] = !state.check[index];
+
+                  // this.props.ChangeInput({
+                  //   value: state.check,
+                  //   position: this.props.position
+                  // });
+
                   this.props.ChangeInput({
-                    value: state.check,
+                    value: item.text,
                     position: this.props.position
                   });
+
                   return {
                     check: state.check
                   };
-                })
-              }
+                });
+              }}
               key={`${data.index}${item.id}`}
             >
               <Left>
@@ -111,7 +109,4 @@ const mapDispatchToProps = {
   ChangeInput
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PollsRadio);
+export default connect(mapStateToProps, mapDispatchToProps)(PollsRadio);

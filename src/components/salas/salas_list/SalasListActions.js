@@ -26,7 +26,7 @@ export function ListadoSalas(url, lostSaleON) {
     );
 }
 
-export function ListadoSalasWithRefresh(url) {
+export function ListadoSalasWithRefresh(url, lostSaleON) {
   return dispatch =>
     new Promise(async (resolve, reject) => {
       dispatch({
@@ -44,7 +44,8 @@ export function ListadoSalasWithRefresh(url) {
 
           dispatch({
             type: "SALAS_LIST",
-            data: response.data
+            data: response.data,
+            lostSaleON
           });
 
           resolve(true);

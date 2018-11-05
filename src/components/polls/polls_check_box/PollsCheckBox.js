@@ -64,10 +64,12 @@ class PollsCheckBox extends Component {
             onTouchStart={() => {
               this.setState(state => {
                 this.state.check[index] = !state.check[index];
+
                 this.props.ChangeInput({
                   value: state.check,
                   position: this.props.position
                 });
+
                 return {
                   check: state.check
                 };
@@ -101,7 +103,4 @@ const mapDispatchToProps = {
   ChangeInput
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PollsCheckBox);
+export default connect(mapStateToProps, mapDispatchToProps)(PollsCheckBox);
