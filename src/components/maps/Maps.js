@@ -162,7 +162,4 @@ const mapDispatchToProps = {
   ListadoSalas
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Maps);
+export default connect(mapStateToProps, mapDispatchToProps)(Maps);
