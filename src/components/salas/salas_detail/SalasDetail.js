@@ -133,11 +133,10 @@ class SalasDetail extends React.Component {
 
     if (this.props.data.bandera === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
-    } else if (
-      this.props.data.bandera === "LIDER EXPRESS" ||
-      this.props.data.bandera === "LIDER"
-    ) {
+    } else if (this.props.data.bandera === "LIDER") {
       logo = require("@assets/images/lider.png");
+    } else if (this.props.data.bandera === "LIDER EXPRESS") {
+      logo = require("@assets/images/lider_express.png");
     } else if (this.props.data.bandera === "CENTRAL MAYORISTA") {
       logo = require("@assets/images/central-mayorista.png");
     } else if (this.props.data.bandera === "TOTTUS") {
@@ -453,7 +452,4 @@ const mapDispatchToProps = {
   CheckINorCheckOUT
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SalasDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(SalasDetail);

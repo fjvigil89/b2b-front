@@ -112,8 +112,10 @@ class DetailReport extends React.Component {
 
     if (nombre === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
-    } else if (nombre === "LIDER EXPRESS" || nombre === "LIDER") {
+    } else if (nombre === "LIDER EXPRESS") {
       logo = require("@assets/images/lider.png");
+    } else if (nombre === "LIDER EXPRESS") {
+      logo = require("@assets/images/lider_express.png");
     } else if (nombre === "CENTRAL MAYORISTA") {
       logo = require("@assets/images/central-mayorista.png");
     } else if (nombre === "TOTTUS") {
@@ -133,6 +135,9 @@ class DetailReport extends React.Component {
     } else {
       logo = require("@assets/images/alvi.png");
     }
+
+
+    console.log(ventasPerdidas.causas);
 
     return (
       <View style={{ flex: 1, marginBottom: 5 }}>
@@ -707,7 +712,7 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventasPerdidas.causas.reposicion)}
+                        {this.formatter(ventasPerdidas.causas.productos_descatalogados)}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>

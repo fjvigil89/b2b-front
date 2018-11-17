@@ -92,8 +92,10 @@ class SalasInfoDetail extends React.Component {
     let logo = "";
     if (data.bandera === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
-    } else if (data.bandera === "LIDER EXPRESS" || data.bandera === "LIDER") {
+    } else if (data.bandera === "LIDER") {
       logo = require("@assets/images/lider.png");
+    } else if (data.bandera === "LIDER EXPRESS") {
+      logo = require("@assets/images/lider_express.png");
     } else if (data.bandera === "CENTRAL MAYORISTA") {
       logo = require("@assets/images/central-mayorista.png");
     } else if (data.bandera === "TOTTUS") {
