@@ -136,11 +136,37 @@ class DetailReport extends React.Component {
       logo = require("@assets/images/alvi.png");
     }
 
-
-    console.log(ventasPerdidas.causas);
-
     return (
-      <View style={{ flex: 1, marginBottom: 5 }}>
+      <View style={{ flex: 1, marginBottom: 10 }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            backgroundColor: "#FFF",
+            padding: 5,
+            borderBottomColor: "#DEDEDE",
+            borderBottomWidth: 1
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "#000",
+              width: 60,
+              position: "absolute",
+              opacity: 0.4
+            }}
+          >
+            <Text>&nbsb;</Text>
+          </View>
+          <Text
+            style={{
+              fontFamily: "Questrial",
+              fontSize: 12
+            }}
+          >
+            Ultima actualización : Pendiente ...
+          </Text>
+        </View>
         <View
           style={{
             flex: 1,
@@ -712,7 +738,9 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventasPerdidas.causas.productos_descatalogados)}
+                        {this.formatter(
+                          ventasPerdidas.causas.productos_descatalogados
+                        )}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>

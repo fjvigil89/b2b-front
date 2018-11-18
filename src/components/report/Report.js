@@ -42,22 +42,24 @@ class Report extends Component {
       hoyActive: false,
       semanaActive: true,
       mesActive: false,
-      isLoading: true
+      isLoading: true,
+      filterText: ""
     };
   }
 
   componentWillMount = () => {
-    this.refreshReport("week");
+    this.refreshReport("week", "Semana");
   };
 
-  refreshReport = type => {
+  refreshReport = (type, text) => {
     this.setState({
       isLoading: true
     });
 
     this.props.ReportePorTipo(this.props.endpoint, type).then(() => {
       this.setState({
-        isLoading: false
+        isLoading: false,
+        filterText: text
       });
     });
   };
@@ -133,7 +135,16 @@ class Report extends Component {
           <Body>
             <Title>Dashboard</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button
+              transparent
+              onPress={() => {
+                Actions.HelpReport();
+              }}
+            >
+              <Icon name="ios-help-circle-outline" />
+            </Button>
+          </Right>
         </Header>
         <Content
           scrollEnabled={false}
@@ -142,7 +153,7 @@ class Report extends Component {
             flex: 1
           }}
         >
-          <View style={{ height: 210 }}>
+          <View style={{ height: 255 }}>
             <View
               style={{
                 flex: 200,
@@ -166,7 +177,7 @@ class Report extends Component {
                   transparent
                   style={{ flex: 0.33, justifyContent: "center" }}
                   onPress={() => {
-                    this.refreshReport("day");
+                    this.refreshReport("day", "Día");
 
                     this.setState({
                       hoyActive: true,
@@ -193,7 +204,7 @@ class Report extends Component {
                   transparent
                   style={{ flex: 0.33, justifyContent: "center" }}
                   onPress={() => {
-                    this.refreshReport("week");
+                    this.refreshReport("week", "Semana");
 
                     this.setState({
                       hoyActive: false,
@@ -220,7 +231,7 @@ class Report extends Component {
                   transparent
                   style={{ flex: 0.33, justifyContent: "center" }}
                   onPress={() => {
-                    this.refreshReport("month");
+                    this.refreshReport("month", "Mes");
 
                     this.setState({
                       hoyActive: false,
@@ -236,12 +247,11 @@ class Report extends Component {
 
             <View
               style={{
-                flex: 680,
+                flex: 560,
                 flexDirection: "row",
                 justifyContent: "space-between",
                 backgroundColor: "#FFF",
-                paddingTop: 0,
-                paddingBottom: 10
+                paddingTop: 0
               }}
             >
               <View
@@ -380,10 +390,8 @@ class Report extends Component {
                   flex: 1,
                   justifyContent: "flex-end",
                   alignItems: "center",
-                  borderBottomColor: "#DEDEDE",
-                  borderBottomWidth: 1,
-                  paddingBottom: 5,
-                  paddingTop: 5
+                  paddingTop: 5,
+                  backgroundColor: "#FFF"
                 }}
               >
                 <Text
@@ -395,6 +403,37 @@ class Report extends Component {
                   }}
                 >
                   Detalle de Reporte
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 120,
+                flexDirection: "row"
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  borderBottomColor: "#DEDEDE",
+                  borderBottomWidth: 1,
+                  paddingTop: 5,
+                  paddingBottom: 10,
+                  backgroundColor: "#FFF"
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "Questrial",
+                    marginBottom: 0
+                  }}
+                >
+                  {this.state.filterText}: Semana del 2018-11-05 vs Semana del
+                  2018-11-12
                 </Text>
               </View>
             </View>

@@ -17,6 +17,7 @@ import Polls from "@components/polls/Polls";
 import PollsList from "@components/polls/polls_list/PollsList";
 import Hashtags from "@components/wall/hashtags/Hashtags";
 import Report from "@components/report/Report";
+import Help from "@components/report/help/Help";
 
 const Index = (
   <Router>
@@ -79,6 +80,13 @@ const Index = (
         key="respondComment"
         component={RespondComment}
         title="RespondCommentAction"
+      />
+
+      <Scene
+        hideNavBar
+        key="HelpReport"
+        component={Help}
+        title="HelpReportAction"
       />
     </Modal>
   </Router>
