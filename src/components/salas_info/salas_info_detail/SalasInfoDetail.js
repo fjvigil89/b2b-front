@@ -119,11 +119,13 @@ class SalasInfoDetail extends React.Component {
     const deviceFullWidth = Dimensions.get("window").width;
     const deviceWidth = deviceFullWidth - 30;
     const formatter = this.formatter(report.ventaPerdida);
-    const fechaVisita = data.fecha_visita
-      ? moment(data.fecha_visita)
-          .add(1, "d")
-          .fromNow()
-      : "-";
+
+    const fechaVisita =
+      data.fecha_visita || data.id_visita
+        ? moment(data.fecha_visita)
+            .add(1, "d")
+            .fromNow()
+        : "-";
 
     const sizeTittle = Platform.OS === "ios" ? 20 : 18;
 

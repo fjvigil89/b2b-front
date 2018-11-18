@@ -87,21 +87,24 @@ class DetailReport extends React.Component {
       return parts.join(".");
     };
 
-    if (value > 999999 && value < 1000000000) {
-      const format = formatterNumber(value).split(".");
+    // eslint-disable-next-line radix
+    const value2 = parseInt(value);
+
+    if (value2 > 999999 && value2 < 1000000000) {
+      const format = formatterNumber(value2).split(".");
 
       return `${format[0]}.${format[1].slice(0, 1)} m`;
-    } else if (value >= 1000000000) {
-      const format = formatterNumber(value).split(".");
+    } else if (value2 >= 1000000000) {
+      const format = formatterNumber(value2).split(".");
 
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value < 1000000) {
-      const format = formatterNumber(value);
+    } else if (value2 < 1000000) {
+      const format = formatterNumber(value2);
 
       return `${format}`;
     }
 
-    return value;
+    return value2;
   };
 
   render() {
@@ -112,7 +115,7 @@ class DetailReport extends React.Component {
 
     if (nombre === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
-    } else if (nombre === "LIDER EXPRESS") {
+    } else if (nombre === "LIDER") {
       logo = require("@assets/images/lider.png");
     } else if (nombre === "LIDER EXPRESS") {
       logo = require("@assets/images/lider_express.png");
@@ -135,9 +138,6 @@ class DetailReport extends React.Component {
     } else {
       logo = require("@assets/images/alvi.png");
     }
-
-
-    console.log(ventasPerdidas.causas);
 
     return (
       <View style={{ flex: 1, marginBottom: 5 }}>
@@ -712,7 +712,9 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventasPerdidas.causas.productos_descatalogados)}
+                        {this.formatter(
+                          ventasPerdidas.causas.productos_descatalogados
+                        )}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>

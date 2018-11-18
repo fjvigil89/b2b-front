@@ -160,9 +160,12 @@ class SalasDetail extends React.Component {
     if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
       imagen = require("@assets/images/visita-realizada-v2.png");
 
-      fecha = moment(this.props.data.fecha_visita)
-        .add(1, "d")
-        .fromNow();
+      fecha =
+        this.props.data.fecha_visita || this.props.data.id
+          ? moment(this.props.data.fecha_visita)
+              .add(1, "d")
+              .fromNow()
+          : "-";
     } else if (this.props.data.mide === 1 && this.props.data.realizada === 0) {
       imagen = require("@assets/images/pendiente-visita.png");
     }
