@@ -6,7 +6,10 @@
     "icon": "src/assets/images/app-icon.png",
     "privacy": "unlisted",
     "ios": {
-      "bundleIdentifier": "com.miguelmeza.me"
+      "bundleIdentifier": "com.cademsmart.b2b"
+    },
+    "android": {
+      "package": "com.cademsmart.b2b"
     },
     "orientation": "portrait",
     "hooks": {
@@ -21,7 +24,7 @@
         }
       ]
     },
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": ""
   }
 }
