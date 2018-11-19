@@ -168,6 +168,9 @@ class SalasDetail extends React.Component {
           : "-";
     } else if (this.props.data.mide === 1 && this.props.data.realizada === 0) {
       imagen = require("@assets/images/pendiente-visita.png");
+      if(this.props.data.fecha_visita === "Pendiente" || this.props.data.id === null ){
+        fecha = "-";
+      }
     }
 
     const styles = StyleSheet.create({
