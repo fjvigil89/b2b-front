@@ -87,21 +87,24 @@ class DetailReport extends React.Component {
       return parts.join(".");
     };
 
-    if (value > 999999 && value < 1000000000) {
-      const format = formatterNumber(value).split(".");
+    // eslint-disable-next-line radix
+    const value2 = parseInt(value);
+
+    if (value2 > 999999 && value2 < 1000000000) {
+      const format = formatterNumber(value2).split(".");
 
       return `${format[0]}.${format[1].slice(0, 1)} m`;
-    } else if (value >= 1000000000) {
-      const format = formatterNumber(value).split(".");
+    } else if (value2 >= 1000000000) {
+      const format = formatterNumber(value2).split(".");
 
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value < 1000000) {
-      const format = formatterNumber(value);
+    } else if (value2 < 1000000) {
+      const format = formatterNumber(value2);
 
       return `${format}`;
     }
 
-    return value;
+    return value2;
   };
 
   render() {
@@ -112,8 +115,10 @@ class DetailReport extends React.Component {
 
     if (nombre === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
-    } else if (nombre === "LIDER EXPRESS" || nombre === "LIDER") {
+    } else if (nombre === "LIDER") {
       logo = require("@assets/images/lider.png");
+    } else if (nombre === "LIDER EXPRESS") {
+      logo = require("@assets/images/lider_express.png");
     } else if (nombre === "CENTRAL MAYORISTA") {
       logo = require("@assets/images/central-mayorista.png");
     } else if (nombre === "TOTTUS") {
@@ -707,7 +712,9 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventasPerdidas.causas.reposicion)}
+                        {this.formatter(
+                          ventasPerdidas.causas.productos_descatalogados
+                        )}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>

@@ -92,8 +92,10 @@ class SalasInfoDetail extends React.Component {
     let logo = "";
     if (data.bandera === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
-    } else if (data.bandera === "LIDER EXPRESS" || data.bandera === "LIDER") {
+    } else if (data.bandera === "LIDER") {
       logo = require("@assets/images/lider.png");
+    } else if (data.bandera === "LIDER EXPRESS") {
+      logo = require("@assets/images/lider_express.png");
     } else if (data.bandera === "CENTRAL MAYORISTA") {
       logo = require("@assets/images/central-mayorista.png");
     } else if (data.bandera === "TOTTUS") {
@@ -117,11 +119,13 @@ class SalasInfoDetail extends React.Component {
     const deviceFullWidth = Dimensions.get("window").width;
     const deviceWidth = deviceFullWidth - 30;
     const formatter = this.formatter(report.ventaPerdida);
-    const fechaVisita = data.fecha_visita
-      ? moment(data.fecha_visita)
-          .add(1, "d")
-          .fromNow()
-      : "-";
+
+    const fechaVisita =
+      data.fecha_visita || data.id_visita
+        ? moment(data.fecha_visita)
+            .add(1, "d")
+            .fromNow()
+        : "-";
 
     const sizeTittle = Platform.OS === "ios" ? 20 : 18;
 
