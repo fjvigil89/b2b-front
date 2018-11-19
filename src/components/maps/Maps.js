@@ -92,11 +92,10 @@ class Maps extends Component {
               let logo = "";
               if (sala.bandera === "JUMBO") {
                 logo = require("@assets/images/jumbo.png");
-              } else if (
-                sala.bandera === "LIDER EXPRESS" ||
-                sala.bandera === "LIDER"
-              ) {
+              } else if (sala.bandera === "LIDER") {
                 logo = require("@assets/images/lider.png");
+              } else if (sala.bandera === "LIDER EXPRESS") {
+                logo = require("@assets/images/lider_express.png");
               } else if (sala.bandera === "CENTRAL MAYORISTA") {
                 logo = require("@assets/images/central-mayorista.png");
               } else if (sala.bandera === "TOTTUS") {

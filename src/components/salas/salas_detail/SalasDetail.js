@@ -133,11 +133,10 @@ class SalasDetail extends React.Component {
 
     if (this.props.data.bandera === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
-    } else if (
-      this.props.data.bandera === "LIDER EXPRESS" ||
-      this.props.data.bandera === "LIDER"
-    ) {
+    } else if (this.props.data.bandera === "LIDER") {
       logo = require("@assets/images/lider.png");
+    } else if (this.props.data.bandera === "LIDER EXPRESS") {
+      logo = require("@assets/images/lider_express.png");
     } else if (this.props.data.bandera === "CENTRAL MAYORISTA") {
       logo = require("@assets/images/central-mayorista.png");
     } else if (this.props.data.bandera === "TOTTUS") {
@@ -161,9 +160,12 @@ class SalasDetail extends React.Component {
     if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
       imagen = require("@assets/images/visita-realizada-v2.png");
 
-      fecha = moment(this.props.data.fecha_visita)
-        .add(1, "d")
-        .fromNow();
+      fecha =
+        this.props.data.fecha_visita || this.props.data.id
+          ? moment(this.props.data.fecha_visita)
+              .add(1, "d")
+              .fromNow()
+          : "-";
     } else if (this.props.data.mide === 1 && this.props.data.realizada === 0) {
       imagen = require("@assets/images/pendiente-visita.png");
     }
@@ -453,7 +455,4 @@ const mapDispatchToProps = {
   CheckINorCheckOUT
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SalasDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(SalasDetail);

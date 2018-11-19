@@ -14,7 +14,7 @@ export const initialState = {
 };
 
 function getKilometros(lat1, lon1, lat2, lon2) {
-  const rad = x => (x * Math.PI) / 180;
+  const rad = x => x * Math.PI / 180;
 
   const R = 6378.137;
   const dLat = rad(lat2 - lat1);
@@ -98,13 +98,15 @@ export default function salas(state = initialState, action) {
     case "SALAS_SHOW_GEO_LOCATION": {
       return {
         ...state,
-        salas: orderBy(state.salas_backup, ["kilometers"], ["asc"])
+        salas: orderBy(state.salas_backup, ["kilometers"], ["asc"]),
+        searchFilters: false
       };
     }
     case "SALAS_SHOW_LOST_SALE": {
       return {
         ...state,
-        salas: state.salas_backup
+        salas: state.salas_backup,
+        searchFilters: false
       };
     }
     case "SALAS_FILTER_SECTION": {
