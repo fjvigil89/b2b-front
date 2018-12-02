@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Swipeable from "react-native-swipeable";
 
+import MarcarProducto from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
+
 const styles = StyleSheet.create({
   rightSwipeItem: {
     flex: 1,
@@ -31,18 +33,16 @@ const leftButtons = [
 const rightButtons = [
   <TouchableOpacity
     activeOpacity={0.8}
-    style={[styles.rightSwipeItem, { backgroundColor: "#f3bc32" }]}
-    onPress={() => {
-      this.makeCheckOut();
-    }}
+    style={[styles.rightSwipeItem, { backgroundColor: "#ef4247" }]}
   >
-    <Text>Caso</Text>
-    <Text>Expirado</Text>
+    <Text style={{ color: "white" }}>Caso</Text>
+    <Text style={{ color: "white" }}>Expirado</Text>
   </TouchableOpacity>
 ];
 
 class Producto extends React.Component {
   static propTypes = {
+    MarcarProducto: PropTypes.func.isRequired,
     data: PropTypes.shape({
       cadem: PropTypes.oneOfType([() => null, PropTypes.string]),
       descripcion: PropTypes.string,
@@ -82,11 +82,12 @@ class Producto extends React.Component {
 
   state = {
     swipeable: null,
-    gestionado: this.props.data.gestionado !== 0
+    gestionado: this.props.data.gestionado !== 0,
+    expirado: false
   };
 
   makeGestionado = () => {
-    console.log(
+    this.props.MarcarProducto(
       this.props.endpoint,
       this.props.sala,
       "gestionado",
@@ -96,18 +97,24 @@ class Producto extends React.Component {
       this.props.dateb2b
     );
 
-    // this.props.Gestionado(
-    //   this.props.endpoint,
-    //   this.props.sala,
-    //   "gestionado",
-    //   this.props.causa,
-    //   this.props.data.ean,
-    //   this.props.data.venta_perdida,
-    //   this.props.dateb2b
-    // );
-
     this.setState({
       gestionado: true
+    });
+  };
+
+  makeExpirado = () => {
+    this.props.MarcarProducto(
+      this.props.endpoint,
+      this.props.sala,
+      "expirado",
+      this.props.causa,
+      this.props.data.ean,
+      this.props.data.venta_perdida,
+      this.props.dateb2b
+    );
+
+    this.setState({
+      expirado: true
     });
   };
 
@@ -125,16 +132,20 @@ class Producto extends React.Component {
       visibilityText = true;
     }
 
-    console.log(this.props);
-
     return (
       <Swipeable
         onRef={ref => {
           this.state.swipeable = ref;
         }}
-        rightButtons={rightButtons}
-        rightButtonWidth={110}
-        leftContent={this.state.gestionado ? null : leftButtons}
+        rightContent={
+          !this.state.gestionado && !this.state.expirado ? rightButtons : null
+        }
+        onRightActionRelease={() => {
+          this.makeExpirado();
+        }}
+        leftContent={
+          !this.state.gestionado && !this.state.expirado ? leftButtons : null
+        }
         onLeftActionRelease={() => {
           this.makeGestionado();
         }}
@@ -171,28 +182,54 @@ class Producto extends React.Component {
               alignItems: "center"
             }}
           >
-            {this.state.gestionado && (
-              <View
-                style={{
-                  flex: 0.3,
-                  backgroundColor: "#f3bc32",
-                  padding: 3,
-                  borderRadius: 5,
-                  alignItems: "center"
-                }}
-              >
-                <Text
+            {this.state.gestionado &&
+              !this.state.expirado && (
+                <View
                   style={{
-                    marginLeft: 5,
-                    fontSize: 12,
-                    fontWeight: "bold",
-                    fontFamily: "Questrial"
+                    flex: 0.3,
+                    backgroundColor: "#f3bc32",
+                    padding: 3,
+                    borderRadius: 5,
+                    alignItems: "center"
                   }}
                 >
-                  GESTIONADO
-                </Text>
-              </View>
-            )}
+                  <Text
+                    style={{
+                      marginLeft: 5,
+                      fontSize: 12,
+                      fontWeight: "bold",
+                      fontFamily: "Questrial"
+                    }}
+                  >
+                    GESTIONADO
+                  </Text>
+                </View>
+              )}
+
+            {!this.state.gestionado &&
+              this.state.expirado && (
+                <View
+                  style={{
+                    flex: 0.3,
+                    backgroundColor: "#ef4247",
+                    padding: 3,
+                    borderRadius: 5,
+                    alignItems: "center"
+                  }}
+                >
+                  <Text
+                    style={{
+                      marginLeft: 5,
+                      fontSize: 12,
+                      fontWeight: "bold",
+                      fontFamily: "Questrial",
+                      color: "white"
+                    }}
+                  >
+                    EXPIRADO
+                  </Text>
+                </View>
+              )}
 
             <View style={{ flex: 0.7, alignItems: "flex-end" }}>
               <Text
@@ -299,4 +336,8 @@ const mapStateToProps = state => ({
   endpoint: state.user.endpoint
 });
 
-export default connect(mapStateToProps, null)(Producto);
+const mapDispatchToProps = {
+  MarcarProducto
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Producto);
