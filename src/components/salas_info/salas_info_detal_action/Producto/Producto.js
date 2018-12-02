@@ -1,7 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  DeviceEventEmitter
+} from "react-native";
 import Swipeable from "react-native-swipeable";
 
 import MarcarProducto from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
@@ -58,7 +65,9 @@ class Producto extends React.Component {
     dateb2b: PropTypes.string,
     endpoint: PropTypes.string,
     sala: PropTypes.string,
-    causa: PropTypes.string
+    causa: PropTypes.string,
+    categoria: PropTypes.string,
+    visitaEnProgreso: PropTypes.string
   };
 
   static defaultProps = {
@@ -77,7 +86,9 @@ class Producto extends React.Component {
     dateb2b: "",
     endpoint: "",
     sala: "",
-    causa: ""
+    causa: "",
+    categoria: "",
+    visitaEnProgreso: ""
   };
 
   state = {
@@ -99,6 +110,18 @@ class Producto extends React.Component {
 
     this.setState({
       gestionado: true
+    });
+
+    DeviceEventEmitter.emit(
+      `SalaDetalleCategoria-${this.props.sala}-${this.props.categoria.replace(
+        /\s/g,
+        ""
+      )}`,
+      { gestionado: this.props.data.venta_perdida }
+    );
+
+    DeviceEventEmitter.emit(`SalaDetalle-${this.props.sala}`, {
+      gestionado: this.props.data.venta_perdida
     });
   };
 
@@ -138,13 +161,21 @@ class Producto extends React.Component {
           this.state.swipeable = ref;
         }}
         rightContent={
-          !this.state.gestionado && !this.state.expirado ? rightButtons : null
+          !this.state.gestionado &&
+          !this.state.expirado &&
+          this.props.visitaEnProgreso === 1
+            ? rightButtons
+            : null
         }
         onRightActionRelease={() => {
           this.makeExpirado();
         }}
         leftContent={
-          !this.state.gestionado && !this.state.expirado ? leftButtons : null
+          !this.state.gestionado &&
+          !this.state.expirado &&
+          this.props.visitaEnProgreso === 1
+            ? leftButtons
+            : null
         }
         onLeftActionRelease={() => {
           this.makeGestionado();

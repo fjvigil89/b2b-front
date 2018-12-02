@@ -11,7 +11,8 @@ class SalasInfoListAditional extends React.Component {
     sala: PropTypes.number,
     nombreSala: PropTypes.string,
     categoria: PropTypes.string,
-    dateb2b: PropTypes.string
+    dateb2b: PropTypes.string,
+    visitaEnProgreso: PropTypes.string
   };
 
   static defaultProps = {
@@ -19,7 +20,8 @@ class SalasInfoListAditional extends React.Component {
     sala: "",
     nombreSala: "",
     categoria: "",
-    dateb2b: ""
+    dateb2b: "",
+    visitaEnProgreso: ""
   };
 
   currency = x => {
@@ -55,7 +57,8 @@ class SalasInfoListAditional extends React.Component {
                 sala: this.props.sala,
                 nombreSala: this.props.nombreSala,
                 categoria: this.props.categoria,
-                dateb2b: this.props.dateb2b
+                dateb2b: this.props.dateb2b,
+                visitaEnProgreso: this.props.visitaEnProgreso
               });
             }}
           >
@@ -134,7 +137,7 @@ class SalasInfoListAditional extends React.Component {
                       fontFamily: "Questrial"
                     }}
                   >
-                    Gestionado (12)
+                    Gestionado ({data.casos_gestionados})
                   </Text>
                   <Text
                     style={{

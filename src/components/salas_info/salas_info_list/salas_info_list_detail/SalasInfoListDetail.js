@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, DeviceEventEmitter } from "react-native";
 import { Text } from "native-base";
 
 import SalasInfoListAditional from "@components/salas_info/salas_info_list/salas_info_list_aditional/SalasInfoListAditional";
@@ -11,21 +11,39 @@ class SalasInfoListDetail extends React.Component {
     sala: PropTypes.number,
     nombreSala: PropTypes.string,
     categoria: PropTypes.string,
-    dateb2b: PropTypes.string
+    dateb2b: PropTypes.string,
+    visitaEnProgreso: PropTypes.string
   };
 
   static defaultProps = {
     sala: "",
     nombreSala: "",
     categoria: "",
-    dateb2b: ""
+    dateb2b: "",
+    visitaEnProgreso: ""
   };
 
   constructor(props) {
     super(props);
+
     this.state = {
-      aditionalPanel: false
+      aditionalPanel: false,
+      casosGestionados: this.props.data.casos_gestionados,
+      gestionado: this.props.data.gestionado
     };
+
+    DeviceEventEmitter.addListener(
+      `SalaDetalleCategoria-${this.props.sala}-${this.props.categoria.replace(
+        /\s/g,
+        ""
+      )}`,
+      e => {
+        this.setState({
+          casosGestionados: this.state.casosGestionados + 1,
+          gestionado: this.state.gestionado + e.gestionado
+        });
+      }
+    );
   }
 
   currency = x => {
@@ -37,7 +55,7 @@ class SalasInfoListDetail extends React.Component {
   render() {
     const { data } = this.props;
 
-    let porcentajeProgreso = data.gestionado * 100 / data.venta_perdida;
+    let porcentajeProgreso = this.state.gestionado * 100 / data.venta_perdida;
     porcentajeProgreso = `${porcentajeProgreso}%`;
 
     return (
@@ -90,7 +108,7 @@ class SalasInfoListDetail extends React.Component {
                 fontFamily: "Questrial"
               }}
             >
-              {data.gestionado} / {data.casos}
+              {this.state.casosGestionados} / {data.casos}
             </Text>
           </View>
           <View
@@ -107,7 +125,7 @@ class SalasInfoListDetail extends React.Component {
                 fontFamily: "Questrial"
               }}
             >
-              ${this.currency(data.venta_perdida)}
+              ${this.currency(this.props.data.venta_perdida)}
             </Text>
           </View>
 
@@ -129,6 +147,8 @@ class SalasInfoListDetail extends React.Component {
             nombreSala={this.props.nombreSala}
             categoria={this.props.categoria}
             dateb2b={this.props.dateb2b}
+            casosGestionados={data.casos_gestionados}
+            visitaEnProgreso={this.props.visitaEnProgreso}
           />
         )}
       </View>

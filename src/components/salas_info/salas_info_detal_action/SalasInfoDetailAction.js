@@ -27,7 +27,8 @@ class SalasInfoDetailAction extends React.Component {
     nombreSala: PropTypes.string,
     categoria: PropTypes.string,
     dateb2b: PropTypes.string,
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
+    visitaEnProgreso: PropTypes.string
   };
 
   static defaultProps = {
@@ -37,7 +38,8 @@ class SalasInfoDetailAction extends React.Component {
     nombreSala: "",
     categoria: "",
     dateb2b: "",
-    endpoint: ""
+    endpoint: "",
+    visitaEnProgreso: ""
   };
 
   componentWillMount = () => {
@@ -62,6 +64,8 @@ class SalasInfoDetailAction extends React.Component {
           flag={this.props.productos.detail.flag}
           accion={this.props.accion}
           dateb2b={this.props.dateb2b}
+          categoria={this.props.categoria}
+          visitaEnProgreso={this.props.visitaEnProgreso}
         />
       ));
     }

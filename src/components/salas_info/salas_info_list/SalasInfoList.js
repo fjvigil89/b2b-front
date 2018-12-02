@@ -10,13 +10,15 @@ class SalasInfoList extends React.Component {
     data: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     sala: PropTypes.number,
     nombreSala: PropTypes.string,
-    dateb2b: PropTypes.string
+    dateb2b: PropTypes.string,
+    visitaEnProgreso: PropTypes.string
   };
 
   static defaultProps = {
     sala: "",
     nombreSala: "",
-    dateb2b: ""
+    dateb2b: "",
+    visitaEnProgreso: ""
   };
 
   render() {
@@ -31,6 +33,7 @@ class SalasInfoList extends React.Component {
           nombreSala={this.props.nombreSala}
           categoria={detail.categoria}
           dateb2b={this.props.dateb2b}
+          visitaEnProgreso={this.props.visitaEnProgreso}
         />
       ));
     }

@@ -5,7 +5,8 @@ import {
   Image,
   Dimensions,
   Platform,
-  TouchableOpacity
+  TouchableOpacity,
+  DeviceEventEmitter
 } from "react-native";
 import { Text, Thumbnail } from "native-base";
 import moment from "moment";
@@ -22,7 +23,8 @@ class SalasInfoDetail extends React.Component {
       fecha_visita: PropTypes.string,
       direccion: PropTypes.string,
       cod_local: PropTypes.string,
-      descripcion: PropTypes.string
+      descripcion: PropTypes.string,
+      folio: PropTypes.number
     }),
     report: PropTypes.shape({
       cademsmartPorcentaje: PropTypes.string,
@@ -41,12 +43,32 @@ class SalasInfoDetail extends React.Component {
       fecha_visita: "",
       direccion: "",
       cod_local: "",
-      descripcion: ""
+      descripcion: "",
+      folio: 0
     },
     report: {
       cademsmartPorcentaje: "",
-      ventaPerdida: 0
+      ventaPerdida: 0,
+      gestionado: 0
     }
+  };
+
+  constructor(props) {
+    super(props);
+
+    DeviceEventEmitter.addListener(
+      `SalaDetalle-${this.props.data.folio}`,
+      e => {
+        this.setState({
+          // eslint-disable-next-line radix
+          gestionado: parseInt(this.state.gestionado) + e.gestionado
+        });
+      }
+    );
+  }
+
+  state = {
+    gestionado: this.props.report.gestionado
   };
 
   formatter = value => {
@@ -88,7 +110,7 @@ class SalasInfoDetail extends React.Component {
   render() {
     const { data, report } = this.props;
 
-    let porcentajeProgreso = data.gestionado * 100 / data.ventaPerdida;
+    let porcentajeProgreso = this.state.gestionado * 100 / report.ventaPerdida;
     porcentajeProgreso = `${porcentajeProgreso}%`;
 
     const backgroundImage = require("@assets/images/background-detalle-salas.png");

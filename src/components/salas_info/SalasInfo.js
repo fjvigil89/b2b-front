@@ -7,6 +7,7 @@ import { Alert, DeviceEventEmitter } from "react-native";
 import SalasInfoHeader from "@components/salas_info/salas_info_header/SalasInfoHeader";
 import SalasInfoDetail from "@components/salas_info/salas_info_detail/SalasInfoDetail";
 import SalasInfoList from "@components/salas_info/salas_info_list/SalasInfoList";
+import Loading from "@components/loading//Loading";
 import {
   ListadoSalasInfo,
   CheckINorCheckOUT
@@ -125,15 +126,17 @@ class SalasInfo extends Component {
       };
 
       dataDetail = [];
-    } else {
-      report = {
-        cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
-          ? `${dataDetail.cademsmart_porcentaje}%`
-          : "-",
-        ventaPerdida: dataDetail.venta_perdida,
-        gestionado: dataDetail.gestionado
-      };
+
+      return <Loading />;
     }
+
+    report = {
+      cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
+        ? `${dataDetail.cademsmart_porcentaje}%`
+        : "-",
+      ventaPerdida: dataDetail.venta_perdida,
+      gestionado: dataDetail.gestionado
+    };
 
     return (
       <Container>
@@ -149,6 +152,7 @@ class SalasInfo extends Component {
             sala={this.props.data.folio}
             nombreSala={this.props.data.descripcion}
             dateb2b={data.date_b2b}
+            visitaEnProgreso={this.props.data.visita_en_progreso}
           />
         </Content>
       </Container>
