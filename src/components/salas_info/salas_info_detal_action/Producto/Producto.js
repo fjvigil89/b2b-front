@@ -50,7 +50,8 @@ class Producto extends React.Component {
       sventa: PropTypes.number,
       stock: PropTypes.number,
       stock_transito: PropTypes.oneOfType([() => null, PropTypes.number]),
-      venta_perdida: PropTypes.number
+      venta_perdida: PropTypes.number,
+      gestionado: PropTypes.number
     }),
     flag: PropTypes.bool,
     accion: PropTypes.string,
@@ -69,7 +70,8 @@ class Producto extends React.Component {
       sventa: 0,
       stock: 0,
       stock_transito: "",
-      venta_perdida: 0
+      venta_perdida: 0,
+      gestionado: 0
     },
     accion: "",
     dateb2b: "",
@@ -112,8 +114,6 @@ class Producto extends React.Component {
   render() {
     let thumbImage;
 
-    console.log(this.props);
-
     if (this.props.data.cadem === 1) {
       thumbImage = require("@assets/images/thumb.png");
     } else if (this.props.data.cadem === 0) {
@@ -124,6 +124,8 @@ class Producto extends React.Component {
     if (this.props.accion === "Reponer" || this.props.accion === "Ajustar") {
       visibilityText = true;
     }
+
+    console.log(this.props);
 
     return (
       <Swipeable
