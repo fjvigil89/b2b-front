@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 
 // Components
 import LoginScreen from "@components/login/Login";
-import Report from "@components/report/Report";
+// import Report from "@components/report/Report";
+import Dashboard from "@components/dashboard/Dashboard";
 import { CheckToken } from "@components/login/LoginActions.js";
 
 class Check extends Component {
@@ -32,7 +33,7 @@ class Check extends Component {
       return <LoginScreen />;
     }
 
-    return <Report />;
+    return <Dashboard />;
   };
 }
 

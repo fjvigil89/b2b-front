@@ -10,14 +10,16 @@ class SalasInfoListAditional extends React.Component {
     acciones: PropTypes.oneOfType([PropTypes.any]),
     sala: PropTypes.number,
     nombreSala: PropTypes.string,
-    categoria: PropTypes.string
+    categoria: PropTypes.string,
+    dateb2b: PropTypes.string
   };
 
   static defaultProps = {
     acciones: [],
     sala: "",
     nombreSala: "",
-    categoria: ""
+    categoria: "",
+    dateb2b: ""
   };
 
   currency = x => {
@@ -52,7 +54,8 @@ class SalasInfoListAditional extends React.Component {
                 monto: this.currency(data.monto),
                 sala: this.props.sala,
                 nombreSala: this.props.nombreSala,
-                categoria: this.props.categoria
+                categoria: this.props.categoria,
+                dateb2b: this.props.dateb2b
               });
             }}
           >
@@ -93,7 +96,7 @@ class SalasInfoListAditional extends React.Component {
               >
                 <View
                   style={{
-                    flex: 0.8,
+                    flex: 0.5,
                     flexDirection: "column"
                   }}
                 >
@@ -116,6 +119,33 @@ class SalasInfoListAditional extends React.Component {
                     }}
                   >
                     ${this.currency(data.monto)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 0.3,
+                    flexDirection: "column"
+                  }}
+                >
+                  <Text
+                    style={{
+                      flex: 1,
+                      fontSize: 13,
+                      fontFamily: "Questrial"
+                    }}
+                  >
+                    Gestionado (12)
+                  </Text>
+                  <Text
+                    style={{
+                      flex: 1,
+                      fontSize: 18,
+                      fontFamily: "Questrial",
+                      fontWeight: "bold",
+                      marginTop: 5
+                    }}
+                  >
+                    ${this.currency(data.gestionado)}
                   </Text>
                 </View>
                 <View

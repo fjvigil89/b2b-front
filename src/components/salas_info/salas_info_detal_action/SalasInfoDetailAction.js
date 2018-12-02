@@ -26,6 +26,7 @@ class SalasInfoDetailAction extends React.Component {
     sala: PropTypes.string,
     nombreSala: PropTypes.string,
     categoria: PropTypes.string,
+    dateb2b: PropTypes.string,
     endpoint: PropTypes.string
   };
 
@@ -35,6 +36,7 @@ class SalasInfoDetailAction extends React.Component {
     sala: "",
     nombreSala: "",
     categoria: "",
+    dateb2b: "",
     endpoint: ""
   };
 
@@ -53,10 +55,13 @@ class SalasInfoDetailAction extends React.Component {
     if (!_.isEmpty(this.props.productos)) {
       productos = this.props.productos.detail.data.map(detail => (
         <Producto
+          sala={this.props.sala}
+          causa={this.props.accion}
           key={detail.ean}
           data={detail}
           flag={this.props.productos.detail.flag}
           accion={this.props.accion}
+          dateb2b={this.props.dateb2b}
         />
       ));
     }
@@ -113,7 +118,6 @@ const mapDispatchToProps = {
   ListadoProductosPorCategoriaAcccion
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SalasInfoDetailAction);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  SalasInfoDetailAction
+);

@@ -10,13 +10,15 @@ class SalasInfoListDetail extends React.Component {
     data: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     sala: PropTypes.number,
     nombreSala: PropTypes.string,
-    categoria: PropTypes.string
+    categoria: PropTypes.string,
+    dateb2b: PropTypes.string
   };
 
   static defaultProps = {
     sala: "",
     nombreSala: "",
-    categoria: ""
+    categoria: "",
+    dateb2b: ""
   };
 
   constructor(props) {
@@ -35,8 +37,11 @@ class SalasInfoListDetail extends React.Component {
   render() {
     const { data } = this.props;
 
+    let porcentajeProgreso = data.gestionado * 100 / data.venta_perdida;
+    porcentajeProgreso = `${porcentajeProgreso}%`;
+
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }} onLayout={this.onLayout}>
         <TouchableOpacity
           style={{
             flex: 1,
@@ -44,7 +49,10 @@ class SalasInfoListDetail extends React.Component {
             backgroundColor: "#FFF",
             borderBottomColor: "#DEDEDE",
             borderBottomWidth: 1,
-            padding: 10
+            padding: 10,
+            paddingRight: 0,
+            marginRight: 0,
+            height: 50
           }}
           onPress={() => {
             this.setState({ aditionalPanel: !this.state.aditionalPanel });
@@ -52,7 +60,7 @@ class SalasInfoListDetail extends React.Component {
         >
           <View
             style={{
-              flex: 0.5,
+              flex: 0.55,
               flexDirection: "row",
               justifyContent: "flex-start",
               alignItems: "center"
@@ -72,7 +80,8 @@ class SalasInfoListDetail extends React.Component {
             style={{
               flex: 0.2,
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "flex-end",
+              paddingRight: 10
             }}
           >
             <Text
@@ -81,15 +90,15 @@ class SalasInfoListDetail extends React.Component {
                 fontFamily: "Questrial"
               }}
             >
-              {data.casos}
+              {data.gestionado} / {data.casos}
             </Text>
           </View>
           <View
             style={{
-              flex: 0.3,
+              flex: 0.25,
               justifyContent: "center",
               alignItems: "flex-end",
-              marginRight: 10
+              paddingRight: 5
             }}
           >
             <Text
@@ -101,6 +110,17 @@ class SalasInfoListDetail extends React.Component {
               ${this.currency(data.venta_perdida)}
             </Text>
           </View>
+
+          <View
+            style={{
+              height: 50,
+              backgroundColor: "#3cb3d0",
+              width: porcentajeProgreso,
+              left: 0,
+              position: "absolute",
+              opacity: 0.2
+            }}
+          />
         </TouchableOpacity>
         {this.state.aditionalPanel && (
           <SalasInfoListAditional
@@ -108,6 +128,7 @@ class SalasInfoListDetail extends React.Component {
             sala={this.props.sala}
             nombreSala={this.props.nombreSala}
             categoria={this.props.categoria}
+            dateb2b={this.props.dateb2b}
           />
         )}
       </View>

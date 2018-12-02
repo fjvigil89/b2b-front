@@ -21,6 +21,11 @@ import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 import DetailReport from "@components/report/detail_report/DetailReport";
 import LoginScreen from "@components/login/Login";
 
+import moment from "moment";
+import "moment/locale/es";
+
+moment.locale("es");
+
 class Report extends Component {
   static propTypes = {
     ReportePorTipo: PropTypes.func.isRequired,
@@ -43,12 +48,51 @@ class Report extends Component {
       semanaActive: true,
       mesActive: false,
       isLoading: true,
-      filterText: ""
+      filterText: "",
+      text: ""
     };
   }
 
   componentWillMount = () => {
     this.refreshReport("week", "Semana");
+  };
+
+  createTextDescription = () => {
+    let text = "";
+    let fechaInicio = "";
+    let fechaTermino = "";
+
+    if (this.state.hoyActive) {
+      fechaInicio = this.props.info.fecha_periodo.actual;
+      fechaTermino = this.props.info.fecha_periodo.anterior;
+
+      text = `${fechaInicio} vs ${fechaTermino}`;
+
+      return text;
+    } else if (this.state.semanaActive) {
+      fechaInicio = this.props.info.fecha_periodo.actual;
+      fechaTermino = this.props.info.fecha_periodo.anterior;
+
+      text = `Semana del ${fechaInicio} vs Semana del ${fechaTermino}`;
+
+      return text;
+    } else if (this.state.mesActive) {
+      fechaInicio = moment(this.props.info.fecha_periodo.actual).format("MMMM");
+      const fechaInicioNormalized =
+        fechaInicio.charAt(0).toUpperCase() + fechaInicio.slice(1);
+
+      fechaTermino = moment(this.props.info.fecha_periodo.anterior).format(
+        "MMMM"
+      );
+      const fechaTerminoNormalized =
+        fechaTermino.charAt(0).toUpperCase() + fechaTermino.slice(1);
+
+      text = `${fechaInicioNormalized} a la fecha vs ${fechaTerminoNormalized} a la fecha`;
+
+      return text;
+    }
+
+    return "";
   };
 
   refreshReport = (type, text) => {
@@ -59,7 +103,8 @@ class Report extends Component {
     this.props.ReportePorTipo(this.props.endpoint, type).then(() => {
       this.setState({
         isLoading: false,
-        filterText: text
+        filterText: text,
+        text: this.createTextDescription()
       });
     });
   };
@@ -432,8 +477,7 @@ class Report extends Component {
                     marginBottom: 0
                   }}
                 >
-                  {this.state.filterText}: Semana del 2018-11-05 vs Semana del
-                  2018-11-12
+                  {this.state.filterText}: {this.state.text}
                 </Text>
               </View>
             </View>

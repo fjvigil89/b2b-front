@@ -26,7 +26,8 @@ class SalasInfoDetail extends React.Component {
     }),
     report: PropTypes.shape({
       cademsmartPorcentaje: PropTypes.string,
-      ventaPerdida: PropTypes.number
+      ventaPerdida: PropTypes.number,
+      gestionado: PropTypes.number
     })
   };
 
@@ -86,6 +87,9 @@ class SalasInfoDetail extends React.Component {
 
   render() {
     const { data, report } = this.props;
+
+    let porcentajeProgreso = data.gestionado * 100 / data.ventaPerdida;
+    porcentajeProgreso = `${porcentajeProgreso}%`;
 
     const backgroundImage = require("@assets/images/background-detalle-salas.png");
 
@@ -283,6 +287,17 @@ class SalasInfoDetail extends React.Component {
               height: 70
             }}
           >
+            <View
+              style={{
+                backgroundColor: "#3cb3d0",
+                width: porcentajeProgreso,
+                height: "100%",
+                left: 0,
+                position: "absolute",
+                opacity: 0.2,
+                borderRadius: 5
+              }}
+            />
             <Text
               style={{
                 fontSize: formatter.size,
@@ -306,7 +321,7 @@ class SalasInfoDetail extends React.Component {
         >
           <View
             style={{
-              flex: 0.5,
+              flex: 0.55,
               justifyContent: "flex-end",
               alignItems: "center",
               borderBottomColor: "#DEDEDE",
@@ -329,10 +344,11 @@ class SalasInfoDetail extends React.Component {
             style={{
               flex: 0.2,
               justifyContent: "flex-end",
-              alignItems: "center",
+              alignItems: "flex-end",
               borderBottomColor: "#DEDEDE",
               borderBottomWidth: 1,
-              paddingBottom: 5
+              paddingBottom: 5,
+              paddingRight: 10
             }}
           >
             <Text
@@ -342,17 +358,18 @@ class SalasInfoDetail extends React.Component {
                 fontWeight: "bold"
               }}
             >
-              Casos
+              Gest. / Casos
             </Text>
           </View>
           <View
             style={{
-              flex: 0.3,
+              flex: 0.25,
               justifyContent: "flex-end",
-              alignItems: "center",
+              alignItems: "flex-end",
               borderBottomColor: "#DEDEDE",
               borderBottomWidth: 1,
-              paddingBottom: 5
+              paddingBottom: 5,
+              paddingRight: 5
             }}
           >
             <Text

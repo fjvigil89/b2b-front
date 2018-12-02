@@ -120,7 +120,8 @@ class SalasInfo extends Component {
     if (isLoading) {
       report = {
         cademsmartPorcentaje: "-",
-        ventaPerdida: 0
+        ventaPerdida: 0,
+        gestionado: 0
       };
 
       dataDetail = [];
@@ -129,9 +130,11 @@ class SalasInfo extends Component {
         cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
           ? `${dataDetail.cademsmart_porcentaje}%`
           : "-",
-        ventaPerdida: dataDetail.venta_perdida
+        ventaPerdida: dataDetail.venta_perdida,
+        gestionado: dataDetail.gestionado
       };
     }
+
     return (
       <Container>
         <SalasInfoHeader data={{ hasPoll: data.hasPoll, folio: data.folio }} />
@@ -145,6 +148,7 @@ class SalasInfo extends Component {
             data={dataDetail}
             sala={this.props.data.folio}
             nombreSala={this.props.data.descripcion}
+            dateb2b={data.date_b2b}
           />
         </Content>
       </Container>
