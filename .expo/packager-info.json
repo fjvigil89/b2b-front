@@ -2,8 +2,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://nb-gid.cademsmart.b2b-react-native.exp.direct",
+  "packagerNgrokUrl": "https://packager.nb-gid.cademsmart.b2b-react-native.exp.direct",
+  "ngrokPid": 13960,
   "devToolsPort": 19002
 }

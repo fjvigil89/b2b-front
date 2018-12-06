@@ -159,7 +159,7 @@ class DetailReport extends React.Component {
               fontSize: 12
             }}
           >
-            Ultima actualización :
+            Ultima actualización: 
             {moment(fecha_actualizacion)
               .add(1, "d")
               .fromNow()}
