@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 // Components
 import Messages from "@common/messages/Messages";
 import Spacer from "@common/spacer/Spacer";
-import Loading from "@components/loading/Loading";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 // Actions
 import { Login, ChangeInputLogin } from "@components/login/LoginActions";
@@ -32,7 +32,6 @@ class LoginScreen extends Component {
   static propTypes = {
     Login: PropTypes.func.isRequired,
     ChangeInputLogin: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
     email: PropTypes.string,
     password: PropTypes.string
@@ -44,14 +43,31 @@ class LoginScreen extends Component {
     password: ""
   };
 
+  state = {
+    loading: false
+  };
+
   handleSubmit = () => {
-    this.props.Login(this.props.email, this.props.password);
+    this.setState({
+      loading: true
+    });
+
+    this.props
+      .Login(this.props.email, this.props.password)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false
+        });
+      });
   };
 
   render() {
-    const { isLoading, errorMessage } = this.props;
-
-    if (isLoading) return <Loading />;
+    const { errorMessage } = this.props;
 
     return (
       <Container>
@@ -126,13 +142,13 @@ class LoginScreen extends Component {
             {errorMessage && <Messages message={errorMessage} />}
           </View>
         </Content>
+        {this.state.loading && <LoadingOverlay />}
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.messages.loading,
   infoMessage: state.messages.info || null,
   errorMessage: state.messages.error || null,
   successMessage: state.messages.success || null,

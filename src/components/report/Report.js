@@ -47,9 +47,9 @@ class Report extends Component {
       hoyActive: false,
       semanaActive: true,
       mesActive: false,
-      isLoading: true,
       filterText: "",
-      text: ""
+      text: "",
+      loading: false
     };
   }
 
@@ -97,16 +97,23 @@ class Report extends Component {
 
   refreshReport = (type, text) => {
     this.setState({
-      isLoading: true
+      loading: true
     });
 
-    this.props.ReportePorTipo(this.props.endpoint, type).then(() => {
-      this.setState({
-        isLoading: false,
-        filterText: text,
-        text: this.createTextDescription()
+    this.props
+      .ReportePorTipo(this.props.endpoint, type)
+      .then(() => {
+        this.setState({
+          loading: false,
+          filterText: text,
+          text: this.createTextDescription()
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false
+        });
       });
-    });
   };
 
   formatter = value => {
@@ -135,15 +142,10 @@ class Report extends Component {
   };
 
   render = () => {
-    const { isLoading } = this.state;
     const { isAuthenticated } = this.props;
 
     if (!isAuthenticated) {
       return <LoginScreen />;
-    }
-
-    if (isLoading) {
-      return <LoadingOverlay />;
     }
 
     const { info } = this.props;
@@ -486,6 +488,8 @@ class Report extends Component {
           <View style={{ flex: 1 }}>
             <ScrollView>{listReport}</ScrollView>
           </View>
+
+          {this.state.loading && <LoadingOverlay />}
         </Content>
       </Container>
     );
