@@ -10,7 +10,7 @@ import {
   Label,
   Input
 } from "native-base";
-import { Image, View } from "react-native";
+import { Image, View, Dimensions, ImageBackground } from "react-native";
 import { connect } from "react-redux";
 
 // Components
@@ -25,8 +25,12 @@ import { Login, ChangeInputLogin } from "@components/login/LoginActions";
 import styles from "@components/login/LoginStyles";
 
 // Images
-const logoCadem = require("@assets/images/logo-cadem.png");
+const logoCadem = require("@assets/images/logo.png");
 const loginBackground = require("@assets/images/login-background.png");
+const backgroundImage = require("@assets/images/background_app_cademsmart-v2.png");
+
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 
 class LoginScreen extends Component {
   static propTypes = {
@@ -79,7 +83,7 @@ class LoginScreen extends Component {
         >
           <View
             style={{
-              flex: 0.5,
+              flex: 0.6,
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "#FFF"
@@ -87,26 +91,45 @@ class LoginScreen extends Component {
           >
             <Image
               style={{
-                backgroundColor: "transparent"
+                position: "absolute",
+                width: deviceWidth,
+                height: deviceHeight,
+                top: 0,
+                left: 0,
+                zIndex: 100
+              }}
+              source={backgroundImage}
+            />
+            <Image
+              style={{
+                zIndex: 200,
+                width: deviceWidth,
+                height: 90
               }}
               source={logoCadem}
             />
-            <Text style={{ fontFamily: "Bree", fontSize: 22 }}>SmartB2B</Text>
+            <Text style={{ fontFamily: "Bree", fontSize: 30, zIndex: 200 }}>
+              SmartB2B
+            </Text>
             <Image
               style={{
                 position: "absolute",
-                height: "100%",
-                bottom: 0
+                width: deviceWidth,
+                height: 200,
+                bottom: 0,
+                zIndex: 200,
+                opacity: 0.85
               }}
               source={loginBackground}
             />
           </View>
           <View
             style={{
-              flex: 0.5,
+              flex: 0.4,
               justifyContent: "flex-start",
               alignItems: "center",
-              backgroundColor: "#F4F4F4"
+              backgroundColor: "#F4F4F4",
+              opacity: 0.85
             }}
           >
             <Form style={styles.image}>
@@ -132,7 +155,7 @@ class LoginScreen extends Component {
 
               <Button
                 block
-                style={{ margin: 15, marginTop: 40 }}
+                style={{ margin: 15, marginTop: 40, zIndex: 5000 }}
                 onPress={this.handleSubmit}
               >
                 <Text>Ingresar</Text>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View } from "react-native";
+import { Image, View, Dimensions } from "react-native";
 import PropTypes from "prop-types";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
@@ -8,6 +8,10 @@ import { Content, Text, ListItem, Icon, Container, Left } from "native-base";
 import { Logout } from "@components/login/LoginActions";
 
 const logo = require("@assets/images/logo-cademsmart.png");
+const backgroundImage = require("@assets/images/background_app_cademsmart-v2.png");
+
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 
 class SideBar extends Component {
   static propTypes = {
@@ -57,13 +61,29 @@ class SideBar extends Component {
               alignItems: "center"
             }}
           >
-            <Image source={logo} />
+            <Image
+              style={{
+                position: "absolute",
+                width: 700,
+                height: 200,
+                top: 0,
+                zIndex: 100,
+                opacity: 0.7
+              }}
+              source={backgroundImage}
+            />
+            <Image
+              source={logo}
+              style={{
+                zIndex: 150
+              }}
+            />
             <Text
               style={{
-                fontFamily: "Questrial",
-                fontWeight: "500",
+                fontFamily: "Bree",
                 fontSize: 16,
-                color: "#000"
+                color: "#000",
+                zIndex: 200
               }}
             >
               SmartB2B
