@@ -5,7 +5,7 @@ import { Container } from "native-base";
 
 // Components
 import LoginScreen from "@components/login/Login";
-import Loading from "@components/loading//Loading";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 import SalasHeader from "@components/salas/salas_header/SalasHeader";
 import SalasList from "@components/salas/salas_list/SalasList";
 import { CheckToken } from "@components/login/LoginActions.js";
@@ -13,32 +13,48 @@ import { CheckToken } from "@components/login/LoginActions.js";
 class Dashboard extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool,
-    isLoading: PropTypes.bool,
     CheckToken: PropTypes.func.isRequired
   };
 
   static defaultProps = {
-    isAuthenticated: false,
-    isLoading: true
+    isAuthenticated: false
+  };
+
+  state = {
+    loading: false
   };
 
   componentWillMount = () => {
-    this.props.CheckToken();
+    this.setState({
+      loading: true
+    });
+
+    this.props
+      .CheckToken()
+      .then(() => {
+        this.setState({
+          loading: false
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false
+        });
+      });
   };
 
   render = () => {
-    const { isAuthenticated, isLoading } = this.props;
+    const { isAuthenticated } = this.props;
 
     if (!isAuthenticated) {
       return <LoginScreen />;
-    } else if (isLoading) {
-      return <Loading />;
     }
 
     return (
       <Container>
         <SalasHeader />
         <SalasList />
+        {this.state.loading && <LoadingOverlay />}
       </Container>
     );
   };

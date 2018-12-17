@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Content } from "native-base";
 import { RefreshControl } from "react-native";
 
-import Loading from "@components/loading/Loading";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 import SalasDetail from "@components/salas/salas_detail/SalasDetail";
 import NoSalas from "@components/salas/salas_empty/SalasEmpty";
 
@@ -19,7 +19,6 @@ class SalasList extends Component {
     GetLocationAsync: PropTypes.func.isRequired,
     ListadoSalas: PropTypes.func.isRequired,
     ListadoSalasWithRefresh: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool,
     salas: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,
@@ -38,7 +37,6 @@ class SalasList extends Component {
   };
 
   static defaultProps = {
-    isLoading: false,
     salas: [],
     refreshing: false,
     lostSaleON: true,
@@ -46,24 +44,52 @@ class SalasList extends Component {
     activeCheckin: false
   };
 
+  state = {
+    loading: false
+  };
+
   componentWillMount = () => {
     this.props.GetLocationAsync();
-    this.props.ListadoSalas(this.props.endpoint, this.props.lostSaleON);
+
+    this.setState({
+      loading: true
+    });
+
+    this.props
+      .ListadoSalas(this.props.endpoint, this.props.lostSaleON)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false
+        });
+      });
   };
 
   RefreshListadoSalas = () => {
-    this.props.ListadoSalasWithRefresh(
-      this.props.endpoint,
-      this.props.lostSaleON
-    );
+    this.setState({
+      loading: true
+    });
+
+    this.props
+      .ListadoSalasWithRefresh(this.props.endpoint, this.props.lostSaleON)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false
+        });
+      });
   };
 
   render = () => {
-    const { isLoading, salas, refreshing, lostSaleON } = this.props;
-
-    if (isLoading) {
-      return <Loading />;
-    }
+    const { salas, refreshing, lostSaleON } = this.props;
 
     console.log(salas[0]);
 
@@ -90,6 +116,7 @@ class SalasList extends Component {
         }
       >
         {salas.length !== 0 ? detailListadoSalas : <NoSalas />}
+        {this.state.loading && <LoadingOverlay />}
       </Content>
     );
   };
@@ -97,7 +124,6 @@ class SalasList extends Component {
 
 const mapStateToProps = state => ({
   salas: state.salas.salas,
-  isLoading: state.salas.loading,
   refreshing: state.salas.refreshing,
   lostSaleON: state.salasHeader.lostSaleON,
   endpoint: state.user.endpoint,
