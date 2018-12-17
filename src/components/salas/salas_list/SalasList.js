@@ -91,8 +91,6 @@ class SalasList extends Component {
   render = () => {
     const { salas, refreshing, lostSaleON } = this.props;
 
-    console.log(salas[0]);
-
     const delay = 200;
     const detailListadoSalas = salas.map((sala, i) => (
       <SalasDetail
