@@ -33,7 +33,7 @@ class Check extends Component {
       return <LoginScreen />;
     }
 
-    return <Dashboard />;
+    return <Report />;
   };
 }
 
