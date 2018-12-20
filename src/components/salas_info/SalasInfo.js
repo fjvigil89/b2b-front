@@ -116,6 +116,8 @@ class SalasInfo extends Component {
                     {}
                   );
 
+                  this.props.data.visita_en_progreso = 1;
+
                   Alert.alert(
                     "Exito",
                     "CheckIN realizado. Recuerda hacer el CheckOUT cuando termines.",

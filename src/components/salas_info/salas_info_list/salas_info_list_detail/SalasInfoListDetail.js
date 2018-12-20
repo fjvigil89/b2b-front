@@ -67,7 +67,6 @@ class SalasInfoListDetail extends React.Component {
             backgroundColor: "#FFF",
             borderBottomColor: "#DEDEDE",
             borderBottomWidth: 1,
-            padding: 10,
             paddingRight: 0,
             marginRight: 0,
             height: 50
@@ -81,7 +80,8 @@ class SalasInfoListDetail extends React.Component {
               flex: 0.55,
               flexDirection: "row",
               justifyContent: "flex-start",
-              alignItems: "center"
+              alignItems: "center",
+              padding: 10
             }}
           >
             <Text
@@ -99,7 +99,7 @@ class SalasInfoListDetail extends React.Component {
               flex: 0.2,
               justifyContent: "center",
               alignItems: "flex-end",
-              paddingRight: 10
+              padding: 10
             }}
           >
             <Text
@@ -116,7 +116,7 @@ class SalasInfoListDetail extends React.Component {
               flex: 0.25,
               justifyContent: "center",
               alignItems: "flex-end",
-              paddingRight: 5
+              padding: 10
             }}
           >
             <Text

@@ -59,16 +59,19 @@ class SalasInfoDetail extends React.Component {
     DeviceEventEmitter.addListener(
       `SalaDetalle-${this.props.data.folio}`,
       e => {
-        this.setState({
+        this.props.report.gestionado =
           // eslint-disable-next-line radix
-          gestionado: parseInt(this.state.gestionado) + e.gestionado
+          parseInt(this.props.report.gestionado) + e.gestionado;
+
+        this.setState({
+          reload: !this.state.reload
         });
       }
     );
   }
 
   state = {
-    gestionado: this.props.report.gestionado
+    reload: false
   };
 
   formatter = value => {
@@ -110,7 +113,7 @@ class SalasInfoDetail extends React.Component {
   render() {
     const { data, report } = this.props;
 
-    let porcentajeProgreso = this.state.gestionado * 100 / report.ventaPerdida;
+    let porcentajeProgreso = report.gestionado * 100 / report.ventaPerdida;
     porcentajeProgreso = `${porcentajeProgreso}%`;
 
     const backgroundImage = require("@assets/images/background-detalle-salas.png");
