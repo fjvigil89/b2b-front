@@ -117,7 +117,7 @@ class DetailReport extends React.Component {
 
     if (nombre === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
-    } else if (nombre === "LIDER EXPRESS") {
+    } else if (nombre === "LIDER") {
       logo = require("@assets/images/lider.png");
     } else if (nombre === "LIDER EXPRESS") {
       logo = require("@assets/images/lider_express.png");
