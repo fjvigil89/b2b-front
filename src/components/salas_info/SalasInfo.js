@@ -7,6 +7,7 @@ import { Alert, DeviceEventEmitter } from "react-native";
 import SalasInfoHeader from "@components/salas_info/salas_info_header/SalasInfoHeader";
 import SalasInfoDetail from "@components/salas_info/salas_info_detail/SalasInfoDetail";
 import SalasInfoList from "@components/salas_info/salas_info_list/SalasInfoList";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 import {
   ListadoSalasInfo,
   CheckINorCheckOUT
@@ -18,7 +19,6 @@ class SalasInfo extends Component {
     ListadoSalasInfo: PropTypes.func.isRequired,
     CheckINorCheckOUT: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
-    isLoading: PropTypes.bool,
     dataDetail: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     data: PropTypes.shape({
       id: PropTypes.number,
@@ -42,7 +42,6 @@ class SalasInfo extends Component {
 
   static defaultProps = {
     isAuthenticated: false,
-    isLoading: true,
     data: {
       id: 0,
       bandera: "",
@@ -60,12 +59,29 @@ class SalasInfo extends Component {
     km: 0
   };
 
-  async componentWillMount() {
-    await this.props.ListadoSalasInfo(
-      this.props.endpoint,
-      this.props.data.folio
-    );
+  state = {
+    loading: false
+  };
+
+  componentWillMount() {
+    this.setState({
+      loading: true
+    });
+
+    this.props
+      .ListadoSalasInfo(this.props.endpoint, this.props.data.folio)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false
+        });
+      });
   }
+
   componentDidMount = () => {
     if (
       this.props.data.kilometers < this.props.km &&
@@ -80,6 +96,10 @@ class SalasInfo extends Component {
           {
             text: "Hacer CheckIN",
             onPress: () => {
+              this.setState({
+                loading: true
+              });
+
               this.props
                 .CheckINorCheckOUT(
                   this.props.endpoint,
@@ -87,16 +107,27 @@ class SalasInfo extends Component {
                   "in"
                 )
                 .then(() => {
+                  this.setState({
+                    loading: false
+                  });
+
                   DeviceEventEmitter.emit(
                     `checkINEvent-${this.props.data.folio}`,
                     {}
                   );
+
+                  this.props.data.visita_en_progreso = 1;
 
                   Alert.alert(
                     "Exito",
                     "CheckIN realizado. Recuerda hacer el CheckOUT cuando termines.",
                     [{ text: "Super!" }]
                   );
+                })
+                .catch(() => {
+                  this.setState({
+                    loading: false
+                  });
                 });
             }
           },
@@ -107,7 +138,7 @@ class SalasInfo extends Component {
   };
 
   render = () => {
-    const { isAuthenticated, isLoading, data } = this.props;
+    const { isAuthenticated, data } = this.props;
 
     if (!isAuthenticated) {
       return <LoginScreen />;
@@ -117,21 +148,24 @@ class SalasInfo extends Component {
 
     let report = {};
 
-    if (isLoading) {
+    if (this.state.loading) {
       report = {
         cademsmartPorcentaje: "-",
-        ventaPerdida: 0
+        ventaPerdida: 0,
+        gestionado: 0
       };
 
       dataDetail = [];
-    } else {
-      report = {
-        cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
-          ? `${dataDetail.cademsmart_porcentaje}%`
-          : "-",
-        ventaPerdida: dataDetail.venta_perdida
-      };
     }
+
+    report = {
+      cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
+        ? `${dataDetail.cademsmart_porcentaje}%`
+        : "-",
+      ventaPerdida: dataDetail.venta_perdida,
+      gestionado: dataDetail.gestionado
+    };
+
     return (
       <Container>
         <SalasInfoHeader data={{ hasPoll: data.hasPoll, folio: data.folio }} />
@@ -145,8 +179,11 @@ class SalasInfo extends Component {
             data={dataDetail}
             sala={this.props.data.folio}
             nombreSala={this.props.data.descripcion}
+            dateb2b={data.date_b2b}
+            visitaEnProgreso={this.props.data.visita_en_progreso}
           />
         </Content>
+        {this.state.loading && <LoadingOverlay />}
       </Container>
     );
   };
@@ -154,7 +191,6 @@ class SalasInfo extends Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
   dataDetail: state.salasInfo.detailsSalas,
-  isLoading: state.salasInfo.loading,
   endpoint: state.user.endpoint,
   activeCheckin: state.salas.activeCheckIn,
   km: state.user.km

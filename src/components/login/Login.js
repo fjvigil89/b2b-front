@@ -10,13 +10,13 @@ import {
   Label,
   Input
 } from "native-base";
-import { Image, View } from "react-native";
+import { Image, View, Dimensions, ImageBackground } from "react-native";
 import { connect } from "react-redux";
 
 // Components
 import Messages from "@common/messages/Messages";
 import Spacer from "@common/spacer/Spacer";
-import Loading from "@components/loading/Loading";
+import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 
 // Actions
 import { Login, ChangeInputLogin } from "@components/login/LoginActions";
@@ -25,14 +25,17 @@ import { Login, ChangeInputLogin } from "@components/login/LoginActions";
 import styles from "@components/login/LoginStyles";
 
 // Images
-const logoCadem = require("@assets/images/logo-cadem.png");
+const logoCadem = require("@assets/images/logo.png");
 const loginBackground = require("@assets/images/login-background.png");
+const backgroundImage = require("@assets/images/background_app_cademsmart-v2.png");
+
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 
 class LoginScreen extends Component {
   static propTypes = {
     Login: PropTypes.func.isRequired,
     ChangeInputLogin: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
     email: PropTypes.string,
     password: PropTypes.string
@@ -44,14 +47,31 @@ class LoginScreen extends Component {
     password: ""
   };
 
+  state = {
+    loading: false
+  };
+
   handleSubmit = () => {
-    this.props.Login(this.props.email, this.props.password);
+    this.setState({
+      loading: true
+    });
+
+    this.props
+      .Login(this.props.email, this.props.password)
+      .then(() => {
+        this.setState({
+          loading: false
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false
+        });
+      });
   };
 
   render() {
-    const { isLoading, errorMessage } = this.props;
-
-    if (isLoading) return <Loading />;
+    const { errorMessage } = this.props;
 
     return (
       <Container>
@@ -63,7 +83,7 @@ class LoginScreen extends Component {
         >
           <View
             style={{
-              flex: 0.5,
+              flex: 0.6,
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "#FFF"
@@ -71,26 +91,45 @@ class LoginScreen extends Component {
           >
             <Image
               style={{
-                backgroundColor: "transparent"
+                position: "absolute",
+                width: deviceWidth,
+                height: deviceHeight,
+                top: 0,
+                left: 0,
+                zIndex: 100
+              }}
+              source={backgroundImage}
+            />
+            <Image
+              style={{
+                zIndex: 200,
+                width: deviceWidth,
+                height: 90
               }}
               source={logoCadem}
             />
-            <Text style={{ fontFamily: "Bree", fontSize: 22 }}>SmartB2B</Text>
+            <Text style={{ fontFamily: "Bree", fontSize: 30, zIndex: 200 }}>
+              SmartB2B
+            </Text>
             <Image
               style={{
                 position: "absolute",
-                height: "100%",
-                bottom: 0
+                width: deviceWidth,
+                height: 200,
+                bottom: 0,
+                zIndex: 200,
+                opacity: 0.85
               }}
               source={loginBackground}
             />
           </View>
           <View
             style={{
-              flex: 0.5,
+              flex: 0.4,
               justifyContent: "flex-start",
               alignItems: "center",
-              backgroundColor: "#F4F4F4"
+              backgroundColor: "#F4F4F4",
+              opacity: 0.85
             }}
           >
             <Form style={styles.image}>
@@ -116,7 +155,7 @@ class LoginScreen extends Component {
 
               <Button
                 block
-                style={{ margin: 15, marginTop: 40 }}
+                style={{ margin: 15, marginTop: 40, zIndex: 5000 }}
                 onPress={this.handleSubmit}
               >
                 <Text>Ingresar</Text>
@@ -126,13 +165,13 @@ class LoginScreen extends Component {
             {errorMessage && <Messages message={errorMessage} />}
           </View>
         </Content>
+        {this.state.loading && <LoadingOverlay />}
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.messages.loading,
   infoMessage: state.messages.info || null,
   errorMessage: state.messages.error || null,
   successMessage: state.messages.success || null,

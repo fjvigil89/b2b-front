@@ -5,7 +5,8 @@ import {
   Image,
   Dimensions,
   Platform,
-  TouchableOpacity
+  TouchableOpacity,
+  DeviceEventEmitter
 } from "react-native";
 import { Text, Thumbnail } from "native-base";
 import moment from "moment";
@@ -22,11 +23,13 @@ class SalasInfoDetail extends React.Component {
       fecha_visita: PropTypes.string,
       direccion: PropTypes.string,
       cod_local: PropTypes.string,
-      descripcion: PropTypes.string
+      descripcion: PropTypes.string,
+      folio: PropTypes.number
     }),
     report: PropTypes.shape({
       cademsmartPorcentaje: PropTypes.string,
-      ventaPerdida: PropTypes.number
+      ventaPerdida: PropTypes.number,
+      gestionado: PropTypes.number
     })
   };
 
@@ -40,12 +43,35 @@ class SalasInfoDetail extends React.Component {
       fecha_visita: "",
       direccion: "",
       cod_local: "",
-      descripcion: ""
+      descripcion: "",
+      folio: 0
     },
     report: {
       cademsmartPorcentaje: "",
-      ventaPerdida: 0
+      ventaPerdida: 0,
+      gestionado: 0
     }
+  };
+
+  constructor(props) {
+    super(props);
+
+    DeviceEventEmitter.addListener(
+      `SalaDetalle-${this.props.data.folio}`,
+      e => {
+        this.props.report.gestionado =
+          // eslint-disable-next-line radix
+          parseInt(this.props.report.gestionado) + e.gestionado;
+
+        this.setState({
+          reload: !this.state.reload
+        });
+      }
+    );
+  }
+
+  state = {
+    reload: false
   };
 
   formatter = value => {
@@ -86,6 +112,9 @@ class SalasInfoDetail extends React.Component {
 
   render() {
     const { data, report } = this.props;
+
+    let porcentajeProgreso = report.gestionado * 100 / report.ventaPerdida;
+    porcentajeProgreso = `${porcentajeProgreso}%`;
 
     const backgroundImage = require("@assets/images/background-detalle-salas.png");
 
@@ -291,6 +320,17 @@ class SalasInfoDetail extends React.Component {
               height: 70
             }}
           >
+            <View
+              style={{
+                backgroundColor: "#3cb3d0",
+                width: porcentajeProgreso,
+                height: "100%",
+                left: 0,
+                position: "absolute",
+                opacity: 0.2,
+                borderRadius: 5
+              }}
+            />
             <Text
               style={{
                 fontSize: formatter.size,
@@ -314,7 +354,7 @@ class SalasInfoDetail extends React.Component {
         >
           <View
             style={{
-              flex: 0.5,
+              flex: 0.55,
               justifyContent: "flex-end",
               alignItems: "center",
               borderBottomColor: "#DEDEDE",
@@ -337,10 +377,11 @@ class SalasInfoDetail extends React.Component {
             style={{
               flex: 0.2,
               justifyContent: "flex-end",
-              alignItems: "center",
+              alignItems: "flex-end",
               borderBottomColor: "#DEDEDE",
               borderBottomWidth: 1,
-              paddingBottom: 5
+              paddingBottom: 5,
+              paddingRight: 10
             }}
           >
             <Text
@@ -350,17 +391,18 @@ class SalasInfoDetail extends React.Component {
                 fontWeight: "bold"
               }}
             >
-              Casos
+              Gest. / Casos
             </Text>
           </View>
           <View
             style={{
-              flex: 0.3,
+              flex: 0.25,
               justifyContent: "flex-end",
-              alignItems: "center",
+              alignItems: "flex-end",
               borderBottomColor: "#DEDEDE",
               borderBottomWidth: 1,
-              paddingBottom: 5
+              paddingBottom: 5,
+              paddingRight: 5
             }}
           >
             <Text
