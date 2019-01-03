@@ -40,7 +40,8 @@ class SalasDetail extends React.Component {
       prefijoKilometers: PropTypes.string,
       hasPoll: PropTypes.number,
       visita_en_progreso: PropTypes.number,
-      folio: PropTypes.number
+      folio: PropTypes.number,
+      pendiente: PropTypes.number
     }),
     delay: PropTypes.number,
     lostSaleON: PropTypes.bool,
@@ -58,7 +59,8 @@ class SalasDetail extends React.Component {
       direccion: "",
       cod_local: "",
       descripcion: "",
-      folio: 0
+      folio: 0,
+      pendiente: 0
     },
     delay: 100,
     lostSaleON: true,
@@ -157,20 +159,18 @@ class SalasDetail extends React.Component {
       logo = require("@assets/images/alvi.png");
     }
 
-    if (this.props.data.mide === 1 && this.props.data.realizada === 1) {
+    if (
+      this.props.data.mide === 1 &&
+      this.props.data.realizada === 1 &&
+      this.props.data.pendiente === 0
+    ) {
       imagen = require("@assets/images/visita-realizada-v2.png");
 
-      fecha =
-        this.props.data.fecha_visita || this.props.data.id
-          ? moment(this.props.data.fecha_visita)
-              .add(1, "d")
-              .fromNow()
-          : "-";
-    } else if (this.props.data.mide === 1 && this.props.data.realizada === 0) {
-      imagen = require("@assets/images/pendiente-visita.png");
-      if(this.props.data.fecha_visita === "Pendiente" || this.props.data.id === null ){
-        fecha = "-";
-      }
+      fecha = moment(this.props.data.fecha_visita)
+        .add(1, "d")
+        .fromNow();
+    } else if (this.props.data.mide === 1 && this.props.data.pendiente === 1) {
+      imagen = require("@assets/images/visita-pendiente.png");
     }
 
     const styles = StyleSheet.create({

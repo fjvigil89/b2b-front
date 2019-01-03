@@ -26,7 +26,9 @@ class SalasInfoDetailAction extends React.Component {
     sala: PropTypes.string,
     nombreSala: PropTypes.string,
     categoria: PropTypes.string,
-    endpoint: PropTypes.string
+    dateb2b: PropTypes.string,
+    endpoint: PropTypes.string,
+    visitaEnProgreso: PropTypes.string
   };
 
   static defaultProps = {
@@ -35,7 +37,9 @@ class SalasInfoDetailAction extends React.Component {
     sala: "",
     nombreSala: "",
     categoria: "",
-    endpoint: ""
+    dateb2b: "",
+    endpoint: "",
+    visitaEnProgreso: ""
   };
 
   componentWillMount = () => {
@@ -53,10 +57,15 @@ class SalasInfoDetailAction extends React.Component {
     if (!_.isEmpty(this.props.productos)) {
       productos = this.props.productos.detail.data.map(detail => (
         <Producto
+          sala={this.props.sala}
+          causa={this.props.accion}
           key={detail.ean}
           data={detail}
           flag={this.props.productos.detail.flag}
           accion={this.props.accion}
+          dateb2b={this.props.dateb2b}
+          categoria={this.props.categoria}
+          visitaEnProgreso={this.props.visitaEnProgreso}
         />
       ));
     }
@@ -113,7 +122,6 @@ const mapDispatchToProps = {
   ListadoProductosPorCategoriaAcccion
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SalasInfoDetailAction);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  SalasInfoDetailAction
+);

@@ -109,7 +109,12 @@ class DetailReport extends React.Component {
 
   render() {
     const backgroundImage = require("@assets/images/background-detalle-sala-categoria.png");
-    const { nombre, ventas, ventas_perdidas: ventasPerdidas } = this.props.data;
+    const {
+      nombre,
+      fecha_actualizacion,
+      ventas,
+      ventas_perdidas: ventasPerdidas
+    } = this.props.data;
 
     let logo = "";
 
@@ -140,7 +145,29 @@ class DetailReport extends React.Component {
     }
 
     return (
-      <View style={{ flex: 1, marginBottom: 5 }}>
+      <View style={{ flex: 1, marginBottom: 10 }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            backgroundColor: "#FFF",
+            padding: 5,
+            borderBottomColor: "#DEDEDE",
+            borderBottomWidth: 1
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "Questrial",
+              fontSize: 12
+            }}
+          >
+            Ultima actualización: 
+            {moment(fecha_actualizacion)
+              .add(1, "d")
+              .fromNow()}
+          </Text>
+        </View>
         <View
           style={{
             flex: 1,
