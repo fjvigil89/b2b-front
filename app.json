@@ -2,7 +2,7 @@
   "expo": {
     "sdkVersion": "26.0.0",
     "name": "SmartB2B CademSmart",
-    "slug": "smartb2b-cademsmart",
+    "slug": "SmartB2B-CademSmart",
     "icon": "src/assets/images/app-icon.png",
     "privacy": "unlisted",
     "ios": {
