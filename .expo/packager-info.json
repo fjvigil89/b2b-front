@@ -1,9 +1,9 @@
 {
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 11276,
+  "expoServerNgrokUrl": "https://v7-mcx.cademsmart.b2b-front.exp.direct",
+  "packagerNgrokUrl": "https://packager.v7-mcx.cademsmart.b2b-front.exp.direct",
+  "ngrokPid": 6748,
   "devToolsPort": 19002
 }
