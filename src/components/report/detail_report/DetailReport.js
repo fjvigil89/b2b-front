@@ -162,7 +162,7 @@ class DetailReport extends React.Component {
               fontSize: 12
             }}
           >
-            Ultima actualización: 
+            Fecha dato B2B: 
             {moment(fecha_actualizacion)
               .add(1, "d")
               .fromNow()}
