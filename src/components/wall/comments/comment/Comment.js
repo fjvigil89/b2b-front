@@ -253,7 +253,7 @@ class Comment extends Component {
               }}
             >
               {moment(date)
-                .add(1, "d")
+                .add()
                 .fromNow()}
             </Text>
           </View>
