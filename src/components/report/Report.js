@@ -156,17 +156,29 @@ class Report extends Component {
           ? "red"
           : "green";
 
+      const iconoVentas =
+        parseFloat(data.ventas.variacion.replace("%", "")) < 0
+          ? "dislike"
+          : "like";
+
       const colorVentasPerdidas =
         parseFloat(data.ventas_perdidas.variacion.replace("%", "")) < 0
           ? "green"
           : "red";
+
+      const iconoVentasPerdidas =
+        parseFloat(data.ventas_perdidas.variacion.replace("%", "")) < 0
+          ? "like"
+          : "dislike";
 
       return (
         <DetailReport
           data={data}
           key={data.nombre}
           colorVentas={colorVentas}
+          iconoVentas={iconoVentas}
           colorVentasPerdidas={colorVentasPerdidas}
+          iconoVentasPerdidas={iconoVentasPerdidas}
         />
       );
     });
@@ -389,7 +401,7 @@ class Report extends Component {
                     name="ios-search"
                     style={{
                       fontSize: 50,
-                      color: "#083D77"
+                      color: "gray"
                     }}
                   />
 
@@ -398,7 +410,7 @@ class Report extends Component {
                       fontSize: 18,
                       fontWeight: "bold",
                       fontFamily: "Questrial",
-                      color: "#083D77"
+                      color: "gray"
                     }}
                   >
                     {this.formatter(info.venta_perdida)}
@@ -409,7 +421,7 @@ class Report extends Component {
                       marginTop: 2,
                       fontFamily: "Questrial",
                       fontSize: 12,
-                      color: "#083D77"
+                      color: "gray"
                     }}
                   >
                     Venta Perdida
