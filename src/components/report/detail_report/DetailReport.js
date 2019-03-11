@@ -4,6 +4,9 @@ import * as Animatable from "react-native-animatable";
 import { Image, View, TouchableOpacity } from "react-native";
 import { Text, Icon } from "native-base";
 
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+
+
 import moment from "moment";
 import "moment/locale/es";
 
@@ -12,7 +15,9 @@ moment.locale("es");
 class DetailReport extends React.Component {
   static propTypes = {
     colorVentas: PropTypes.string,
+    iconoVentas: PropTypes.string,
     colorVentasPerdidas: PropTypes.string,
+    iconoVentasPerdidas: PropTypes.string,
     data: PropTypes.shape({
       nombre: PropTypes.string,
       ventas: PropTypes.shape({
@@ -41,7 +46,9 @@ class DetailReport extends React.Component {
 
   static defaultProps = {
     colorVentas: "",
+    iconoVentas: "",
     colorVentasPerdidas: "",
+    iconoVentasPerdidas: "",
     data: {
       nombre: "",
       ventas: {
@@ -220,14 +227,14 @@ class DetailReport extends React.Component {
                   name="logo-usd"
                   style={{
                     fontSize: 20,
-                    color: this.props.colorVentas
+                    color: "#083D77"
                   }}
                 />
                 <Text
                   style={{
                     fontSize: 18,
                     fontFamily: "Questrial",
-                    color: this.props.colorVentas,
+                    color: "#083D77",
                     marginLeft: 10
                   }}
                 >
@@ -239,7 +246,7 @@ class DetailReport extends React.Component {
                 style={{
                   flex: 0.4,
                   flexDirection: "row",
-                  justifyContent: "flex-start",
+                  justifyContent: "flex-end",
                   alignItems: "center",
                   marginLeft: 25
                 }}
@@ -249,11 +256,21 @@ class DetailReport extends React.Component {
                     fontSize: 18,
                     fontFamily: "Questrial",
                     marginLeft: 10,
-                    color: this.props.colorVentas
+                    color: "#083D77",
+                    alignItems: "right"
                   }}
                 >
                   {ventas.variacion}
                 </Text>
+
+                <SimpleLineIcons
+                  name={this.props.iconoVentas}
+                  style={{
+                    marginLeft: 13,
+                    fontSize: 20,
+                    color: this.props.colorVentas
+                  }}
+                />
               </View>
 
               <View
@@ -522,38 +539,49 @@ class DetailReport extends React.Component {
                   name="ios-search"
                   style={{
                     fontSize: 20,
-                    color: this.props.colorVentasPerdidas
+                    color: "gray"
                   }}
                 />
                 <Text
                   style={{
                     fontSize: 18,
                     fontFamily: "Questrial",
-                    color: this.props.colorVentasPerdidas
+                    color: "gray"
                   }}
                 >
                   {this.formatter(ventasPerdidas.total)}
                 </Text>
               </View>
+
               <View
                 style={{
                   flex: 0.4,
                   flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  marginLeft: 25
+                  justifyContent: "flex-end",
+                  marginLeft: 25,
+
                 }}
               >
                 <Text
+                  // FIXME: Arreglar icono a la derecha
                   style={{
                     fontSize: 18,
                     fontFamily: "Questrial",
                     marginLeft: 10,
-                    color: this.props.colorVentasPerdidas
+                    color: "gray",
                   }}
                 >
                   {ventasPerdidas.variacion}
                 </Text>
+                <SimpleLineIcons
+                  name={this.props.iconoVentasPerdidas}
+                  style={{
+                    marginLeft: 13,
+                    fontSize: 20,
+                    color: this.props.colorVentasPerdidas
+                  }}
+                />
+
               </View>
               <View
                 style={{
