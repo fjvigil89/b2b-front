@@ -1,9 +1,1 @@
-{
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 28130,
-  "expoServerNgrokUrl": "https://v7-mcx.anonymous.b2b-front.exp.direct",
-  "packagerNgrokUrl": "https://packager.v7-mcx.anonymous.b2b-front.exp.direct",
-  "ngrokPid": 28146,
-  "devToolsPort": 19002
-}
+{}

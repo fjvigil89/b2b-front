@@ -6,6 +6,7 @@ import { Text, Icon } from "native-base";
 
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
+
 import moment from "moment";
 import "moment/locale/es";
 
@@ -261,6 +262,7 @@ class DetailReport extends React.Component {
                 >
                   {ventas.variacion}
                 </Text>
+
                 <SimpleLineIcons
                   name={this.props.iconoVentas}
                   style={{
