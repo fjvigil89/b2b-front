@@ -6,7 +6,10 @@ import { Text, Icon } from "native-base";
 
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> help
 import moment from "moment";
 import "moment/locale/es";
 
@@ -256,13 +259,20 @@ class DetailReport extends React.Component {
                     fontSize: 18,
                     fontFamily: "Questrial",
                     marginLeft: 10,
+<<<<<<< HEAD
                     color: "#083D77",
                     alignItems: "right"
+=======
+                    color: "#083D77"
+>>>>>>> help
                   }}
                 >
                   {ventas.variacion}
                 </Text>
+<<<<<<< HEAD
 
+=======
+>>>>>>> help
                 <SimpleLineIcons
                   name={this.props.iconoVentas}
                   style={{
@@ -558,8 +568,13 @@ class DetailReport extends React.Component {
                   flex: 0.4,
                   flexDirection: "row",
                   justifyContent: "flex-end",
+<<<<<<< HEAD
                   marginLeft: 25,
 
+=======
+                  alignItems: "center",
+                  marginLeft: 25
+>>>>>>> help
                 }}
               >
                 <Text
@@ -568,7 +583,11 @@ class DetailReport extends React.Component {
                     fontSize: 18,
                     fontFamily: "Questrial",
                     marginLeft: 10,
+<<<<<<< HEAD
                     color: "gray",
+=======
+                    color: "gray"
+>>>>>>> help
                   }}
                 >
                   {ventasPerdidas.variacion}
@@ -581,7 +600,10 @@ class DetailReport extends React.Component {
                     color: this.props.colorVentasPerdidas
                   }}
                 />
+<<<<<<< HEAD
 
+=======
+>>>>>>> help
               </View>
               <View
                 style={{
