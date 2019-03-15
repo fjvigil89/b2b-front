@@ -10,11 +10,7 @@
     },
     "android": {
       "package": "com.cademsmart.b2b",
-<<<<<<< HEAD
-      "versionCode": 6,
-=======
       "versionCode": 10,
->>>>>>> help
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
