@@ -1,7 +1,6 @@
 {
   "expo": {
     "sdkVersion": "26.0.0",
-    "tipo": "esto lo voy a borrar despues",
     "name": "SmartB2B CademSmart",
     "slug": "SmartB2B-CademSmart",
     "icon": "src/assets/images/app-icon.png",
