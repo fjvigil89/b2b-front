@@ -1,20 +1,10 @@
 {
-<<<<<<< HEAD
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 4875,
-  "expoServerNgrokUrl": "https://v7-mcx.anonymous.b2b-front.exp.direct",
-  "packagerNgrokUrl": "https://packager.v7-mcx.anonymous.b2b-front.exp.direct",
-  "ngrokPid": 4891
-=======
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 24046,
+  "packagerPort": 19002,
+  "packagerPid": 17798,
   "expoServerNgrokUrl": "https://v7-mcx.cademsmart.b2b-front.exp.direct",
   "packagerNgrokUrl": "https://packager.v7-mcx.cademsmart.b2b-front.exp.direct",
-  "ngrokPid": 24062,
-  "devToolsPort": 19002,
+  "ngrokPid": 17822,
   "webpackServerPort": null
->>>>>>> help
 }

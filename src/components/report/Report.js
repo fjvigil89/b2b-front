@@ -73,7 +73,7 @@ class Report extends Component {
       fechaInicio = this.props.info.fecha_periodo.actual;
       fechaTermino = this.props.info.fecha_periodo.anterior;
 
-      text = `Semana del ${fechaInicio} vs Semana del ${fechaTermino}`;
+      text = `Sem. ${fechaInicio} vs Sem. ${fechaTermino}`;
 
       return text;
     } else if (this.state.mesActive) {
@@ -196,7 +196,7 @@ class Report extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Dashboard</Title>
+          <Title>Dashboard</Title>
           </Body>
           <Right>
             <Button

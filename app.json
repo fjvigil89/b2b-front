@@ -1,8 +1,8 @@
-{
+ {
   "expo": {
     "sdkVersion": "26.0.0",
-    "name": "SmartB2B CademSmart",
-    "slug": "SmartB2B-CademSmart",
+    "name": "SmartB2B CademSmart TEST",
+    "slug": "SmartB2B-CademSmart-test",
     "icon": "src/assets/images/app-icon.png",
     "privacy": "unlisted",
     "ios": {
@@ -10,7 +10,7 @@
     },
     "android": {
       "package": "com.cademsmart.b2b",
-      "versionCode": 10,
+      "versionCode": 11,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
@@ -32,7 +32,7 @@
         }
       ]
     },
-    "version": "2.6.0",
+    "version": "2.6.5",
     "description": ""
   }
 }
