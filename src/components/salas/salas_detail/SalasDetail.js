@@ -344,9 +344,7 @@ class SalasDetail extends React.Component {
                     fontFamily: "Questrial"
                   }}
                 >
-                  {moment(this.props.data.date_b2b)
-                    .add(1, "d")
-                    .fromNow()}
+                  {this.props.data.date_b2b}
                 </Text>
               </View>
             </View>
