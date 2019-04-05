@@ -64,6 +64,7 @@ class SalasInfo extends Component {
   };
 
   componentWillMount() {
+
     this.setState({
       loading: true
     });
@@ -80,6 +81,7 @@ class SalasInfo extends Component {
           loading: false
         });
       });
+
   }
 
   componentDidMount = () => {
@@ -118,11 +120,13 @@ class SalasInfo extends Component {
 
                   this.props.data.visita_en_progreso = 1;
 
+
                   Alert.alert(
                     "Exito",
                     "CheckIN realizado. Recuerda hacer el CheckOUT cuando termines.",
                     [{ text: "Super!" }]
                   );
+                  this.forceUpdate();
                 })
                 .catch(() => {
                   this.setState({

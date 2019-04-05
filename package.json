@@ -15,6 +15,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "prettier": "^1.11.1",
     "prettier-eslint": "^8.8.1",
+    "react-native-debugger-open": "^0.3.19",
     "react-native-scripts": "^1.14.1",
     "redux-logger": "^3.0.6"
   },
@@ -23,7 +24,8 @@
     "start": "react-native-scripts start",
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios"
+    "ios": "react-native-scripts ios",
+    "postinstall": "rndebugger-open --expo"
   },
   "dependencies": {
     "@expo/vector-icons": "^6.3.1",

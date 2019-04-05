@@ -13,7 +13,8 @@ import {
 import { Actions } from "react-native-router-flux";
 import _ from "lodash";
 
-import ListadoProductosPorCategoriaAcccion from "@components/salas_info/salas_info_detal_action/SalasInfoDetailActionActions.js";
+import ListadoProductosPorCategoriaAcccion
+  from "@components/salas_info/salas_info_detal_action/SalasInfoDetailActionActions.js";
 import Header from "@components/salas_info/salas_info_detal_action/Header/Header";
 import Producto from "@components/salas_info/salas_info_detal_action/Producto/Producto";
 
@@ -52,7 +53,7 @@ class SalasInfoDetailAction extends React.Component {
   };
 
   render() {
-    let productos = <Text />;
+    let productos = <Text/>;
 
     if (!_.isEmpty(this.props.productos)) {
       productos = this.props.productos.detail.data.map(detail => (
@@ -72,7 +73,7 @@ class SalasInfoDetailAction extends React.Component {
 
     return (
       <Container style={{ backgroundColor: "#F4F4F4" }}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="dark-content"/>
         <Content
           style={{ flex: 1, backgroundColor: "#FFF" }}
           scrollEnabled={false}

@@ -147,7 +147,7 @@ class DetailReport extends React.Component {
     } else if (nombre === "ALVI") {
       logo = require("@assets/images/alvi.png");
     } else {
-      logo = require("@assets/images/alvi.png");
+      logo = require("@assets/images/logo-cadem-icono.png");
     }
 
     return (
@@ -645,6 +645,7 @@ class DetailReport extends React.Component {
                         }}
                       >
                         {this.formatter(ventasPerdidas.causas.chequear_pedidos)}
+
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>

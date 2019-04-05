@@ -113,7 +113,7 @@ class Maps extends Component {
               } else if (sala.bandera === "ALVI") {
                 logo = require("@assets/images/alvi.png");
               } else {
-                logo = require("@assets/images/alvi.png");
+                logo = require("@assets/images/logo-cadem-icono.png");
               }
 
               return (
