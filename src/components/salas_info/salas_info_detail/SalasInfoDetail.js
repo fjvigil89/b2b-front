@@ -142,7 +142,7 @@ class SalasInfoDetail extends React.Component {
     } else if (data.bandera === "ALVI") {
       logo = require("@assets/images/alvi.png");
     } else {
-      logo = require("@assets/images/alvi.png");
+      logo = require("@assets/images/logo-cadem-icono.png");
     }
 
     const deviceFullWidth = Dimensions.get("window").width;

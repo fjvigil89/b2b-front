@@ -24,7 +24,7 @@ class Dashboard extends Component {
     loading: false
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.setState({
       loading: true
     });
