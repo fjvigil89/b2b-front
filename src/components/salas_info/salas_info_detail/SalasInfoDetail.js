@@ -156,8 +156,7 @@ class SalasInfoDetail extends React.Component {
     } else {
       fechaVisita = data.fecha_visita || data.id_visita
         ? moment(data.fecha_visita)
-            .add(1, "d")
-            .fromNow()
+          .format("YYYY-MM-DD")
         : "-";
 
     }
@@ -233,10 +232,9 @@ class SalasInfoDetail extends React.Component {
               fontFamily: "Questrial"
             }}
           >
-            Actualización B2B :{" "}
+            Fecha información B2B :{" "}
             {moment(data.date_b2b)
-              .add(1, "d")
-              .fromNow()}
+              .format("YYYY-MM-DD")}
           </Text>
           <Text
             style={{
@@ -246,7 +244,7 @@ class SalasInfoDetail extends React.Component {
               fontFamily: "Questrial"
             }}
           >
-            Ult. medición CademSmart : {fechaVisita}
+            Fecha medición CademSmart : {fechaVisita}
           </Text>
         </View>
 
