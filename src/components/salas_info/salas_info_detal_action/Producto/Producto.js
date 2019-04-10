@@ -165,6 +165,8 @@ class Producto extends React.Component {
           !this.state.expirado &&
           this.props.visitaEnProgreso === 1
             ? rightButtons
+            // : rightButtons
+            // TODO: Para bloquear gestionados
             : null
         }
         onRightActionRelease={() => {
@@ -175,6 +177,8 @@ class Producto extends React.Component {
           !this.state.expirado &&
           this.props.visitaEnProgreso === 1
             ? leftButtons
+            // : leftButtons
+            // TODO: Para bloquear gestionados
             : null
         }
         onLeftActionRelease={() => {

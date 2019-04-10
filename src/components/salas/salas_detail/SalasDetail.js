@@ -167,8 +167,7 @@ class SalasDetail extends React.Component {
       imagen = require("@assets/images/visita-realizada-v2.png");
 
       fecha = moment(this.props.data.fecha_visita)
-        .add(1, "d")
-        .fromNow();
+        .format("YYYY-MM-DD");
     } else if (this.props.data.mide === 1 && this.props.data.pendiente === 1) {
       imagen = require("@assets/images/visita-pendiente.png");
     }
@@ -328,7 +327,7 @@ class SalasDetail extends React.Component {
                     fontFamily: "Questrial"
                   }}
                 >
-                  Ultima actualización B2B
+                  Fecha información B2B
                 </Text>
               </View>
               <View
@@ -372,7 +371,7 @@ class SalasDetail extends React.Component {
                       fontFamily: "Questrial"
                     }}
                   >
-                    Fecha de visita
+                    Fecha medición CademSmart
                   </Text>
                 </View>
                 <View
