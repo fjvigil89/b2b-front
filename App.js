@@ -1,5 +1,5 @@
 import React from "react";
-import Expo from "expo";
+import { AppLoading, Font } from "expo";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { StyleProvider } from "native-base";
@@ -38,10 +38,10 @@ export default class App extends React.Component {
   }
 
   async loadFonts() {
-    await Expo.Font.loadAsync({
+    await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
+      // Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
       Questrial: require("@assets/fonts/Questrial-Regular.ttf"),
       Bree: require("@assets/fonts/Bree-Regular.ttf")
     });
@@ -51,7 +51,7 @@ export default class App extends React.Component {
 
   render() {
     if (!this.state.isReady) {
-      return <Expo.AppLoading />;
+      return <AppLoading />;
     }
 
     return (

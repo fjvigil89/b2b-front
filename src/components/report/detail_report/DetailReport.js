@@ -7,7 +7,9 @@ import { Text, Icon } from "native-base";
 import moment from "moment";
 import "moment/locale/es";
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+// import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
+
 
 moment.locale("es");
 
@@ -278,19 +280,35 @@ class DetailReport extends React.Component {
                 }}
               >
                 {this.state.buttonCollapsedFirst ? (
+                  <Ionicons
+                    name="ios-arrow-down"
+                    style={{
+                      fontSize: 20
+                    }}
+                  />
+                  /*
                   <Icon
                     name="ios-arrow-down-outline"
                     style={{
                       fontSize: 20
                     }}
                   />
+                  */
                 ) : (
+                  <Ionicons
+                    name="ios-arrow-forward"
+                    style={{
+                      fontSize: 20
+                    }}
+                  />
+                  /*
                   <Icon
                     name="ios-arrow-forward-outline"
                     style={{
                       fontSize: 20
                     }}
                   />
+                  */
                 )}
               </View>
             </TouchableOpacity>
@@ -585,19 +603,35 @@ class DetailReport extends React.Component {
                 }}
               >
                 {this.state.buttonCollapsedSecond ? (
+                  <Ionicons
+                    name="ios-arrow-down"
+                    style={{
+                      fontSize: 20
+                    }}
+                  />
+                  /*
                   <Icon
                     name="ios-arrow-down-outline"
                     style={{
                       fontSize: 20
                     }}
                   />
+                  */
                 ) : (
+                  <Ionicons
+                    name="ios-arrow-forward"
+                    style={{
+                      fontSize: 20
+                    }}
+                  />
+                  /*
                   <Icon
                     name="ios-arrow-forward-outline"
                     style={{
                       fontSize: 20
                     }}
                   />
+                  */
                 )}
               </View>
             </TouchableOpacity>
