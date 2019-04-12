@@ -1,7 +1,8 @@
 import React from "react";
-import { Header, Left, Body, Title, Right, Icon, Button } from "native-base";
+import { Header, Left, Body, Title, Right, Button } from "native-base";
 import { Actions } from "react-native-router-flux";
 import PropTypes from "prop-types";
+import { MaterialIcons } from '@expo/vector-icons';
 
 class SalasInfoHeader extends React.Component {
   static propTypes = {
@@ -25,7 +26,7 @@ class SalasInfoHeader extends React.Component {
               Actions.pollsList({ folio: data.folio });
             }}
           >
-            <Icon
+            <Ionicons
               style={{
                 color: "white"
               }}
@@ -49,7 +50,13 @@ class SalasInfoHeader extends React.Component {
               Actions.pop();
             }}
           >
-            <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
+            <MaterialIcons
+              name="arrow-back"
+              style={{
+                color: 'white',
+                fontSize: 25
+              }}
+            />
           </Button>
         </Left>
         <Body>

@@ -19,6 +19,7 @@ import Publication from "@components/wall/publication/Publication";
 import LoginScreen from "@components/login/Login";
 
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import {Ionicons, MaterialIcons} from "@expo/vector-icons";
 
 class Wall extends Component {
   static propTypes = {
@@ -90,7 +91,13 @@ class Wall extends Component {
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button transparent onPress={Actions.drawerOpen}>
-              <Icon name="menu" />
+              <MaterialIcons
+                name="menu"
+                style={{
+                  color: 'white',
+                  fontSize: 25
+                }}
+              />
             </Button>
           </Left>
           <Body>
@@ -103,7 +110,13 @@ class Wall extends Component {
                 Actions.createPublication();
               }}
             >
-              <Icon name="ios-create-outline" />
+              <Ionicons
+                name="ios-create"
+                style={{
+                  color: 'white',
+                  fontSize: 25
+                }}
+              />
             </Button>
           </Right>
         </Header>

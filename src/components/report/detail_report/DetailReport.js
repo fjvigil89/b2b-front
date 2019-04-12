@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import { Image, View, TouchableOpacity } from "react-native";
-import { Text, Icon } from "native-base";
+import { Text } from "native-base";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -224,7 +224,7 @@ class DetailReport extends React.Component {
                   marginLeft: 10
                 }}
               >
-                <Icon
+                <Ionicons
                   name="logo-usd"
                   style={{
                     fontSize: 20,
@@ -286,14 +286,6 @@ class DetailReport extends React.Component {
                       fontSize: 20
                     }}
                   />
-                  /*
-                  <Icon
-                    name="ios-arrow-down-outline"
-                    style={{
-                      fontSize: 20
-                    }}
-                  />
-                  */
                 ) : (
                   <Ionicons
                     name="ios-arrow-forward"
@@ -301,14 +293,6 @@ class DetailReport extends React.Component {
                       fontSize: 20
                     }}
                   />
-                  /*
-                  <Icon
-                    name="ios-arrow-forward-outline"
-                    style={{
-                      fontSize: 20
-                    }}
-                  />
-                  */
                 )}
               </View>
             </TouchableOpacity>
@@ -550,7 +534,7 @@ class DetailReport extends React.Component {
                   marginLeft: 10
                 }}
               >
-                <Icon
+                <Ionicons
                   name="ios-search"
                   style={{
                     fontSize: 20,

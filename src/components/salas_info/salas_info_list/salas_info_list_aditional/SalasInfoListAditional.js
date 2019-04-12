@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { View, Image, TouchableOpacity } from "react-native";
-import { Text, Icon } from "native-base";
+import { Text } from "native-base";
 import * as Animatable from "react-native-animatable";
 import { Actions } from "react-native-router-flux";
+import { Ionicons} from "@expo/vector-icons";
 
 class SalasInfoListAditional extends React.Component {
   static propTypes = {
@@ -77,9 +78,8 @@ class SalasInfoListAditional extends React.Component {
                   alignItems: "center"
                 }}
               >
-                <Icon
-                  ios="ios-arrow-round-forward"
-                  android="ios-arrow-round-forward"
+                <Ionicons
+                  name="ios-arrow-round-forward"
                   style={{ fontSize: 30, margin: 0 }}
                 />
               </View>
@@ -157,9 +157,8 @@ class SalasInfoListAditional extends React.Component {
                     alignItems: "flex-end"
                   }}
                 >
-                  <Icon
-                    ios="ios-arrow-dropright"
-                    android="ios-arrow-dropright"
+                  <Ionicons
+                    name="ios-arrow-dropright"
                     style={{ fontSize: 30 }}
                   />
                 </View>

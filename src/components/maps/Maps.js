@@ -8,12 +8,12 @@ import {
   Left,
   Right,
   Button,
-  Icon,
   Title,
   Body
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { MapView } from "expo";
+import { MaterialIcons } from '@expo/vector-icons';
 
 import {
   ListadoSalas,
@@ -78,7 +78,13 @@ class Maps extends Component {
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button transparent onPress={Actions.drawerOpen}>
-              <Icon name="menu" />
+              <MaterialIcons
+                name="menu"
+                style={{
+                  color: 'white',
+                  fontSize: 25
+                }}
+              />
             </Button>
           </Left>
           <Body>

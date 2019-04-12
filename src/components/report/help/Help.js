@@ -22,6 +22,7 @@ import {
   Left
 } from "native-base";
 import { Actions } from "react-native-router-flux";
+import { Ionicons } from "@expo/vector-icons";
 
 const platform = Platform.OS;
 
@@ -254,7 +255,7 @@ class Help extends React.Component {
                       paddingRight: 5
                     }}
                   >
-                    <Icon
+                    <Ionicons
                       style={{ fontSize: 13 }}
                       name="md-arrow-round-forward"
                     />
@@ -281,7 +282,7 @@ class Help extends React.Component {
                       paddingRight: 5
                     }}
                   >
-                    <Icon
+                    <Ionicons
                       style={{ fontSize: 13 }}
                       name="md-arrow-round-forward"
                     />
@@ -308,7 +309,7 @@ class Help extends React.Component {
                       paddingRight: 5
                     }}
                   >
-                    <Icon
+                    <Ionicons
                       style={{ fontSize: 13 }}
                       name="md-arrow-round-forward"
                     />
@@ -335,7 +336,7 @@ class Help extends React.Component {
                       paddingRight: 5
                     }}
                   >
-                    <Icon
+                    <Ionicons
                       style={{ fontSize: 13 }}
                       name="md-arrow-round-forward"
                     />
@@ -423,7 +424,7 @@ class Help extends React.Component {
                       paddingRight: 5
                     }}
                   >
-                    <Icon
+                    <Ionicons
                       style={{ fontSize: 13 }}
                       name="md-arrow-round-forward"
                     />
@@ -450,7 +451,7 @@ class Help extends React.Component {
                       paddingRight: 5
                     }}
                   >
-                    <Icon
+                    <Ionicons
                       style={{ fontSize: 13 }}
                       name="md-arrow-round-forward"
                     />
@@ -477,7 +478,7 @@ class Help extends React.Component {
                       paddingRight: 5
                     }}
                   >
-                    <Icon
+                    <Ionicons
                       style={{ fontSize: 13 }}
                       name="md-arrow-round-forward"
                     />
@@ -504,7 +505,7 @@ class Help extends React.Component {
                       paddingRight: 5
                     }}
                   >
-                    <Icon
+                    <Ionicons
                       style={{ fontSize: 13 }}
                       name="md-arrow-round-forward"
                     />

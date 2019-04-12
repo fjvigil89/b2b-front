@@ -30,6 +30,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { ImagePicker, Permissions } from "expo";
 import { size, filter, take } from "lodash";
+import { Ionicons } from "@expo/vector-icons";
 
 import CreatePost from "@components/wall/create_publication/CreatePublicationActions";
 import { GetHashtags } from "@components/wall/WallActions";
@@ -260,7 +261,7 @@ class CreatePublication extends React.Component {
               }}
             >
               {platform === "android" && (
-                <Icon name="md-arrow-back" color="#B2B2B2" />
+                <Ionicons name="md-arrow-back" color="#B2B2B2" />
               )}
               {platform === "ios" && (
                 <Text style={{ fontSize: 14 }}>Cancelar</Text>
@@ -409,7 +410,13 @@ class CreatePublication extends React.Component {
                 style={{ flex: 1, marginTop: 5 }}
                 onPress={this.pickPhoto}
               >
-                <Icon style={{ fontSize: 30 }} name="ios-camera-outline" />
+                <Ionicons
+                  name="ios-camera"
+                  style={{
+                    color: '',
+                    fontSize: 30
+                  }}
+                />
                 <Text>Tomar foto</Text>
               </Button>
               {/*

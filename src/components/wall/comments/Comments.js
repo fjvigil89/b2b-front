@@ -8,7 +8,6 @@ import {
   Left,
   Right,
   Button,
-  Icon,
   Title,
   Body,
   Text,
@@ -114,7 +113,7 @@ class Comments extends Component {
                 Actions.pop();
               }}
             >
-              <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
+              <Ionicons name="arrow-back" style={{ color: "#FFFFFF" }} />
             </Button>
           </Left>
           <Body>

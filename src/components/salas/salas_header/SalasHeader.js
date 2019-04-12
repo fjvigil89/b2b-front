@@ -8,7 +8,6 @@ import {
   Header,
   Left,
   Button,
-  Icon,
   Body,
   Title,
   Right,
@@ -25,6 +24,7 @@ import {
   ShowListForGeolocation,
   ShowListForLostSale
 } from "@components/salas/salas_header/SalasHeaderActions";
+import { Ionicons, MaterialIcons} from "@expo/vector-icons";
 
 class SalasHeader extends React.Component {
   static propTypes = {
@@ -72,10 +72,10 @@ class SalasHeader extends React.Component {
   render() {
     const iconFilters = this.props.searchFilters
       ? "ios-funnel"
-      : "ios-funnel-outline";
+      : "ios-funnel";
 
     const iconLocationLostSale = this.props.lostSaleON
-      ? "ios-navigate-outline"
+      ? "ios-navigate"
       : "logo-usd";
 
     if (this.props.isOpenSearch) {
@@ -86,7 +86,7 @@ class SalasHeader extends React.Component {
             iosBarStyle="dark-content"
           >
             <Button transparent onPress={this.props.ClearSearch}>
-              <Icon name="arrow-back" style={{ color: "#000" }} />
+              <Ionicons name="arrow-back" style={{ color: "#000" }} />
             </Button>
             <Body rounded>
               <Item>
@@ -109,7 +109,13 @@ class SalasHeader extends React.Component {
       <Header style={{ borderBottomWidth: 0 }}>
         <Left>
           <Button transparent onPress={Actions.drawerOpen}>
-            <Icon name="menu" />
+            <MaterialIcons
+              name="menu"
+              style={{
+                color: 'white',
+                fontSize: 25
+              }}
+            />
           </Button>
         </Left>
         <Body>
@@ -117,13 +123,31 @@ class SalasHeader extends React.Component {
         </Body>
         <Right>
           <Button transparent onPress={this.props.ShowSearch}>
-            <Icon name="search" />
+            <Ionicons
+              name="ios-search"
+              style={{
+                color: 'white',
+                fontSize: 25
+              }}
+            />
           </Button>
           <Button transparent onPress={this.openFilter}>
-            <Icon name={iconFilters} />
+            <Ionicons
+              name={iconFilters}
+              style={{
+                color: 'white',
+                fontSize: 25
+              }}
+            />
           </Button>
           <Button transparent onPress={this.LostSaleOrGeolocation}>
-            <Icon name={iconLocationLostSale} />
+            <Ionicons
+              name={iconLocationLostSale}
+              style={{
+                color: 'white',
+                fontSize: 25
+              }}
+            />
           </Button>
 
           <ActionSheet
