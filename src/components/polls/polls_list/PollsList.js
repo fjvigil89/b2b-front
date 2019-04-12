@@ -8,7 +8,6 @@ import {
   Header,
   Left,
   Button,
-  Icon,
   Body,
   Title,
   Right,
@@ -19,6 +18,7 @@ import PollsListGrid from "@components/polls/polls_list/polls_list_grid/PollsLis
 import GetListPoll from "@components/polls/polls_list/PollsListActios";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 import LoginScreen from "@components/login/Login";
+import {MaterialIcons} from "@expo/vector-icons";
 
 let params = "";
 
@@ -52,14 +52,23 @@ class PollsList extends Component {
     if (show) {
       return (
         <Button transparent onPress={Actions.pop}>
-          <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
+          <MaterialIcons
+            name="arrow-back"
+            style={{ color: "#FFFFFF" }}
+          />
         </Button>
       );
     }
 
     return (
       <Button transparent onPress={Actions.drawerOpen}>
-        <Icon name="menu" />
+        <MaterialIcons
+          name="menu"
+          style={{
+            color: 'white',
+            fontSize: 25
+          }}
+        />
       </Button>
     );
   };

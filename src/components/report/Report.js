@@ -23,6 +23,7 @@ import LoginScreen from "@components/login/Login";
 
 import moment from "moment";
 import "moment/locale/es";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 moment.locale("es");
 
@@ -192,7 +193,13 @@ class Report extends Component {
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button transparent onPress={Actions.drawerOpen}>
-              <Icon name="menu" />
+              <MaterialIcons
+                name="menu"
+                style={{
+                  color: 'white',
+                  fontSize: 25
+                }}
+              />
             </Button>
           </Left>
           <Body>
@@ -205,7 +212,13 @@ class Report extends Component {
                 Actions.HelpReport();
               }}
             >
-              <Icon name="ios-help-circle-outline" />
+              <Ionicons
+                name="ios-help-circle"
+                style={{
+                  color: 'white',
+                  fontSize: 25
+                }}
+              />
             </Button>
           </Right>
         </Header>
@@ -338,7 +351,7 @@ class Report extends Component {
                     alignItems: "center"
                   }}
                 >
-                  <Icon
+                  <Ionicons
                     name="logo-usd"
                     style={{
                       fontSize: 50,
@@ -401,7 +414,7 @@ class Report extends Component {
                     alignItems: "center"
                   }}
                 >
-                  <Icon
+                  <Ionicons
                     name="ios-search"
                     style={{
                       fontSize: 50,

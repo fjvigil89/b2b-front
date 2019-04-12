@@ -6,13 +6,13 @@ import {
   Header,
   Left,
   Button,
-  Icon,
   Title,
   Body,
   Right
 } from "native-base";
 import { FlatList } from "react-native";
 import { Actions } from "react-native-router-flux";
+import { Ionicons } from "@expo/vector-icons";
 
 import {
   GetHashtags,
@@ -83,7 +83,7 @@ class Hashtags extends Component {
                 Actions.pop();
               }}
             >
-              <Icon name="arrow-back" style={{ color: "#FFFFFF" }} />
+              <Ionicons name="arrow-back" style={{ color: "#FFFFFF" }} />
             </Button>
           </Left>
           <Body>

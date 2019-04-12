@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Text, View, Thumbnail, Button, Icon } from "native-base";
+import { Text, View, Thumbnail, Button } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { isEmpty, size } from "lodash";
 import {
@@ -18,6 +18,7 @@ import {
   UnLikePublication
 } from "@components/wall/publication/PublicationActions";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import { Ionicons } from "@expo/vector-icons";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -426,7 +427,7 @@ class Publication extends Component {
                       this.unlikePublication();
                     }}
                   >
-                    <Icon color="#B2B2B2" name="ios-thumbs-up" />
+                    <Ionicons color="#B2B2B2" name="ios-thumbs-up" />
                     <Text
                       style={{
                         fontSize: 13,
@@ -447,7 +448,7 @@ class Publication extends Component {
                       this.likePublication();
                     }}
                   >
-                    <Icon name="ios-thumbs-up-outline" />
+                    <Ionicons name="ios-thumbs-up" />
                     <Text
                       style={{
                         fontSize: 13,
@@ -474,7 +475,7 @@ class Publication extends Component {
                     Actions.commentPublication({ post: id });
                   }}
                 >
-                  <Icon name="ios-text-outline" />
+                  <Ionicons name="ios-text-outline" />
                   <Text
                     style={{
                       fontSize: 13,

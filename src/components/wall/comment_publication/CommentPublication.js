@@ -24,7 +24,6 @@ import {
   Header,
   Textarea,
   Thumbnail,
-  Icon,
   List,
   ListItem
 } from "native-base";
@@ -34,6 +33,7 @@ import { size, isEmpty, filter, take } from "lodash";
 import CreateComment from "@components/wall/comment_publication/CommentPublicationActions";
 import { GetHashtags } from "@components/wall/WallActions";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import {Ionicons} from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
 
@@ -276,7 +276,7 @@ class CommentPublication extends React.Component {
               }}
             >
               {platform === "android" && (
-                <Icon name="md-arrow-back" color="#B2B2B2" />
+                <Ionicons name="md-arrow-back" color="#B2B2B2" />
               )}
               {platform === "ios" && (
                 <Text style={{ fontSize: 14 }}>Cancelar</Text>
@@ -421,7 +421,13 @@ class CommentPublication extends React.Component {
                 style={{ flex: 1, marginTop: 5 }}
                 onPress={this.pickPhoto}
               >
-                <Icon style={{ fontSize: 30 }} name="ios-camera-outline" />
+                <Ionicons
+                  name="ios-camera"
+                  style={{
+                    color: '',
+                    fontSize: 30
+                  }}
+                />
                 <Text>Tomar foto</Text>
               </Button>
               {/*
