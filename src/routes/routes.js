@@ -21,7 +21,7 @@ import Help from "@components/report/help/Help";
 
 const Index = (
   <Router>
-    <Modal>
+    <Modal hideNavBar>
       <Scene key="root" hideNavBar>
         <Scene key="drawer" drawer contentComponent={Menu}>
           <Scene key="main" hideNavBar>
