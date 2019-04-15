@@ -41,7 +41,6 @@ export default class App extends React.Component {
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      // Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
       Questrial: require("@assets/fonts/Questrial-Regular.ttf"),
       Bree: require("@assets/fonts/Bree-Regular.ttf")
     });
