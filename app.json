@@ -1,8 +1,8 @@
  {
   "expo": {
     "sdkVersion": "32.0.0",
-    "name": "SmartB2B CademSmart",
-    "slug": "SmartB2B-CademSmart",
+    "name": "SmartB2B CademSmart ios",
+    "slug": "SmartB2B-CademSmart-ios",
     "icon": "src/assets/images/app-icon.png",
     "privacy": "unlisted",
     "ios": {
