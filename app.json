@@ -1,16 +1,22 @@
  {
   "expo": {
     "sdkVersion": "32.0.0",
-    "name": "SmartB2B CademSmart ios",
-    "slug": "SmartB2B-CademSmart-ios",
+    "name": "SmartB2B CademSmart",
+    "slug": "SmartB2B-CademSmart",
     "icon": "src/assets/images/app-icon.png",
     "privacy": "unlisted",
     "ios": {
-      "bundleIdentifier": "com.cademsmart.b2b"
+      "bundleIdentifier": "com.cademsmart.b2b",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Esta app utiliza la cámara para publicar fotos",
+        "NSPhotoLibraryUsageDescription": "Esta app utiliza la galería para publicar fotos",
+        "NSLocationWhenInUseUsageDescription":  "Esta app utiliza la ubicación para filtrar contenido según su ubicación",
+        "NSLocationAlwaysUsageDescription":  "Esta app utiliza la ubicación para filtrar contenido según su ubicación"
+      }
     },
     "android": {
       "package": "com.cademsmart.b2b",
-      "versionCode": 14,
+      "versionCode": 16,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
@@ -32,7 +38,7 @@
         }
       ]
     },
-    "version": "2.6.8",
+    "version": "2.6.10",
     "description": ""
   }
 }

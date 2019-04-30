@@ -1,7 +1,7 @@
 {
   "name": "smartb2b-cademsmart",
   "homepage": "https://miguelmeza.me",
-  "version": "2.6.8",
+  "version": "2.6.10",
   "private": true,
   "devDependencies": {
     "eslint": "^5.16.0",

@@ -1,10 +1,10 @@
 {
-  "expoServerPort": null,
+  "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://s9-xf8.cademsmart.b2b-front.exp.direct",
   "packagerNgrokUrl": "https://packager.s9-xf8.cademsmart.b2b-front.exp.direct",
-  "ngrokPid": 19397,
+  "ngrokPid": 14740,
   "devToolsPort": 19002,
-  "packagerPort": null,
-  "packagerPid": null,
+  "packagerPort": 19001,
+  "packagerPid": 14281,
   "webpackServerPort": null
 }
