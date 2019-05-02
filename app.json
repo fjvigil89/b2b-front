@@ -15,7 +15,7 @@
       }
     },
     "android": {
-      "package": "com.cademsmart.b2b",
+      "package": "com.cademsmart.smartapp",
       "versionCode": 16,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
