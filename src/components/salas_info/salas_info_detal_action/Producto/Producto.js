@@ -7,11 +7,12 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  DeviceEventEmitter
+  DeviceEventEmitter,
 } from "react-native";
 import Swipeable from "react-native-swipeable";
 
-import MarcarProducto from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
+import MarcarProducto, { getQuestions, saveFeedbackQuestions } from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
+import ModalFeedBack from "@components/salas_info/salas_info_detal_action/Producto/ProductoFeedback";
 
 const styles = StyleSheet.create({
   rightSwipeItem: {
@@ -94,11 +95,30 @@ class Producto extends React.Component {
   state = {
     swipeable: null,
     gestionado: this.props.data.gestionado !== 0,
-    expirado: false
+    expirado: false,
+    questions: [],
+    responseQuestions: [],
+    showModal: false,
   };
 
-  makeGestionado = () => {
-    this.props.MarcarProducto(
+  async componentWillMount() {
+    const questions = await getQuestions(this.props.endpoint);
+    this.setState({ questions })
+  }
+
+  onResponseQuestions(check) {
+    this.setState({ showModal: false });
+    const responseQuestions = this.state.questions.map(q => ({
+      id: q.id,
+      question: q.question,
+      response: check[q.id]
+    }));
+    this.setState({ responseQuestions })
+    this.makeGestionado();
+  }
+
+  makeGestionado = async () => {
+    const caseId = await this.props.MarcarProducto(
       this.props.endpoint,
       this.props.sala,
       "gestionado",
@@ -112,6 +132,20 @@ class Producto extends React.Component {
       gestionado: true
     });
 
+    // modal
+    if (this.state.responseQuestions.length > 0) {
+      const dataFeedback = this.state.responseQuestions.map(elem => ({
+        caseId,
+        questionId: elem.id,
+        folio: this.props.sala,
+        ean: this.props.data.ean,
+        answer: elem.response
+      }));
+
+      await saveFeedbackQuestions(this.props.endpoint, dataFeedback);
+    }
+
+    // detiene
     DeviceEventEmitter.emit(
       `SalaDetalleCategoria-${this.props.sala}-${this.props.categoria.replace(
         /\s/g,
@@ -141,6 +175,10 @@ class Producto extends React.Component {
     });
   };
 
+  caseFeedback = () => {
+    this.setState({ showModal: true });
+  }
+
   render() {
     let thumbImage;
 
@@ -156,168 +194,158 @@ class Producto extends React.Component {
     }
 
     return (
-      <Swipeable
-        onRef={ref => {
-          this.state.swipeable = ref;
-        }}
-        rightContent={
-          !this.state.gestionado &&
-          !this.state.expirado &&
-          this.props.visitaEnProgreso === 1
-            ? rightButtons
-            // : rightButtons
-            // TODO: Para bloquear gestionados
-            : null
-        }
-        onRightActionRelease={() => {
-          this.makeExpirado();
-        }}
-        leftContent={
-          !this.state.gestionado &&
-          !this.state.expirado &&
-          this.props.visitaEnProgreso === 1
-            ? leftButtons
-            // : leftButtons
-            // TODO: Para bloquear gestionados
-            : null
-        }
-        onLeftActionRelease={() => {
-          this.makeGestionado();
-        }}
-      >
-        <View
+      <View>
+        <ModalFeedBack
+          questions={this.state.questions}
+          showModal={this.state.showModal}
+          response={this.onResponseQuestions.bind(this)}
           style={{
             flex: 1,
-            flexDirection: "column",
-            backgroundColor: "#FFF",
-            borderBottomColor: "#DEDEDE",
-            borderBottomWidth: 1,
-            padding: 10,
-            paddingTop: 5
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        />
+        <Swipeable
+          onRef={ref => {
+            this.state.swipeable = ref;
+          }}
+          rightContent={
+            !this.state.gestionado &&
+            !this.state.expirado &&
+            this.props.visitaEnProgreso === 1
+              ? rightButtons
+              // : rightButtons
+              // TODO: Para bloquear gestionados
+              : null
+          }
+          onRightActionRelease={() => {
+            this.makeExpirado();
+          }}
+          leftContent={
+            !this.state.gestionado &&
+            !this.state.expirado &&
+            this.props.visitaEnProgreso === 1
+              ? leftButtons
+              // : leftButtons
+              // TODO: Para bloquear gestionados
+              : null
+          }
+          onLeftActionRelease={() => {
+            this.caseFeedback();
           }}
         >
-          {(this.props.data.cadem === 1 || this.props.data.cadem === 0) && (
-            <Image
-              style={{
-                position: "absolute",
-                height: 100,
-                width: 100,
-                bottom: 0,
-                right: 0,
-                zIndex: 1000
-              }}
-              source={thumbImage}
-            />
-          )}
           <View
             style={{
               flex: 1,
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center"
+              flexDirection: "column",
+              backgroundColor: "#FFF",
+              borderBottomColor: "#DEDEDE",
+              borderBottomWidth: 1,
+              padding: 10,
+              paddingTop: 5
             }}
           >
-            {this.state.gestionado &&
-              !this.state.expirado && (
-                <View
-                  style={{
-                    flex: 0.3,
-                    backgroundColor: "#f3bc32",
-                    padding: 3,
-                    borderRadius: 5,
-                    alignItems: "center"
-                  }}
-                >
-                  <Text
+            {(this.props.data.cadem === 1 || this.props.data.cadem === 0) && (
+              <Image
+                style={{
+                  position: "absolute",
+                  height: 100,
+                  width: 100,
+                  bottom: 0,
+                  right: 0,
+                  zIndex: 1000
+                }}
+                source={thumbImage}
+              />
+            )}
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                alignItems: "center"
+              }}
+            >
+              {this.state.gestionado &&
+                !this.state.expirado && (
+                  <View
                     style={{
-                      marginLeft: 5,
-                      fontSize: 12,
-                      fontWeight: "bold",
-                      fontFamily: "Questrial"
+                      flex: 0.3,
+                      backgroundColor: "#f3bc32",
+                      padding: 3,
+                      borderRadius: 5,
+                      alignItems: "center"
                     }}
                   >
-                    GESTIONADO
-                  </Text>
-                </View>
-              )}
+                    <Text
+                      style={{
+                        marginLeft: 5,
+                        fontSize: 12,
+                        fontWeight: "bold",
+                        fontFamily: "Questrial"
+                      }}
+                    >
+                      GESTIONADO
+                    </Text>
+                  </View>
+                )}
 
-            {!this.state.gestionado &&
-              this.state.expirado && (
-                <View
-                  style={{
-                    flex: 0.3,
-                    backgroundColor: "#ef4247",
-                    padding: 3,
-                    borderRadius: 5,
-                    alignItems: "center"
-                  }}
-                >
-                  <Text
+              {!this.state.gestionado &&
+                this.state.expirado && (
+                  <View
                     style={{
-                      marginLeft: 5,
-                      fontSize: 12,
-                      fontWeight: "bold",
-                      fontFamily: "Questrial",
-                      color: "white"
+                      flex: 0.3,
+                      backgroundColor: "#ef4247",
+                      padding: 3,
+                      borderRadius: 5,
+                      alignItems: "center"
                     }}
                   >
-                    EXPIRADO
-                  </Text>
-                </View>
-              )}
+                    <Text
+                      style={{
+                        marginLeft: 5,
+                        fontSize: 12,
+                        fontWeight: "bold",
+                        fontFamily: "Questrial",
+                        color: "white"
+                      }}
+                    >
+                      EXPIRADO
+                    </Text>
+                  </View>
+                )}
 
-            <View style={{ flex: 0.7, alignItems: "flex-end" }}>
+              <View style={{ flex: 0.7, alignItems: "flex-end" }}>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    fontSize: 12,
+                    fontFamily: "Questrial"
+                  }}
+                >
+                  EAN : {this.props.data.ean}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                marginTop: 5
+              }}
+            >
               <Text
                 style={{
                   marginLeft: 5,
-                  fontSize: 12,
+                  fontSize: 16,
                   fontFamily: "Questrial"
                 }}
               >
-                EAN : {this.props.data.ean}
+                {this.props.data.descripcion}
               </Text>
             </View>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              marginTop: 5
-            }}
-          >
-            <Text
-              style={{
-                marginLeft: 5,
-                fontSize: 16,
-                fontFamily: "Questrial"
-              }}
-            >
-              {this.props.data.descripcion}
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              marginTop: 5
-            }}
-          >
-            <Text
-              style={{
-                marginLeft: 5,
-                fontSize: 12,
-                fontWeight: "bold",
-                fontFamily: "Questrial"
-              }}
-            >
-              Días sin venta: {this.props.data.sventa}
-            </Text>
-          </View>
-          {visibilityText && (
             <View
               style={{
                 flex: 1,
@@ -335,34 +363,56 @@ class Producto extends React.Component {
                   fontFamily: "Questrial"
                 }}
               >
-                Stock: {this.props.data.stock}
+                Días sin venta: {this.props.data.sventa}
               </Text>
             </View>
-          )}
-          {this.props.flag && (
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                marginTop: 5
-              }}
-            >
-              <Text
+            {visibilityText && (
+              <View
                 style={{
-                  marginLeft: 5,
-                  fontSize: 12,
-                  fontWeight: "bold",
-                  fontFamily: "Questrial"
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  marginTop: 5
                 }}
               >
-                Stock en transito: {this.props.data.stock_transito}
-              </Text>
-            </View>
-          )}
-        </View>
-      </Swipeable>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    fontFamily: "Questrial"
+                  }}
+                >
+                  Stock: {this.props.data.stock}
+                </Text>
+              </View>
+            )}
+            {this.props.flag && (
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  marginTop: 5
+                }}
+              >
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    fontFamily: "Questrial"
+                  }}
+                >
+                  Stock en transito: {this.props.data.stock_transito}
+                </Text>
+              </View>
+            )}
+          </View>
+        </Swipeable>
+      </View>
     );
   }
 }

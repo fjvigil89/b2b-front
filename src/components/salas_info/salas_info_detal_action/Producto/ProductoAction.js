@@ -26,8 +26,8 @@ export default function MarcarProducto(
         url: `${url}/cases`,
         data: formForSend
       })
-        .then(() => {
-          resolve();
+        .then((res) => {
+          resolve(res.data.caseId);
         })
         .catch(error => {
           Sentry.captureException(error);
@@ -36,3 +36,36 @@ export default function MarcarProducto(
         });
     });
 }
+
+export const getQuestions = (url) =>
+    new Promise(async (resolve, reject) => {
+      axios({
+        method: "GET",
+        url: `${url}/question`
+      })
+        .then((res) => {
+          resolve(res.data.questions);
+        })
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: error.response.data.message });
+        });
+    });
+
+export const saveFeedbackQuestions = (url, casesFeedback) =>
+    new Promise(async (resolve, reject) => {
+      axios({
+        method: "POST",
+        url: `${url}/cases/feedback`,
+        data: casesFeedback
+      })
+        .then(() => {
+          resolve();
+        })
+        .catch(error => {
+          Sentry.captureException(error);
+
+          reject({ message: 'Error al guardar el feedback' });
+        });
+    });
