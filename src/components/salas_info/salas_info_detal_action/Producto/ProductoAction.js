@@ -69,3 +69,17 @@ export const saveFeedbackQuestions = (url, casesFeedback) =>
           reject({ message: 'Error al guardar el feedback' });
         });
     });
+
+export const modalShow = () => (dispatch) => {
+  dispatch({
+    type: "SHOW_MODAL",
+    isModalVisible: true
+  });
+};
+
+export const modalHide = () => (dispatch) => {
+  dispatch({
+    type: "HIDE_MODAL",
+    isModalVisible: false
+  });
+};

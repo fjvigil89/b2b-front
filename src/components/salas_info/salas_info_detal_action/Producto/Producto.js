@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Swipeable from "react-native-swipeable";
 
-import MarcarProducto, { getQuestions, saveFeedbackQuestions } from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
+import MarcarProducto, { getQuestions, saveFeedbackQuestions, modalShow, modalHide } from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
 import ModalFeedBack from "@components/salas_info/salas_info_detal_action/Producto/ProductoFeedback";
 
 const styles = StyleSheet.create({
@@ -38,19 +38,11 @@ const leftButtons = [
   </TouchableOpacity>
 ];
 
-const rightButtons = [
-  <TouchableOpacity
-    activeOpacity={0.8}
-    style={[styles.rightSwipeItem, { backgroundColor: "#ef4247" }]}
-  >
-    <Text style={{ color: "white" }}>Caso</Text>
-    <Text style={{ color: "white" }}>Expirado</Text>
-  </TouchableOpacity>
-];
-
 class Producto extends React.Component {
   static propTypes = {
     MarcarProducto: PropTypes.func.isRequired,
+    modalShow: PropTypes.func.isRequired,
+    modalHide: PropTypes.func.isRequired,
     data: PropTypes.shape({
       cadem: PropTypes.oneOfType([() => null, PropTypes.string]),
       descripcion: PropTypes.string,
@@ -97,8 +89,7 @@ class Producto extends React.Component {
     gestionado: this.props.data.gestionado !== 0,
     expirado: false,
     questions: [],
-    responseQuestions: [],
-    showModal: false,
+    responseQuestions: []
   };
 
   async componentWillMount() {
@@ -106,14 +97,17 @@ class Producto extends React.Component {
     this.setState({ questions })
   }
 
-  onResponseQuestions(check) {
-    this.setState({ showModal: false });
+  onResponseQuestions(response) {
+    console.log('onResponseQuestions: ', this.props.data.ean);
+    console.log('RESPONSE: ', response);
+    this.props.modalHide();
+
     const responseQuestions = this.state.questions.map(q => ({
       id: q.id,
       question: q.question,
-      response: check[q.id]
+      response: response[q.id] ? response[q.id] : false
     }));
-    this.setState({ responseQuestions })
+    this.setState({ responseQuestions });
     this.makeGestionado();
   }
 
@@ -139,7 +133,8 @@ class Producto extends React.Component {
         questionId: elem.id,
         folio: this.props.sala,
         ean: this.props.data.ean,
-        answer: elem.response
+        answer: elem.response,
+
       }));
 
       await saveFeedbackQuestions(this.props.endpoint, dataFeedback);
@@ -159,25 +154,11 @@ class Producto extends React.Component {
     });
   };
 
-  makeExpirado = () => {
-    this.props.MarcarProducto(
-      this.props.endpoint,
-      this.props.sala,
-      "expirado",
-      this.props.causa,
-      this.props.data.ean,
-      this.props.data.venta_perdida,
-      this.props.dateb2b
-    );
-
-    this.setState({
-      expirado: true
-    });
-  };
-
   caseFeedback = () => {
-    this.setState({ showModal: true });
-  }
+    console.log('caseFeedback: ', this.props.data.ean);
+
+    this.props.modalShow();
+  };
 
   render() {
     let thumbImage;
@@ -197,7 +178,9 @@ class Producto extends React.Component {
       <View>
         <ModalFeedBack
           questions={this.state.questions}
-          showModal={this.state.showModal}
+          showModal={
+            this.props.isModalVisible
+          }
           response={this.onResponseQuestions.bind(this)}
           style={{
             flex: 1,
@@ -208,18 +191,6 @@ class Producto extends React.Component {
         <Swipeable
           onRef={ref => {
             this.state.swipeable = ref;
-          }}
-          rightContent={
-            !this.state.gestionado &&
-            !this.state.expirado &&
-            this.props.visitaEnProgreso === 1
-              ? rightButtons
-              // : rightButtons
-              // TODO: Para bloquear gestionados
-              : null
-          }
-          onRightActionRelease={() => {
-            this.makeExpirado();
           }}
           leftContent={
             !this.state.gestionado &&
@@ -418,11 +389,14 @@ class Producto extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
+  isModalVisible: state.productos.modal.isModalVisible
 });
 
 const mapDispatchToProps = {
-  MarcarProducto
+  MarcarProducto,
+  modalShow,
+  modalHide
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Producto);

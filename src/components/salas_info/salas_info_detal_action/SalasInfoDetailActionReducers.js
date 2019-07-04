@@ -1,5 +1,8 @@
 export const initialState = {
-  productos: []
+  productos: [],
+  modal: {
+    isModalVisible: false
+  }
 };
 
 export default function productos(state = initialState, action) {
@@ -11,8 +14,23 @@ export default function productos(state = initialState, action) {
           productos: action.data
         };
       }
-
       return initialState;
+    }
+    case "SHOW_MODAL": {
+      return {
+        ...state,
+        modal: {
+          isModalVisible: action.isModalVisible
+        }
+      }
+    }
+    case "HIDE_MODAL": {
+      return {
+        ...state,
+        modal: {
+          isModalVisible: action.isModalVisible
+        }
+      }
     }
     default:
       return initialState;
