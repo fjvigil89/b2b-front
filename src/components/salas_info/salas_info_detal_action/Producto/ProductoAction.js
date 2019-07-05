@@ -83,3 +83,13 @@ export const modalHide = () => (dispatch) => {
     isModalVisible: false
   });
 };
+
+export const setCurrentProduct = (description, ean) => (dispatch) => {
+  dispatch({
+    type: "SET_CURRENT_PRODUCT",
+    payload: {
+      description,
+      ean
+    }
+  });
+};
