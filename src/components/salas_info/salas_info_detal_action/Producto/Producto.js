@@ -133,7 +133,7 @@ class Producto extends React.Component {
         caseId,
         questionId: elem.id,
         folio: this.props.sala,
-        ean: this.props.data.ean,
+        ean: this.props.currentProduct.ean,
         answer: elem.response,
 
       }));
@@ -156,8 +156,6 @@ class Producto extends React.Component {
   };
 
   caseFeedback = () => {
-    console.log('caseFeedback: ', this.props.data.ean);
-
     this.props.modalShow();
   };
 
@@ -390,7 +388,8 @@ class Producto extends React.Component {
 
 const mapStateToProps = state => ({
   endpoint: state.user.endpoint,
-  isModalVisible: state.productos.modal.isModalVisible
+  isModalVisible: state.productos.modal.isModalVisible,
+  currentProduct: state.productos.currentProduct
 });
 
 const mapDispatchToProps = {
