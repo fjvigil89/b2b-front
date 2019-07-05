@@ -44,6 +44,7 @@ class Producto extends React.Component {
     modalShow: PropTypes.func.isRequired,
     modalHide: PropTypes.func.isRequired,
     setCurrentProduct: PropTypes.func.isRequired,
+    saveFeedbackQuestions: PropTypes.func.isRequired,
     data: PropTypes.shape({
       cadem: PropTypes.oneOfType([() => null, PropTypes.string]),
       descripcion: PropTypes.string,
@@ -98,10 +99,7 @@ class Producto extends React.Component {
     this.setState({ questions })
   }
 
-  onResponseQuestions(response) {
-    console.log('onResponseQuestions: ', this.props.data.ean);
-    console.log('RESPONSE: ', response);
-    this.props.modalHide();
+  async onResponseQuestions(response) {
 
     const responseQuestions = this.state.questions.map(q => ({
       id: q.id,
@@ -109,6 +107,7 @@ class Producto extends React.Component {
       response: response[q.id] ? response[q.id] : false
     }));
     this.setState({ responseQuestions });
+
     this.makeGestionado();
   }
 
@@ -118,7 +117,7 @@ class Producto extends React.Component {
       this.props.sala,
       "gestionado",
       this.props.causa,
-      this.props.data.ean,
+      this.props.currentProduct.ean,
       this.props.data.venta_perdida,
       this.props.dateb2b
     );
@@ -135,10 +134,9 @@ class Producto extends React.Component {
         folio: this.props.sala,
         ean: this.props.currentProduct.ean,
         answer: elem.response,
-
       }));
 
-      await saveFeedbackQuestions(this.props.endpoint, dataFeedback);
+      await this.props.saveFeedbackQuestions(this.props.endpoint, dataFeedback, this.props.imagen);
     }
 
     // detiene
@@ -153,6 +151,8 @@ class Producto extends React.Component {
     DeviceEventEmitter.emit(`SalaDetalle-${this.props.sala}`, {
       gestionado: this.props.data.venta_perdida
     });
+
+    this.props.modalHide();
   };
 
   caseFeedback = () => {
@@ -389,14 +389,16 @@ class Producto extends React.Component {
 const mapStateToProps = state => ({
   endpoint: state.user.endpoint,
   isModalVisible: state.productos.modal.isModalVisible,
-  currentProduct: state.productos.currentProduct
+  currentProduct: state.productos.currentProduct,
+  imagen: state.productos.image.image,
 });
 
 const mapDispatchToProps = {
   MarcarProducto,
   modalShow,
   modalHide,
-  setCurrentProduct
+  setCurrentProduct,
+  saveFeedbackQuestions
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Producto);
