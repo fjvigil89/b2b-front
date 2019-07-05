@@ -5,19 +5,19 @@ import {
   View,
   StyleSheet,
   ScrollView,
-  // CheckBox,
   Alert,
 } from 'react-native';
 import {
   Button,
   Text,
   Input,
-  CheckBox,
   Switch,
   Left,
+  Right,
   Item,
   ListItem,
   Icon,
+  H2
 } from "native-base";
 import Modal from "react-native-modal";
 import _ from "lodash";
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   content: {
-    height: 450,
+    height: 500,
     backgroundColor: 'white',
     padding: 15,
     borderRadius: 30 / 2,
@@ -43,13 +43,14 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   itemHeader: {
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: "flex-end",
   },
   itemHeaderIcon: {
     color: 'black',
     fontSize: 30,
-    marginTop: -20
+    marginTop: -45
   },
   text: {
     fontSize: 16,
@@ -168,18 +169,51 @@ class ModalFeedBack extends Component {
       >
         <View style={styles.content}>
           <View
-            style={styles.itemHeader}
+            style={[styles.itemHeader, {
+              paddingBottom: 15
+            }]}
           >
-            <Button
-              transparent
-              title=""
-              onPress={() => this.props.modalHide()}
+            <View
+              style={{
+                // marginRight: 5
+              }}
             >
-              <MaterialIcons
-                name="close"
-                style={styles.itemHeaderIcon}
-              />
-            </Button>
+              <View>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    marginTop: 15,
+                    fontSize: 20,
+                    fontFamily: "Questrial"
+                  }}
+                >
+                  {this.props.descripcion}
+                </Text>
+              </View>
+              <View>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    fontSize: 12,
+                    fontFamily: "Questrial"
+                  }}
+                >
+                EAN: {this.props.ean}
+                </Text>
+              </View>
+            </View>
+            <Right>
+              <Button
+                transparent
+                title=""
+                onPress={() => this.props.modalHide()}
+              >
+                <MaterialIcons
+                  name="close"
+                  style={styles.itemHeaderIcon}
+                />
+              </Button>
+            </Right>
           </View>
           <ScrollView>
             {questionList}
