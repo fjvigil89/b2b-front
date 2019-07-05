@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   itemHeaderIcon: {
     color: 'black',
     fontSize: 30,
-    marginTop: -45
+    marginTop: -40
   },
   text: {
     fontSize: 16,
@@ -173,7 +173,7 @@ class ModalFeedBack extends Component {
               paddingBottom: 15
             }]}
           >
-            <View
+            <Left
               style={{
                 // marginRight: 5
               }}
@@ -187,7 +187,7 @@ class ModalFeedBack extends Component {
                     fontFamily: "Questrial"
                   }}
                 >
-                  {this.props.descripcion}
+                  {this.props.currentProduct.description}
                 </Text>
               </View>
               <View>
@@ -198,10 +198,10 @@ class ModalFeedBack extends Component {
                     fontFamily: "Questrial"
                   }}
                 >
-                EAN: {this.props.ean}
+                EAN: {this.props.currentProduct.ean}
                 </Text>
               </View>
-            </View>
+            </Left>
             <Right>
               <Button
                 transparent
@@ -254,7 +254,8 @@ class ModalFeedBack extends Component {
 }
 
 const mapStateToProps = state => ({
-  isModalVisible: state.productos.modal.isModalVisible
+  isModalVisible: state.productos.modal.isModalVisible,
+  currentProduct: state.productos.currentProduct
 });
 
 const mapDispatchToProps = {
