@@ -206,7 +206,14 @@ class ModalFeedBack extends Component {
               <Button
                 transparent
                 title=""
-                onPress={() => this.props.modalHide()}
+                onPress={() => {
+                  this.props.modalHide();
+                  this.setState({
+                    questions: [],
+                    response: {},
+                    images: ''
+                  });
+                }}
               >
                 <MaterialIcons
                   name="close"
