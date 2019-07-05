@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Swipeable from "react-native-swipeable";
 
-import MarcarProducto, { getQuestions, saveFeedbackQuestions, modalShow, modalHide } from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
+import MarcarProducto, { getQuestions, saveFeedbackQuestions, modalShow, modalHide, setCurrentProduct } from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
 import ModalFeedBack from "@components/salas_info/salas_info_detal_action/Producto/ProductoFeedback";
 
 const styles = StyleSheet.create({
@@ -43,6 +43,7 @@ class Producto extends React.Component {
     MarcarProducto: PropTypes.func.isRequired,
     modalShow: PropTypes.func.isRequired,
     modalHide: PropTypes.func.isRequired,
+    setCurrentProduct: PropTypes.func.isRequired,
     data: PropTypes.shape({
       cadem: PropTypes.oneOfType([() => null, PropTypes.string]),
       descripcion: PropTypes.string,
@@ -180,8 +181,6 @@ class Producto extends React.Component {
           questions={this.state.questions}
           showModal={ this.props.isModalVisible }
           response={this.onResponseQuestions.bind(this)}
-          descripcion={this.props.data.descripcion}
-          ean={this.props.data.ean}
           style={{
             flex: 1,
             justifyContent: 'center',
@@ -202,6 +201,7 @@ class Producto extends React.Component {
               : null
           }
           onLeftActionRelease={() => {
+            this.props.setCurrentProduct(this.props.data.descripcion, this.props.data.ean);
             this.caseFeedback();
           }}
         >
@@ -396,7 +396,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   MarcarProducto,
   modalShow,
-  modalHide
+  modalHide,
+  setCurrentProduct
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Producto);
