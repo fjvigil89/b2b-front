@@ -2,7 +2,8 @@ export const initialState = {
   productos: [],
   modal: {
     isModalVisible: false
-  }
+  },
+  currentProduct: {}
 };
 
 export default function productos(state = initialState, action) {
@@ -30,6 +31,12 @@ export default function productos(state = initialState, action) {
         modal: {
           isModalVisible: action.isModalVisible
         }
+      }
+    }
+    case "SET_CURRENT_PRODUCT": {
+      return {
+        ...state,
+        currentProduct: action.payload
       }
     }
     default:
