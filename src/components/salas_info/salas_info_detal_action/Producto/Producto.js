@@ -178,10 +178,10 @@ class Producto extends React.Component {
       <View>
         <ModalFeedBack
           questions={this.state.questions}
-          showModal={
-            this.props.isModalVisible
-          }
+          showModal={ this.props.isModalVisible }
           response={this.onResponseQuestions.bind(this)}
+          descripcion={this.props.data.descripcion}
+          ean={this.props.data.ean}
           style={{
             flex: 1,
             justifyContent: 'center',
