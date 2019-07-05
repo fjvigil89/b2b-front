@@ -23,7 +23,7 @@ import Modal from "react-native-modal";
 import _ from "lodash";
 import {MaterialIcons} from "@expo/vector-icons";
 
-import {modalHide} from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
+import {modalHide, setPhoto} from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
 import {ImagePicker, Permissions, Constants} from "expo";
 
 
@@ -100,9 +100,11 @@ class ModalFeedBack extends Component {
   };
 
   takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync();
+
+    let result = await ImagePicker.launchCameraAsync({base64: true});
 
     if (!result.cancelled) {
+      this.props.setPhoto(result);
       this.setState({images: result.uri});
     }
   };
@@ -267,8 +269,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   modalHide,
+  setPhoto
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalFeedBack);
-
-// export default ModalFeedBack;
