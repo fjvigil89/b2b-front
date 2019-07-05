@@ -23,7 +23,7 @@ export default function MarcarProducto(
 
       return axios({
         method: "POST",
-        url: `${ url }/cases`,
+        url: `${url}/cases`,
         data: formForSend
       })
         .then((res) => {
@@ -41,7 +41,7 @@ export const getQuestions = (url) =>
   new Promise(async (resolve, reject) => {
     axios({
       method: "GET",
-      url: `${ url }/question`
+      url: `${url}/question`
     })
       .then((res) => {
         resolve(res.data.questions);
@@ -53,12 +53,28 @@ export const getQuestions = (url) =>
       });
   });
 
-export const saveFeedbackQuestions = (url, casesFeedback) =>
-  new Promise(async (resolve, reject) => {
+export const saveFeedbackQuestions = (url, casesFeedback, imagen) => {
+  const formData = new FormData();
+
+  const uriParts = imagen.uri.split(".");
+  const fileType = uriParts[uriParts.length - 1];
+
+  formData.append(
+    `images`,
+    {
+      uri: imagen.uri,
+      name: `imagen.${fileType}`,
+      type: `image/${fileType}`
+    },
+  );
+  formData.append(`contenido`, casesFeedback);
+
+  return new Promise(async (resolve, reject) => {
     axios({
       method: "POST",
-      url: `${ url }/cases/feedback`,
-      data: casesFeedback
+      url: `${url}/cases/feedback`,
+      data: formData,
+      config: { headers: { "Content-Type": "multipart/form-data" } }
     })
       .then(() => {
         resolve();
@@ -69,6 +85,7 @@ export const saveFeedbackQuestions = (url, casesFeedback) =>
         reject({message: 'Error al guardar el feedback'});
       });
   });
+};
 
 export const modalShow = () => (dispatch) => {
   dispatch({
@@ -80,7 +97,11 @@ export const modalShow = () => (dispatch) => {
 export const modalHide = () => (dispatch) => {
   dispatch({
     type: "HIDE_MODAL",
-    isModalVisible: false
+    modal: {
+      isModalVisible: false
+    },
+    currentProduct: {},
+    image: '',
   });
 };
 
@@ -90,6 +111,15 @@ export const setCurrentProduct = (description, ean) => (dispatch) => {
     payload: {
       description,
       ean
+    }
+  });
+};
+
+export const setPhoto = (image) => (dispatch)  => {
+  dispatch({
+    type: "SET_PHOTO",
+    payload: {
+      image
     }
   });
 };
