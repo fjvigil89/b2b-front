@@ -23,7 +23,7 @@ export default function MarcarProducto(
 
       return axios({
         method: "POST",
-        url: `${url}/cases`,
+        url: `${ url }/cases`,
         data: formForSend
       })
         .then((res) => {
@@ -32,43 +32,43 @@ export default function MarcarProducto(
         .catch(error => {
           Sentry.captureException(error);
 
-          reject({ message: error.response.data.message });
+          reject({message: error.response.data.message});
         });
     });
 }
 
 export const getQuestions = (url) =>
-    new Promise(async (resolve, reject) => {
-      axios({
-        method: "GET",
-        url: `${url}/question`
+  new Promise(async (resolve, reject) => {
+    axios({
+      method: "GET",
+      url: `${ url }/question`
+    })
+      .then((res) => {
+        resolve(res.data.questions);
       })
-        .then((res) => {
-          resolve(res.data.questions);
-        })
-        .catch(error => {
-          Sentry.captureException(error);
+      .catch(error => {
+        Sentry.captureException(error);
 
-          reject({ message: error.response.data.message });
-        });
-    });
+        reject({message: error.response.data.message});
+      });
+  });
 
 export const saveFeedbackQuestions = (url, casesFeedback) =>
-    new Promise(async (resolve, reject) => {
-      axios({
-        method: "POST",
-        url: `${url}/cases/feedback`,
-        data: casesFeedback
+  new Promise(async (resolve, reject) => {
+    axios({
+      method: "POST",
+      url: `${ url }/cases/feedback`,
+      data: casesFeedback
+    })
+      .then(() => {
+        resolve();
       })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          Sentry.captureException(error);
+      .catch(error => {
+        Sentry.captureException(error);
 
-          reject({ message: 'Error al guardar el feedback' });
-        });
-    });
+        reject({message: 'Error al guardar el feedback'});
+      });
+  });
 
 export const modalShow = () => (dispatch) => {
   dispatch({
