@@ -100,12 +100,11 @@ class ModalFeedBack extends Component {
   };
 
   takePhoto = async () => {
-
-    let result = await ImagePicker.launchCameraAsync({base64: true});
+    const result = await ImagePicker.launchCameraAsync({base64: true});
 
     if (!result.cancelled) {
       this.props.setPhoto(result);
-      this.setState({images: result.uri});
+      this.setState({images: result});
     }
   };
 

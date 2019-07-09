@@ -17,6 +17,7 @@ import ListadoProductosPorCategoriaAcccion
   from "@components/salas_info/salas_info_detal_action/SalasInfoDetailActionActions.js";
 import Header from "@components/salas_info/salas_info_detal_action/Header/Header";
 import Producto from "@components/salas_info/salas_info_detal_action/Producto/Producto";
+import { getQuestions } from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
 
 class SalasInfoDetailAction extends React.Component {
   static propTypes = {

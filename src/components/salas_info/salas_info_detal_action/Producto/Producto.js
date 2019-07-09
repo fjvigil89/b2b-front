@@ -96,30 +96,29 @@ class Producto extends React.Component {
 
   async componentWillMount() {
     const questions = await getQuestions(this.props.endpoint);
-    this.setState({ questions })
+    this.setState({ questions });
   }
 
   async onResponseQuestions(response) {
-
     const responseQuestions = this.state.questions.map(q => ({
       id: q.id,
       question: q.question,
       response: response[q.id] ? response[q.id] : false
     }));
-    this.setState({ responseQuestions });
 
+    this.setState({ responseQuestions });
     this.makeGestionado();
   }
 
   makeGestionado = async () => {
     const caseId = await this.props.MarcarProducto(
       this.props.endpoint,
-      this.props.sala,
+      this.props.currentProduct.sala,
       "gestionado",
       this.props.causa,
       this.props.currentProduct.ean,
-      this.props.data.venta_perdida,
-      this.props.dateb2b
+      this.props.currentProduct.venta_perdida,
+      this.props.currentProduct.dateb2b
     );
 
     this.setState({
@@ -131,25 +130,24 @@ class Producto extends React.Component {
       const dataFeedback = this.state.responseQuestions.map(elem => ({
         caseId,
         questionId: elem.id,
-        folio: this.props.sala,
+        folio: this.props.currentProduct.sala,
         ean: this.props.currentProduct.ean,
         answer: elem.response,
       }));
-
-      await this.props.saveFeedbackQuestions(this.props.endpoint, dataFeedback, this.props.imagen);
+      await saveFeedbackQuestions(this.props.endpoint, dataFeedback, this.props.imagen);
     }
 
     // detiene
     DeviceEventEmitter.emit(
-      `SalaDetalleCategoria-${this.props.sala}-${this.props.categoria.replace(
+      `SalaDetalleCategoria-${this.props.currentProduct.sala}-${this.props.categoria.replace(
         /\s/g,
         ""
       )}`,
-      { gestionado: this.props.data.venta_perdida }
+      { gestionado: this.props.currentProduct.venta_perdida }
     );
 
-    DeviceEventEmitter.emit(`SalaDetalle-${this.props.sala}`, {
-      gestionado: this.props.data.venta_perdida
+    DeviceEventEmitter.emit(`SalaDetalle-${this.props.currentProduct.sala}`, {
+      gestionado: this.props.currentProduct.venta_perdida
     });
 
     this.props.modalHide();
@@ -199,7 +197,12 @@ class Producto extends React.Component {
               : null
           }
           onLeftActionRelease={() => {
-            this.props.setCurrentProduct(this.props.data.descripcion, this.props.data.ean);
+            this.props.setCurrentProduct(
+              this.props.data.descripcion,
+              this.props.data.ean,
+              this.props.sala,
+              this.props.dateb2b,
+              this.props.data.venta_perdida);
             this.caseFeedback();
           }}
         >

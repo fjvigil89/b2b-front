@@ -53,39 +53,39 @@ export const getQuestions = (url) =>
       });
   });
 
-export const saveFeedbackQuestions = (url, casesFeedback, imagen) => {
-  const formData = new FormData();
+export const saveFeedbackQuestions = (url, casesFeedback, imagen) => 
+  new Promise((resolve, reject) => {
+    let images = {};
+    if (imagen) {
+      const uriParts = imagen.uri.split(".");
+      const fileType = uriParts[uriParts.length - 1];
 
-  const uriParts = imagen.uri.split(".");
-  const fileType = uriParts[uriParts.length - 1];
+      images = {
+        uri: imagen.uri,
+        name: `imagen.${fileType}`,
+        type: `image/${fileType}`,
+        base64: imagen.base64
+      }
+    }
 
-  formData.append(
-    `images`,
-    {
-      uri: imagen.uri,
-      name: `imagen.${fileType}`,
-      type: `image/${fileType}`
-    },
-  );
-  formData.append(`contenido`, casesFeedback);
+    const data = {
+      casesFeedback,
+      images
+    };
 
-  return new Promise(async (resolve, reject) => {
-    axios({
+    return axios({
       method: "POST",
       url: `${url}/cases/feedback`,
-      data: formData,
-      config: { headers: { "Content-Type": "multipart/form-data" } }
+      data
     })
       .then(() => {
-        resolve();
+        resolve()
       })
-      .catch(error => {
-        Sentry.captureException(error);
-
-        reject({message: 'Error al guardar el feedback'});
-      });
+      .catch(err => {
+        Sentry.captureException(err);
+        reject(err)
+      })
   });
-};
 
 export const modalShow = () => (dispatch) => {
   dispatch({
@@ -105,12 +105,15 @@ export const modalHide = () => (dispatch) => {
   });
 };
 
-export const setCurrentProduct = (description, ean) => (dispatch) => {
+export const setCurrentProduct = (description, ean, sala, dateb2b, venta_perdida) => (dispatch) => {
   dispatch({
     type: "SET_CURRENT_PRODUCT",
     payload: {
       description,
-      ean
+      ean,
+      sala,
+      dateb2b,
+      venta_perdida
     }
   });
 };
