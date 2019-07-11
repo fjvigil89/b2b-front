@@ -86,7 +86,7 @@ class SalasHeader extends React.Component {
             iosBarStyle="dark-content"
           >
             <Button transparent onPress={this.props.ClearSearch}>
-              <Ionicons name="arrow-back" style={{ color: "#000" }} />
+              <Ionicons name="md-arrow-back" style={{ color: "#000" }} />
             </Button>
             <Body rounded>
               <Item>

@@ -11,7 +11,6 @@ import {
   FooterTab
 } from "native-base";
 import { Actions } from "react-native-router-flux";
-import _ from "lodash";
 
 import ListadoProductosPorCategoriaAcccion
   from "@components/salas_info/salas_info_detal_action/SalasInfoDetailActionActions.js";
@@ -45,18 +44,24 @@ class SalasInfoDetailAction extends React.Component {
   };
 
   componentWillMount = () => {
+    const {
+      endpoint,
+      sala,
+      categoria,
+      accion
+    } = this.props;
     this.props.ListadoProductosPorCategoriaAcccion(
-      this.props.endpoint,
-      this.props.sala,
-      this.props.categoria,
-      this.props.accion
+      endpoint,
+      sala,
+      categoria,
+      accion
     );
   };
 
   render() {
-    let productos = <Text/>;
+    // let productos = <Text/>;
 
-    if (!_.isEmpty(this.props.productos)) {
+    /* if (!_.isEmpty(this.props.productos)) {
       productos = this.props.productos.detail.data.map(detail => (
         <Producto
           sala={this.props.sala}
@@ -70,7 +75,7 @@ class SalasInfoDetailAction extends React.Component {
           visitaEnProgreso={this.props.visitaEnProgreso}
         />
       ));
-    }
+    } */
 
     return (
       <Container style={{ backgroundColor: "#F4F4F4" }}>
@@ -93,7 +98,18 @@ class SalasInfoDetailAction extends React.Component {
                 backgroundColor: "#FFFFFF"
               }}
             >
-              <ScrollView>{productos}</ScrollView>
+              <Producto
+                sala={this.props.sala}
+                causa={this.props.accion}
+                /* key={detail.ean} */
+                productos={this.props.productos}
+                /* data={detail}
+                flag={this.props.productos.detail.flag} */
+                accion={this.props.accion}
+                dateb2b={this.props.dateb2b}
+                categoria={this.props.categoria}
+                visitaEnProgreso={this.props.visitaEnProgreso}
+              />
             </View>
           </SafeAreaView>
         </Content>

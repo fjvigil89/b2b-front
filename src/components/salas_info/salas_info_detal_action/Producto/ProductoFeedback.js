@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {
-  // Button,
   View,
   StyleSheet,
   ScrollView,
@@ -16,8 +15,7 @@ import {
   Right,
   Item,
   ListItem,
-  Icon,
-  H2
+  Icon
 } from "native-base";
 import Modal from "react-native-modal";
 import _ from "lodash";
@@ -82,7 +80,8 @@ class ModalFeedBack extends Component {
   state = {
     questions: this.props.questions,
     response: {},
-    images: ''
+    images: '',
+    comment: ''
   };
 
 
@@ -94,7 +93,7 @@ class ModalFeedBack extends Component {
     if (Constants.platform.ios) {
       const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
+        Alert.alert('Disculpa, la Camara requiere de estos permisos para operar');
       }
     }
   };
@@ -103,6 +102,9 @@ class ModalFeedBack extends Component {
     const result = await ImagePicker.launchCameraAsync({base64: true});
 
     if (!result.cancelled) {
+      const filename = result.uri.split('/').pop();
+      result.name = filename;
+
       this.props.setPhoto(result);
       this.setState({images: result});
     }
@@ -111,6 +113,7 @@ class ModalFeedBack extends Component {
   handleInput = (idQuestion, val) => {
     const newCheck = {...this.state.response};
     newCheck[idQuestion] = val;
+    this.setState({ comment: val });
     this.setState({response: newCheck});
   };
 
@@ -118,14 +121,18 @@ class ModalFeedBack extends Component {
     const {questions} = this.props;
 
     let questionList = <View></View>;
-    if (!_.isEmpty(this.props.questions)) {
-      questionList = this.props.questions.map(q => {
+    if (!_.isEmpty(questions)) {
+      questionList = questions.map(q => {
         if (q.id === 7) { // Comentario
           return (
-            <View style={{padding: 20,}}>
+            <View style={{padding: 20}}>
               <Text style={styles.text}>{q.question}</Text>
               <Item>
-                <Input placeholder='Ingrese comentario (opcional)'/>
+                <Input
+                  placeholder='Ingrese comentario (opcional)'
+                  onChangeText={val => this.handleInput(q.id, val) }
+                  value={this.state.comment}
+                />
                 <Icon name='checkmark-circle'/>
               </Item>
             </View>

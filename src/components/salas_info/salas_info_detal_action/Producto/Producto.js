@@ -8,8 +8,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   DeviceEventEmitter,
+  ScrollView,
 } from "react-native";
 import Swipeable from "react-native-swipeable";
+import _ from "lodash";
 
 import MarcarProducto, { getQuestions, saveFeedbackQuestions, modalShow, modalHide, setCurrentProduct } from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
 import ModalFeedBack from "@components/salas_info/salas_info_detal_action/Producto/ProductoFeedback";
@@ -44,6 +46,7 @@ class Producto extends React.Component {
     modalShow: PropTypes.func.isRequired,
     modalHide: PropTypes.func.isRequired,
     setCurrentProduct: PropTypes.func.isRequired,
+    productos: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     saveFeedbackQuestions: PropTypes.func.isRequired,
     data: PropTypes.shape({
       cadem: PropTypes.oneOfType([() => null, PropTypes.string]),
@@ -86,17 +89,41 @@ class Producto extends React.Component {
     visitaEnProgreso: 0
   };
 
-  state = {
-    swipeable: null,
-    gestionado: this.props.data.gestionado !== 0,
-    expirado: false,
-    questions: [],
-    responseQuestions: []
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      swipeable: null,
+      productos: {},
+      questions: [],
+      responseQuestions: []
+    };
+  }
 
   async componentWillMount() {
     const questions = await getQuestions(this.props.endpoint);
     this.setState({ questions });
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.productos !== this.props.productos) {
+      const dataProduct = nextProps.productos.detail.data.map(data => {
+        if (!data.expirado) {
+          return {
+            ...data,
+            expirado: false
+          }
+        }
+        return {...data};
+      });
+      const productos = {
+        detail: {
+          ...nextProps.productos.detail,
+          data: dataProduct
+        }
+      }
+      this.setState({ productos });
+    }
   }
 
   async onResponseQuestions(response) {
@@ -110,6 +137,30 @@ class Producto extends React.Component {
     this.makeGestionado();
   }
 
+  updateProductByEan = (ean, gestionado) => {
+    const { productos } = this.state;
+    const updateData = productos.detail.data.map(data => {
+      if (data.ean === ean) {
+        return {
+          ...data,
+          gestionado
+        }
+      }
+      return {...data};
+    })
+
+    const updateProduct = {
+      detail: {
+        ...productos.detail,
+        data: updateData
+      }
+    }
+
+    this.setState({
+      productos: updateProduct
+    })
+  }
+
   makeGestionado = async () => {
     const caseId = await this.props.MarcarProducto(
       this.props.endpoint,
@@ -121,11 +172,10 @@ class Producto extends React.Component {
       this.props.currentProduct.dateb2b
     );
 
-    this.setState({
-      gestionado: true
-    });
+    this.updateProductByEan(this.props.currentProduct.ean, true);
 
     // modal
+    console.log('this.state.responseQuestions: ', JSON.stringify(this.state.responseQuestions));
     if (this.state.responseQuestions.length > 0) {
       const dataFeedback = this.state.responseQuestions.map(elem => ({
         caseId,
@@ -134,9 +184,11 @@ class Producto extends React.Component {
         ean: this.props.currentProduct.ean,
         answer: elem.response,
       }));
+      console.log('dataFeedback: ', dataFeedback);
       await saveFeedbackQuestions(this.props.endpoint, dataFeedback, this.props.imagen);
     }
 
+    console.log('envia info eventos')
     // detiene
     DeviceEventEmitter.emit(
       `SalaDetalleCategoria-${this.props.currentProduct.sala}-${this.props.categoria.replace(
@@ -158,24 +210,31 @@ class Producto extends React.Component {
   };
 
   render() {
-    let thumbImage;
-
-    if (this.props.data.cadem === 1) {
-      thumbImage = require("@assets/images/thumb.png");
-    } else if (this.props.data.cadem === 0) {
-      thumbImage = require("@assets/images/thumb-down.png");
-    }
+    const {
+      accion,
+      /* productos, */
+      visitaEnProgreso,
+      isModalVisible,
+    } = this.props;
+    const {
+      productos,
+      questions,
+    } = this.state;
 
     let visibilityText = false;
-    if (this.props.accion === "Reponer" || this.props.accion === "Ajustar") {
+    if (accion === "Reponer" || accion === "Ajustar") {
       visibilityText = true;
+    }
+    
+    if (_.isEmpty(productos) || questions.length === 0) {
+      return (<View></View>)
     }
 
     return (
       <View>
         <ModalFeedBack
-          questions={this.state.questions}
-          showModal={ this.props.isModalVisible }
+          questions={questions}
+          showModal={isModalVisible}
           response={this.onResponseQuestions.bind(this)}
           style={{
             flex: 1,
@@ -183,70 +242,177 @@ class Producto extends React.Component {
             alignItems: 'center'
           }}
         />
-        <Swipeable
-          onRef={ref => {
-            this.state.swipeable = ref;
-          }}
-          leftContent={
-            !this.state.gestionado &&
-            !this.state.expirado &&
-            this.props.visitaEnProgreso === 1
-              ? leftButtons
-              // : leftButtons
-              // TODO: Para bloquear gestionados
-              : null
-          }
-          onLeftActionRelease={() => {
-            this.props.setCurrentProduct(
-              this.props.data.descripcion,
-              this.props.data.ean,
-              this.props.sala,
-              this.props.dateb2b,
-              this.props.data.venta_perdida);
-            this.caseFeedback();
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              backgroundColor: "#FFF",
-              borderBottomColor: "#DEDEDE",
-              borderBottomWidth: 1,
-              padding: 10,
-              paddingTop: 5
-            }}
-          >
-            {(this.props.data.cadem === 1 || this.props.data.cadem === 0) && (
-              <Image
-                style={{
-                  position: "absolute",
-                  height: 100,
-                  width: 100,
-                  bottom: 0,
-                  right: 0,
-                  zIndex: 1000
-                }}
-                source={thumbImage}
-              />
-            )}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "flex-end",
-                alignItems: "center"
+        <ScrollView>
+        {productos.detail.data.map(data => {
+          return (
+              
+            <Swipeable
+              onRef={ref => {
+                this.state.swipeable = ref;
+              }}
+              leftContent={
+                !data.gestionado !== 0 &&
+                !data.expirado &&
+                visitaEnProgreso === 1
+                  ? leftButtons
+                  // : leftButtons
+                  // TODO: Para bloquear gestionados
+                  : null
+              }
+              onLeftActionRelease={() => {
+                this.props.setCurrentProduct(
+                  data.descripcion,
+                  data.ean,
+                  this.props.sala,
+                  this.props.dateb2b,
+                  data.venta_perdida);
+                this.caseFeedback();
               }}
             >
-              {this.state.gestionado &&
-                !this.state.expirado && (
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "column",
+                  backgroundColor: "#FFF",
+                  borderBottomColor: "#DEDEDE",
+                  borderBottomWidth: 1,
+                  padding: 10,
+                  paddingTop: 5
+                }}
+              >
+                {(data.cadem === 1 || data.cadem === 0) && (
+                  <Image
+                    style={{
+                      position: "absolute",
+                      height: 100,
+                      width: 100,
+                      bottom: 0,
+                      right: 0,
+                      zIndex: 1000
+                    }}
+                    source={
+                      data.cadem === 1 ?
+                          require("@assets/images/thumb.png") :
+                        data.cadem === 0 ?
+                          require("@assets/images/thumb-down.png") : '' }
+                  />
+                )}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center"
+                  }}
+                >
+                  {data.gestionado !== 0 &&
+                    !data.expirado && (
+                      <View
+                        style={{
+                          flex: 0.3,
+                          backgroundColor: "#f3bc32",
+                          padding: 3,
+                          borderRadius: 5,
+                          alignItems: "center"
+                        }}
+                      >
+                        <Text
+                          style={{
+                            marginLeft: 5,
+                            fontSize: 12,
+                            fontWeight: "bold",
+                            fontFamily: "Questrial"
+                          }}
+                        >
+                          GESTIONADO
+                        </Text>
+                      </View>
+                    )}
+
+                  {!data.gestionado !== 0 &&
+                    data.expirado && (
+                      <View
+                        style={{
+                          flex: 0.3,
+                          backgroundColor: "#ef4247",
+                          padding: 3,
+                          borderRadius: 5,
+                          alignItems: "center"
+                        }}
+                      >
+                        <Text
+                          style={{
+                            marginLeft: 5,
+                            fontSize: 12,
+                            fontWeight: "bold",
+                            fontFamily: "Questrial",
+                            color: "white"
+                          }}
+                        >
+                          EXPIRADO
+                        </Text>
+                      </View>
+                    )}
+
+                  <View style={{ flex: 0.7, alignItems: "flex-end" }}>
+                    <Text
+                      style={{
+                        marginLeft: 5,
+                        fontSize: 12,
+                        fontFamily: "Questrial"
+                      }}
+                    >
+                      EAN : {data.ean}
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    marginTop: 5
+                  }}
+                >
+                  <Text
+                    style={{
+                      marginLeft: 5,
+                      fontSize: 16,
+                      fontFamily: "Questrial"
+                    }}
+                  >
+                    {data.descripcion}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    marginTop: 5
+                  }}
+                >
+                  <Text
+                    style={{
+                      marginLeft: 5,
+                      fontSize: 12,
+                      fontWeight: "bold",
+                      fontFamily: "Questrial"
+                    }}
+                  >
+                    Días sin venta: {data.sventa}
+                  </Text>
+                </View>
+                {visibilityText && (
                   <View
                     style={{
-                      flex: 0.3,
-                      backgroundColor: "#f3bc32",
-                      padding: 3,
-                      borderRadius: 5,
-                      alignItems: "center"
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      marginTop: 5
                     }}
                   >
                     <Text
@@ -257,20 +423,18 @@ class Producto extends React.Component {
                         fontFamily: "Questrial"
                       }}
                     >
-                      GESTIONADO
+                      Stock: {data.stock}
                     </Text>
                   </View>
                 )}
-
-              {!this.state.gestionado &&
-                this.state.expirado && (
+                {productos.detail.flag && (
                   <View
                     style={{
-                      flex: 0.3,
-                      backgroundColor: "#ef4247",
-                      padding: 3,
-                      borderRadius: 5,
-                      alignItems: "center"
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      marginTop: 5
                     }}
                   >
                     <Text
@@ -278,112 +442,18 @@ class Producto extends React.Component {
                         marginLeft: 5,
                         fontSize: 12,
                         fontWeight: "bold",
-                        fontFamily: "Questrial",
-                        color: "white"
+                        fontFamily: "Questrial"
                       }}
                     >
-                      EXPIRADO
+                      Stock en transito: {data.stock_transito}
                     </Text>
                   </View>
                 )}
-
-              <View style={{ flex: 0.7, alignItems: "flex-end" }}>
-                <Text
-                  style={{
-                    marginLeft: 5,
-                    fontSize: 12,
-                    fontFamily: "Questrial"
-                  }}
-                >
-                  EAN : {this.props.data.ean}
-                </Text>
               </View>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                marginTop: 5
-              }}
-            >
-              <Text
-                style={{
-                  marginLeft: 5,
-                  fontSize: 16,
-                  fontFamily: "Questrial"
-                }}
-              >
-                {this.props.data.descripcion}
-              </Text>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                marginTop: 5
-              }}
-            >
-              <Text
-                style={{
-                  marginLeft: 5,
-                  fontSize: 12,
-                  fontWeight: "bold",
-                  fontFamily: "Questrial"
-                }}
-              >
-                Días sin venta: {this.props.data.sventa}
-              </Text>
-            </View>
-            {visibilityText && (
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  marginTop: 5
-                }}
-              >
-                <Text
-                  style={{
-                    marginLeft: 5,
-                    fontSize: 12,
-                    fontWeight: "bold",
-                    fontFamily: "Questrial"
-                  }}
-                >
-                  Stock: {this.props.data.stock}
-                </Text>
-              </View>
-            )}
-            {this.props.flag && (
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  marginTop: 5
-                }}
-              >
-                <Text
-                  style={{
-                    marginLeft: 5,
-                    fontSize: 12,
-                    fontWeight: "bold",
-                    fontFamily: "Questrial"
-                  }}
-                >
-                  Stock en transito: {this.props.data.stock_transito}
-                </Text>
-              </View>
-            )}
-          </View>
-        </Swipeable>
+            </Swipeable>
+          )
+          })}
+        </ScrollView>
       </View>
     );
   }
