@@ -11,14 +11,14 @@ class SalasInfoList extends React.Component {
     sala: PropTypes.number,
     nombreSala: PropTypes.string,
     dateb2b: PropTypes.string,
-    visitaEnProgreso: PropTypes.string
+    visitaEnProgreso: PropTypes.number
   };
 
   static defaultProps = {
     sala: "",
     nombreSala: "",
     dateb2b: "",
-    visitaEnProgreso: ""
+    visitaEnProgreso: 0
   };
 
   render() {

@@ -12,7 +12,7 @@ class SalasInfoListDetail extends React.Component {
     nombreSala: PropTypes.string,
     categoria: PropTypes.string,
     dateb2b: PropTypes.string,
-    visitaEnProgreso: PropTypes.string
+    visitaEnProgreso: PropTypes.number
   };
 
   static defaultProps = {
@@ -20,7 +20,7 @@ class SalasInfoListDetail extends React.Component {
     nombreSala: "",
     categoria: "",
     dateb2b: "",
-    visitaEnProgreso: ""
+    visitaEnProgreso: 0
   };
 
   constructor(props) {

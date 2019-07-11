@@ -62,7 +62,7 @@ class Producto extends React.Component {
     sala: PropTypes.string,
     causa: PropTypes.string,
     categoria: PropTypes.string,
-    visitaEnProgreso: PropTypes.string
+    visitaEnProgreso: PropTypes.number
   };
 
   static defaultProps = {
@@ -83,7 +83,7 @@ class Producto extends React.Component {
     sala: "",
     causa: "",
     categoria: "",
-    visitaEnProgreso: ""
+    visitaEnProgreso: 0
   };
 
   state = {
