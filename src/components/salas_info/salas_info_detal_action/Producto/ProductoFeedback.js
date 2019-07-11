@@ -105,6 +105,7 @@ class ModalFeedBack extends Component {
       const filename = result.uri.split('/').pop();
       result.name = filename;
 
+      this.handleInput(8, result.name)
       this.props.setPhoto(result);
       this.setState({images: result});
     }
@@ -113,7 +114,6 @@ class ModalFeedBack extends Component {
   handleInput = (idQuestion, val) => {
     const newCheck = {...this.state.response};
     newCheck[idQuestion] = val;
-    this.setState({ comment: val });
     this.setState({response: newCheck});
   };
 
@@ -130,7 +130,10 @@ class ModalFeedBack extends Component {
               <Item>
                 <Input
                   placeholder='Ingrese comentario (opcional)'
-                  onChangeText={val => this.handleInput(q.id, val) }
+                  onChangeText={val => {
+                    this.handleInput(q.id, val);
+                    this.setState({ comment: val });
+                  }}
                   value={this.state.comment}
                 />
                 <Icon name='checkmark-circle'/>

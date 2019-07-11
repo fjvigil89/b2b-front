@@ -59,10 +59,11 @@ export const saveFeedbackQuestions = (url, casesFeedback, imagen) =>
     if (imagen) {
       const uriParts = imagen.uri.split(".");
       const fileType = uriParts[uriParts.length - 1];
+      const filename = imagen.uri.split('/').pop();
 
       images = {
         uri: imagen.uri,
-        name: `imagen.${fileType}`,
+        name: filename,
         type: `image/${fileType}`,
         base64: imagen.base64
       }

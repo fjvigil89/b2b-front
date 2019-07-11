@@ -175,7 +175,6 @@ class Producto extends React.Component {
     this.updateProductByEan(this.props.currentProduct.ean, true);
 
     // modal
-    console.log('this.state.responseQuestions: ', JSON.stringify(this.state.responseQuestions));
     if (this.state.responseQuestions.length > 0) {
       const dataFeedback = this.state.responseQuestions.map(elem => ({
         caseId,
@@ -184,11 +183,9 @@ class Producto extends React.Component {
         ean: this.props.currentProduct.ean,
         answer: elem.response,
       }));
-      console.log('dataFeedback: ', dataFeedback);
       await saveFeedbackQuestions(this.props.endpoint, dataFeedback, this.props.imagen);
     }
 
-    console.log('envia info eventos')
     // detiene
     DeviceEventEmitter.emit(
       `SalaDetalleCategoria-${this.props.currentProduct.sala}-${this.props.categoria.replace(
