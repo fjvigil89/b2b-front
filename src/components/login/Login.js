@@ -109,7 +109,7 @@ class LoginScreen extends Component {
               source={logoCadem}
             />
             <Text style={{ fontFamily: "Bree", fontSize: 30, zIndex: 200 }}>
-              SmartB2B
+              SMARTapp
             </Text>
             <Image
               style={{
