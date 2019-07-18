@@ -22,7 +22,7 @@ import _ from "lodash";
 import {MaterialIcons} from "@expo/vector-icons";
 
 import {modalHide, setPhoto} from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
-import {ImagePicker, Permissions, Constants} from "expo";
+import {ImagePicker, Permissions} from "expo";
 
 
 const styles = StyleSheet.create({
@@ -90,11 +90,9 @@ class ModalFeedBack extends Component {
   }
 
   getPermissionAsync = async () => {
-    if (Constants.platform.ios) {
-      const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        Alert.alert('Disculpa, la Camara requiere de estos permisos para operar');
-      }
+    const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status !== 'granted') {
+      Alert.alert('Disculpa, la Camara requiere de estos permisos para operar');
     }
   };
 

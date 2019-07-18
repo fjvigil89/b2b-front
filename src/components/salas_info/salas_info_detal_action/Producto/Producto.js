@@ -242,13 +242,12 @@ class Producto extends React.Component {
         <ScrollView>
         {productos.detail.data.map(data => {
           return (
-              
             <Swipeable
               onRef={ref => {
                 this.state.swipeable = ref;
               }}
               leftContent={
-                !data.gestionado !== 0 &&
+                !(Number(data.gestionado) !== 0) &&
                 !data.expirado &&
                 visitaEnProgreso === 1
                   ? leftButtons
