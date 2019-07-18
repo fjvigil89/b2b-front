@@ -28,12 +28,12 @@ class PollsListAditional extends React.Component {
         color: "red",
         status: "No disponible"
       });
-    } else if (data.state === "expired") {
+    }/*  else if (data.state === "expired") {
       return this.getContentNotAvailable(data, {
         color: "#9A7D0A",
         status: "Expirado"
       });
-    }
+    } */
 
     return this.getContentAvailable(data);
   };

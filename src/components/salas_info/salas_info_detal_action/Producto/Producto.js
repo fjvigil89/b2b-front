@@ -107,15 +107,7 @@ class Producto extends React.Component {
 
   componentWillReceiveProps(nextProps){
     if (nextProps.productos !== this.props.productos) {
-      const dataProduct = nextProps.productos.detail.data.map(data => {
-        if (!data.expirado) {
-          return {
-            ...data,
-            expirado: false
-          }
-        }
-        return {...data};
-      });
+      const dataProduct = nextProps.productos.detail.data.map(data => ({...data}));
       const productos = {
         detail: {
           ...nextProps.productos.detail,
@@ -162,28 +154,32 @@ class Producto extends React.Component {
   }
 
   makeGestionado = async () => {
-    const caseId = await this.props.MarcarProducto(
-      this.props.endpoint,
-      this.props.currentProduct.sala,
-      "gestionado",
-      this.props.causa,
-      this.props.currentProduct.ean,
-      this.props.currentProduct.venta_perdida,
-      this.props.currentProduct.dateb2b
-    );
-
-    this.updateProductByEan(this.props.currentProduct.ean, true);
-
-    // modal
-    if (this.state.responseQuestions.length > 0) {
-      const dataFeedback = this.state.responseQuestions.map(elem => ({
-        caseId,
-        questionId: elem.id,
-        folio: this.props.currentProduct.sala,
-        ean: this.props.currentProduct.ean,
-        answer: elem.response,
-      }));
-      await saveFeedbackQuestions(this.props.endpoint, dataFeedback, this.props.imagen);
+    try {
+      const caseId = await this.props.MarcarProducto(
+        this.props.endpoint,
+        this.props.currentProduct.sala,
+        "gestionado",
+        this.props.causa,
+        this.props.currentProduct.ean,
+        this.props.currentProduct.venta_perdida,
+        this.props.currentProduct.dateb2b
+      );
+  
+      this.updateProductByEan(this.props.currentProduct.ean, true);
+  
+      // modal
+      if (this.state.responseQuestions.length > 0) {
+        const dataFeedback = this.state.responseQuestions.map(elem => ({
+          caseId,
+          questionId: elem.id,
+          folio: this.props.currentProduct.sala,
+          ean: this.props.currentProduct.ean,
+          answer: elem.response,
+        }));
+        saveFeedbackQuestions(this.props.endpoint, dataFeedback, this.props.imagen);
+      }
+    } catch (err) {
+      console.error(err);
     }
 
     // detiene
@@ -247,8 +243,7 @@ class Producto extends React.Component {
                 this.state.swipeable = ref;
               }}
               leftContent={
-                !(Number(data.gestionado) !== 0) &&
-                !data.expirado &&
+                (Number(data.gestionado) === 0) &&
                 visitaEnProgreso === 1
                   ? leftButtons
                   // : leftButtons
@@ -301,8 +296,7 @@ class Producto extends React.Component {
                     alignItems: "center"
                   }}
                 >
-                  {data.gestionado !== 0 &&
-                    !data.expirado && (
+                  {data.gestionado !== 0 && (
                       <View
                         style={{
                           flex: 0.3,
@@ -321,31 +315,6 @@ class Producto extends React.Component {
                           }}
                         >
                           GESTIONADO
-                        </Text>
-                      </View>
-                    )}
-
-                  {!data.gestionado !== 0 &&
-                    data.expirado && (
-                      <View
-                        style={{
-                          flex: 0.3,
-                          backgroundColor: "#ef4247",
-                          padding: 3,
-                          borderRadius: 5,
-                          alignItems: "center"
-                        }}
-                      >
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            fontSize: 12,
-                            fontWeight: "bold",
-                            fontFamily: "Questrial",
-                            color: "white"
-                          }}
-                        >
-                          EXPIRADO
                         </Text>
                       </View>
                     )}
