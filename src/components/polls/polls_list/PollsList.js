@@ -18,7 +18,7 @@ import PollsListGrid from "@components/polls/polls_list/polls_list_grid/PollsLis
 import GetListPoll from "@components/polls/polls_list/PollsListActios";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 import LoginScreen from "@components/login/Login";
-import {MaterialIcons} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 let params = "";
 
@@ -54,7 +54,7 @@ class PollsList extends Component {
         <Button transparent onPress={Actions.pop}>
           <MaterialIcons
             name="arrow-back"
-            style={{ color: "#FFFFFF" }}
+            style={{ color: "#FFFFFF", fontSize: 25 }}
           />
         </Button>
       );
@@ -65,7 +65,7 @@ class PollsList extends Component {
         <MaterialIcons
           name="menu"
           style={{
-            color: 'white',
+            color: "white",
             fontSize: 25
           }}
         />
@@ -128,4 +128,7 @@ const mapDispatchToProps = {
   GetListPoll
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PollsList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PollsList);
