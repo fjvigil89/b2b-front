@@ -19,7 +19,8 @@ export function Login(email, password) {
 
       return axios({
         method: "POST",
-        url: "http://b2b-app-pernod.us-west-2.elasticbeanstalk.com/auth",
+        url:
+          "http://back-b2b-production.sditrmidsj.us-west-2.elasticbeanstalk.com/auth",
         data: formForSend
       })
         .then(async response => {

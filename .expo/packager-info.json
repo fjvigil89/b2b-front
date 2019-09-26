@@ -1,10 +1,10 @@
 {
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://nj-qdt.cademsmart.b2b-front.exp.direct",
-  "packagerNgrokUrl": "https://packager.nj-qdt.cademsmart.b2b-front.exp.direct",
-  "ngrokPid": 1296,
-  "devToolsPort": 19002,
-  "packagerPort": 19001,
-  "packagerPid": 1262,
+  "expoServerNgrokUrl": "https://fx-z7v.cademsmart.b2b-front.exp.direct",
+  "packagerNgrokUrl": "https://packager.fx-z7v.cademsmart.b2b-front.exp.direct",
+  "ngrokPid": 64898,
+  "devToolsPort": 19006,
+  "packagerPort": 19007,
+  "packagerPid": 64831,
   "webpackServerPort": null
 }
