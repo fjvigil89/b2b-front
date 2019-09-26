@@ -88,14 +88,16 @@ class SalasInfoDetail extends React.Component {
         number: `${format[0]}.${format[1].slice(0, 1)} m`,
         size: 35
       };
-    } else if (value >= 1000000000) {
+    }
+    if (value >= 1000000000) {
       const format = formatterNumber(value).split(".");
 
       return {
         number: `${format[0]}.${format[1].slice(0, 2)} mm`,
         size: 25
       };
-    } else if (value < 1000000) {
+    }
+    if (value < 1000000) {
       const format = formatterNumber(value);
 
       return {
@@ -113,7 +115,7 @@ class SalasInfoDetail extends React.Component {
   render() {
     const { data, report } = this.props;
 
-    let porcentajeProgreso = report.gestionado * 100 / report.ventaPerdida;
+    let porcentajeProgreso = (report.gestionado * 100) / report.ventaPerdida;
     porcentajeProgreso = `${porcentajeProgreso}%`;
 
     const backgroundImage = require("@assets/images/background-detalle-salas.png");
@@ -122,6 +124,8 @@ class SalasInfoDetail extends React.Component {
     if (data.bandera === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
     } else if (data.bandera === "LIDER") {
+      logo = require("@assets/images/lider.png");
+    } else if (data.bandera === "HIPER LIDER") {
       logo = require("@assets/images/lider.png");
     } else if (data.bandera === "LIDER EXPRESS") {
       logo = require("@assets/images/lider_express.png");
@@ -151,14 +155,13 @@ class SalasInfoDetail extends React.Component {
 
     let fechaVisita = "";
 
-    if (data.fecha_visita === "Pendiente" || data.id_visita === null){
+    if (data.fecha_visita === "Pendiente" || data.id_visita === null) {
       fechaVisita = "-";
     } else {
-      fechaVisita = data.fecha_visita || data.id_visita
-        ? moment(data.fecha_visita)
-          .format("YYYY-MM-DD")
-        : "-";
-
+      fechaVisita =
+        data.fecha_visita || data.id_visita
+          ? moment(data.fecha_visita).format("YYYY-MM-DD")
+          : "-";
     }
 
     const sizeTittle = Platform.OS === "ios" ? 20 : 18;
@@ -232,9 +235,7 @@ class SalasInfoDetail extends React.Component {
               fontFamily: "Questrial"
             }}
           >
-            Fecha información B2B :{" "}
-            {moment(data.date_b2b)
-              .format("YYYY-MM-DD")}
+            Fecha información B2B : {moment(data.date_b2b).format("YYYY-MM-DD")}
           </Text>
           <Text
             style={{

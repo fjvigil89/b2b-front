@@ -8,8 +8,7 @@ import moment from "moment";
 import "moment/locale/es";
 
 // import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
-
+import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
 moment.locale("es");
 
@@ -102,11 +101,13 @@ class DetailReport extends React.Component {
       const format = formatterNumber(value2).split(".");
 
       return `${format[0]}.${format[1].slice(0, 1)} m`;
-    } else if (value2 >= 1000000000) {
+    }
+    if (value2 >= 1000000000) {
       const format = formatterNumber(value2).split(".");
 
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value2 < 1000000) {
+    }
+    if (value2 < 1000000) {
       const format = formatterNumber(value2);
 
       return `${format}`;
@@ -125,10 +126,13 @@ class DetailReport extends React.Component {
     } = this.props.data;
 
     let logo = "";
+    // TODO: revisar nombre de lider e hiperlider
 
     if (nombre === "JUMBO") {
       logo = require("@assets/images/jumbo.png");
     } else if (nombre === "LIDER") {
+      logo = require("@assets/images/lider.png");
+    } else if (nombre === "HIPER LIDER") {
       logo = require("@assets/images/lider.png");
     } else if (nombre === "LIDER EXPRESS") {
       logo = require("@assets/images/lider_express.png");
@@ -170,7 +174,7 @@ class DetailReport extends React.Component {
               fontSize: 12
             }}
           >
-            Fecha información B2B: { fecha_actualizacion }
+            Fecha información B2B: {fecha_actualizacion}
           </Text>
         </View>
         <View
@@ -257,7 +261,7 @@ class DetailReport extends React.Component {
                     fontSize: 18,
                     fontFamily: "Questrial",
                     marginLeft: 10,
-                    color: "#083D77",
+                    color: "#083D77"
                   }}
                 >
                   {ventas.variacion}
@@ -593,6 +597,7 @@ class DetailReport extends React.Component {
                       fontSize: 20
                     }}
                   />
+                ) : (
                   /*
                   <Icon
                     name="ios-arrow-down-outline"
@@ -601,7 +606,6 @@ class DetailReport extends React.Component {
                     }}
                   />
                   */
-                ) : (
                   <Ionicons
                     name="ios-arrow-forward"
                     style={{
@@ -663,7 +667,6 @@ class DetailReport extends React.Component {
                         }}
                       >
                         {this.formatter(ventasPerdidas.causas.chequear_pedidos)}
-
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>

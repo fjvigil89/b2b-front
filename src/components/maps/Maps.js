@@ -13,7 +13,7 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { MapView } from "expo";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 
 import {
   ListadoSalas,
@@ -81,7 +81,7 @@ class Maps extends Component {
               <MaterialIcons
                 name="menu"
                 style={{
-                  color: 'white',
+                  color: "white",
                   fontSize: 25
                 }}
               />
@@ -99,6 +99,8 @@ class Maps extends Component {
               if (sala.bandera === "JUMBO") {
                 logo = require("@assets/images/jumbo.png");
               } else if (sala.bandera === "LIDER") {
+                logo = require("@assets/images/lider.png");
+              } else if (sala.bandera === "HIPER LIDER") {
                 logo = require("@assets/images/lider.png");
               } else if (sala.bandera === "LIDER EXPRESS") {
                 logo = require("@assets/images/lider_express.png");
@@ -167,4 +169,7 @@ const mapDispatchToProps = {
   ListadoSalas
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Maps);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Maps);

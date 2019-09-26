@@ -137,6 +137,8 @@ class SalasDetail extends React.Component {
       logo = require("@assets/images/jumbo.png");
     } else if (this.props.data.bandera === "LIDER") {
       logo = require("@assets/images/lider.png");
+    } else if (this.props.data.bandera === "HIPER LIDER") {
+      logo = require("@assets/images/lider.png");
     } else if (this.props.data.bandera === "LIDER EXPRESS") {
       logo = require("@assets/images/lider_express.png");
     } else if (this.props.data.bandera === "CENTRAL MAYORISTA") {
@@ -166,8 +168,7 @@ class SalasDetail extends React.Component {
     ) {
       imagen = require("@assets/images/visita-realizada-v2.png");
 
-      fecha = moment(this.props.data.fecha_visita)
-        .format("YYYY-MM-DD");
+      fecha = moment(this.props.data.fecha_visita).format("YYYY-MM-DD");
     } else if (this.props.data.mide === 1 && this.props.data.pendiente === 1) {
       imagen = require("@assets/images/visita-pendiente.png");
     }
@@ -434,9 +435,7 @@ class SalasDetail extends React.Component {
                 >
                   {this.props.lostSaleON
                     ? `$${this.currency(this.props.data.venta_perdida)}`
-                    : `${this.props.data.kilometers}${
-                        this.props.data.prefijoKilometers
-                      }`}
+                    : `${this.props.data.kilometers}${this.props.data.prefijoKilometers}`}
                 </Text>
               </View>
             </View>
@@ -455,4 +454,7 @@ const mapDispatchToProps = {
   CheckINorCheckOUT
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SalasDetail);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SalasDetail);
