@@ -138,19 +138,21 @@ class Publication extends Component {
       loading: true
     });
 
-    this.props.UnLikePublication(this.props.endpoint, this.props.id).then(() => {
-      this.setState({
-        loading: false,
-        likes: this.state.likes - 1,
-        enableLike: true
-      });
-
-      if (this.props.flagComments) {
-        DeviceEventEmitter.emit(`publicationEvent-${this.props.id}`, {
-          event: "unlike"
+    this.props
+      .UnLikePublication(this.props.endpoint, this.props.id)
+      .then(() => {
+        this.setState({
+          loading: false,
+          likes: this.state.likes - 1,
+          enableLike: true
         });
-      }
-    });
+
+        if (this.props.flagComments) {
+          DeviceEventEmitter.emit(`publicationEvent-${this.props.id}`, {
+            event: "unlike"
+          });
+        }
+      });
   };
 
   render = () => {
@@ -475,7 +477,7 @@ class Publication extends Component {
                     Actions.commentPublication({ post: id });
                   }}
                 >
-                  <Ionicons name="ios-text-outline" />
+                  <Ionicons name="ios-text" />
                   <Text
                     style={{
                       fontSize: 13,
@@ -504,4 +506,7 @@ const mapDispatchToProps = {
   UnLikePublication
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Publication);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Publication);
