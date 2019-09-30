@@ -21,7 +21,7 @@ if (Platform.OS === "android") StatusBar.setHidden(true);
 
 Sentry.enableInExpoDevelopment = true;
 Sentry.config(
-  "https://6323e642949b4b7ca968c30ba46d1fe0@sentry.io/1508459"
+  "https://3291e65696be471a80301ee041d6fc59@sentry.io/1764003"
 ).install();
 
 export default class App extends React.Component {
