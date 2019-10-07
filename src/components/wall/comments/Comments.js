@@ -15,6 +15,7 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { RefreshControl } from "react-native";
+import {Ionicons} from "@expo/vector-icons";
 
 import Publication from "@components/wall/publication/Publication";
 import Comment from "@components/wall/comments/comment/Comment";
@@ -113,7 +114,7 @@ class Comments extends Component {
                 Actions.pop();
               }}
             >
-              <Ionicons name="arrow-back" style={{ color: "#FFFFFF" }} />
+              <Ionicons name="md-arrow-back" style={{ fontSize: 24, color: "#FFFFFF" }} />
             </Button>
           </Left>
           <Body>
