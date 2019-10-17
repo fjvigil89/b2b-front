@@ -120,6 +120,8 @@ class Maps extends Component {
                 logo = require("@assets/images/mayorista10.png");
               } else if (sala.bandera === "ALVI") {
                 logo = require("@assets/images/alvi.png");
+              } else if (sala.bandera === "OK MARKET") {
+                logo = require("@assets/images/okmarket.png");
               } else {
                 logo = require("@assets/images/logo-cadem-icono.png");
               }

@@ -157,9 +157,13 @@ class SalasDetail extends React.Component {
       logo = require("@assets/images/mayorista10.png");
     } else if (this.props.data.bandera === "ALVI") {
       logo = require("@assets/images/alvi.png");
+    } else if (this.props.data.bandera === "OK MARKET") {
+      logo = require("@assets/images/okmarket.png");
     } else {
       logo = require("@assets/images/logo-cadem-icono.png");
     }
+
+    console.log(this.props.data);
 
     if (
       this.props.data.mide === 1 &&
