@@ -276,7 +276,7 @@ class CommentPublication extends React.Component {
               }}
             >
               {platform === "android" && (
-                <Ionicons name="md-arrow-back" color="#B2B2B2" />
+                <Ionicons name="md-arrow-back" style={{ fontSize: 24, color: "#FFFFFF" }} />
               )}
               {platform === "ios" && (
                 <Text style={{ fontSize: 14 }}>Cancelar</Text>

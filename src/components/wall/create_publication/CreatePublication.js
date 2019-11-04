@@ -261,7 +261,7 @@ class CreatePublication extends React.Component {
               }}
             >
               {platform === "android" && (
-                <Ionicons name="md-arrow-back" color="#B2B2B2" />
+                <Ionicons name="md-arrow-back" style={{ fontSize: 24, color: "#FFFFFF" }} />
               )}
               {platform === "ios" && (
                 <Text style={{ fontSize: 14 }}>Cancelar</Text>
@@ -285,7 +285,7 @@ class CreatePublication extends React.Component {
           </Right>
         </Header>
 
-        {/* 
+        {/*
           Para que cuando se abra el teclado no suba el scroll
           <Content scrollEnabled={false} enableAutoAutomaticScroll={false}>
         */}
