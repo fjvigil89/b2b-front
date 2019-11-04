@@ -214,14 +214,49 @@ class SideBar extends Component {
               </Text>
             </Left>
           </ListItem>
+          <View
+            style={{
+              flexDirection: 'row',
+              height: 50,
+              width: null,
+              justifyContent: "flex-end",
+              alignItems: "flex-end"
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "Questrial",
+                fontWeight: "500",
+                fontSize: 16,
+                marginRight: 5
+              }}
+            >
+              Conectado como:
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Bree",
+                fontSize: 16,
+                color: "#000",
+                marginRight: 20,
+              }}
+            >
+              {this.props.user}
+            </Text>
+          </View>
         </Content>
       </Container>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  email: state.user.email,
+  user: state.user.user
+});
+
 const mapDispatchToProps = {
   Logout
 };
 
-export default connect(null, mapDispatchToProps)(SideBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar);
