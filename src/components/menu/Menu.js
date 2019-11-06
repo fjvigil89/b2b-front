@@ -217,26 +217,22 @@ class SideBar extends Component {
           <View
             style={{
               flexDirection: 'row',
-              height: 50,
+              height: 200,
               width: null,
-              justifyContent: "flex-end",
-              alignItems: "flex-end"
+              justifyContent: "flex-start",
+              alignItems: "flex-end",
+              marginLeft: 20
             }}
           >
-            <Text
-              style={{
-                fontFamily: "Questrial",
-                fontWeight: "500",
-                fontSize: 16,
-                marginRight: 5
-              }}
-            >
-              Conectado como:
-            </Text>
+            <Ionicons
+              active
+              name="md-person"
+              style={{ fontSize: 24, width: 30 }}
+            />
             <Text
               style={{
                 fontFamily: "Bree",
-                fontSize: 16,
+                fontSize: 12,
                 color: "#000",
                 marginRight: 20,
               }}
