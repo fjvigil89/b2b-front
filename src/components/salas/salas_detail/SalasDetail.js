@@ -10,7 +10,7 @@ import {
   Alert,
   DeviceEventEmitter
 } from "react-native";
-import { Thumbnail, Text } from "native-base";
+import {Thumbnail, Text, Button} from "native-base";
 import { Actions } from "react-native-router-flux";
 import Swipeable from "react-native-swipeable";
 
@@ -19,6 +19,7 @@ import moment from "moment";
 import "moment/locale/es";
 
 import { CheckINorCheckOUT } from "@components/salas_info/SalasInfoActions.js";
+import { Ionicons } from "@expo/vector-icons";
 
 moment.locale("es");
 
@@ -128,6 +129,38 @@ class SalasDetail extends React.Component {
     );
   };
 
+  showPolls = data => {
+    if (data.hasPoll > 0) {
+      return (
+        <View
+          style={{
+            flex: 0.1,
+            flexDirection: "row",
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingBottom: 10,
+            marginTop: 10
+          }}
+        >
+          <Button
+            transparent
+            onPress={() => {
+              Actions.pollsList({ folio: data.folio });
+            }}
+          >
+            <Ionicons
+              style={{
+                color: "#000",
+                fontSize: 20
+              }}
+              name="ios-create"
+            />
+          </Button>
+        </View>
+      );
+    }
+  };
+
   render() {
     let logo = "";
     let imagen = null;
@@ -162,8 +195,6 @@ class SalasDetail extends React.Component {
     } else {
       logo = require("@assets/images/logo-cadem-icono.png");
     }
-
-    console.log(this.props.data);
 
     if (
       this.props.data.mide === 1 &&
@@ -309,138 +340,143 @@ class SalasDetail extends React.Component {
               </View>
             </View>
 
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                paddingLeft: 10,
-                paddingRight: 10,
-                paddingBottom: 10,
-                marginTop: 10
-              }}
-            >
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-start"
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "Questrial"
-                  }}
-                >
-                  Fecha información B2B
-                </Text>
-              </View>
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-end"
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "Questrial"
-                  }}
-                >
-                  {this.props.data.date_b2b}
-                </Text>
-              </View>
-            </View>
-
-            {!_.isEmpty(fecha) && (
+            <View style={{flexDirection: 'row'}}>
+              {this.showPolls(this.props.data)}
               <View
                 style={{
                   flex: 1,
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                  paddingBottom: 10
+                  flexDirection: 'column'
                 }}
               >
                 <View
                   style={{
-                    flex: 0.5,
-                    justifyContent: "center",
-                    alignItems: "flex-start"
+                    flex: 1,
+                    flexDirection: "row",
+                    paddingRight: 10,
+                    paddingBottom: 10,
+                    marginTop: 10
                   }}
                 >
-                  <Text
+                  <View
                     style={{
-                      fontSize: 12,
-                      fontFamily: "Questrial"
+                      flex: 2,
+                      justifyContent: "center",
+                      alignItems: "flex-start"
                     }}
                   >
-                    Fecha medición CademSmart
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 0.5,
-                    justifyContent: "center",
-                    alignItems: "flex-end"
-                  }}
-                >
-                  <Text
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontFamily: "Questrial"
+                      }}
+                    >
+                      Fecha información B2B
+                    </Text>
+                  </View>
+                  <View
                     style={{
-                      fontSize: 12,
-                      fontFamily: "Questrial"
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "flex-end"
                     }}
                   >
-                    {fecha}
-                  </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontFamily: "Questrial"
+                      }}
+                    >
+                      {this.props.data.date_b2b}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            )}
 
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                paddingLeft: 10,
-                paddingRight: 10,
-                paddingBottom: 10,
-                marginTop: 10
-              }}
-            >
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-start"
-                }}
-              >
-                <Text
+                {!_.isEmpty(fecha) && (
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      paddingRight: 10,
+                      paddingBottom: 10
+                    }}
+                  >
+                    <View
+                      style={{
+                        flex: 2,
+                        justifyContent: "center",
+                        alignItems: "flex-start"
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontFamily: "Questrial"
+                        }}
+                      >
+                        Fecha medición CademSmart
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "flex-end"
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontFamily: "Questrial"
+                        }}
+                      >
+                        {fecha}
+                      </Text>
+                    </View>
+                  </View>
+                )}
+                <View
                   style={{
-                    fontSize: 12,
-                    fontFamily: "Questrial"
+                    flex: 1,
+                    flexDirection: "row",
+                    paddingRight: 10,
+                    paddingBottom: 15,
                   }}
                 >
-                  {this.props.lostSaleON ? "Venta Perdida" : "Distancia"}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-end"
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "Questrial"
-                  }}
-                >
-                  {this.props.lostSaleON
-                    ? `$${this.currency(this.props.data.venta_perdida)}`
-                    : `${this.props.data.kilometers}${this.props.data.prefijoKilometers}`}
-                </Text>
+                  <View
+                    style={{
+                      flex: 2,
+                      justifyContent: "center",
+                      alignItems: "flex-start"
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontFamily: "Questrial"
+                      }}
+                    >
+                      {this.props.lostSaleON ? "Venta Perdida" : "Distancia"}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "flex-end"
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontFamily: "Questrial"
+                      }}
+                    >
+                      {this.props.lostSaleON
+                        ? `$${this.currency(this.props.data.venta_perdida)}`
+                        : `${this.props.data.kilometers}${this.props.data.prefijoKilometers}`}
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
           </TouchableOpacity>
