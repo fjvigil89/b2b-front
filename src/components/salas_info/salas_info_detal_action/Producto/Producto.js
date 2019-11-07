@@ -164,9 +164,9 @@ class Producto extends React.Component {
         this.props.currentProduct.venta_perdida,
         this.props.currentProduct.dateb2b
       );
-  
+
       this.updateProductByEan(this.props.currentProduct.ean, true);
-  
+
       // modal
       if (this.state.responseQuestions.length > 0) {
         const dataFeedback = this.state.responseQuestions.map(elem => ({
@@ -218,7 +218,7 @@ class Producto extends React.Component {
     if (accion === "Reponer" || accion === "Ajustar") {
       visibilityText = true;
     }
-    
+
     if (_.isEmpty(productos) || questions.length === 0) {
       return (<View></View>)
     }
