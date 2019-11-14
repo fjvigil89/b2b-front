@@ -130,16 +130,16 @@ class SalasDetail extends React.Component {
   };
 
   showPolls = data => {
-    if (data.hasPoll > 0) {
+    if (data) {
       return (
         <View
           style={{
-            flex: 0.1,
+            flex: 0.05,
             flexDirection: "row",
             paddingLeft: 10,
-            paddingRight: 10,
             paddingBottom: 10,
-            marginTop: 10
+            marginTop: 10,
+            alignSelf: 'center'
           }}
         >
           <Button
@@ -156,6 +156,31 @@ class SalasDetail extends React.Component {
               name="ios-create"
             />
           </Button>
+        </View>
+      );
+    }
+  };
+
+  showCases = data => {
+    if (data.venta_perdida > 0) {
+      return (
+        <View
+          style={{
+            flex: 0.05,
+            flexDirection: "row",
+            paddingLeft: 10,
+            paddingBottom: 10,
+            marginTop: 10,
+            alignSelf: 'center'
+          }}
+        >
+          <Ionicons
+            style={{
+              color: "#000",
+              fontSize: 20
+            }}
+            name="ios-construct"
+          />
         </View>
       );
     }
@@ -342,10 +367,12 @@ class SalasDetail extends React.Component {
 
             <View style={{flexDirection: 'row'}}>
               {this.showPolls(this.props.data)}
+              {this.showCases(this.props.data)}
               <View
                 style={{
                   flex: 1,
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  paddingLeft: 10
                 }}
               >
                 <View
