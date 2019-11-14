@@ -202,6 +202,13 @@ class Producto extends React.Component {
     this.props.modalShow();
   };
 
+  currency = x => {
+    const parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    return parts.join(".");
+  };
+
   render() {
     const {
       accion,
@@ -350,70 +357,97 @@ class Producto extends React.Component {
                     {data.descripcion}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    marginTop: 5
-                  }}
-                >
-                  <Text
-                    style={{
-                      marginLeft: 5,
-                      fontSize: 12,
-                      fontWeight: "bold",
-                      fontFamily: "Questrial"
-                    }}
-                  >
-                    Días sin venta: {data.sventa}
-                  </Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flex: 1, flexDirection: 'column' }}>
+                    <View
+                      style={{
+                        flex: 1,
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        marginTop: 5
+                      }}
+                    >
+                      <Text
+                        style={{
+                          marginLeft: 5,
+                          fontSize: 12,
+                          fontWeight: "bold",
+                          fontFamily: "Questrial"
+                        }}
+                      >
+                        Días sin venta: {data.sventa}
+                      </Text>
+                    </View>
+                    {visibilityText && (
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          marginTop: 5
+                        }}
+                      >
+                        <Text
+                          style={{
+                            marginLeft: 5,
+                            fontSize: 12,
+                            fontWeight: "bold",
+                            fontFamily: "Questrial"
+                          }}
+                        >
+                          Stock: {data.stock}
+                        </Text>
+                      </View>
+                    )}
+                    {productos.detail.flag && (
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          marginTop: 5
+                        }}
+                      >
+                        <Text
+                          style={{
+                            marginLeft: 5,
+                            fontSize: 12,
+                            fontWeight: "bold",
+                            fontFamily: "Questrial"
+                          }}
+                        >
+                          Stock en transito: {data.stock_transito}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                  {data.venta_perdida && (
+                    <View
+                      style={{
+                        flex: 1,
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                        alignItems: "flex-end",
+                        marginTop: 5
+                      }}
+                    >
+                      <Text
+                        style={{
+                          marginLeft: 5,
+                          fontSize: 12,
+                          fontWeight: "bold",
+                          fontFamily: "Questrial"
+                        }}
+                      >
+                        Venta Perdida: {`$${this.currency(data.venta_perdida)}`}
+                      </Text>
+                    </View>
+                  )}
+
                 </View>
-                {visibilityText && (
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                      marginTop: 5
-                    }}
-                  >
-                    <Text
-                      style={{
-                        marginLeft: 5,
-                        fontSize: 12,
-                        fontWeight: "bold",
-                        fontFamily: "Questrial"
-                      }}
-                    >
-                      Stock: {data.stock}
-                    </Text>
-                  </View>
-                )}
-                {productos.detail.flag && (
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                      marginTop: 5
-                    }}
-                  >
-                    <Text
-                      style={{
-                        marginLeft: 5,
-                        fontSize: 12,
-                        fontWeight: "bold",
-                        fontFamily: "Questrial"
-                      }}
-                    >
-                      Stock en transito: {data.stock_transito}
-                    </Text>
-                  </View>
-                )}
               </View>
             </Swipeable>
           )

@@ -16,14 +16,19 @@
     },
     "android": {
       "package": "com.cademsmart.smartapp",
-      "versionCode": 25,
+      "versionCode": 26,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBfJ0newmulQl4DZb19vDWtDyGuG8xiAFo"
+        }
+      }
     },
     "orientation": "portrait",
     "hooks": {
@@ -38,7 +43,7 @@
         }
       ]
     },
-    "version": "2.7.6",
+    "version": "2.7.7",
     "description": ""
   }
 }
