@@ -81,6 +81,12 @@ class SalasInfoDetail extends React.Component {
       return parts.join(".");
     };
 
+    if (value === 0) {
+      return {
+        number: "-",
+        size: 35
+      }
+    }
     if (value > 999999 && value < 1000000000) {
       const format = formatterNumber(value).split(".");
 
