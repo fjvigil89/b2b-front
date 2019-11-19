@@ -1,5 +1,6 @@
 import React from "react";
-import { AppLoading, Font } from "expo";
+import { AppLoading } from "expo";
+import * as Font from 'expo-font'
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { StyleProvider } from "native-base";

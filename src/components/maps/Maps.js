@@ -12,7 +12,7 @@ import {
   Body
 } from "native-base";
 import { Actions } from "react-native-router-flux";
-import { MapView } from "expo";
+import MapView from 'react-native-maps'
 import { MaterialIcons } from "@expo/vector-icons";
 
 import {

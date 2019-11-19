@@ -179,7 +179,7 @@ class SalasDetail extends React.Component {
               color: "#000",
               fontSize: 20
             }}
-            name="ios-construct"
+            name="md-clipboard"
           />
         </View>
       );
