@@ -86,7 +86,7 @@ class DetailReport extends React.Component {
     };
   }
 
-  formatter = value => {
+  formatter = num => {
     const formatterNumber = x => {
       const parts = x.toString().split(".");
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -94,26 +94,23 @@ class DetailReport extends React.Component {
       return parts.join(".");
     };
 
-    // eslint-disable-next-line radix
-    const value2 = parseInt(value);
+    const numInt = parseInt(num, 10);
+    const numAbs = Math.abs(numInt);
+    const formNum = formatterNumber(numInt).split(".");
 
-    if (value2 > 999999 && value2 < 1000000000) {
-      const format = formatterNumber(value2).split(".");
-
-      return `${format[0]}.${format[1].slice(0, 1)} m`;
-    }
-    if (value2 >= 1000000000) {
-      const format = formatterNumber(value2).split(".");
-
-      return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    }
-    if (value2 < 1000000) {
-      const format = formatterNumber(value2);
-
-      return `${format}`;
+    if (numAbs > 999999 && numAbs < 1000000000) {
+      return `${formNum[0]}.${formNum[1].slice(0, 1)} m`;
     }
 
-    return value2;
+    if (numAbs >= 1000000000) {
+      return `${formNum[0]}.${formNum[1].slice(0, 2)} mm`;
+    }
+
+    if (numAbs < 1000000) {
+      return `${formNum[0]}`;
+    }
+
+    return numInt;
   };
 
   render() {
