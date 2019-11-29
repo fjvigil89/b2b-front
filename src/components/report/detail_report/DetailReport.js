@@ -98,19 +98,21 @@ class DetailReport extends React.Component {
     const numAbs = Math.abs(numInt);
     const formNum = formatterNumber(numInt).split(".");
 
-    if (numAbs > 999999 && numAbs < 1000000000) {
+    if (numAbs < 1000000) {
+      let numDivByMillon = (parseInt(formNum[0], 10) / 1000000).toString();
+      if (numDivByMillon.length > 4) {
+        numDivByMillon = numDivByMillon.slice(0, 4);
+      }
+      return `${numDivByMillon} m`;
+    }
+
+    if (numAbs >= 1000000 && numAbs < 1000000000) {
       return `${formNum[0]}.${formNum[1].slice(0, 1)} m`;
     }
 
     if (numAbs >= 1000000000) {
       return `${formNum[0]}.${formNum[1].slice(0, 2)} mm`;
     }
-
-    if (numAbs < 1000000) {
-      return `${formNum[0]}`;
-    }
-
-    return numInt;
   };
 
   render() {

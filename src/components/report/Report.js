@@ -117,7 +117,7 @@ class Report extends Component {
       });
   };
 
-  formatter = value => {
+  formatter = num => {
     const formatterNumber = x => {
       const parts = x.toString().split(".");
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -125,21 +125,25 @@ class Report extends Component {
       return parts.join(".");
     };
 
-    if (value > 999999 && value < 1000000000) {
-      const format = formatterNumber(value).split(".");
+    const numInt = parseInt(num, 10);
+    const numAbs = Math.abs(numInt);
+    const formNum = formatterNumber(numInt).split(".");
 
-      return `${format[0]}.${format[1].slice(0, 1)} m`;
-    } else if (value >= 1000000000) {
-      const format = formatterNumber(value).split(".");
-
-      return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value < 1000000) {
-      const format = formatterNumber(value);
-
-      return `${format}`;
+    if (numAbs < 1000000) {
+      let numDivByMillon = (parseInt(formNum[0], 10) / 1000000).toString();
+      if (numDivByMillon.length > 4) {
+        numDivByMillon = numDivByMillon.slice(0, 4);
+      }
+      return `${numDivByMillon} m`;
     }
 
-    return value;
+    if (numAbs >= 1000000 && numAbs < 1000000000) {
+      return `${formNum[0]}.${formNum[1].slice(0, 1)} m`;
+    }
+
+    if (numAbs >= 1000000000) {
+      return `${formNum[0]}.${formNum[1].slice(0, 2)} mm`;
+    }
   };
 
   render = () => {
