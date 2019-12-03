@@ -86,34 +86,23 @@ class DetailReport extends React.Component {
     };
   }
 
-  formatter = num => {
-    const formatterNumber = x => {
-      const parts = x.toString().split(".");
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-      return parts.join(".");
-    };
+  formatter = (num, digits) => {
+    const scale = [
+      { value: 1, symbol: " m", div: 1E6 },
+      { value: 1E3, symbol: " m", div: 1E6 },
+      { value: 1E6, symbol: " m", div: 1E6 },
+      { value: 1E9, symbol: " mm", div: 1E9 }
+    ];
 
     const numInt = parseInt(num, 10);
-    const numAbs = Math.abs(numInt);
-    const formNum = formatterNumber(numInt).split(".");
-
-    if (numAbs < 1000000) {
-      let numDivByMillon = (parseInt(formNum[0], 10) / 1000000).toString();
-      if (numDivByMillon.length > 4) {
-        numDivByMillon = numDivByMillon.slice(0, 4);
-      }
-      return `${numDivByMillon} m`;
+    let i;
+    for (i = scale.length - 1; i > 0; i-=1) {
+      if (Math.abs(numInt) >= scale[i].value) break;
     }
 
-    if (numAbs >= 1000000 && numAbs < 1000000000) {
-      return `${formNum[0]}.${formNum[1].slice(0, 1)} m`;
-    }
-
-    if (numAbs >= 1000000000) {
-      return `${formNum[0]}.${formNum[1].slice(0, 2)} mm`;
-    }
+    return (numInt / scale[i].div).toFixed(digits) + scale[i].symbol;
   };
+
 
   render() {
     const backgroundImage = require("@assets/images/background-detalle-sala-categoria.png");
@@ -244,7 +233,7 @@ class DetailReport extends React.Component {
                     marginLeft: 10
                   }}
                 >
-                  {this.formatter(ventas.total)}
+                  {this.formatter(ventas.total, 2)}
                 </Text>
               </View>
 
@@ -344,7 +333,7 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventas.causas.salas_cerradas)}
+                        {this.formatter(ventas.causas.salas_cerradas, 2)}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>
@@ -382,7 +371,7 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventas.causas.salas_nuevas)}
+                        {this.formatter(ventas.causas.salas_nuevas, 2)}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>
@@ -420,7 +409,7 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventas.causas.productos_descatalogados)}
+                        {this.formatter(ventas.causas.productos_descatalogados, 2)}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>
@@ -458,7 +447,7 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventas.causas.productos_nuevos)}
+                        {this.formatter(ventas.causas.productos_nuevos, 2)}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>
@@ -496,7 +485,7 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventas.causas.mismas_salas)}
+                        {this.formatter(ventas.causas.mismas_salas, 2)}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>
@@ -553,7 +542,7 @@ class DetailReport extends React.Component {
                     color: "gray"
                   }}
                 >
-                  {this.formatter(ventasPerdidas.total)}
+                  {this.formatter(ventasPerdidas.total, 2)}
                 </Text>
               </View>
               <View
@@ -667,7 +656,7 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventasPerdidas.causas.chequear_pedidos)}
+                        {this.formatter(ventasPerdidas.causas.chequear_pedidos, 2)}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>
@@ -705,7 +694,7 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventasPerdidas.causas.reposicion)}
+                        {this.formatter(ventasPerdidas.causas.reposicion, 2)}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>
@@ -743,7 +732,7 @@ class DetailReport extends React.Component {
                           fontFamily: "Questrial"
                         }}
                       >
-                        {this.formatter(ventasPerdidas.causas.desajuste_stock)}
+                        {this.formatter(ventasPerdidas.causas.desajuste_stock, 2)}
                       </Text>
                     </View>
                     <View style={{ flex: 0.75, marginLeft: 10 }}>
@@ -782,7 +771,7 @@ class DetailReport extends React.Component {
                         }}
                       >
                         {this.formatter(
-                          ventasPerdidas.causas.productos_descatalogados
+                          ventasPerdidas.causas.productos_descatalogados, 2
                         )}
                       </Text>
                     </View>
