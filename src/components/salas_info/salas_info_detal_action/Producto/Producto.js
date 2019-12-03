@@ -96,7 +96,7 @@ class Producto extends React.Component {
       swipeable: null,
       productos: {},
       questions: [],
-      responseQuestions: []
+      responseQuestions: [],
     };
   }
 
@@ -106,15 +106,17 @@ class Producto extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if (nextProps.productos !== this.props.productos) {
-      const dataProduct = nextProps.productos.detail.data.map(data => ({...data}));
-      const productos = {
-        detail: {
-          ...nextProps.productos.detail,
-          data: dataProduct
+    if (nextProps && nextProps.productos && nextProps.productos.detail) {
+      if (nextProps.productos !== this.props.productos) {
+        const dataProduct = nextProps.productos.detail.data.map(data => ({...data}));
+        const productos = {
+          detail: {
+            ...nextProps.productos.detail,
+            data: dataProduct
+          }
         }
+        this.setState({ productos });
       }
-      this.setState({ productos });
     }
   }
 

@@ -148,26 +148,13 @@ class SalasInfo extends Component {
       return <LoginScreen />;
     }
 
-    let { dataDetail } = this.props;
-
-    let report = {};
-
-    if (this.state.loading) {
-      report = {
-        cademsmartPorcentaje: "-",
-        ventaPerdida: 0,
-        gestionado: 0
-      };
-
-      dataDetail = [];
-    }
-
-    report = {
+    const { dataDetail = [] } = this.props;
+    const report = {
       cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
         ? `${dataDetail.cademsmart_porcentaje}%`
         : "-",
-      ventaPerdida: dataDetail.venta_perdida,
-      gestionado: dataDetail.gestionado
+      ventaPerdida: parseInt(dataDetail.venta_perdida || 0, 10),
+      gestionado: parseInt(dataDetail.gestionado || 0, 10)
     };
 
     return (

@@ -60,8 +60,7 @@ class SalasInfoDetail extends React.Component {
       `SalaDetalle-${this.props.data.folio}`,
       e => {
         this.props.report.gestionado =
-          // eslint-disable-next-line radix
-          parseInt(this.props.report.gestionado) + e.gestionado;
+          parseInt(this.props.report.gestionado, 10) + e.gestionado;
 
         this.setState({
           reload: !this.state.reload
@@ -81,12 +80,6 @@ class SalasInfoDetail extends React.Component {
       return parts.join(".");
     };
 
-    if (value === 0) {
-      return {
-        number: "-",
-        size: 35
-      }
-    }
     if (value > 999999 && value < 1000000000) {
       const format = formatterNumber(value).split(".");
 
@@ -94,16 +87,14 @@ class SalasInfoDetail extends React.Component {
         number: `${format[0]}.${format[1].slice(0, 1)} m`,
         size: 35
       };
-    }
-    if (value >= 1000000000) {
+    } else if (value >= 1000000000) {
       const format = formatterNumber(value).split(".");
 
       return {
         number: `${format[0]}.${format[1].slice(0, 2)} mm`,
         size: 25
       };
-    }
-    if (value < 1000000) {
+    } else if (value < 1000000) {
       const format = formatterNumber(value);
 
       return {
@@ -117,6 +108,7 @@ class SalasInfoDetail extends React.Component {
       size: 35
     };
   };
+
 
   render() {
     const { data, report } = this.props;
