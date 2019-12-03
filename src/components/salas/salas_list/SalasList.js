@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Content } from "native-base";
-import { RefreshControl } from "react-native";
+import { InteractionManager, RefreshControl } from "react-native";
 
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 import SalasDetail from "@components/salas/salas_detail/SalasDetail";
@@ -48,6 +48,15 @@ class SalasList extends Component {
     loading: false
   };
 
+ /*  componentDidMount() {
+    InteractionManager.runAfterInteractions(() => {
+      this._interval = setInterval(() => {
+        console.log('every 30 second')
+        this.props.GetLocationAsync();
+      }, 30000);
+    })
+  } */
+
   componentWillMount = () => {
     this.props.GetLocationAsync();
 
@@ -69,10 +78,16 @@ class SalasList extends Component {
       });
   };
 
+  /* componentWillUnmount() {
+    clearInterval(this._interval);
+  } */
+
   RefreshListadoSalas = () => {
     this.setState({
       loading: true
     });
+
+    this.props.GetLocationAsync();
 
     this.props
       .ListadoSalasWithRefresh(this.props.endpoint, this.props.lostSaleON)
