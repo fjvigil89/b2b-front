@@ -130,7 +130,7 @@ class SalasDetail extends React.Component {
   };
 
   showPolls = data => {
-    if (data) {
+    if (data.hasPoll) {
       return (
         <View
           style={{
