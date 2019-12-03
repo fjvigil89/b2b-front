@@ -74,17 +74,16 @@ export function CheckToken() {
     });
 }
 
-export function ChangeInputLogin(name, value) {
-  return dispatch =>
-    new Promise(async resolve => {
-      resolve(
-        dispatch({
-          type: "USER_CHANGE_INPUT",
-          data: {
-            name,
-            value
-          }
-        })
-      );
-    });
+export const ChangeInputLogin = (name, value) => dispatch => {
+  return new Promise(async resolve => {
+    resolve(
+      dispatch({
+        type: "USER_CHANGE_INPUT",
+        data: {
+          name,
+          value
+        }
+      })
+    );
+  });
 }

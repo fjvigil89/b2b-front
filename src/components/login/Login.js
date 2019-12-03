@@ -59,9 +59,10 @@ class LoginScreen extends Component {
     this.props
       .Login(this.props.email, this.props.password)
       .then(() => {
-        this.setState({
+        // TODO: FIX: Warning: Can't perform a React state update on an unmounted component. This is a no-op
+        /* this.setState({
           loading: false
-        });
+        }); */
       })
       .catch(() => {
         this.setState({
