@@ -240,7 +240,7 @@ class Report extends Component {
                 backgroundColor: "#FFF"
               }}
             >
-              {this.state.hoyActive ? (
+              {/* {this.state.hoyActive ? (
                 <Button
                   small
                   bordered
@@ -265,13 +265,13 @@ class Report extends Component {
                 >
                   <Text>Día</Text>
                 </Button>
-              )}
+              )} */}
 
               {this.state.semanaActive ? (
                 <Button
                   small
                   bordered
-                  style={{ flex: 0.33, justifyContent: "center" }}
+                  style={{ flex: 0.5, justifyContent: "center" }}
                 >
                   <Text>Semana</Text>
                 </Button>
@@ -279,7 +279,7 @@ class Report extends Component {
                 <Button
                   small
                   transparent
-                  style={{ flex: 0.33, justifyContent: "center" }}
+                  style={{ flex: 0.5, justifyContent: "center" }}
                   onPress={() => {
                     this.refreshReport("week", "Semana");
 
@@ -298,7 +298,7 @@ class Report extends Component {
                 <Button
                   small
                   bordered
-                  style={{ flex: 0.33, justifyContent: "center" }}
+                  style={{ flex: 0.5, justifyContent: "center" }}
                 >
                   <Text>Mes</Text>
                 </Button>
@@ -306,7 +306,7 @@ class Report extends Component {
                 <Button
                   small
                   transparent
-                  style={{ flex: 0.33, justifyContent: "center" }}
+                  style={{ flex: 0.5, justifyContent: "center" }}
                   onPress={() => {
                     this.refreshReport("month", "Mes");
 
