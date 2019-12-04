@@ -22,18 +22,28 @@ class SalasInfoList extends React.Component {
   };
 
   render() {
-    let categoryDetailSala = <Text />;
+    const {
+      data,
+      data: {
+        detail,
+      },
+      sala,
+      nombreSala,
+      dateb2b,
+      visitaEnProgreso
+    } = this.props;
+    let categoryDetailSala;
 
-    if (!_.isEmpty(this.props.data)) {
-      categoryDetailSala = this.props.data.detail.map(detail => (
+    if (data && detail.length > 0) {
+      categoryDetailSala = detail.map(det => (
         <SalasInfoListDetail
-          key={detail.categoria}
-          data={detail}
-          sala={this.props.sala}
-          nombreSala={this.props.nombreSala}
-          categoria={detail.categoria}
-          dateb2b={this.props.dateb2b}
-          visitaEnProgreso={this.props.visitaEnProgreso}
+          key={det.categoria}
+          data={det}
+          sala={sala}
+          nombreSala={nombreSala}
+          categoria={det.categoria}
+          dateb2b={dateb2b}
+          visitaEnProgreso={visitaEnProgreso}
         />
       ));
     }
@@ -45,6 +55,14 @@ class SalasInfoList extends React.Component {
           backgroundColor: "#FFFFFF"
         }}
       >
+        {(!data || detail.length) === 0 &&
+          <View style={{
+            justifyContent: 'center',
+            flex: 1,
+            margin: 10,
+          }}>
+            <Text style={{ textAlign: 'center' }}>No hay casos disponibles</Text>
+          </View>}
         <ScrollView>{categoryDetailSala}</ScrollView>
       </View>
     );
