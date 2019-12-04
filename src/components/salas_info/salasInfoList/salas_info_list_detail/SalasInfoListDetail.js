@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { View, TouchableOpacity, DeviceEventEmitter } from "react-native";
 import { Text } from "native-base";
 
-import SalasInfoListAditional from "@components/salas_info/salas_info_list/salas_info_list_aditional/SalasInfoListAditional";
+import SalasInfoListAditional from "@components/salas_info/salasInfoList/salas_info_list_aditional/SalasInfoListAditional";
 
 class SalasInfoListDetail extends React.Component {
   static propTypes = {

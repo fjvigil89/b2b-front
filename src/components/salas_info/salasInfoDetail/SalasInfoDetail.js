@@ -55,15 +55,16 @@ class SalasInfoDetail extends React.Component {
 
   constructor(props) {
     super(props);
+    const { reload } = this.state;
+    const { data: { folio }, report: { gestionado } } = this.props;
 
     DeviceEventEmitter.addListener(
-      `SalaDetalle-${this.props.data.folio}`,
+      `SalaDetalle-${folio}`,
       e => {
-        this.props.report.gestionado =
-          parseInt(this.props.report.gestionado, 10) + e.gestionado;
+        this.props.report.gestionado = parseInt(gestionado, 10) + e.gestionado;
 
         this.setState({
-          reload: !this.state.reload
+          reload: !reload
         });
       }
     );

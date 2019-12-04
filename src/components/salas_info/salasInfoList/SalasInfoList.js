@@ -3,7 +3,7 @@ import { View, ScrollView, Text } from "react-native";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
-import SalasInfoListDetail from "@components/salas_info/salas_info_list/salas_info_list_detail/SalasInfoListDetail";
+import SalasInfoListDetail from "@components/salas_info/salasInfoList/salas_info_list_detail/SalasInfoListDetail";
 
 class SalasInfoList extends React.Component {
   static propTypes = {

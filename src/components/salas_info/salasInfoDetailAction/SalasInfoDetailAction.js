@@ -13,9 +13,9 @@ import {
 import { Actions } from "react-native-router-flux";
 
 import ListadoProductosPorCategoriaAcccion
-  from "@components/salas_info/salas_info_detal_action/SalasInfoDetailActionActions.js";
-import Header from "@components/salas_info/salas_info_detal_action/Header/Header";
-import Producto from "@components/salas_info/salas_info_detal_action/Producto/Producto";
+  from "@components/salas_info/salasInfoDetailAction/SalasInfoDetailActionActions.js";
+import Header from "@components/salas_info/salasInfoDetailAction/Header/Header";
+import Producto from "@components/salas_info/salasInfoDetailAction/Producto/Producto";
 
 class SalasInfoDetailAction extends React.Component {
   static propTypes = {

@@ -21,7 +21,7 @@ import Modal from "react-native-modal";
 import _ from "lodash";
 import {MaterialIcons} from "@expo/vector-icons";
 
-import {modalHide, setPhoto} from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
+import {modalHide, setPhoto} from "@components/salas_info/salasInfoDetailAction/Producto/ProductoAction";
 import {ImagePicker, Permissions} from "expo";
 
 

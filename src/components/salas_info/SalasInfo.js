@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Alert, DeviceEventEmitter } from "react-native";
 
-import SalasInfoHeader from "@components/salas_info/salas_info_header/SalasInfoHeader";
-import SalasInfoDetail from "@components/salas_info/salas_info_detail/SalasInfoDetail";
-import SalasInfoList from "@components/salas_info/salas_info_list/SalasInfoList";
+import SalasInfoHeader from "@components/salas_info/salasInfoHeader/SalasInfoHeader";
+import SalasInfoDetail from "@components/salas_info/salasInfoDetail/SalasInfoDetail";
+import SalasInfoList from "@components/salas_info/salasInfoList/SalasInfoList";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
 import {
   ListadoSalasInfo,
@@ -149,6 +149,7 @@ class SalasInfo extends Component {
     }
 
     const { dataDetail = [] } = this.props;
+
     const report = {
       cademsmartPorcentaje: dataDetail.cademsmart_porcentaje
         ? `${dataDetail.cademsmart_porcentaje}%`

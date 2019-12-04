@@ -13,8 +13,8 @@ import {
 import Swipeable from "react-native-swipeable";
 import _ from "lodash";
 
-import MarcarProducto, { getQuestions, saveFeedbackQuestions, modalShow, modalHide, setCurrentProduct } from "@components/salas_info/salas_info_detal_action/Producto/ProductoAction";
-import ModalFeedBack from "@components/salas_info/salas_info_detal_action/Producto/ProductoFeedback";
+import MarcarProducto, { getQuestions, saveFeedbackQuestions, modalShow, modalHide, setCurrentProduct } from "@components/salas_info/salasInfoDetailAction/Producto/ProductoAction";
+import ModalFeedBack from "@components/salas_info/salasInfoDetailAction/Producto/ProductoFeedback";
 
 const styles = StyleSheet.create({
   rightSwipeItem: {
