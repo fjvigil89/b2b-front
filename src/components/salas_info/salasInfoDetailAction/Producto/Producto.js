@@ -156,29 +156,43 @@ class Producto extends React.Component {
   }
 
   makeGestionado = async () => {
+    const {
+      endpoint,
+      causa,
+      categoria,
+      currentProduct: {
+        sala,
+        ean,
+        venta_perdida,
+        dateb2b
+      },
+      imagen,
+    } = this.props;
+
     try {
+      const {responseQuestions} = this.state;
       const caseId = await this.props.MarcarProducto(
-        this.props.endpoint,
-        this.props.currentProduct.sala,
+        endpoint,
+        sala,
         "gestionado",
-        this.props.causa,
-        this.props.currentProduct.ean,
-        this.props.currentProduct.venta_perdida,
-        this.props.currentProduct.dateb2b
+        causa,
+        ean,
+        venta_perdida,
+        dateb2b
       );
 
-      this.updateProductByEan(this.props.currentProduct.ean, true);
+      this.updateProductByEan(ean, true);
 
       // modal
-      if (this.state.responseQuestions.length > 0) {
-        const dataFeedback = this.state.responseQuestions.map(elem => ({
+      if (responseQuestions.length > 0) {
+        const dataFeedback = responseQuestions.map(elem => ({
           caseId,
           questionId: elem.id,
-          folio: this.props.currentProduct.sala,
-          ean: this.props.currentProduct.ean,
+          folio: sala,
+          ean,
           answer: elem.response,
         }));
-        saveFeedbackQuestions(this.props.endpoint, dataFeedback, this.props.imagen);
+        saveFeedbackQuestions(endpoint, dataFeedback, imagen);
       }
     } catch (err) {
       console.error(err);
@@ -186,15 +200,15 @@ class Producto extends React.Component {
 
     // detiene
     DeviceEventEmitter.emit(
-      `SalaDetalleCategoria-${this.props.currentProduct.sala}-${this.props.categoria.replace(
+      `SalaDetalleCategoria-${sala}-${categoria.replace(
         /\s/g,
         ""
       )}`,
-      { gestionado: this.props.currentProduct.venta_perdida }
+      { gestionado: venta_perdida }
     );
 
-    DeviceEventEmitter.emit(`SalaDetalle-${this.props.currentProduct.sala}`, {
-      gestionado: this.props.currentProduct.venta_perdida
+    DeviceEventEmitter.emit(`SalaDetalle-${sala}`, {
+      gestionado: venta_perdida
     });
 
     this.props.modalHide();
