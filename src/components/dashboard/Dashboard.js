@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Container } from "native-base";
+import { Notifications } from 'expo';
 
 // Components
 import LoginScreen from "@components/login/Login";
 import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import registerForPushNotificationsAsync from '@common/notifications/Notifications';
 import SalasHeader from "@components/salas/salas_header/SalasHeader";
 import SalasList from "@components/salas/salas_list/SalasList";
 import { CheckToken } from "@components/login/LoginActions.js";
@@ -25,6 +27,7 @@ class Dashboard extends Component {
   };
 
   componentDidMount = () => {
+    registerForPushNotificationsAsync(this.props.user);
     this.setState({
       loading: true
     });
@@ -41,6 +44,11 @@ class Dashboard extends Component {
           loading: false
         });
       });
+      this._notificationSubscription = Notifications.addListener(this._handleNotification);
+  };
+
+  _handleNotification = (notification) => {
+    // this.setState({notification});
   };
 
   render = () => {
@@ -62,7 +70,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
-  isLoading: state.messages.loading
+  isLoading: state.messages.loading,
+  user: state.user.user
 });
 
 const mapDispatchToProps = {
