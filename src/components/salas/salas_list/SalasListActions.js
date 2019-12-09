@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as Location from 'expo-location'
-import * as Permissions from 'expo-permissions'
+import * as Permissions from 'expo-permissions';
 import Sentry from "sentry-expo";
 
 export function ListadoSalas(url, lostSaleON) {

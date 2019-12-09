@@ -22,7 +22,8 @@ import _ from "lodash";
 import {MaterialIcons} from "@expo/vector-icons";
 
 import {modalHide, setPhoto} from "@components/salas_info/salasInfoDetailAction/Producto/ProductoAction";
-import {ImagePicker, Permissions} from "expo";
+import * as ImagePicker from 'expo-image-picker'
+import * as Permissions from 'expo-permissions';
 
 
 const styles = StyleSheet.create({
@@ -90,13 +91,25 @@ class ModalFeedBack extends Component {
   }
 
   getPermissionAsync = async () => {
-    const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    if (status !== 'granted') {
+    const permissions = Permissions.CAMERA_ROLL;
+    const permissionsCamera = Permissions.CAMERA;
+
+    const gallery = await Permissions.askAsync(permissions);
+    const camera = await Permissions.askAsync(permissionsCamera);
+
+    if (gallery.status !== "granted" || camera.status !== "granted") {
       Alert.alert('Disculpa, la Camara requiere de estos permisos para operar');
+      return false;
     }
+    return true;
   };
 
   takePhoto = async () => {
+    const checkpermission = await this.getPermissionAsync();
+    if (!checkpermission) {
+      Alert.alert('Disculpa, la Camara requiere de estos permisos para operar');
+      return;
+    }
     const result = await ImagePicker.launchCameraAsync({base64: true});
 
     if (!result.cancelled) {

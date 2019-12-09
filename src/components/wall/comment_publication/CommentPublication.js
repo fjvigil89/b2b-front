@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { ImagePicker, Permissions } from "expo";
+import * as ImagePicker from 'expo-image-picker'
+import * as Permissions from 'expo-permissions';
 import {
   Container,
   Button,

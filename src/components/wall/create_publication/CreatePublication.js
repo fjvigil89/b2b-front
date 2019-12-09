@@ -28,7 +28,8 @@ import {
   ListItem
 } from "native-base";
 import { Actions } from "react-native-router-flux";
-import { ImagePicker, Permissions } from "expo";
+import * as ImagePicker from 'expo-image-picker'
+import * as Permissions from 'expo-permissions';
 import { size, filter, take } from "lodash";
 import { Ionicons } from "@expo/vector-icons";
 
