@@ -1,3 +1,8 @@
+2.7.12
+  - Se agrega modulo para notificaciones
+  - Arreglar posicion del username para celulares Android
+  - Se agrega caracteristica para reporte personal (caracteristica parcial)
+  - Se arregla problema con la camara de IOS para el feedback de los casos
 2.7.11
   - Agregar mensaje cuando no hay casos disponibles
   - Ocultar boton 'DÍA' del Dashboard, solo dejando 'Semana' y 'Mes'
