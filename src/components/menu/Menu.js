@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, Dimensions } from "react-native";
+import { Image, View, Dimensions, Platform, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
@@ -42,6 +42,10 @@ class SideBar extends Component {
 
   report = () => {
     Actions.report();
+  };
+
+  myStatistics = () => {
+    Actions.myStatistics();
   };
 
   render() {
@@ -194,6 +198,27 @@ class SideBar extends Component {
             </Left>
           </ListItem>
 
+          {/* <ListItem button noBorder onPress={this.myStatistics}>
+            <Left>
+              <Ionicons
+                active
+                name="md-analytics"
+                style={{ fontSize: 26, width: 30 }}
+              />
+
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Mi reporte
+              </Text>
+            </Left>
+          </ListItem> */}
+
           <ListItem button noBorder onPress={this.close}>
             <Left>
               <Ionicons
@@ -215,14 +240,7 @@ class SideBar extends Component {
             </Left>
           </ListItem>
           <View
-            style={{
-              flexDirection: 'row',
-              height: 200,
-              width: null,
-              justifyContent: "flex-start",
-              alignItems: "flex-end",
-              marginLeft: 20
-            }}
+            style={styles.contentUsername}
           >
             <Ionicons
               active
@@ -245,6 +263,17 @@ class SideBar extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  contentUsername: {
+    flexDirection: 'row',
+    height: Platform.OS === 'ios' ? 340 : 180,
+    width: null,
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
+    marginLeft: 20,
+  }
+});
 
 const mapStateToProps = state => ({
   email: state.user.email,
