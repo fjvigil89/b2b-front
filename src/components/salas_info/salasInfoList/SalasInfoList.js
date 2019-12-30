@@ -34,7 +34,7 @@ class SalasInfoList extends React.Component {
     } = this.props;
     let categoryDetailSala;
 
-    if (data && detail.length > 0) {
+    if (data && detail && detail.length > 0) {
       categoryDetailSala = detail.map(det => (
         <SalasInfoListDetail
           key={det.categoria}
@@ -55,7 +55,7 @@ class SalasInfoList extends React.Component {
           backgroundColor: "#FFFFFF"
         }}
       >
-        {(!data || detail.length) === 0 &&
+        {(!data || (detail && detail.length)) === 0 &&
           <View style={{
             justifyContent: 'center',
             flex: 1,
