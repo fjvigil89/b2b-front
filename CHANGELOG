@@ -1,3 +1,5 @@
+2.7.14
+  - Capitalización del titulo de la aplicación en menu (drawer) y en splash screen.
 2.7.13
   - Agregar validación al objeto que trae el detalle de las salas
 2.7.12
