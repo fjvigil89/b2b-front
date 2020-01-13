@@ -91,7 +91,7 @@ class SideBar extends Component {
                 zIndex: 200
               }}
             >
-              SMARTapp
+              SmartApp
             </Text>
           </View>
           <ListItem button noBorder onPress={this.report}>
