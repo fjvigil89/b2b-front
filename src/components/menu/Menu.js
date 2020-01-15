@@ -102,7 +102,7 @@ class SideBar extends Component {
             <Left>
               <Ionicons
                 active
-                name="ios-images"
+                name="ios-speedometer"
                 style={{ fontSize: 26, width: 30 }}
               />
 
