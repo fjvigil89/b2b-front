@@ -24,12 +24,7 @@ class Gallery extends Component {
 
     return (
       <View style={styles.view}>
-         <WebView source={{
-          uri: 'http://galeria.cademsmart.cl',
-           headers: {
-            Authorization: `${token}`,
-          }
-        }}
+         <WebView source={{uri: `http://galeria.cademsmart.cl?t=${token}`}}
         />
       </View>
     );
