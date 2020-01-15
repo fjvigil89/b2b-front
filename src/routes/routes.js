@@ -19,6 +19,7 @@ import Hashtags from "@components/wall/hashtags/Hashtags";
 import Report from "@components/report/Report";
 import Help from "@components/report/help/Help";
 import MyStatistics from "@components/myStatistics/MyStatistics";
+import Gallery from "@components/gallery/Gallery";
 
 const Index = (
   <Router>
@@ -45,6 +46,7 @@ const Index = (
             <Scene key="maps" title="Maps" component={Maps} />
             <Scene key="report" title="Report" component={Report} />
             <Scene key="myStatistics" title="MyStatistics" component={MyStatistics} />
+            <Scene key="gallery" title="Galería" component={Gallery} />
           </Scene>
         </Scene>
       </Scene>

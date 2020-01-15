@@ -48,6 +48,10 @@ class SideBar extends Component {
     Actions.myStatistics();
   };
 
+  gallery = () => {
+    Actions.gallery();
+  };
+
   render() {
     return (
       <Container>
@@ -218,6 +222,27 @@ class SideBar extends Component {
               </Text>
             </Left>
           </ListItem> */}
+
+          <ListItem button noBorder onPress={this.gallery}>
+            <Left>
+              <Ionicons
+                active
+                name="ios-images"
+                style={{ fontSize: 26, width: 30 }}
+              />
+
+              <Text
+                style={{
+                  fontFamily: "Questrial",
+                  fontWeight: "500",
+                  fontSize: 16,
+                  marginLeft: 20
+                }}
+              >
+                Galería
+              </Text>
+            </Left>
+          </ListItem>
 
           <ListItem button noBorder onPress={this.close}>
             <Left>
