@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { ScrollView, View } from "react-native";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { ScrollView, View } from 'react-native';
 import {
   Container,
   Header,
@@ -12,33 +12,33 @@ import {
   Title,
   Body,
   Text,
-  Content
-} from "native-base";
-import { Actions } from "react-native-router-flux";
+  Content,
+} from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
-import ReportePorTipo from "@components/report/ReportActions";
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
-import DetailReport from "@components/report/detail_report/DetailReport";
-import LoginScreen from "@components/login/Login";
+import ReportePorTipo from '@components/report/ReportActions';
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
+import DetailReport from '@components/report/detail_report/DetailReport';
+import LoginScreen from '@components/login/Login';
 
-import moment from "moment";
-import "moment/locale/es";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import moment from 'moment';
+import 'moment/locale/es';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-moment.locale("es");
+moment.locale('es');
 
 class Report extends Component {
   static propTypes = {
     ReportePorTipo: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
     endpoint: PropTypes.string,
-    info: PropTypes.oneOfType([PropTypes.any])
+    info: PropTypes.oneOfType([PropTypes.any]),
   };
 
   static defaultProps = {
     isAuthenticated: false,
-    endpoint: "",
-    info: []
+    endpoint: '',
+    info: [],
   };
 
   constructor(props) {
@@ -48,20 +48,20 @@ class Report extends Component {
       hoyActive: false,
       semanaActive: true,
       mesActive: false,
-      filterText: "",
-      text: "",
-      loading: false
+      filterText: '',
+      text: '',
+      loading: false,
     };
   }
 
   componentWillMount = () => {
-    this.refreshReport("week", "Semana");
+    this.refreshReport('week', 'Semana');
   };
 
   createTextDescription = () => {
-    let text = "";
-    let fechaInicio = "";
-    let fechaTermino = "";
+    let text = '';
+    let fechaInicio = '';
+    let fechaTermino = '';
 
     if (this.state.hoyActive) {
       fechaInicio = this.props.info.fecha_periodo.actual;
@@ -78,12 +78,12 @@ class Report extends Component {
 
       return text;
     } else if (this.state.mesActive) {
-      fechaInicio = moment(this.props.info.fecha_periodo.actual).format("MMMM");
+      fechaInicio = moment(this.props.info.fecha_periodo.actual).format('MMMM');
       const fechaInicioNormalized =
         fechaInicio.charAt(0).toUpperCase() + fechaInicio.slice(1);
 
       fechaTermino = moment(this.props.info.fecha_periodo.anterior).format(
-        "MMMM"
+        'MMMM'
       );
       const fechaTerminoNormalized =
         fechaTermino.charAt(0).toUpperCase() + fechaTermino.slice(1);
@@ -93,12 +93,12 @@ class Report extends Component {
       return text;
     }
 
-    return "";
+    return '';
   };
 
   refreshReport = (type, text) => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     this.props
@@ -107,30 +107,30 @@ class Report extends Component {
         this.setState({
           loading: false,
           filterText: text,
-          text: this.createTextDescription()
+          text: this.createTextDescription(),
         });
       })
       .catch(() => {
         this.setState({
-          loading: false
+          loading: false,
         });
       });
   };
 
-  formatter = value => {
-    const formatterNumber = x => {
-      const parts = x.toString().split(".");
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  formatter = (value) => {
+    const formatterNumber = (x) => {
+      const parts = x.toString().split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-      return parts.join(".");
+      return parts.join('.');
     };
 
     if (value > 999999 && value < 1000000000) {
-      const format = formatterNumber(value).split(".");
+      const format = formatterNumber(value).split('.');
 
       return `${format[0]}.${format[1].slice(0, 1)} m`;
     } else if (value >= 1000000000) {
-      const format = formatterNumber(value).split(".");
+      const format = formatterNumber(value).split('.');
 
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
     } else if (value < 1000000) {
@@ -142,7 +142,6 @@ class Report extends Component {
     return value;
   };
 
-
   render = () => {
     const { isAuthenticated } = this.props;
 
@@ -152,30 +151,30 @@ class Report extends Component {
 
     const { info } = this.props;
 
-    const listReport = info.banderas.map(data => {
+    const listReport = info.banderas.map((data) => {
       const colorVentas =
         // "#083D77";
         // TODO: COLORS
-        parseFloat(data.ventas.variacion.replace("%", "")) < 0
-          ? "red"
-          : "green";
+        parseFloat(data.ventas.variacion.replace('%', '')) < 0
+          ? 'red'
+          : 'green';
 
       const iconoVentas =
-        parseFloat(data.ventas.variacion.replace("%", "")) < 0
-          ? "dislike"
-          : "like";
+        parseFloat(data.ventas.variacion.replace('%', '')) < 0
+          ? 'dislike'
+          : 'like';
 
       const colorVentasPerdidas =
         // "gray";
         // TODO: colors
-        parseFloat(data.ventas_perdidas.variacion.replace("%", "")) < 0
-          ? "green"
-          : "red";
+        parseFloat(data.ventas_perdidas.variacion.replace('%', '')) < 0
+          ? 'green'
+          : 'red';
 
       const iconoVentasPerdidas =
-        parseFloat(data.ventas_perdidas.variacion.replace("%", "")) < 0
-          ? "like"
-          : "dislike";
+        parseFloat(data.ventas_perdidas.variacion.replace('%', '')) < 0
+          ? 'like'
+          : 'dislike';
 
       return (
         <DetailReport
@@ -198,13 +197,13 @@ class Report extends Component {
                 name="menu"
                 style={{
                   color: 'white',
-                  fontSize: 25
+                  fontSize: 25,
                 }}
               />
             </Button>
           </Left>
           <Body>
-          <Title>Dashboard</Title>
+            <Title>Dashboard</Title>
           </Body>
           <Right>
             <Button
@@ -217,7 +216,7 @@ class Report extends Component {
                 name="ios-help-circle"
                 style={{
                   color: 'white',
-                  fontSize: 25
+                  fontSize: 25,
                 }}
               />
             </Button>
@@ -227,17 +226,17 @@ class Report extends Component {
           scrollEnabled={false}
           style={{ flex: 1 }}
           contentContainerStyle={{
-            flex: 1
+            flex: 1,
           }}
         >
           <View style={{ height: 255 }}>
             <View
               style={{
                 flex: 200,
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 padding: 10,
-                backgroundColor: "#FFF"
+                backgroundColor: '#FFF',
               }}
             >
               {/* {this.state.hoyActive ? (
@@ -271,7 +270,7 @@ class Report extends Component {
                 <Button
                   small
                   bordered
-                  style={{ flex: 0.5, justifyContent: "center" }}
+                  style={{ flex: 0.5, justifyContent: 'center' }}
                 >
                   <Text>Semana</Text>
                 </Button>
@@ -279,14 +278,14 @@ class Report extends Component {
                 <Button
                   small
                   transparent
-                  style={{ flex: 0.5, justifyContent: "center" }}
+                  style={{ flex: 0.5, justifyContent: 'center' }}
                   onPress={() => {
-                    this.refreshReport("week", "Semana");
+                    this.refreshReport('week', 'Semana');
 
                     this.setState({
                       hoyActive: false,
                       semanaActive: true,
-                      mesActive: false
+                      mesActive: false,
                     });
                   }}
                 >
@@ -298,7 +297,7 @@ class Report extends Component {
                 <Button
                   small
                   bordered
-                  style={{ flex: 0.5, justifyContent: "center" }}
+                  style={{ flex: 0.5, justifyContent: 'center' }}
                 >
                   <Text>Mes</Text>
                 </Button>
@@ -306,14 +305,14 @@ class Report extends Component {
                 <Button
                   small
                   transparent
-                  style={{ flex: 0.5, justifyContent: "center" }}
+                  style={{ flex: 0.5, justifyContent: 'center' }}
                   onPress={() => {
-                    this.refreshReport("month", "Mes");
+                    this.refreshReport('month', 'Mes');
 
                     this.setState({
                       hoyActive: false,
                       semanaActive: false,
-                      mesActive: true
+                      mesActive: true,
                     });
                   }}
                 >
@@ -325,47 +324,47 @@ class Report extends Component {
             <View
               style={{
                 flex: 560,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                backgroundColor: "#FFF",
-                paddingTop: 0
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                backgroundColor: '#FFF',
+                paddingTop: 0,
               }}
             >
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#FFFFFF",
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#FFFFFF',
                   margin: 10,
                   marginTop: 0,
                   borderRadius: 5,
-                  borderColor: "#083D77",
+                  borderColor: '#083D77',
                   borderWidth: 2,
-                  height: 130
+                  height: 130,
                 }}
               >
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center"
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   <Ionicons
                     name="logo-usd"
                     style={{
                       fontSize: 50,
-                      color: "#083D77"
+                      color: '#083D77',
                     }}
                   />
 
                   <Text
                     style={{
                       fontSize: 18,
-                      fontWeight: "bold",
-                      fontFamily: "Questrial",
-                      color: "#083D77"
+                      fontWeight: 'bold',
+                      fontFamily: 'Questrial',
+                      color: '#083D77',
                     }}
                   >
                     {this.formatter(info.total_ventas)}
@@ -374,9 +373,9 @@ class Report extends Component {
                   <Text
                     style={{
                       marginTop: 2,
-                      fontFamily: "Questrial",
+                      fontFamily: 'Questrial',
                       fontSize: 12,
-                      color: "#083D77"
+                      color: '#083D77',
                     }}
                   >
                     Total de Ventas
@@ -384,9 +383,9 @@ class Report extends Component {
                   <Text
                     style={{
                       marginTop: 2,
-                      fontFamily: "Questrial",
+                      fontFamily: 'Questrial',
                       fontSize: 12,
-                      color: "#083D77"
+                      color: '#083D77',
                     }}
                   >
                     {this.formatter(info.venta_unidades)} unidades vendidas
@@ -397,38 +396,38 @@ class Report extends Component {
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#FFFFFF",
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#FFFFFF',
                   margin: 10,
                   marginTop: 0,
                   borderRadius: 5,
-                  borderColor: "#083D77",
+                  borderColor: '#083D77',
                   borderWidth: 2,
-                  height: 130
+                  height: 130,
                 }}
               >
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center"
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   <Ionicons
                     name="ios-search"
                     style={{
                       fontSize: 50,
-                      color: "gray"
+                      color: 'gray',
                     }}
                   />
 
                   <Text
                     style={{
                       fontSize: 18,
-                      fontWeight: "bold",
-                      fontFamily: "Questrial",
-                      color: "gray"
+                      fontWeight: 'bold',
+                      fontFamily: 'Questrial',
+                      color: 'gray',
                     }}
                   >
                     {this.formatter(info.venta_perdida)}
@@ -437,9 +436,9 @@ class Report extends Component {
                   <Text
                     style={{
                       marginTop: 2,
-                      fontFamily: "Questrial",
+                      fontFamily: 'Questrial',
                       fontSize: 12,
-                      color: "gray"
+                      color: 'gray',
                     }}
                   >
                     Venta Perdida
@@ -447,9 +446,9 @@ class Report extends Component {
                   <Text
                     style={{
                       marginTop: 2,
-                      fontFamily: "Questrial",
+                      fontFamily: 'Questrial',
                       fontSize: 12,
-                      color: "#083D77"
+                      color: '#083D77',
                     }}
                   />
                 </View>
@@ -459,24 +458,24 @@ class Report extends Component {
             <View
               style={{
                 flex: 120,
-                flexDirection: "row"
+                flexDirection: 'row',
               }}
             >
               <View
                 style={{
                   flex: 1,
-                  justifyContent: "flex-end",
-                  alignItems: "center",
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
                   paddingTop: 5,
-                  backgroundColor: "#FFF"
+                  backgroundColor: '#FFF',
                 }}
               >
                 <Text
                   style={{
                     fontSize: 12,
-                    fontFamily: "Bree",
-                    fontWeight: "bold",
-                    marginBottom: 0
+                    fontFamily: 'Bree',
+                    fontWeight: 'bold',
+                    marginBottom: 0,
                   }}
                 >
                   Detalle de Reporte
@@ -487,26 +486,26 @@ class Report extends Component {
             <View
               style={{
                 flex: 120,
-                flexDirection: "row"
+                flexDirection: 'row',
               }}
             >
               <View
                 style={{
                   flex: 1,
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  borderBottomColor: "#DEDEDE",
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  borderBottomColor: '#DEDEDE',
                   borderBottomWidth: 1,
                   paddingTop: 5,
                   paddingBottom: 10,
-                  backgroundColor: "#FFF"
+                  backgroundColor: '#FFF',
                 }}
               >
                 <Text
                   style={{
                     fontSize: 12,
-                    fontFamily: "Questrial",
-                    marginBottom: 0
+                    fontFamily: 'Questrial',
+                    marginBottom: 0,
                   }}
                 >
                   {this.state.filterText}: {this.state.text}
@@ -526,14 +525,14 @@ class Report extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.user.isAuthenticated,
   info: state.reporte.info,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
-  ReportePorTipo
+  ReportePorTipo,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Report);

@@ -1,6 +1,7 @@
 {
+  "name": "SmartB2B CademSmart",
+  "displayName": "SmartB2BCademSmart",
   "expo": {
-    "sdkVersion": "33.0.0",
     "name": "SmartB2B CademSmart",
     "slug": "SmartB2B-CademSmart",
     "icon": "src/assets/images/app-icon.png",
@@ -43,7 +44,9 @@
         }
       ]
     },
-    "version": "2.7.15",
-    "description": ""
+    "version": "3.0.0",
+    "description": "",
+    "platforms": ["ios", "android", "web"],
+    "assetBundlePatterns": ["**/*"]
   }
 }

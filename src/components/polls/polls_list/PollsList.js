@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Actions } from "react-native-router-flux";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { Actions } from 'react-native-router-flux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   Content,
   Container,
@@ -11,16 +11,16 @@ import {
   Body,
   Title,
   Right,
-  List
-} from "native-base";
-import PollsListGrid from "@components/polls/polls_list/polls_list_grid/PollsListGrid";
+  List,
+} from 'native-base';
+import PollsListGrid from '@components/polls/polls_list/polls_list_grid/PollsListGrid';
 
-import GetListPoll from "@components/polls/polls_list/PollsListActios";
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
-import LoginScreen from "@components/login/Login";
-import { MaterialIcons } from "@expo/vector-icons";
+import GetListPoll from '@components/polls/polls_list/PollsListActios';
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
+import LoginScreen from '@components/login/Login';
+import { MaterialIcons } from '@expo/vector-icons';
 
-let params = "";
+let params = '';
 
 class PollsList extends Component {
   static propTypes = {
@@ -29,7 +29,7 @@ class PollsList extends Component {
     listPolls: PropTypes.oneOfType([() => null, PropTypes.any]),
     isLoading: PropTypes.bool,
     folio: PropTypes.number,
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
@@ -37,7 +37,7 @@ class PollsList extends Component {
     listPolls: [],
     isLoading: true,
     folio: 0,
-    endpoint: ""
+    endpoint: '',
   };
 
   componentWillMount = () => {
@@ -48,13 +48,13 @@ class PollsList extends Component {
     this.props.GetListPoll(params);
   };
 
-  showBackMenu = show => {
+  showBackMenu = (show) => {
     if (show) {
       return (
         <Button transparent onPress={Actions.pop}>
           <MaterialIcons
             name="arrow-back"
-            style={{ color: "#FFFFFF", fontSize: 25 }}
+            style={{ color: '#FFFFFF', fontSize: 25 }}
           />
         </Button>
       );
@@ -65,8 +65,8 @@ class PollsList extends Component {
         <MaterialIcons
           name="menu"
           style={{
-            color: "white",
-            fontSize: 25
+            color: 'white',
+            fontSize: 25,
           }}
         />
       </Button>
@@ -89,7 +89,7 @@ class PollsList extends Component {
     let showBack = false;
     if (listPolls instanceof Array) {
       let counter = 0;
-      list = listPolls.map(data => {
+      list = listPolls.map((data) => {
         counter += 1;
 
         return <PollsListGrid key={counter} data={data} paramsPoll={params} />;
@@ -117,18 +117,15 @@ class PollsList extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.user.isAuthenticated,
   listPolls: state.pollsList.listPolls,
   isLoading: state.pollsList.isLoading,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
-  GetListPoll
+  GetListPoll,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PollsList);
+export default connect(mapStateToProps, mapDispatchToProps)(PollsList);

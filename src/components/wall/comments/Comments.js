@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   Container,
   Header,
@@ -11,17 +11,17 @@ import {
   Title,
   Body,
   Text,
-  View
-} from "native-base";
-import { Actions } from "react-native-router-flux";
-import { RefreshControl } from "react-native";
-import {Ionicons} from "@expo/vector-icons";
+  View,
+} from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import { RefreshControl } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-import Publication from "@components/wall/publication/Publication";
-import Comment from "@components/wall/comments/comment/Comment";
-import { FullCommentPage } from "@components/wall/comments/CommentsActions";
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
-import LoginScreen from "@components/login/Login";
+import Publication from '@components/wall/publication/Publication';
+import Comment from '@components/wall/comments/comment/Comment';
+import { FullCommentPage } from '@components/wall/comments/CommentsActions';
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
+import LoginScreen from '@components/login/Login';
 
 class Comments extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ class Comments extends Component {
     listComments: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.any])),
     detailPublication: PropTypes.oneOfType([PropTypes.any]),
     idPost: PropTypes.number,
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
@@ -38,24 +38,24 @@ class Comments extends Component {
     listComments: [],
     detailPublication: [],
     idPost: 0,
-    endpoint: ""
+    endpoint: '',
   };
 
   state = {
     loading: false,
-    refreshing: false
+    refreshing: false,
   };
 
   componentWillMount = () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     this.props
       .FullCommentPage(this.props.endpoint, this.props.idPost)
       .then(() => {
         this.setState({
-          loading: false
+          loading: false,
         });
       });
   };
@@ -70,7 +70,7 @@ class Comments extends Component {
     const delay = 200;
 
     const listComment = listComments.map((detail, i) => {
-      const listReplies = detail.replies.map(reply => (
+      const listReplies = detail.replies.map((reply) => (
         <Comment
           key={reply.id * 1000}
           idPost={this.props.idPost}
@@ -105,7 +105,7 @@ class Comments extends Component {
     });
 
     return (
-      <Container style={{ backgroundColor: "#F4F4F4" }}>
+      <Container style={{ backgroundColor: '#F4F4F4' }}>
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button
@@ -114,7 +114,10 @@ class Comments extends Component {
                 Actions.pop();
               }}
             >
-              <Ionicons name="md-arrow-back" style={{ fontSize: 24, color: "#FFFFFF" }} />
+              <Ionicons
+                name="md-arrow-back"
+                style={{ fontSize: 24, color: '#FFFFFF' }}
+              />
             </Button>
           </Left>
           <Body>
@@ -148,29 +151,29 @@ class Comments extends Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row"
+                flexDirection: 'row',
               }}
             >
               <View
                 style={{
                   flex: 1,
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  borderTopColor: "#F4F4F4",
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  borderTopColor: '#F4F4F4',
                   borderTopWidth: 5,
-                  borderBottomColor: "#F4F4F4",
+                  borderBottomColor: '#F4F4F4',
                   borderBottomWidth: 5,
                   paddingTop: 5,
                   paddingBottom: 5,
-                  backgroundColor: "#FFF"
+                  backgroundColor: '#FFF',
                 }}
               >
                 <Text
                   style={{
                     fontSize: 12,
-                    fontFamily: "Bree",
-                    fontWeight: "bold",
-                    marginBottom: 0
+                    fontFamily: 'Bree',
+                    fontWeight: 'bold',
+                    marginBottom: 0,
                   }}
                 >
                   Comentarios
@@ -189,15 +192,15 @@ class Comments extends Component {
 
 // <Comment subcomment /> Para agregar un sub comentario
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.user.isAuthenticated,
   listComments: state.comments.listComments,
   detailPublication: state.publications.detailPublication,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
-  FullCommentPage
+  FullCommentPage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments);

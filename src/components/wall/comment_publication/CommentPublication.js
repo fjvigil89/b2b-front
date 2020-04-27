@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   StatusBar,
@@ -7,11 +7,11 @@ import {
   Alert,
   ScrollView,
   Image,
-  DeviceEventEmitter
-} from "react-native";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import * as ImagePicker from 'expo-image-picker'
+  DeviceEventEmitter,
+} from 'react-native';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import {
   Container,
@@ -26,17 +26,17 @@ import {
   Textarea,
   Thumbnail,
   List,
-  ListItem
-} from "native-base";
-import { Actions } from "react-native-router-flux";
-import { size, isEmpty, filter, take } from "lodash";
+  ListItem,
+} from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import { size, isEmpty, filter, take } from 'lodash';
 
-import CreateComment from "@components/wall/comment_publication/CommentPublicationActions";
-import { GetHashtags } from "@components/wall/WallActions";
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
-import {Ionicons} from "@expo/vector-icons";
+import CreateComment from '@components/wall/comment_publication/CommentPublicationActions';
+import { GetHashtags } from '@components/wall/WallActions';
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
+import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 
 const platform = Platform.OS;
 
@@ -47,32 +47,32 @@ class CommentPublication extends React.Component {
     hashtags: PropTypes.oneOfType([PropTypes.any]),
     user: PropTypes.string,
     post: PropTypes.number,
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
     hashtags: [],
-    user: "",
+    user: '',
     post: 0,
-    endpoint: ""
+    endpoint: '',
   };
 
   constructor() {
     super();
 
-    this.previousChar = " ";
+    this.previousChar = ' ';
     this.isTrackingStarted = false;
   }
 
   state = {
-    content: "",
+    content: '',
     images: [],
     loading: false,
     buttonDisabled: false,
     showHashtag: false,
     hashtags: [],
-    inputHashtag: "",
-    auxText: ""
+    inputHashtag: '',
+    auxText: '',
   };
 
   async componentWillMount() {
@@ -81,7 +81,7 @@ class CommentPublication extends React.Component {
 
   createComment = () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     this.props
@@ -93,43 +93,43 @@ class CommentPublication extends React.Component {
       )
       .then(() => {
         this.setState({
-          loading: false
+          loading: false,
         });
 
         Actions.pop();
 
         setTimeout(() => {
           DeviceEventEmitter.emit(`publicationEvent-${this.props.post}`, {
-            event: "comment"
+            event: 'comment',
           });
 
-          Alert.alert("Exito", "El Comentario ha sido realizado.", [
-            { text: "OK" }
+          Alert.alert('Exito', 'El Comentario ha sido realizado.', [
+            { text: 'OK' },
           ]);
         }, 500);
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
-          loading: false
+          loading: false,
         });
 
-        Alert.alert("Error", err.message);
+        Alert.alert('Error', err.message);
       });
   };
 
-  changeText = v => {
+  changeText = (v) => {
     this.setState({
-      content: v
+      content: v,
     });
 
     const lastChar = v.substr(v.length - 1);
 
     const previousMustBeSpace = this.previousChar.trim().length === 0;
 
-    if (lastChar === "#" && previousMustBeSpace) {
+    if (lastChar === '#' && previousMustBeSpace) {
       this.startTracking(v);
       return;
-    } else if ((lastChar === " " && this.isTrackingStarted) || v === "") {
+    } else if ((lastChar === ' ' && this.isTrackingStarted) || v === '') {
       this.stopTracking();
     }
 
@@ -145,7 +145,7 @@ class CommentPublication extends React.Component {
 
     this.setState({
       showHashtag: true,
-      inputHashtag: v
+      inputHashtag: v,
     });
   }
 
@@ -155,8 +155,8 @@ class CommentPublication extends React.Component {
     this.setState({
       showHashtag: false,
       hashtags: [],
-      inputHashtag: "",
-      auxText: ""
+      inputHashtag: '',
+      auxText: '',
     });
   }
 
@@ -166,8 +166,8 @@ class CommentPublication extends React.Component {
     const val = content.slice(sizeAuxContent);
 
     const validHashtags = take(
-      filter(this.props.hashtags, hash => {
-        if (hash.text.match(new RegExp(`^#${val}`, "gi"))) {
+      filter(this.props.hashtags, (hash) => {
+        if (hash.text.match(new RegExp(`^#${val}`, 'gi'))) {
           return true;
         }
         return false;
@@ -177,7 +177,7 @@ class CommentPublication extends React.Component {
 
     this.setState({
       hashtags: validHashtags,
-      auxText: val
+      auxText: val,
     });
   }
 
@@ -190,10 +190,10 @@ class CommentPublication extends React.Component {
 
     this.stopTracking();
 
-    this.previousChar = " ";
+    this.previousChar = ' ';
 
     this.setState({
-      content: `${this.state.content}${differenceHastagSelected} `
+      content: `${this.state.content}${differenceHastagSelected} `,
     });
   }
 
@@ -201,9 +201,9 @@ class CommentPublication extends React.Component {
     const permissions = Permissions.CAMERA_ROLL;
     const { status } = await Permissions.askAsync(permissions);
 
-    if (status === "granted") {
+    if (status === 'granted') {
       const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true
+        allowsEditing: true,
       });
 
       if (!result.cancelled) {
@@ -213,15 +213,15 @@ class CommentPublication extends React.Component {
         tempImages.push({ uri: result.uri, id: nextId + 1 });
 
         this.setState({
-          buttonDisabled: true
+          buttonDisabled: true,
         });
 
         this.setState({ images: tempImages });
       }
     } else {
       Alert.alert(
-        "Acceso denegado",
-        "Habilita el acceso a la Camara en la configuración de tu dispositivo."
+        'Acceso denegado',
+        'Habilita el acceso a la Camara en la configuración de tu dispositivo.'
       );
     }
   };
@@ -233,7 +233,7 @@ class CommentPublication extends React.Component {
     const gallery = await Permissions.askAsync(permissions);
     const camera = await Permissions.askAsync(permissionsCamera);
 
-    if (gallery.status === "granted" && camera.status === "granted") {
+    if (gallery.status === 'granted' && camera.status === 'granted') {
       const result = await ImagePicker.launchCameraAsync();
 
       if (!result.cancelled) {
@@ -243,29 +243,29 @@ class CommentPublication extends React.Component {
         tempImages.push({ uri: result.uri, id: nextId + 1 });
 
         this.setState({
-          buttonDisabled: true
+          buttonDisabled: true,
         });
 
         this.setState({ images: tempImages });
       }
     } else {
       Alert.alert(
-        "Acceso denegado",
-        "Habilita el acceso a la Camara en la configuración de tu dispositivo."
+        'Acceso denegado',
+        'Habilita el acceso a la Camara en la configuración de tu dispositivo.'
       );
     }
   };
 
   render() {
-    const profile = require("@assets/images/profile.png");
+    const profile = require('@assets/images/profile.png');
 
     return (
-      <Container style={{ backgroundColor: "#FFFFFF" }}>
+      <Container style={{ backgroundColor: '#FFFFFF' }}>
         <StatusBar barStyle="dark-content" />
         <Header
           style={{
             borderBottomWidth: 0,
-            backgroundColor: platform === "android" ? "#083D77" : "#F4F4F4"
+            backgroundColor: platform === 'android' ? '#083D77' : '#F4F4F4',
           }}
           iosBarStyle="dark-content"
         >
@@ -276,10 +276,13 @@ class CommentPublication extends React.Component {
                 Actions.pop();
               }}
             >
-              {platform === "android" && (
-                <Ionicons name="md-arrow-back" style={{ fontSize: 24, color: "#FFFFFF" }} />
+              {platform === 'android' && (
+                <Ionicons
+                  name="md-arrow-back"
+                  style={{ fontSize: 24, color: '#FFFFFF' }}
+                />
               )}
-              {platform === "ios" && (
+              {platform === 'ios' && (
                 <Text style={{ fontSize: 14 }}>Cancelar</Text>
               )}
             </Button>
@@ -288,7 +291,7 @@ class CommentPublication extends React.Component {
             <Title
               style={{
                 fontSize: 14,
-                color: platform === "android" ? "#FFF" : "#000"
+                color: platform === 'android' ? '#FFF' : '#000',
               }}
             >
               COMENTAR PUBLICACION
@@ -304,7 +307,7 @@ class CommentPublication extends React.Component {
           <View
             style={{
               flex: 1,
-              backgroundColor: "#FFFFFF"
+              backgroundColor: '#FFFFFF',
             }}
           >
             <View
@@ -312,39 +315,39 @@ class CommentPublication extends React.Component {
                 margin: 0,
                 padding: 0,
                 flex: 1,
-                backgroundColor: "transparent",
-                marginBottom: 5
+                backgroundColor: 'transparent',
+                marginBottom: 5,
               }}
             >
               <View
                 style={{
                   flex: 1,
-                  flexDirection: "row"
+                  flexDirection: 'row',
                 }}
               >
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: "center",
-                    alignItems: "flex-start",
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
                     padding: 10,
-                    backgroundColor: "#FFF",
-                    borderRadius: 10
+                    backgroundColor: '#FFF',
+                    borderRadius: 10,
                   }}
                 >
                   <View
                     style={{
                       flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "flex-start"
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'flex-start',
                     }}
                   >
                     <View
                       style={{
                         flex: 0.1,
-                        justifyContent: "center",
-                        alignItems: "flex-start"
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
                       }}
                     >
                       <Thumbnail small source={profile} />
@@ -352,24 +355,24 @@ class CommentPublication extends React.Component {
                     <View
                       style={{
                         flex: 0.9,
-                        justifyContent: "center",
-                        alignItems: "flex-start",
-                        marginLeft: 10
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                        marginLeft: 10,
                       }}
                     >
                       <Text
                         style={{
                           fontSize: 17,
-                          fontFamily: "Questrial",
-                          fontWeight: "bold"
+                          fontFamily: 'Questrial',
+                          fontWeight: 'bold',
                         }}
                       >
                         {this.props.user}
                       </Text>
                       <Text
                         style={{
-                          color: "#808080",
-                          fontSize: 12
+                          color: '#808080',
+                          fontSize: 12,
                         }}
                       >
                         dice...
@@ -383,18 +386,18 @@ class CommentPublication extends React.Component {
             <Textarea
               style={{
                 fontSize: 18,
-                height: 100
+                height: 100,
               }}
               value={this.state.content}
-              onChangeText={v => this.changeText(v)}
+              onChangeText={(v) => this.changeText(v)}
               placeholder="Escribe tu comentario..."
             />
 
             {this.state.showHashtag && (
-              <View style={{ flex: 1, flexDirection: "row" }}>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
                 <List
                   dataArray={this.state.hashtags}
-                  renderRow={item => (
+                  renderRow={(item) => (
                     <ListItem
                       onPress={() => {
                         this.autocompleteHashtag(item.text);
@@ -410,7 +413,7 @@ class CommentPublication extends React.Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row"
+                flexDirection: 'row',
               }}
             >
               <Button
@@ -426,7 +429,7 @@ class CommentPublication extends React.Component {
                   name="ios-camera"
                   style={{
                     color: '',
-                    fontSize: 30
+                    fontSize: 30,
                   }}
                 />
                 <Text>Tomar foto</Text>
@@ -450,21 +453,21 @@ class CommentPublication extends React.Component {
             {!isEmpty(this.state.images) && (
               <View
                 style={{
-                  flex: 1
+                  flex: 1,
                 }}
               >
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: 10
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 10,
                   }}
                 >
                   <Text
                     style={{
-                      color: "#808080",
-                      fontSize: 12
+                      color: '#808080',
+                      fontSize: 12,
                     }}
                   >
                     1 Imagen para cargar
@@ -474,7 +477,7 @@ class CommentPublication extends React.Component {
                 <View
                   style={{
                     flex: 1,
-                    flexDirection: "row"
+                    flexDirection: 'row',
                   }}
                 >
                   <ScrollView
@@ -485,7 +488,7 @@ class CommentPublication extends React.Component {
                     <Image
                       style={{
                         width,
-                        height: 250
+                        height: 250,
                       }}
                       source={{ uri: this.state.images[0].uri }}
                     />
@@ -502,15 +505,15 @@ class CommentPublication extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user.user,
   hashtags: state.wall.hashtags,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
   CreateComment,
-  GetHashtags
+  GetHashtags,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentPublication);

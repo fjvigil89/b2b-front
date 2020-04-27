@@ -1,32 +1,32 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Text, View, Thumbnail, Button } from "native-base";
-import { Actions } from "react-native-router-flux";
-import { isEmpty, size } from "lodash";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Text, View, Thumbnail, Button } from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import { isEmpty, size } from 'lodash';
 import {
   ScrollView,
   Dimensions,
   DeviceEventEmitter,
   Image,
-  TouchableOpacity
-} from "react-native";
-import AutoHeightImage from "react-native-auto-height-image";
+  TouchableOpacity,
+} from 'react-native';
+import AutoHeightImage from 'react-native-auto-height-image';
 
 import {
   LikePublication,
-  UnLikePublication
-} from "@components/wall/publication/PublicationActions";
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
-import { Ionicons } from "@expo/vector-icons";
+  UnLikePublication,
+} from '@components/wall/publication/PublicationActions';
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
+import { Ionicons } from '@expo/vector-icons';
 
-import moment from "moment";
-import "moment/locale/es";
+import moment from 'moment';
+import 'moment/locale/es';
 
-moment.locale("es");
+moment.locale('es');
 
-const width = Dimensions.get("window").width - 20;
-const newPostImage = require("@assets/images/new-post.png");
+const width = Dimensions.get('window').width - 20;
+const newPostImage = require('@assets/images/new-post.png');
 
 class Publication extends Component {
   static propTypes = {
@@ -43,14 +43,14 @@ class Publication extends Component {
     images: PropTypes.oneOfType([PropTypes.any]),
     flagComments: PropTypes.bool,
     newPost: PropTypes.bool,
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
     id: 0,
-    userName: "",
-    date: "",
-    content: "",
+    userName: '',
+    date: '',
+    content: '',
     enableLike: false,
     likes: 0,
     comments: 0,
@@ -58,30 +58,33 @@ class Publication extends Component {
     images: [],
     flagComments: false,
     newPost: false,
-    endpoint: ""
+    endpoint: '',
   };
 
   constructor(props) {
     super(props);
 
     if (!this.props.flagComments) {
-      DeviceEventEmitter.addListener(`publicationEvent-${this.props.id}`, e => {
-        if (e.event === "comment") {
-          this.setState({
-            comments: this.state.comments + 1
-          });
-        } else if (e.event === "like") {
-          this.setState({
-            likes: this.state.likes + 1,
-            enableLike: false
-          });
-        } else if (e.event === "unlike") {
-          this.setState({
-            likes: this.state.likes - 1,
-            enableLike: true
-          });
+      DeviceEventEmitter.addListener(
+        `publicationEvent-${this.props.id}`,
+        (e) => {
+          if (e.event === 'comment') {
+            this.setState({
+              comments: this.state.comments + 1,
+            });
+          } else if (e.event === 'like') {
+            this.setState({
+              likes: this.state.likes + 1,
+              enableLike: false,
+            });
+          } else if (e.event === 'unlike') {
+            this.setState({
+              likes: this.state.likes - 1,
+              enableLike: true,
+            });
+          }
         }
-      });
+      );
     }
   }
 
@@ -90,7 +93,7 @@ class Publication extends Component {
     imagesArray: [],
     likes: this.props.likes,
     enableLike: this.props.enableLike,
-    comments: this.props.comments
+    comments: this.props.comments,
   };
 
   async componentWillMount() {
@@ -108,26 +111,26 @@ class Publication extends Component {
       }
 
       this.setState({
-        imagesArray
+        imagesArray,
       });
     }
   }
 
   likePublication = () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     this.props.LikePublication(this.props.endpoint, this.props.id).then(() => {
       this.setState({
         loading: false,
         likes: this.state.likes + 1,
-        enableLike: false
+        enableLike: false,
       });
 
       if (this.props.flagComments) {
         DeviceEventEmitter.emit(`publicationEvent-${this.props.id}`, {
-          event: "like"
+          event: 'like',
         });
       }
     });
@@ -135,7 +138,7 @@ class Publication extends Component {
 
   unlikePublication = () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     this.props
@@ -144,12 +147,12 @@ class Publication extends Component {
         this.setState({
           loading: false,
           likes: this.state.likes - 1,
-          enableLike: true
+          enableLike: true,
         });
 
         if (this.props.flagComments) {
           DeviceEventEmitter.emit(`publicationEvent-${this.props.id}`, {
-            event: "unlike"
+            event: 'unlike',
           });
         }
       });
@@ -158,28 +161,28 @@ class Publication extends Component {
   render = () => {
     const { id, userName, date, content, margin, newPost } = this.props;
 
-    const profile = require("@assets/images/profile.png");
-    const arrayContent = content.split(" ");
+    const profile = require('@assets/images/profile.png');
+    const arrayContent = content.split(' ');
 
     let contador = 0;
-    const temp = arrayContent.map(line => {
+    const temp = arrayContent.map((line) => {
       contador += 1;
 
-      if (line[0] === "#") {
+      if (line[0] === '#') {
         return (
           <Text
             style={{
               fontSize: 15,
-              fontFamily: "Questrial",
-              color: "#007aff",
-              zIndex: 10000
+              fontFamily: 'Questrial',
+              color: '#007aff',
+              zIndex: 10000,
             }}
             key={contador}
             onPress={() => {
               Actions.wallHashtags({ hash: line });
             }}
           >
-            {line}{" "}
+            {line}{' '}
           </Text>
         );
       }
@@ -189,10 +192,10 @@ class Publication extends Component {
           key={contador}
           style={{
             fontSize: 12,
-            fontFamily: "Questrial"
+            fontFamily: 'Questrial',
           }}
         >
-          {line}{" "}
+          {line}{' '}
         </Text>
       );
     });
@@ -205,20 +208,20 @@ class Publication extends Component {
           margin: 0,
           padding: 0,
           flex: 1,
-          backgroundColor: "transparent",
-          borderBottomColor: "#F0F0F0",
+          backgroundColor: 'transparent',
+          borderBottomColor: '#F0F0F0',
           borderBottomWidth: 1,
-          marginBottom: margin ? 10 : 0
+          marginBottom: margin ? 10 : 0,
         }}
       >
         {newPost && (
           <Image
             style={{
-              position: "absolute",
+              position: 'absolute',
               height: 62.5,
               width: 100,
               right: 0,
-              zIndex: 1000
+              zIndex: 1000,
             }}
             source={newPostImage}
           />
@@ -226,33 +229,33 @@ class Publication extends Component {
         <View
           style={{
             flex: 1,
-            flexDirection: "row"
+            flexDirection: 'row',
           }}
         >
           <View
             style={{
               flex: 1,
-              justifyContent: "center",
-              alignItems: "flex-start",
+              justifyContent: 'center',
+              alignItems: 'flex-start',
               padding: 10,
               paddingBottom: 0,
-              backgroundColor: "#FFF",
-              borderRadius: 10
+              backgroundColor: '#FFF',
+              borderRadius: 10,
             }}
           >
             <View
               style={{
                 flex: 1,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "flex-start"
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
               }}
             >
               <View
                 style={{
                   flex: 0.1,
-                  justifyContent: "center",
-                  alignItems: "flex-start"
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
                 }}
               >
                 <Thumbnail small source={profile} />
@@ -260,29 +263,27 @@ class Publication extends Component {
               <View
                 style={{
                   flex: 0.9,
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  marginLeft: 10
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  marginLeft: 10,
                 }}
               >
                 <Text
                   style={{
                     fontSize: 17,
-                    fontFamily: "Questrial",
-                    fontWeight: "bold"
+                    fontFamily: 'Questrial',
+                    fontWeight: 'bold',
                   }}
                 >
                   {userName}
                 </Text>
                 <Text
                   style={{
-                    color: "#808080",
-                    fontSize: 12
+                    color: '#808080',
+                    fontSize: 12,
                   }}
                 >
-                  {moment(date)
-                    .add()
-                    .fromNow()}
+                  {moment(date).add().fromNow()}
                 </Text>
               </View>
             </View>
@@ -290,14 +291,14 @@ class Publication extends Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row"
+                flexDirection: 'row',
               }}
             >
               <Text
                 style={{
                   paddingTop: 10,
                   fontSize: 12,
-                  fontFamily: "Questrial"
+                  fontFamily: 'Questrial',
                 }}
               >
                 {temp}
@@ -307,22 +308,22 @@ class Publication extends Component {
             {!isEmpty(this.state.imagesArray) && (
               <View
                 style={{
-                  flex: 1
+                  flex: 1,
                 }}
               >
                 {size(this.state.imagesArray) > 1 && (
                   <View
                     style={{
                       flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 10
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginTop: 10,
                     }}
                   >
                     <Text
                       style={{
-                        color: "#808080",
-                        fontSize: 12
+                        color: '#808080',
+                        fontSize: 12,
                       }}
                     >
                       {size(this.state.imagesArray)} Imagenes
@@ -333,8 +334,8 @@ class Publication extends Component {
                 <View
                   style={{
                     flex: 1,
-                    flexDirection: "row",
-                    marginTop: size(this.state.imagesArray) === 1 ? 10 : 0
+                    flexDirection: 'row',
+                    marginTop: size(this.state.imagesArray) === 1 ? 10 : 0,
                   }}
                 >
                   <ScrollView
@@ -342,7 +343,7 @@ class Publication extends Component {
                     pagingEnabled
                     showsHorizontalScrollIndicator={false}
                   >
-                    {this.state.imagesArray.map(image => (
+                    {this.state.imagesArray.map((image) => (
                       <AutoHeightImage
                         width={width}
                         source={{ uri: image.uri }}
@@ -357,22 +358,22 @@ class Publication extends Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row",
-                marginTop: 15
+                flexDirection: 'row',
+                marginTop: 15,
               }}
             >
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-start"
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
                 }}
               >
                 <Text
                   style={{
                     fontSize: 12,
-                    fontFamily: "Questrial",
-                    color: "#007aff"
+                    fontFamily: 'Questrial',
+                    color: '#007aff',
                   }}
                 >
                   {this.state.likes} Me gusta
@@ -381,14 +382,14 @@ class Publication extends Component {
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "flex-end"
+                  justifyContent: 'center',
+                  alignItems: 'flex-end',
                 }}
               >
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={{
-                    zIndex: 5000
+                    zIndex: 5000,
                   }}
                   onPress={() => {
                     Actions.wallComments({ idPost: id });
@@ -397,8 +398,8 @@ class Publication extends Component {
                   <Text
                     style={{
                       fontSize: 12,
-                      fontFamily: "Questrial",
-                      color: "#007aff"
+                      fontFamily: 'Questrial',
+                      color: '#007aff',
                     }}
                   >
                     {this.state.comments} Comentarios
@@ -410,14 +411,14 @@ class Publication extends Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row"
+                flexDirection: 'row',
               }}
             >
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "center"
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 {!this.state.enableLike && (
@@ -433,7 +434,7 @@ class Publication extends Component {
                     <Text
                       style={{
                         fontSize: 13,
-                        fontFamily: "Questrial"
+                        fontFamily: 'Questrial',
                       }}
                     >
                       Me gusta
@@ -454,7 +455,7 @@ class Publication extends Component {
                     <Text
                       style={{
                         fontSize: 13,
-                        fontFamily: "Questrial"
+                        fontFamily: 'Questrial',
                       }}
                     >
                       Me gusta
@@ -465,8 +466,8 @@ class Publication extends Component {
               <View
                 style={{
                   flex: 0.5,
-                  justifyContent: "center",
-                  alignItems: "center"
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 <Button
@@ -481,7 +482,7 @@ class Publication extends Component {
                   <Text
                     style={{
                       fontSize: 13,
-                      fontFamily: "Questrial"
+                      fontFamily: 'Questrial',
                     }}
                   >
                     Comentar
@@ -497,16 +498,13 @@ class Publication extends Component {
   };
 }
 
-const mapStateToProps = state => ({
-  endpoint: state.user.endpoint
+const mapStateToProps = (state) => ({
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
   LikePublication,
-  UnLikePublication
+  UnLikePublication,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Publication);
+export default connect(mapStateToProps, mapDispatchToProps)(Publication);

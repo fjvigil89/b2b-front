@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { View, TouchableOpacity, DeviceEventEmitter } from "react-native";
-import { Text } from "native-base";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { View, TouchableOpacity, DeviceEventEmitter } from 'react-native';
+import { Text } from 'native-base';
 
-import SalasInfoListAditional from "@components/salas_info/salasInfoList/salas_info_list_aditional/SalasInfoListAditional";
+import SalasInfoListAditional from '@components/salas_info/salasInfoList/salas_info_list_aditional/SalasInfoListAditional';
 
 class SalasInfoListDetail extends React.Component {
   static propTypes = {
@@ -12,15 +12,15 @@ class SalasInfoListDetail extends React.Component {
     nombreSala: PropTypes.string,
     categoria: PropTypes.string,
     dateb2b: PropTypes.string,
-    visitaEnProgreso: PropTypes.number
+    visitaEnProgreso: PropTypes.number,
   };
 
   static defaultProps = {
-    sala: "",
-    nombreSala: "",
-    categoria: "",
-    dateb2b: "",
-    visitaEnProgreso: 0
+    sala: '',
+    nombreSala: '',
+    categoria: '',
+    dateb2b: '',
+    visitaEnProgreso: 0,
   };
 
   constructor(props) {
@@ -29,33 +29,36 @@ class SalasInfoListDetail extends React.Component {
     this.state = {
       aditionalPanel: false,
       casosGestionados: this.props.data.casos_gestionados,
-      gestionado: this.props.data.gestionado
+      gestionado: this.props.data.gestionado,
     };
 
+    console.log('categoria', this.props);
+
+    this.props.categoria = this.props.categoria
+      ? this.props.categoria.replace(/\s/g, '')
+      : '';
+
     DeviceEventEmitter.addListener(
-      `SalaDetalleCategoria-${this.props.sala}-${this.props.categoria.replace(
-        /\s/g,
-        ""
-      )}`,
-      e => {
+      `SalaDetalleCategoria-${this.props.sala}-${this.props.categoria}`,
+      (e) => {
         this.setState({
           casosGestionados: this.state.casosGestionados + 1,
-          gestionado: this.state.gestionado + e.gestionado
+          gestionado: this.state.gestionado + e.gestionado,
         });
       }
     );
   }
 
-  currency = x => {
-    const parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return parts.join(".");
+  currency = (x) => {
+    const parts = x.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return parts.join('.');
   };
 
   render() {
     const { data } = this.props;
 
-    let porcentajeProgreso = this.state.gestionado * 100 / data.venta_perdida;
+    let porcentajeProgreso = (this.state.gestionado * 100) / data.venta_perdida;
     porcentajeProgreso = `${porcentajeProgreso}%`;
 
     return (
@@ -63,13 +66,13 @@ class SalasInfoListDetail extends React.Component {
         <TouchableOpacity
           style={{
             flex: 1,
-            flexDirection: "row",
-            backgroundColor: "#FFF",
-            borderBottomColor: "#DEDEDE",
+            flexDirection: 'row',
+            backgroundColor: '#FFF',
+            borderBottomColor: '#DEDEDE',
             borderBottomWidth: 1,
             paddingRight: 0,
             marginRight: 0,
-            height: 50
+            height: 50,
           }}
           onPress={() => {
             this.setState({ aditionalPanel: !this.state.aditionalPanel });
@@ -78,17 +81,17 @@ class SalasInfoListDetail extends React.Component {
           <View
             style={{
               flex: 0.55,
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              padding: 10
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              padding: 10,
             }}
           >
             <Text
               style={{
                 marginLeft: 5,
                 fontSize: 13,
-                fontFamily: "Questrial"
+                fontFamily: 'Questrial',
               }}
             >
               {data.categoria}
@@ -97,15 +100,15 @@ class SalasInfoListDetail extends React.Component {
           <View
             style={{
               flex: 0.2,
-              justifyContent: "center",
-              alignItems: "flex-end",
-              padding: 10
+              justifyContent: 'center',
+              alignItems: 'flex-end',
+              padding: 10,
             }}
           >
             <Text
               style={{
                 fontSize: 13,
-                fontFamily: "Questrial"
+                fontFamily: 'Questrial',
               }}
             >
               {this.state.casosGestionados} / {data.casos}
@@ -114,15 +117,15 @@ class SalasInfoListDetail extends React.Component {
           <View
             style={{
               flex: 0.25,
-              justifyContent: "center",
-              alignItems: "flex-end",
-              padding: 10
+              justifyContent: 'center',
+              alignItems: 'flex-end',
+              padding: 10,
             }}
           >
             <Text
               style={{
                 fontSize: 15,
-                fontFamily: "Questrial"
+                fontFamily: 'Questrial',
               }}
             >
               ${this.currency(this.props.data.venta_perdida)}
@@ -132,11 +135,11 @@ class SalasInfoListDetail extends React.Component {
           <View
             style={{
               height: 50,
-              backgroundColor: "#3cb3d0",
+              backgroundColor: '#3cb3d0',
               width: porcentajeProgreso,
               left: 0,
-              position: "absolute",
-              opacity: 0.2
+              position: 'absolute',
+              opacity: 0.2,
             }}
           />
         </TouchableOpacity>

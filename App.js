@@ -1,28 +1,29 @@
-import React from "react";
-import { AppLoading } from "expo";
-import * as Font from 'expo-font'
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/es/integration/react";
-import { StyleProvider } from "native-base";
-import { StatusBar, Platform } from "react-native";
-import { Router } from "react-native-router-flux";
-import Sentry from "sentry-expo";
+import * as React from 'react';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
 
-import getTheme from "@assets/native-base-theme/components";
-import theme from "@assets/native-base-theme/variables/commonColor";
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/es/integration/react';
+import { StyleProvider } from 'native-base';
+import { StatusBar, Platform } from 'react-native';
+import { Router } from 'react-native-router-flux';
+import Sentry from 'sentry-expo';
 
-import configureStore from "@app/store";
-import Loading from "@components/loading/Loading";
+import getTheme from '@assets/native-base-theme/components';
+import theme from '@assets/native-base-theme/variables/commonColor';
 
-import Routes from "@routes/routes";
+import configureStore from '@app/store';
+import Loading from '@components/loading/Loading';
+import Routes from './src/routes/routes';
 
 const { persistor, store } = configureStore();
 
-if (Platform.OS === "android") StatusBar.setHidden(true);
+if (Platform.OS === 'android') StatusBar.setHidden(true);
 
 Sentry.enableInExpoDevelopment = true;
 Sentry.config(
-  "https://3291e65696be471a80301ee041d6fc59@sentry.io/1764003"
+  'https://3291e65696be471a80301ee041d6fc59@sentry.io/1764003'
 ).install();
 
 export default class App extends React.Component {
@@ -30,20 +31,21 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      isReady: false
+      isReady: false,
     };
   }
 
-  componentWillMount() {
-    this.loadFonts();
+  async componentDidMount() {
+    await this.loadFonts();
   }
 
   async loadFonts() {
     await Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      Questrial: require("@assets/fonts/Questrial-Regular.ttf"),
-      Bree: require("@assets/fonts/Bree-Regular.ttf")
+      Roboto: require('native-base/Fonts/Roboto.ttf'),
+      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+      Questrial: require('@assets/fonts/Questrial.ttf'),
+      Bree: require('@assets/fonts/Bree.ttf'),
+      ...Ionicons.font,
     });
 
     this.setState({ isReady: true });
@@ -51,7 +53,7 @@ export default class App extends React.Component {
 
   render() {
     if (!this.state.isReady) {
-      return <AppLoading />;
+      return <AppLoading></AppLoading>;
     }
 
     return (

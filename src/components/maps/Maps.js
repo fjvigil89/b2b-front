@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Image } from "react-native";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Image } from 'react-native';
 import {
   Container,
   Header,
@@ -9,17 +9,17 @@ import {
   Right,
   Button,
   Title,
-  Body
-} from "native-base";
-import { Actions } from "react-native-router-flux";
-import MapView from 'react-native-maps'
-import { MaterialIcons } from "@expo/vector-icons";
+  Body,
+} from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import MapView from 'react-native-maps';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import {
   ListadoSalas,
-  GetLocationAsync
-} from "@components/salas/salas_list/SalasListActions";
-import LoginScreen from "@components/login/Login";
+  GetLocationAsync,
+} from '@components/salas/salas_list/SalasListActions';
+import LoginScreen from '@components/login/Login';
 
 class Maps extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ class Maps extends Component {
       latitude: PropTypes.number,
       longitude: PropTypes.number,
       latitudeDelta: PropTypes.number,
-      longitudeDelta: PropTypes.number
+      longitudeDelta: PropTypes.number,
     }),
     salas: PropTypes.arrayOf(
       PropTypes.shape({
@@ -42,17 +42,17 @@ class Maps extends Component {
         fecha_visita: PropTypes.string,
         direccion: PropTypes.string,
         latitud: PropTypes.any,
-        longitud: PropTypes.an
+        longitud: PropTypes.an,
       })
     ),
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
     region: {},
     salas: [],
     isAuthenticated: false,
-    endpoint: ""
+    endpoint: '',
   };
 
   componentWillMount = () => {
@@ -60,10 +60,10 @@ class Maps extends Component {
     this.props.ListadoSalas(this.props.endpoint);
   };
 
-  currency = x => {
-    const parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return parts.join(".");
+  currency = (x) => {
+    const parts = x.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return parts.join('.');
   };
 
   render = () => {
@@ -81,8 +81,8 @@ class Maps extends Component {
               <MaterialIcons
                 name="menu"
                 style={{
-                  color: "white",
-                  fontSize: 25
+                  color: 'white',
+                  fontSize: 25,
                 }}
               />
             </Button>
@@ -93,37 +93,37 @@ class Maps extends Component {
           <Right />
         </Header>
         <MapView style={{ flex: 1 }} region={region} showsUserLocation>
-          {salas.map(sala => {
+          {salas.map((sala) => {
             if (sala.latitud && sala.longitud) {
-              let logo = "";
-              if (sala.bandera === "JUMBO") {
-                logo = require("@assets/images/jumbo.png");
-              } else if (sala.bandera === "LIDER") {
-                logo = require("@assets/images/lider.png");
-              } else if (sala.bandera === "HIPER LIDER") {
-                logo = require("@assets/images/lider.png");
-              } else if (sala.bandera === "LIDER EXPRESS") {
-                logo = require("@assets/images/lider_express.png");
-              } else if (sala.bandera === "CENTRAL MAYORISTA") {
-                logo = require("@assets/images/central-mayorista.png");
-              } else if (sala.bandera === "TOTTUS") {
-                logo = require("@assets/images/tottus.png");
-              } else if (sala.bandera === "EKONO") {
-                logo = require("@assets/images/ekono.png");
-              } else if (sala.bandera === "ACUENTA") {
-                logo = require("@assets/images/acuenta.png");
-              } else if (sala.bandera === "SANTA ISABEL") {
-                logo = require("@assets/images/santaisabel.png");
-              } else if (sala.bandera === "UNIMARC") {
-                logo = require("@assets/images/unimarc.png");
-              } else if (sala.bandera === "MAYORISTA 10") {
-                logo = require("@assets/images/mayorista10.png");
-              } else if (sala.bandera === "ALVI") {
-                logo = require("@assets/images/alvi.png");
-              } else if (sala.bandera === "OK MARKET") {
-                logo = require("@assets/images/okmarket.png");
+              let logo = '';
+              if (sala.bandera === 'JUMBO') {
+                logo = require('@assets/images/jumbo.png');
+              } else if (sala.bandera === 'LIDER') {
+                logo = require('@assets/images/lider.png');
+              } else if (sala.bandera === 'HIPER LIDER') {
+                logo = require('@assets/images/lider.png');
+              } else if (sala.bandera === 'LIDER EXPRESS') {
+                logo = require('@assets/images/lider_express.png');
+              } else if (sala.bandera === 'CENTRAL MAYORISTA') {
+                logo = require('@assets/images/central-mayorista.png');
+              } else if (sala.bandera === 'TOTTUS') {
+                logo = require('@assets/images/tottus.png');
+              } else if (sala.bandera === 'EKONO') {
+                logo = require('@assets/images/ekono.png');
+              } else if (sala.bandera === 'ACUENTA') {
+                logo = require('@assets/images/acuenta.png');
+              } else if (sala.bandera === 'SANTA ISABEL') {
+                logo = require('@assets/images/santaisabel.png');
+              } else if (sala.bandera === 'UNIMARC') {
+                logo = require('@assets/images/unimarc.png');
+              } else if (sala.bandera === 'MAYORISTA 10') {
+                logo = require('@assets/images/mayorista10.png');
+              } else if (sala.bandera === 'ALVI') {
+                logo = require('@assets/images/alvi.png');
+              } else if (sala.bandera === 'OK MARKET') {
+                logo = require('@assets/images/okmarket.png');
               } else {
-                logo = require("@assets/images/logo-cadem-icono.png");
+                logo = require('@assets/images/logo-cadem-icono.png');
               }
 
               return (
@@ -132,7 +132,7 @@ class Maps extends Component {
                   key={sala.folio}
                   coordinate={{
                     latitude: sala.latitud,
-                    longitude: sala.longitud
+                    longitude: sala.longitud,
                   }}
                   title={sala.descripcion}
                   description={`Venta perdida: $${this.currency(
@@ -159,19 +159,16 @@ class Maps extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.user.isAuthenticated,
   region: state.salas.region,
   salas: state.salas.salas,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
   GetLocationAsync,
-  ListadoSalas
+  ListadoSalas,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Maps);
+export default connect(mapStateToProps, mapDispatchToProps)(Maps);

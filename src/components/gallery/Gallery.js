@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { StyleSheet, View, WebView } from "react-native";
-import { Actions } from "react-native-router-flux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { StyleSheet, View } from 'react-native';
+import { WebView } from 'react-native-webview';
 
-import LoginScreen from "@components/login/Login";
+import { Actions } from 'react-native-router-flux';
+
+import LoginScreen from '@components/login/Login';
 
 class Gallery extends Component {
-  static propTypes = {
-  };
+  static propTypes = {};
 
   static defaultProps = {
     isAuthenticated: false,
-    token: ''
+    token: '',
   };
 
   render = () => {
@@ -24,8 +25,7 @@ class Gallery extends Component {
 
     return (
       <View style={styles.view}>
-         <WebView source={{uri: `http://galeria.cademsmart.cl?t=${token}`}}
-        />
+        <WebView source={{ uri: `http://galeria.cademsmart.cl?t=${token}` }} />
       </View>
     );
   };
@@ -33,16 +33,15 @@ class Gallery extends Component {
 
 const styles = StyleSheet.create({
   view: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.user.isAuthenticated,
-  token: state.user.token
+  token: state.user.token,
 });
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gallery);

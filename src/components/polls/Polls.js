@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Actions } from "react-native-router-flux";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import {
   Container,
   View,
@@ -18,43 +18,43 @@ import {
   Input,
   Content,
   Footer,
-  FooterTab
-} from "native-base";
+  FooterTab,
+} from 'native-base';
 
-import StepIndicator from "react-native-step-indicator";
+import StepIndicator from 'react-native-step-indicator';
 import {
   SetValidForm,
   ChangeInput,
   GetPoll,
-  SavePoll
-} from "@components/polls/PollsActions";
-import PollsCheckBox from "@components/polls/polls_check_box/PollsCheckBox";
-import PollsRadio from "@components/polls/polls_radio/PollsRadio";
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
-import GetListPoll from "@components/polls/polls_list/PollsListActios";
+  SavePoll,
+} from '@components/polls/PollsActions';
+import PollsCheckBox from '@components/polls/polls_check_box/PollsCheckBox';
+import PollsRadio from '@components/polls/polls_radio/PollsRadio';
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
+import GetListPoll from '@components/polls/polls_list/PollsListActios';
 
 const customStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,
   separatorStrokeWidth: 2,
   currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: "#fe7013",
+  stepStrokeCurrentColor: '#fe7013',
   stepStrokeWidth: 3,
-  stepStrokeFinishedColor: "#fe7013",
-  stepStrokeUnFinishedColor: "#aaaaaa",
-  separatorFinishedColor: "#fe7013",
-  separatorUnFinishedColor: "#aaaaaa",
-  stepIndicatorFinishedColor: "#fe7013",
-  stepIndicatorUnFinishedColor: "#ffffff",
-  stepIndicatorCurrentColor: "#ffffff",
+  stepStrokeFinishedColor: '#fe7013',
+  stepStrokeUnFinishedColor: '#aaaaaa',
+  separatorFinishedColor: '#fe7013',
+  separatorUnFinishedColor: '#aaaaaa',
+  stepIndicatorFinishedColor: '#fe7013',
+  stepIndicatorUnFinishedColor: '#ffffff',
+  stepIndicatorCurrentColor: '#ffffff',
   stepIndicatorLabelFontSize: 13,
   currentStepIndicatorLabelFontSize: 13,
-  stepIndicatorLabelCurrentColor: "#fe7013",
-  stepIndicatorLabelFinishedColor: "#ffffff",
-  stepIndicatorLabelUnFinishedColor: "#aaaaaa",
-  labelColor: "#999999",
+  stepIndicatorLabelCurrentColor: '#fe7013',
+  stepIndicatorLabelFinishedColor: '#ffffff',
+  stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+  labelColor: '#999999',
   labelSize: 13,
-  currentStepLabelColor: "#fe7013"
+  currentStepLabelColor: '#fe7013',
 };
 
 class Polls extends Component {
@@ -75,7 +75,7 @@ class Polls extends Component {
     idPoll: PropTypes.number,
     form: PropTypes.oneOfType([() => null, PropTypes.any]),
     endpoint: PropTypes.string,
-    paramsPoll: PropTypes.string
+    paramsPoll: PropTypes.string,
   };
 
   static defaultProps = {
@@ -83,21 +83,21 @@ class Polls extends Component {
     value: null,
     form: null,
     isError: false,
-    msg: "",
+    msg: '',
     dataPoll: [],
     lengthPoll: 0,
     isLoading: true,
     isFinish: false,
     idPoll: 0,
-    endpoint: "",
-    paramsPoll: ""
+    endpoint: '',
+    paramsPoll: '',
   };
 
   componentWillMount = () => {
     this.props.GetPoll(this.props.endpoint, this.props.idPoll);
   };
 
-  getContent = position => {
+  getContent = (position) => {
     if (this.props.lengthPoll === this.props.position) {
       return (
         <Content>
@@ -128,7 +128,7 @@ class Polls extends Component {
           {this.getForm(this.props.dataPoll[position], position)}
 
           <CardItem footer>
-            <Text style={{ color: "red" }}>{this.errors()}</Text>
+            <Text style={{ color: 'red' }}>{this.errors()}</Text>
           </CardItem>
         </Card>
       </Content>
@@ -136,28 +136,28 @@ class Polls extends Component {
   };
 
   getForm = (data, position) => {
-    if (data.type === "textarea") {
+    if (data.type === 'textarea') {
       return (
         <View style={{ margin: 10 }}>
           <Textarea
             rowSpan={5}
             bordered
             placeholder="Textarea"
-            onChangeText={v => this.props.ChangeInput({ value: v, position })}
+            onChangeText={(v) => this.props.ChangeInput({ value: v, position })}
             value={this.props.value}
           />
         </View>
       );
-    } else if (data.type === "radio") {
+    } else if (data.type === 'radio') {
       return <PollsRadio data={data} position={position} />;
-    } else if (data.type === "input") {
+    } else if (data.type === 'input') {
       return (
         <View style={{ margin: 10 }}>
           <Input
-            style={{ height: 35, borderColor: "gray", borderWidth: 1 }}
+            style={{ height: 35, borderColor: 'gray', borderWidth: 1 }}
             autoCapitalize="none"
             value={this.props.value}
-            onChangeText={v => this.props.ChangeInput({ value: v, position })}
+            onChangeText={(v) => this.props.ChangeInput({ value: v, position })}
           />
         </View>
       );
@@ -246,7 +246,7 @@ class Polls extends Component {
   nextPosition = () => {
     this.props.SetValidForm({
       position: this.props.position,
-      type: "NEXT_POSITION"
+      type: 'NEXT_POSITION',
     });
   };
 
@@ -254,7 +254,7 @@ class Polls extends Component {
     if (this.props.position > 0) {
       this.props.SetValidForm({
         position: this.props.position,
-        type: "PREVIOUS_POSITION"
+        type: 'PREVIOUS_POSITION',
       });
     }
   };
@@ -268,12 +268,12 @@ class Polls extends Component {
     if (this.props.position > 0 || this.props.lengthPoll === 1) {
       this.props.SetValidForm({
         position: this.props.position,
-        type: "FINISH"
+        type: 'FINISH',
       });
     }
   };
 
-  errors = () => (this.props.isError ? this.props.msg : "");
+  errors = () => (this.props.isError ? this.props.msg : '');
 
   render = () => {
     const { position, isLoading, isFinish } = this.props;
@@ -302,7 +302,7 @@ class Polls extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   position: state.polls.position,
   value: state.polls.value,
   isError: state.polls.isError,
@@ -312,7 +312,7 @@ const mapStateToProps = state => ({
   isLoading: state.polls.isLoading,
   isFinish: state.polls.isFinish,
   form: state.polls.form,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
@@ -320,7 +320,7 @@ const mapDispatchToProps = {
   ChangeInput,
   GetPoll,
   SavePoll,
-  GetListPoll
+  GetListPoll,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Polls);

@@ -1,21 +1,20 @@
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { View, ScrollView, StatusBar, SafeAreaView } from "react-native";
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { View, ScrollView, StatusBar, SafeAreaView } from 'react-native';
 import {
   Container,
   Button,
   Text,
   Content,
   Footer,
-  FooterTab
-} from "native-base";
-import { Actions } from "react-native-router-flux";
+  FooterTab,
+} from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
-import ListadoProductosPorCategoriaAcccion
-  from "@components/salas_info/salasInfoDetailAction/SalasInfoDetailActionActions.js";
-import Header from "@components/salas_info/salasInfoDetailAction/Header/Header";
-import Producto from "@components/salas_info/salasInfoDetailAction/Producto/Producto";
+import ListadoProductosPorCategoriaAcccion from '@components/salas_info/salasInfoDetailAction/SalasInfoDetailActionActions.js';
+import Header from '@components/salas_info/salasInfoDetailAction/Header/Header';
+import Producto from '@components/salas_info/salasInfoDetailAction/Producto/Producto';
 
 class SalasInfoDetailAction extends React.Component {
   static propTypes = {
@@ -28,27 +27,22 @@ class SalasInfoDetailAction extends React.Component {
     categoria: PropTypes.string,
     dateb2b: PropTypes.string,
     endpoint: PropTypes.string,
-    visitaEnProgreso: PropTypes.number
+    visitaEnProgreso: PropTypes.number,
   };
 
   static defaultProps = {
-    accion: "",
-    monto: "",
-    sala: "",
-    nombreSala: "",
-    categoria: "",
-    dateb2b: "",
-    endpoint: "",
-    visitaEnProgreso: 0
+    accion: '',
+    monto: '',
+    sala: '',
+    nombreSala: '',
+    categoria: '',
+    dateb2b: '',
+    endpoint: '',
+    visitaEnProgreso: 0,
   };
 
   componentWillMount = () => {
-    const {
-      endpoint,
-      sala,
-      categoria,
-      accion
-    } = this.props;
+    const { endpoint, sala, categoria, accion } = this.props;
     this.props.ListadoProductosPorCategoriaAcccion(
       endpoint,
       sala,
@@ -77,14 +71,14 @@ class SalasInfoDetailAction extends React.Component {
     } */
 
     return (
-      <Container style={{ backgroundColor: "#F4F4F4" }}>
-        <StatusBar barStyle="dark-content"/>
+      <Container style={{ backgroundColor: '#F4F4F4' }}>
+        <StatusBar barStyle="dark-content" />
         <Content
-          style={{ flex: 1, backgroundColor: "#FFF" }}
+          style={{ flex: 1, backgroundColor: '#FFF' }}
           scrollEnabled={false}
           contentContainerStyle={{ flex: 1 }}
         >
-          <SafeAreaView style={{ flex: 1, backgroundColor: "#fdf7c6" }}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: '#fdf7c6' }}>
             <Header
               accion={this.props.accion}
               monto={this.props.monto}
@@ -94,7 +88,7 @@ class SalasInfoDetailAction extends React.Component {
             <View
               style={{
                 flex: 1,
-                backgroundColor: "#FFFFFF"
+                backgroundColor: '#FFFFFF',
               }}
             >
               <Producto
@@ -130,15 +124,16 @@ class SalasInfoDetailAction extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   productos: state.productos.productos,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
-  ListadoProductosPorCategoriaAcccion
+  ListadoProductosPorCategoriaAcccion,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  SalasInfoDetailAction
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SalasInfoDetailAction);

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   Container,
   Header,
@@ -9,17 +9,17 @@ import {
   Button,
   Icon,
   Title,
-  Body
-} from "native-base";
-import { DeviceEventEmitter, FlatList } from "react-native";
-import { Actions } from "react-native-router-flux";
+  Body,
+} from 'native-base';
+import { DeviceEventEmitter, FlatList } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
-import { GetListPost, GetMorePosts } from "@components/wall/WallActions";
-import Publication from "@components/wall/publication/Publication";
-import LoginScreen from "@components/login/Login";
+import { GetListPost, GetMorePosts } from '@components/wall/WallActions';
+import Publication from '@components/wall/publication/Publication';
+import LoginScreen from '@components/login/Login';
 
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
-import {Ionicons, MaterialIcons} from "@expo/vector-icons";
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 class Wall extends Component {
   static propTypes = {
@@ -28,14 +28,14 @@ class Wall extends Component {
     isAuthenticated: PropTypes.bool,
     lastId: PropTypes.number,
     data: PropTypes.oneOfType([PropTypes.any]),
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
     isAuthenticated: false,
     lastId: 0,
     data: [],
-    endpoint: ""
+    endpoint: '',
   };
 
   constructor(props) {
@@ -48,26 +48,26 @@ class Wall extends Component {
 
   state = {
     refreshing: false,
-    isLoading: true
+    isLoading: true,
   };
 
   async componentWillMount() {
     await this.props.GetListPost(this.props.endpoint);
 
     this.setState({
-      isLoading: false
+      isLoading: false,
     });
   }
 
   async refreshWall() {
     this.setState({
-      isLoading: true
+      isLoading: true,
     });
 
     await this.props.GetListPost(this.props.endpoint);
 
     this.setState({
-      isLoading: false
+      isLoading: false,
     });
   }
 
@@ -87,7 +87,7 @@ class Wall extends Component {
     }
 
     return (
-      <Container style={{ backgroundColor: "#F0F0F0" }}>
+      <Container style={{ backgroundColor: '#F0F0F0' }}>
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button transparent onPress={Actions.drawerOpen}>
@@ -95,7 +95,7 @@ class Wall extends Component {
                 name="menu"
                 style={{
                   color: 'white',
-                  fontSize: 25
+                  fontSize: 25,
                 }}
               />
             </Button>
@@ -114,7 +114,7 @@ class Wall extends Component {
                 name="ios-create"
                 style={{
                   color: 'white',
-                  fontSize: 25
+                  fontSize: 25,
                 }}
               />
             </Button>
@@ -122,7 +122,7 @@ class Wall extends Component {
         </Header>
 
         <FlatList
-          ref={ref => {
+          ref={(ref) => {
             this.listview = ref;
           }}
           data={data}
@@ -140,7 +140,7 @@ class Wall extends Component {
               margin
             />
           )}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()}
           onRefresh={() => this.refreshWall()}
           refreshing={this.state.refreshing}
           onEndReached={() => {
@@ -153,20 +153,17 @@ class Wall extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.user.isAuthenticated,
   data: state.wall.data,
   lastId: state.wall.lastId,
   refresh: state.wall.refresh,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
   GetListPost,
-  GetMorePosts
+  GetMorePosts,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Wall);
+export default connect(mapStateToProps, mapDispatchToProps)(Wall);

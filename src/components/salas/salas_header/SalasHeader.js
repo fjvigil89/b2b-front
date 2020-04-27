@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import ActionSheet from "react-native-actionsheet";
-import { connect } from "react-redux";
-import * as Animatable from "react-native-animatable";
-import { Actions } from "react-native-router-flux";
+import React from 'react';
+import PropTypes from 'prop-types';
+import ActionSheet from 'react-native-actionsheet';
+import { connect } from 'react-redux';
+import * as Animatable from 'react-native-animatable';
+import { Actions } from 'react-native-router-flux';
 import {
   Header,
   Left,
@@ -12,8 +12,8 @@ import {
   Title,
   Right,
   Item,
-  Input
-} from "native-base";
+  Input,
+} from 'native-base';
 
 // Actions
 import {
@@ -22,9 +22,9 @@ import {
   FilterSection,
   ShowSearch,
   ShowListForGeolocation,
-  ShowListForLostSale
-} from "@components/salas/salas_header/SalasHeaderActions";
-import { Ionicons, MaterialIcons} from "@expo/vector-icons";
+  ShowListForLostSale,
+} from '@components/salas/salas_header/SalasHeaderActions';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 class SalasHeader extends React.Component {
   static propTypes = {
@@ -40,24 +40,24 @@ class SalasHeader extends React.Component {
     groupCadena: PropTypes.arrayOf(PropTypes.string),
     indexCancel: PropTypes.number,
     indexClean: PropTypes.number,
-    lostSaleON: PropTypes.bool
+    lostSaleON: PropTypes.bool,
   };
 
   static defaultProps = {
     searchFilters: false,
     isOpenSearch: false,
     lostSaleON: true,
-    inputSearch: "",
-    groupCadena: ["Cancelar"],
+    inputSearch: '',
+    groupCadena: ['Cancelar'],
     indexCancel: null,
-    indexClean: null
+    indexClean: null,
   };
 
   openFilter = () => {
     this.ActionSheet.show();
   };
 
-  filterResults = e => {
+  filterResults = (e) => {
     this.props.FilterSection(e, this.props.lostSaleON);
   };
 
@@ -70,33 +70,34 @@ class SalasHeader extends React.Component {
   };
 
   render() {
-    const iconFilters = this.props.searchFilters
-      ? "ios-funnel"
-      : "ios-funnel";
+    const iconFilters = this.props.searchFilters ? 'ios-funnel' : 'ios-funnel';
 
     const iconLocationLostSale = this.props.lostSaleON
-      ? "ios-navigate"
-      : "logo-usd";
+      ? 'ios-navigate'
+      : 'logo-usd';
 
     if (this.props.isOpenSearch) {
       return (
         <Animatable.View animation="fadeInRight" duration={500}>
           <Header
-            style={{ backgroundColor: "#FFFFFF" }}
+            style={{ backgroundColor: '#FFFFFF' }}
             iosBarStyle="dark-content"
           >
             <Button transparent onPress={this.props.ClearSearch}>
-              <Ionicons name="md-arrow-back" style={{ fontSize: 24, color: "#000" }} />
+              <Ionicons
+                name="md-arrow-back"
+                style={{ fontSize: 24, color: '#000' }}
+              />
             </Button>
             <Body rounded>
               <Item>
                 <Input
-                  style={{ color: "#000000" }}
+                  style={{ color: '#000000' }}
                   placeholder="Buscar Sala..."
                   placeholderTextColor="#A4A4A4"
                   autoFocus={this.props.isOpenSearch}
                   value={this.props.inputSearch}
-                  onChangeText={v => this.props.SearchByName(v)}
+                  onChangeText={(v) => this.props.SearchByName(v)}
                 />
               </Item>
             </Body>
@@ -113,13 +114,19 @@ class SalasHeader extends React.Component {
               name="menu"
               style={{
                 color: 'white',
-                fontSize: 25
+                fontSize: 25,
               }}
             />
           </Button>
         </Left>
         <Body>
-          <Title>Mis Salas</Title>
+          <Title
+            style={{
+              color: 'white',
+            }}
+          >
+            Mis Salas
+          </Title>
         </Body>
         <Right>
           <Button transparent onPress={this.props.ShowSearch}>
@@ -127,7 +134,7 @@ class SalasHeader extends React.Component {
               name="ios-search"
               style={{
                 color: 'white',
-                fontSize: 25
+                fontSize: 25,
               }}
             />
           </Button>
@@ -136,7 +143,7 @@ class SalasHeader extends React.Component {
               name={iconFilters}
               style={{
                 color: 'white',
-                fontSize: 25
+                fontSize: 25,
               }}
             />
           </Button>
@@ -145,13 +152,13 @@ class SalasHeader extends React.Component {
               name={iconLocationLostSale}
               style={{
                 color: 'white',
-                fontSize: 25
+                fontSize: 25,
               }}
             />
           </Button>
 
           <ActionSheet
-            ref={o => {
+            ref={(o) => {
               this.ActionSheet = o;
 
               return this.ActionSheet;
@@ -168,14 +175,14 @@ class SalasHeader extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isOpenSearch: state.salasHeader.showSearch,
   lostSaleON: state.salasHeader.lostSaleON,
   inputSearch: state.salasHeader.inputSearch,
   searchFilters: state.salas.searchFilters,
   groupCadena: state.salas.groupCadena,
   indexCancel: state.salas.indexCancel,
-  indexClean: state.salas.indexClean
+  indexClean: state.salas.indexClean,
 });
 
 const mapDispatchToProps = {
@@ -184,7 +191,7 @@ const mapDispatchToProps = {
   SearchByName,
   FilterSection,
   ShowListForGeolocation,
-  ShowListForLostSale
+  ShowListForLostSale,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalasHeader);

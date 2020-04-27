@@ -1,20 +1,20 @@
-import { chain, orderBy, assign } from "lodash";
+import { chain, orderBy, assign } from 'lodash';
 
 export const initialState = {
   loading: false,
   salas: [],
   salas_backup: [],
-  groupCadena: ["Cancelar"],
+  groupCadena: ['Cancelar'],
   indexCancel: null,
   indexClean: null,
   searchFilters: false,
   refreshing: true,
   region: {},
-  activeCheckIn: false
+  activeCheckIn: false,
 };
 
 function getKilometros(lat1, lon1, lat2, lon2) {
-  const rad = x => x * Math.PI / 180;
+  const rad = (x) => (x * Math.PI) / 180;
 
   const R = 6378.137;
   const dLat = rad(lat2 - lat1);
@@ -23,9 +23,9 @@ function getKilometros(lat1, lon1, lat2, lon2) {
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(rad(lat1)) *
-    Math.cos(rad(lat2)) *
-    Math.sin(dLong / 2) *
-    Math.sin(dLong / 2);
+      Math.cos(rad(lat2)) *
+      Math.sin(dLong / 2) *
+      Math.sin(dLong / 2);
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
@@ -36,26 +36,26 @@ function getKilometros(lat1, lon1, lat2, lon2) {
 
 export default function salas(state = initialState, action) {
   switch (action.type) {
-    case "SALAS_LIST": {
+    case 'SALAS_LIST': {
       if (action.data) {
         let group = [];
         group = chain(action.data)
-          .groupBy("cadena")
+          .groupBy('cadena')
           .map((obj, name) => name)
           .value();
 
-        const cancel = group.push("Cancelar") - 1;
-        const clean = group.push("Limpiar") - 1;
+        const cancel = group.push('Cancelar') - 1;
+        const clean = group.push('Limpiar') - 1;
 
         const dataSalas = [];
 
-        action.data.forEach(sala => {
+        action.data.forEach((sala) => {
           let newProperties = {};
 
           if (sala.latitud === 0 || sala.longitud === 0) {
             newProperties = {
-              kilometers: "Sin distancia",
-              prefijoKilometers: ""
+              kilometers: 'Sin distancia',
+              prefijoKilometers: '',
             };
           } else {
             newProperties = {
@@ -65,7 +65,7 @@ export default function salas(state = initialState, action) {
                 state.region.latitude,
                 state.region.longitude
               ),
-              prefijoKilometers: "Km"
+              prefijoKilometers: 'Km',
             };
           }
 
@@ -78,38 +78,38 @@ export default function salas(state = initialState, action) {
           ...state,
           salas: action.lostSaleON
             ? dataSalas
-            : orderBy(dataSalas, ["kilometers"], ["asc"]),
+            : orderBy(dataSalas, ['kilometers'], ['asc']),
           salas_backup: dataSalas,
           groupCadena: group,
           indexCancel: cancel,
           indexClean: clean,
-          refreshing: false
+          refreshing: false,
         };
       }
 
       return initialState;
     }
-    case "SALAS_CLEAR_SEARCH": {
-      return {
-        ...state,
-        salas: state.salas_backup
-      };
-    }
-    case "SALAS_SHOW_GEO_LOCATION": {
-      return {
-        ...state,
-        salas: orderBy(state.salas_backup, ["kilometers"], ["asc"]),
-        searchFilters: false
-      };
-    }
-    case "SALAS_SHOW_LOST_SALE": {
+    case 'SALAS_CLEAR_SEARCH': {
       return {
         ...state,
         salas: state.salas_backup,
-        searchFilters: false
       };
     }
-    case "SALAS_FILTER_SECTION": {
+    case 'SALAS_SHOW_GEO_LOCATION': {
+      return {
+        ...state,
+        salas: orderBy(state.salas_backup, ['kilometers'], ['asc']),
+        searchFilters: false,
+      };
+    }
+    case 'SALAS_SHOW_LOST_SALE': {
+      return {
+        ...state,
+        salas: state.salas_backup,
+        searchFilters: false,
+      };
+    }
+    case 'SALAS_FILTER_SECTION': {
       if (action.filter === state.indexCancel) {
         return state;
       }
@@ -119,12 +119,12 @@ export default function salas(state = initialState, action) {
           ...state,
           salas: action.lostSaleON
             ? state.salas_backup
-            : orderBy(state.salas_backup, ["kilometers"], ["asc"]),
-          searchFilters: false
+            : orderBy(state.salas_backup, ['kilometers'], ['asc']),
+          searchFilters: false,
         };
       }
 
-      const salasFiltradas = state.salas_backup.filter(item => {
+      const salasFiltradas = state.salas_backup.filter((item) => {
         const itemData = item.cadena.toUpperCase();
         const textData = state.groupCadena[action.filter].toUpperCase();
 
@@ -135,15 +135,15 @@ export default function salas(state = initialState, action) {
         ...state,
         salas: action.lostSaleON
           ? salasFiltradas
-          : orderBy(salasFiltradas, ["kilometers"], ["asc"]),
-        searchFilters: true
+          : orderBy(salasFiltradas, ['kilometers'], ['asc']),
+        searchFilters: true,
       };
     }
-    case "SALAS_SEARCH_BY_NAME": {
+    case 'SALAS_SEARCH_BY_NAME': {
       let salasFiltradas;
 
       if (action.text) {
-        salasFiltradas = state.salas_backup.filter(item => {
+        salasFiltradas = state.salas_backup.filter((item) => {
           const itemData = item.descripcion.toUpperCase();
           const textData = action.text.toUpperCase();
 
@@ -155,16 +155,16 @@ export default function salas(state = initialState, action) {
 
       return {
         ...state,
-        salas: salasFiltradas
+        salas: salasFiltradas,
       };
     }
-    case "SALAS_LIST_REFRESH": {
+    case 'SALAS_LIST_REFRESH': {
       return {
         ...state,
-        refreshing: !state.refreshing
+        refreshing: !state.refreshing,
       };
     }
-    case "GET_LOCATION_ASYNC": {
+    case 'GET_LOCATION_ASYNC': {
       if (action.data) {
         return {
           ...state,
@@ -172,17 +172,17 @@ export default function salas(state = initialState, action) {
             latitude: action.data.latitude,
             longitude: action.data.longitude,
             latitudeDelta: 0.1,
-            longitudeDelta: 0.1
-          }
+            longitudeDelta: 0.1,
+          },
         };
       }
 
       return initialState;
     }
-    case "SALAS_ACTIVE_CHECKIN": {
+    case 'SALAS_ACTIVE_CHECKIN': {
       return {
         ...state,
-        activeCheckIn: action.check
+        activeCheckIn: action.check,
       };
     }
     default:
