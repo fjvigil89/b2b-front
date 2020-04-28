@@ -1,21 +1,21 @@
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { View, ScrollView, StatusBar, SafeAreaView } from "react-native";
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { View, ScrollView, StatusBar, SafeAreaView } from 'react-native';
 import {
   Container,
   Button,
   Text,
   Content,
   Footer,
-  FooterTab
-} from "native-base";
-import { Actions } from "react-native-router-flux";
-import _ from "lodash";
+  FooterTab,
+} from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import _ from 'lodash';
 
-import ListadoProductosCademsmart from "@components/salas_info/productos_cademsmart/ProductosCademsmartActions";
-import HeaderCademsmart from "@components/salas_info/productos_cademsmart/header_cademsmart/HeaderCademsmart";
-import ProductoCademsmart from "@components/salas_info/productos_cademsmart/producto_cademsmart/ProductoCademsmart";
+import ListadoProductosCademsmart from '@components/salas_info/productos_cademsmart/ProductosCademsmartActions';
+import HeaderCademsmart from '@components/salas_info/productos_cademsmart/header_cademsmart/HeaderCademsmart';
+import ProductoCademsmart from '@components/salas_info/productos_cademsmart/producto_cademsmart/ProductoCademsmart';
 
 class ProductosCademsmart extends React.Component {
   static propTypes = {
@@ -26,16 +26,16 @@ class ProductosCademsmart extends React.Component {
     nombreSala: PropTypes.string,
     direccion: PropTypes.string,
     ultimaMedicion: PropTypes.string,
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
-    porcentaje: "",
+    porcentaje: '',
     visita: 0,
-    nombreSala: "",
-    direccion: "",
-    ultimaMedicion: "",
-    endpoint: ""
+    nombreSala: '',
+    direccion: '',
+    ultimaMedicion: '',
+    endpoint: '',
   };
 
   componentWillMount = () => {
@@ -49,20 +49,20 @@ class ProductosCademsmart extends React.Component {
     let productos = <Text />;
 
     if (!_.isEmpty(this.props.productos)) {
-      productos = this.props.productos.map(detail => (
+      productos = this.props.productos.map((detail) => (
         <ProductoCademsmart key={detail.ean} data={detail} />
       ));
     }
 
     return (
-      <Container style={{ backgroundColor: "#F4F4F4" }}>
+      <Container style={{ backgroundColor: '#F4F4F4' }}>
         <StatusBar barStyle="dark-content" />
         <Content
-          style={{ flex: 1, backgroundColor: "#FFF" }}
+          style={{ flex: 1, backgroundColor: '#FFF' }}
           scrollEnabled={false}
           contentContainerStyle={{ flex: 1 }}
         >
-          <SafeAreaView style={{ flex: 1, backgroundColor: "#fdf7c6" }}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: '#fdf7c6' }}>
             <HeaderCademsmart
               porcentaje={this.props.porcentaje}
               nombreSala={this.props.nombreSala}
@@ -73,7 +73,7 @@ class ProductosCademsmart extends React.Component {
             <View
               style={{
                 flex: 1,
-                backgroundColor: "#FFFFFF"
+                backgroundColor: '#FFFFFF',
               }}
             >
               <ScrollView>{productos}</ScrollView>
@@ -98,13 +98,13 @@ class ProductosCademsmart extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   productos: state.productosCademsmart.productos,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
-  ListadoProductosCademsmart
+  ListadoProductosCademsmart,
 };
 
 export default connect(

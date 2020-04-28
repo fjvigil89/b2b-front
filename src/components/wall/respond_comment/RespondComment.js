@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   StatusBar,
@@ -6,13 +6,13 @@ import {
   Platform,
   Alert,
   ScrollView,
-  Image
-} from "react-native";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import * as ImagePicker from 'expo-image-picker'
+  Image,
+} from 'react-native';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { size, isEmpty, filter, take } from "lodash";
+import { size, isEmpty, filter, take } from 'lodash';
 
 import {
   Container,
@@ -28,16 +28,16 @@ import {
   Thumbnail,
   Icon,
   List,
-  ListItem
-} from "native-base";
-import { Actions } from "react-native-router-flux";
+  ListItem,
+} from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
-import CreateReply from "@components/wall/respond_comment/RespondCommentAction";
-import { GetHashtags } from "@components/wall/WallActions";
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
-import {Ionicons} from "@expo/vector-icons";
+import CreateReply from '@components/wall/respond_comment/RespondCommentAction';
+import { GetHashtags } from '@components/wall/WallActions';
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
+import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 const platform = Platform.OS;
 
 class RespondComment extends React.Component {
@@ -48,33 +48,33 @@ class RespondComment extends React.Component {
     user: PropTypes.string,
     post: PropTypes.number,
     comment: PropTypes.number,
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
     hashtags: [],
-    user: "",
+    user: '',
     post: 0,
     comment: 0,
-    endpoint: ""
+    endpoint: '',
   };
 
   constructor() {
     super();
 
-    this.previousChar = " ";
+    this.previousChar = ' ';
     this.isTrackingStarted = false;
   }
 
   state = {
-    content: "",
+    content: '',
     images: [],
     loading: false,
     buttonDisabled: false,
     showHashtag: false,
     hashtags: [],
-    inputHashtag: "",
-    auxText: ""
+    inputHashtag: '',
+    auxText: '',
   };
 
   async componentWillMount() {
@@ -83,7 +83,7 @@ class RespondComment extends React.Component {
 
   createReply = () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     this.props
@@ -96,17 +96,17 @@ class RespondComment extends React.Component {
       )
       .then(() => {
         this.setState({
-          loading: false
+          loading: false,
         });
 
         Actions.pop();
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
-          loading: false
+          loading: false,
         });
 
-        Alert.alert("Error", err.message);
+        Alert.alert('Error', err.message);
       });
   };
 
@@ -117,7 +117,7 @@ class RespondComment extends React.Component {
     const gallery = await Permissions.askAsync(permissions);
     const camera = await Permissions.askAsync(permissionsCamera);
 
-    if (gallery.status === "granted" && camera.status === "granted") {
+    if (gallery.status === 'granted' && camera.status === 'granted') {
       const result = await ImagePicker.launchCameraAsync();
 
       if (!result.cancelled) {
@@ -127,32 +127,32 @@ class RespondComment extends React.Component {
         tempImages.push({ uri: result.uri, id: nextId + 1 });
 
         this.setState({
-          buttonDisabled: true
+          buttonDisabled: true,
         });
 
         this.setState({ images: tempImages });
       }
     } else {
       Alert.alert(
-        "Acceso denegado",
-        "Habilita el acceso a la Camara en la configuración de tu dispositivo."
+        'Acceso denegado',
+        'Habilita el acceso a la Camara en la configuración de tu dispositivo.'
       );
     }
   };
 
-  changeText = v => {
+  changeText = (v) => {
     this.setState({
-      content: v
+      content: v,
     });
 
     const lastChar = v.substr(v.length - 1);
 
     const previousMustBeSpace = this.previousChar.trim().length === 0;
 
-    if (lastChar === "#" && previousMustBeSpace) {
+    if (lastChar === '#' && previousMustBeSpace) {
       this.startTracking(v);
       return;
-    } else if ((lastChar === " " && this.isTrackingStarted) || v === "") {
+    } else if ((lastChar === ' ' && this.isTrackingStarted) || v === '') {
       this.stopTracking();
     }
 
@@ -168,7 +168,7 @@ class RespondComment extends React.Component {
 
     this.setState({
       showHashtag: true,
-      inputHashtag: v
+      inputHashtag: v,
     });
   }
 
@@ -178,8 +178,8 @@ class RespondComment extends React.Component {
     this.setState({
       showHashtag: false,
       hashtags: [],
-      inputHashtag: "",
-      auxText: ""
+      inputHashtag: '',
+      auxText: '',
     });
   }
 
@@ -189,8 +189,8 @@ class RespondComment extends React.Component {
     const val = content.slice(sizeAuxContent);
 
     const validHashtags = take(
-      filter(this.props.hashtags, hash => {
-        if (hash.text.match(new RegExp(`^#${val}`, "gi"))) {
+      filter(this.props.hashtags, (hash) => {
+        if (hash.text.match(new RegExp(`^#${val}`, 'gi'))) {
           return true;
         }
         return false;
@@ -200,7 +200,7 @@ class RespondComment extends React.Component {
 
     this.setState({
       hashtags: validHashtags,
-      auxText: val
+      auxText: val,
     });
   }
 
@@ -213,23 +213,23 @@ class RespondComment extends React.Component {
 
     this.stopTracking();
 
-    this.previousChar = " ";
+    this.previousChar = ' ';
 
     this.setState({
-      content: `${this.state.content}${differenceHastagSelected} `
+      content: `${this.state.content}${differenceHastagSelected} `,
     });
   }
 
   render() {
-    const profile = require("@assets/images/profile.png");
+    const profile = require('@assets/images/profile.png');
 
     return (
-      <Container style={{ backgroundColor: "#FFFFFF" }}>
+      <Container style={{ backgroundColor: '#FFFFFF' }}>
         <StatusBar barStyle="dark-content" />
         <Header
           style={{
             borderBottomWidth: 0,
-            backgroundColor: platform === "android" ? "#083D77" : "#F4F4F4"
+            backgroundColor: platform === 'android' ? '#083D77' : '#F4F4F4',
           }}
           iosBarStyle="dark-content"
         >
@@ -240,10 +240,13 @@ class RespondComment extends React.Component {
                 Actions.pop();
               }}
             >
-              {platform === "android" && (
-                <Ionicons name="md-arrow-back" style={{ fontSize: 24, color: "#FFFFFF" }} />
+              {platform === 'android' && (
+                <Ionicons
+                  name="md-arrow-back"
+                  style={{ fontSize: 24, color: '#FFFFFF' }}
+                />
               )}
-              {platform === "ios" && (
+              {platform === 'ios' && (
                 <Text style={{ fontSize: 14 }}>Cancelar</Text>
               )}
             </Button>
@@ -252,7 +255,7 @@ class RespondComment extends React.Component {
             <Title
               style={{
                 fontSize: 13,
-                color: platform === "android" ? "#FFF" : "#000"
+                color: platform === 'android' ? '#FFF' : '#000',
               }}
             >
               RESPONDER COMENTARIO
@@ -268,7 +271,7 @@ class RespondComment extends React.Component {
           <View
             style={{
               flex: 1,
-              backgroundColor: "#FFFFFF"
+              backgroundColor: '#FFFFFF',
             }}
           >
             <View
@@ -276,39 +279,39 @@ class RespondComment extends React.Component {
                 margin: 0,
                 padding: 0,
                 flex: 1,
-                backgroundColor: "transparent",
-                marginBottom: 5
+                backgroundColor: 'transparent',
+                marginBottom: 5,
               }}
             >
               <View
                 style={{
                   flex: 1,
-                  flexDirection: "row"
+                  flexDirection: 'row',
                 }}
               >
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: "center",
-                    alignItems: "flex-start",
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
                     padding: 10,
-                    backgroundColor: "#FFF",
-                    borderRadius: 10
+                    backgroundColor: '#FFF',
+                    borderRadius: 10,
                   }}
                 >
                   <View
                     style={{
                       flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "flex-start"
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'flex-start',
                     }}
                   >
                     <View
                       style={{
                         flex: 0.1,
-                        justifyContent: "center",
-                        alignItems: "flex-start"
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
                       }}
                     >
                       <Thumbnail small source={profile} />
@@ -316,24 +319,24 @@ class RespondComment extends React.Component {
                     <View
                       style={{
                         flex: 0.9,
-                        justifyContent: "center",
-                        alignItems: "flex-start",
-                        marginLeft: 10
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                        marginLeft: 10,
                       }}
                     >
                       <Text
                         style={{
                           fontSize: 17,
-                          fontFamily: "Questrial",
-                          fontWeight: "bold"
+                          fontFamily: 'Questrial',
+                          fontWeight: 'bold',
                         }}
                       >
                         {this.props.user}
                       </Text>
                       <Text
                         style={{
-                          color: "#808080",
-                          fontSize: 12
+                          color: '#808080',
+                          fontSize: 12,
                         }}
                       >
                         dice...
@@ -347,18 +350,18 @@ class RespondComment extends React.Component {
             <Textarea
               style={{
                 fontSize: 18,
-                height: 100
+                height: 100,
               }}
               value={this.state.content}
-              onChangeText={v => this.changeText(v)}
+              onChangeText={(v) => this.changeText(v)}
               placeholder="Escribe tu respuesta..."
             />
 
             {this.state.showHashtag && (
-              <View style={{ flex: 1, flexDirection: "row" }}>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
                 <List
                   dataArray={this.state.hashtags}
-                  renderRow={item => (
+                  renderRow={(item) => (
                     <ListItem
                       onPress={() => {
                         this.autocompleteHashtag(item.text);
@@ -374,7 +377,7 @@ class RespondComment extends React.Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "row"
+                flexDirection: 'row',
               }}
             >
               <Button
@@ -390,7 +393,7 @@ class RespondComment extends React.Component {
                   name="ios-camera"
                   style={{
                     color: '',
-                    fontSize: 30
+                    fontSize: 30,
                   }}
                 />
                 <Text>Tomar foto</Text>
@@ -414,21 +417,21 @@ class RespondComment extends React.Component {
             {!isEmpty(this.state.images) && (
               <View
                 style={{
-                  flex: 1
+                  flex: 1,
                 }}
               >
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: 10
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 10,
                   }}
                 >
                   <Text
                     style={{
-                      color: "#808080",
-                      fontSize: 12
+                      color: '#808080',
+                      fontSize: 12,
                     }}
                   >
                     1 Imagen para cargar
@@ -438,7 +441,7 @@ class RespondComment extends React.Component {
                 <View
                   style={{
                     flex: 1,
-                    flexDirection: "row"
+                    flexDirection: 'row',
                   }}
                 >
                   <ScrollView
@@ -449,7 +452,7 @@ class RespondComment extends React.Component {
                     <Image
                       style={{
                         width,
-                        height: 250
+                        height: 250,
                       }}
                       source={{ uri: this.state.images[0].uri }}
                     />
@@ -466,18 +469,15 @@ class RespondComment extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user.user,
   hashtags: state.wall.hashtags,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
   CreateReply,
-  GetHashtags
+  GetHashtags,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RespondComment);
+export default connect(mapStateToProps, mapDispatchToProps)(RespondComment);

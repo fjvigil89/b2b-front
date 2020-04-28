@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Body, Text, ListItem, Content, CheckBox } from "native-base";
-import { connect } from "react-redux";
-import { ChangeInput } from "@components/polls/PollsActions";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Body, Text, ListItem, Content, CheckBox } from 'native-base';
+import { connect } from 'react-redux';
+import { ChangeInput } from '@components/polls/PollsActions';
 
 class PollsCheckBox extends Component {
   static propTypes = {
     ChangeInput: PropTypes.func.isRequired,
     data: PropTypes.oneOfType([PropTypes.any]),
     position: PropTypes.number,
-    value: PropTypes.oneOfType([PropTypes.any])
+    value: PropTypes.oneOfType([PropTypes.any]),
   };
 
   static defaultProps = {
     data: {},
     position: 0,
-    value: null
+    value: null,
   };
 
   state = {
-    check: []
+    check: [],
   };
 
   componentWillMount = () => {
@@ -36,10 +36,10 @@ class PollsCheckBox extends Component {
         this.props.data.config.map((item, index) => (check[index] = false));
       }
 
-      this.setState(state => ({
+      this.setState((state) => ({
         ...state,
         position: nextProps.position,
-        check
+        check,
       }));
     }
   }
@@ -60,18 +60,18 @@ class PollsCheckBox extends Component {
       <Content>
         {data.config.map((item, index) => (
           <ListItem
-            style={{ width: "90%" }}
+            style={{ width: '90%' }}
             onTouchStart={() => {
-              this.setState(state => {
+              this.setState((state) => {
                 this.state.check[index] = !state.check[index];
 
                 this.props.ChangeInput({
                   value: state.check,
-                  position: this.props.position
+                  position: this.props.position,
                 });
 
                 return {
-                  check: state.check
+                  check: state.check,
                 };
               });
             }}
@@ -95,12 +95,12 @@ class PollsCheckBox extends Component {
   };
 }
 
-const mapStateToProps = state => ({
-  value: state.polls.value
+const mapStateToProps = (state) => ({
+  value: state.polls.value,
 });
 
 const mapDispatchToProps = {
-  ChangeInput
+  ChangeInput,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PollsCheckBox);

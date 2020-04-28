@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Content } from "native-base";
-import { InteractionManager, RefreshControl } from "react-native";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Content } from 'native-base';
+import { InteractionManager, RefreshControl } from 'react-native';
 
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
-import SalasDetail from "@components/salas/salas_detail/SalasDetail";
-import NoSalas from "@components/salas/salas_empty/SalasEmpty";
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
+import SalasDetail from '@components/salas/salas_detail/SalasDetail';
+import NoSalas from '@components/salas/salas_empty/SalasEmpty';
 
 import {
   ListadoSalas,
   ListadoSalasWithRefresh,
-  GetLocationAsync
-} from "@components/salas/salas_list/SalasListActions";
+  GetLocationAsync,
+} from '@components/salas/salas_list/SalasListActions';
 
 class SalasList extends Component {
   static propTypes = {
@@ -27,28 +27,28 @@ class SalasList extends Component {
         mide: PropTypes.number,
         realizada: PropTypes.number,
         fecha_visita: PropTypes.string,
-        direccion: PropTypes.string
+        direccion: PropTypes.string,
       })
     ),
     refreshing: PropTypes.bool,
     lostSaleON: PropTypes.bool,
     endpoint: PropTypes.string,
-    activeCheckin: PropTypes.bool
+    activeCheckin: PropTypes.bool,
   };
 
   static defaultProps = {
     salas: [],
     refreshing: false,
     lostSaleON: true,
-    endpoint: "",
-    activeCheckin: false
+    endpoint: '',
+    activeCheckin: false,
   };
 
   state = {
-    loading: false
+    loading: false,
   };
 
- /*  componentDidMount() {
+  /*  componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       this._interval = setInterval(() => {
         console.log('every 30 second')
@@ -61,19 +61,19 @@ class SalasList extends Component {
     this.props.GetLocationAsync();
 
     this.setState({
-      loading: true
+      loading: true,
     });
 
     this.props
       .ListadoSalas(this.props.endpoint, this.props.lostSaleON)
       .then(() => {
         this.setState({
-          loading: false
+          loading: false,
         });
       })
       .catch(() => {
         this.setState({
-          loading: false
+          loading: false,
         });
       });
   };
@@ -84,7 +84,7 @@ class SalasList extends Component {
 
   RefreshListadoSalas = () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     this.props.GetLocationAsync();
@@ -93,12 +93,12 @@ class SalasList extends Component {
       .ListadoSalasWithRefresh(this.props.endpoint, this.props.lostSaleON)
       .then(() => {
         this.setState({
-          loading: false
+          loading: false,
         });
       })
       .catch(() => {
         this.setState({
-          loading: false
+          loading: false,
         });
       });
   };
@@ -119,7 +119,7 @@ class SalasList extends Component {
 
     return (
       <Content
-        style={{ backgroundColor: "#F4F4F4" }}
+        style={{ backgroundColor: '#F4F4F4' }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -135,18 +135,18 @@ class SalasList extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   salas: state.salas.salas,
   refreshing: state.salas.refreshing,
   lostSaleON: state.salasHeader.lostSaleON,
   endpoint: state.user.endpoint,
-  activeCheckin: state.salas.activeCheckIn
+  activeCheckin: state.salas.activeCheckIn,
 });
 
 const mapDispatchToProps = {
   ListadoSalas,
   ListadoSalasWithRefresh,
-  GetLocationAsync
+  GetLocationAsync,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalasList);
