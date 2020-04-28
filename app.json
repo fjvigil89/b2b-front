@@ -17,7 +17,7 @@
     },
     "android": {
       "package": "com.cademsmart.smartapp",
-      "versionCode": 34,
+      "versionCode": 35,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
@@ -46,7 +46,13 @@
     },
     "version": "3.0.0",
     "description": "",
-    "platforms": ["ios", "android", "web"],
-    "assetBundlePatterns": ["**/*"]
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
   }
 }
