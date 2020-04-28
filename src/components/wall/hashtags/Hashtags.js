@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   Container,
   Header,
@@ -8,20 +8,20 @@ import {
   Button,
   Title,
   Body,
-  Right
-} from "native-base";
-import { FlatList } from "react-native";
-import { Actions } from "react-native-router-flux";
-import { Ionicons } from "@expo/vector-icons";
+  Right,
+} from 'native-base';
+import { FlatList } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { Ionicons } from '@expo/vector-icons';
 
 import {
   GetHashtags,
-  GetMoreHashtags
-} from "@components/wall/hashtags/HashtagsActions";
-import Publication from "@components/wall/publication/Publication";
-import LoginScreen from "@components/login/Login";
+  GetMoreHashtags,
+} from '@components/wall/hashtags/HashtagsActions';
+import Publication from '@components/wall/publication/Publication';
+import LoginScreen from '@components/login/Login';
 
-import LoadingOverlay from "@common/loading_overlay/LoadingOverlay";
+import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
 
 class Hashtags extends Component {
   static propTypes = {
@@ -31,33 +31,33 @@ class Hashtags extends Component {
     data: PropTypes.oneOfType([PropTypes.any]),
     hash: PropTypes.string,
     lastId: PropTypes.number,
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   static defaultProps = {
     isAuthenticated: false,
     data: [],
     lastId: 0,
-    hash: "",
-    endpoint: ""
+    hash: '',
+    endpoint: '',
   };
 
   state = {
-    isLoading: true
+    isLoading: true,
   };
 
   async componentWillMount() {
-    const hashtag = this.props.hash.replace("#", "");
+    const hashtag = this.props.hash.replace('#', '');
 
     await this.props.GetHashtags(this.props.endpoint, hashtag);
 
     this.setState({
-      isLoading: false
+      isLoading: false,
     });
   }
 
   async fetchMore(lastId) {
-    const hashtag = this.props.hash.replace("#", "");
+    const hashtag = this.props.hash.replace('#', '');
 
     await this.props.GetMoreHashtags(this.props.endpoint, hashtag, lastId);
   }
@@ -74,7 +74,7 @@ class Hashtags extends Component {
     }
 
     return (
-      <Container style={{ backgroundColor: "#F0F0F0" }}>
+      <Container style={{ backgroundColor: '#F0F0F0' }}>
         <Header style={{ borderBottomWidth: 0 }}>
           <Left>
             <Button
@@ -83,7 +83,7 @@ class Hashtags extends Component {
                 Actions.pop();
               }}
             >
-              <Ionicons name="arrow-back" style={{ color: "#FFFFFF" }} />
+              <Ionicons name="arrow-back" style={{ color: '#FFFFFF' }} />
             </Button>
           </Left>
           <Body>
@@ -93,7 +93,7 @@ class Hashtags extends Component {
         </Header>
 
         <FlatList
-          ref={ref => {
+          ref={(ref) => {
             this.listview = ref;
           }}
           data={data}
@@ -111,7 +111,7 @@ class Hashtags extends Component {
               margin
             />
           )}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()}
           onEndReached={() => {
             this.fetchMore(lastId);
           }}
@@ -122,16 +122,16 @@ class Hashtags extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.user.isAuthenticated,
   data: state.hashtags.data,
   lastId: state.hashtags.lastId,
-  endpoint: state.user.endpoint
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
   GetHashtags,
-  GetMoreHashtags
+  GetMoreHashtags,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Hashtags);

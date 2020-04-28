@@ -1,0 +1,33 @@
+# Changelog
+
+## [3.0.0] - 2020-04-28
+
+### Added
+
+- Se agrega Venta Valor.
+
+### Fix
+
+- Se actualiza Expo a version 3
+
+  2.7.15
+
+- Se agrega link en el menu lateral para ingresar a la galería y se le proporciona el token.
+  2.7.14
+- Capitalización del titulo de la aplicación en menu (drawer) y en splash screen.
+  2.7.13
+- Agregar validación al objeto que trae el detalle de las salas
+  2.7.12
+- Se agrega modulo para notificaciones
+- Arreglar posicion del username para celulares Android
+- Se agrega caracteristica para reporte personal (caracteristica parcial)
+- Se arregla problema con la camara de IOS para el feedback de los casos
+  2.7.11
+- Agregar mensaje cuando no hay casos disponibles
+- Ocultar boton 'DÍA' del Dashboard, solo dejando 'Semana' y 'Mes'
+  2.7.10
+- Fix: Correcion en mostrar el icono de encuesta y casos
+  2.7.9
+- Agregar formato en los números del Dashboard
+- Prueba de concepto en localizacion por GPS, se dejo dependiente la actualizacion
+  GPS desde la actualización de las salas (Salas y GPs se actualizan juntas).

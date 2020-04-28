@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { Right, Left, Radio, Text, ListItem, Content, View } from "native-base";
-import { ChangeInput } from "@components/polls/PollsActions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Right, Left, Radio, Text, ListItem, Content, View } from 'native-base';
+import { ChangeInput } from '@components/polls/PollsActions';
 
 class PollsRadio extends Component {
   static propTypes = {
     ChangeInput: PropTypes.func.isRequired,
     data: PropTypes.oneOfType([PropTypes.any]),
     position: PropTypes.number,
-    value: PropTypes.oneOfType([PropTypes.any])
+    value: PropTypes.oneOfType([PropTypes.any]),
   };
 
   static defaultProps = {
     data: {},
     position: 0,
-    value: null
+    value: null,
   };
 
   state = {
     check: [],
-    position: 0
+    position: 0,
   };
 
   componentWillMount = () => {
@@ -37,10 +37,10 @@ class PollsRadio extends Component {
         this.props.data.config.map((item, index) => (check[index] = false));
       }
 
-      this.setState(state => ({
+      this.setState((state) => ({
         ...state,
         position: nextProps.position,
-        check
+        check,
       }));
     }
   }
@@ -62,9 +62,9 @@ class PollsRadio extends Component {
         {data.config.map((item, index) => (
           <View key={item.id}>
             <ListItem
-              style={{ width: "90%" }}
+              style={{ width: '90%' }}
               onTouchStart={() => {
-                this.setState(state => {
+                this.setState((state) => {
                   this.state.check.map(
                     (ch, i) => (this.state.check[i] = false)
                   );
@@ -77,11 +77,11 @@ class PollsRadio extends Component {
 
                   this.props.ChangeInput({
                     value: item.text,
-                    position: this.props.position
+                    position: this.props.position,
                   });
 
                   return {
-                    check: state.check
+                    check: state.check,
                   };
                 });
               }}
@@ -101,12 +101,12 @@ class PollsRadio extends Component {
   };
 }
 
-const mapStateToProps = state => ({
-  value: state.polls.value
+const mapStateToProps = (state) => ({
+  value: state.polls.value,
 });
 
 const mapDispatchToProps = {
-  ChangeInput
+  ChangeInput,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PollsRadio);
