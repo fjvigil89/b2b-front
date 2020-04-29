@@ -62,6 +62,7 @@ class CategoriasVentaValor extends React.Component {
                   fontSize: 12,
                   fontFamily: 'Bree',
                   fontWeight: 'bold',
+                  color: 'green'
                 }}
               >
                 {nombre}
