@@ -96,7 +96,7 @@ class HeaderVentaValor extends React.Component {
       : `0%`;
 
     const cumplimientolyNumber = this.props.data.cumplimientoly_number
-      ? this.currency(this.props.data.cumplimientoly_number)
+      ? this.formatter(this.props.data.cumplimientoly_number)
       : 0;
     const cumplimientolyColor =
       this.props.data.cumplimientoly_number &&
@@ -128,7 +128,7 @@ class HeaderVentaValor extends React.Component {
       : `0%`;
 
     const cumplimientolyNumberYear = this.props.data.cumplimientoly_number_year
-      ? this.currency(this.props.data.cumplimientoly_number_year)
+      ? this.formatter(this.props.data.cumplimientoly_number_year)
       : 0;
 
     const cumplimientolyColorYear =
