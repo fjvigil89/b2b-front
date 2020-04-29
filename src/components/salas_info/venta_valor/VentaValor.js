@@ -15,6 +15,7 @@ import _ from 'lodash';
 
 import DetalleVentaValor from '@components/salas_info/venta_valor/VentaValorActions';
 import HeaderVentaValor from '@components/salas_info/venta_valor/header_venta_valor/HeaderVentaValor';
+import CategoriasVentaValor from '@components/salas_info/venta_valor/categorias_venta_valor/CategoriasVentaValor';
 
 class VentaValor extends React.Component {
   static propTypes = {
@@ -80,7 +81,11 @@ class VentaValor extends React.Component {
                 flex: 1,
                 backgroundColor: '#FFFFFF',
               }}
-            ></View>
+            >
+              <CategoriasVentaValor
+                data={this.props.detalle}
+              />
+            </View>
           </SafeAreaView>
         </Content>
         <Footer>
