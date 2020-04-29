@@ -34,8 +34,6 @@ export function ListadoSalasWithRefresh(url, lostSaleON) {
         type: 'SALAS_LIST_REFRESH',
       });
 
-      console.log(`${url}/store/`);
-
       return axios({
         method: 'GET',
         url: `${url}/store/`,

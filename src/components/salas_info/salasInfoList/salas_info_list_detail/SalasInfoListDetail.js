@@ -32,8 +32,6 @@ class SalasInfoListDetail extends React.Component {
       gestionado: this.props.data.gestionado,
     };
 
-    console.log('categoria', this.props);
-
     this.props.categoria = this.props.categoria
       ? this.props.categoria.replace(/\s/g, '')
       : '';
