@@ -7,6 +7,14 @@
 - Se agrega Venta Valor por categorias.
 - Se cambia la funcion currency por formatter para cumplimientolyNumber en HeaderVentaValor.js
 
+### Fix
+
+- Se cambia el color del nombre de las categorias.
+
+### Refactor
+
+- Se elimina console.log de SalasListActions
+
 ## [3.0.0] - 2020-04-28
 
 ### Added
