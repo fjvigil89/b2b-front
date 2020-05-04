@@ -64,7 +64,16 @@ class HeaderVentaValor extends React.Component {
     } else if (value >= 1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value < 1000000) {
+    } else if (value < 1000000 && value >= 0) {
+      const format = formatterNumber(value);
+      return `${format}`;
+    } else if (value < -999999 && value > -1000000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} m`;
+    } else if (value <= -1000000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} mm`;
+    } else if (value > -1000000 && value < 0) {
       const format = formatterNumber(value);
       return `${format}`;
     }
@@ -77,9 +86,9 @@ class HeaderVentaValor extends React.Component {
 
     const backgroundImage = require('@assets/images/background-detalle-accion.png');
 
-    const mtb = this.props.data.mtb ? this.currency(this.props.data.mtb) : 0;
+    const mtb = this.props.data.mtb ? this.formatter(this.props.data.mtb) : 0;
     const mtbly = this.props.data.mtbly
-      ? this.currency(this.props.data.mtbly)
+      ? this.formatter(this.props.data.mtbly)
       : 0;
 
     const cumplimientoNumber = this.props.data.cumplimiento_number
@@ -91,9 +100,9 @@ class HeaderVentaValor extends React.Component {
         ? 'red'
         : 'black';
 
-    const cumplimientoPorc = this.props.data.cumplimiento_porc
+    const cumplimientoPorc = this.props.data.cumplimiento_porc && this.props.data.target
       ? `${this.props.data.cumplimiento_porc}%`
-      : `0%`;
+      : `-`;
 
     const cumplimientolyNumber = this.props.data.cumplimientoly_number
       ? this.formatter(this.props.data.cumplimientoly_number)
@@ -108,9 +117,9 @@ class HeaderVentaValor extends React.Component {
       ? `${this.props.data.cumplimientoly_porc}%`
       : `0%`;
 
-    const ytb = this.props.data.ytb ? this.currency(this.props.data.ytb) : 0;
+    const ytb = this.props.data.ytb ? this.formatter(this.props.data.ytb) : 0;
     const ytbly = this.props.data.ytbly
-      ? this.currency(this.props.data.ytbly)
+      ? this.formatter(this.props.data.ytbly)
       : 0;
 
     const cumplimientoNumberYear = this.props.data.cumplimiento_number_year
@@ -123,9 +132,9 @@ class HeaderVentaValor extends React.Component {
         ? 'red'
         : 'black';
 
-    const cumplimientoPorcYear = this.props.data.cumplimiento_porc_year
+    const cumplimientoPorcYear = this.props.data.cumplimiento_porc_year && this.props.data.targetYear
       ? `${this.props.data.cumplimiento_porc_year}%`
-      : `0%`;
+      : `-`;
 
     const cumplimientolyNumberYear = this.props.data.cumplimientoly_number_year
       ? this.formatter(this.props.data.cumplimientoly_number_year)
