@@ -98,10 +98,10 @@ class SalasInfoDetail extends React.Component {
         size: 25,
       };
     } else if (value < 1000000) {
-      const format = formatterNumber(value);
+      const format = value / 1000000
 
       return {
-        number: `${format}`,
+        number: `${format.toPrecision(2)} m`,
         size: 35,
       };
     }

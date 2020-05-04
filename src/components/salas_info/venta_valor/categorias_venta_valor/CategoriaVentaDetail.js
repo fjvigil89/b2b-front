@@ -21,12 +21,41 @@ class CategoriasVentaValor extends React.Component {
     return parts;
   };
 
+  formatter = (value) => {
+    const formatterNumber = (x) => {
+      const parts = x.toString().split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      return parts.join('.');
+    };
+
+    if (value > 999999 && value < 1000000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} m`;
+    } else if (value >= 1000000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} mm`;
+    } else if (value < 1000000 && value >= 0) {
+      const format = formatterNumber(value);
+      return `${format}`;
+    } else if (value < -999999 && value > -1000000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} m`;
+    } else if (value <= -1000000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} mm`;
+    } else if (value > -1000000 && value < 0) {
+      const format = formatterNumber(value);
+      return `${format}`;
+    }
+    return value;
+  };
+
   render() {
     const nombre = this.props.data[0];
-    const mtd = this.props.data[1].mtd ? this.currency(this.props.data[1].mtd) : 0;
-    const mtdLy = this.props.data[1].mtdLy ? this.currency(this.props.data[1].mtdLy) : 0;
-    const ytd = this.props.data[1].ytd ? this.currency(this.props.data[1].ytd) : 0;
-    const ytdLy = this.props.data[1].ytdLy ? this.currency(this.props.data[1].ytdLy) : 0;
+    const mtd = this.props.data[1].mtd ? this.formatter(this.props.data[1].mtd) : 0;
+    const mtdLy = this.props.data[1].mtdLy ? this.formatter(this.props.data[1].mtdLy) : 0;
+    const ytd = this.props.data[1].ytd ? this.formatter(this.props.data[1].ytd) : 0;
+    const ytdLy = this.props.data[1].ytdLy ? this.formatter(this.props.data[1].ytdLy) : 0;
 
     return (
       <View
