@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.3] - 2020-05-12
+
+### Refactor
+
+- Refactor del diseño de venta valor.
+
 ## [3.0.2] - 2020-05-04
 
 ### Added
