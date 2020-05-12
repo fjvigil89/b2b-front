@@ -17,7 +17,7 @@
     },
     "android": {
       "package": "com.cademsmart.smartapp",
-      "versionCode": 36,
+      "versionCode": 37,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
@@ -44,7 +44,7 @@
         }
       ]
     },
-    "version": "3.0.1",
+    "version": "3.0.3",
     "description": "",
     "platforms": [
       "ios",
