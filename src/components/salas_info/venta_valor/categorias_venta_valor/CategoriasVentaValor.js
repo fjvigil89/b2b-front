@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Dimensions, Text, ScrollView } from 'react-native';
 
+import Colors from "@assets/native-base-theme/variables//commonColor";
+
 import CategoriasVentaItem from '@components/salas_info/venta_valor/categorias_venta_valor/CategoriaVentaDetail';
 
 class CategoriasVentaValor extends React.Component {
@@ -103,6 +105,7 @@ class CategoriasVentaValor extends React.Component {
             flexDirection: 'row',
             marginTop: 15,
             marginBottom: 5,
+            backgroundColor: Colors.brandPrimary,
           }}
         >
           <View
@@ -114,9 +117,11 @@ class CategoriasVentaValor extends React.Component {
           >
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
+                color: '#FFF',
+                paddingVertical: 5
               }}
             >
               CATEGORIAS
