@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, Dimensions, Text } from 'react-native';
+import Colors from "@assets/native-base-theme/variables//commonColor";
 
 class HeaderVentaValor extends React.Component {
   static propTypes = {
@@ -91,64 +92,28 @@ class HeaderVentaValor extends React.Component {
       ? this.formatter(this.props.data.mtbly)
       : 0;
 
-    const cumplimientoNumber = this.props.data.cumplimiento_number
-      ? this.formatter(this.props.data.cumplimiento_number)
-      : 0;
-    const cumplimientoColor =
-      this.props.data.cumplimiento_number &&
-      this.props.data.cumplimiento_number < 0
-        ? 'red'
-        : 'black';
-
-    const cumplimientoPorc = this.props.data.cumplimiento_porc && this.props.data.target
-      ? `${this.props.data.cumplimiento_porc}%`
-      : `-`;
-
-    const cumplimientolyNumber = this.props.data.cumplimientoly_number
-      ? this.formatter(this.props.data.cumplimientoly_number)
-      : 0;
-    const cumplimientolyColor =
-      this.props.data.cumplimientoly_number &&
-      this.props.data.cumplimientoly_number < 0
-        ? 'red'
-        : 'black';
-
-    const cumplimientolyPorc = this.props.data.cumplimientoly_porc
-      ? `${this.props.data.cumplimientoly_porc}%`
-      : `0%`;
-
     const ytb = this.props.data.ytb ? this.formatter(this.props.data.ytb) : 0;
     const ytbly = this.props.data.ytbly
       ? this.formatter(this.props.data.ytbly)
       : 0;
 
-    const cumplimientoNumberYear = this.props.data.cumplimiento_number_year
-    ? this.formatter(this.props.data.cumplimiento_number_year)
-    : 0;
+    const target =
+      this.props.data.target > 0 ? `$ ${this.formatter(this.props.data.target)}` : `-`;
 
-    const cumplimientoColorYear =
-      this.props.data.cumplimiento_number_year &&
-      this.props.data.cumplimiento_number_year < 0
-        ? 'red'
-        : 'black';
+    const ventaTargetPorc =
+      this.props.data.target > 0
+        ? `${((this.props.data.mtb / this.props.data.target)*100).toFixed(1)}%`
+        : `-`;
 
-    const cumplimientoPorcYear = this.props.data.cumplimiento_porc_year && this.props.data.targetYear
-      ? `${this.props.data.cumplimiento_porc_year}%`
-      : `-`;
+    const ventaMtdPorc = `${(
+      (this.props.data.mtb * 100) /
+      this.props.data.mtbly
+    ).toFixed(1)}%`;
 
-    const cumplimientolyNumberYear = this.props.data.cumplimientoly_number_year
-      ? this.formatter(this.props.data.cumplimientoly_number_year)
-      : 0;
-
-    const cumplimientolyColorYear =
-      this.props.data.cumplimientoly_number_year &&
-      this.props.data.cumplimientoly_number_year < 0
-        ? 'red'
-        : 'black';
-
-    const cumplimientolyPorcYear = this.props.data.cumplimientoly_porc_year
-      ? `${this.props.data.cumplimientoly_porc_year}%`
-      : `0%`;
+    const ventaYtdPorc = `${(
+      (this.props.data.ytb * 100) /
+      this.props.data.ytbly
+    ).toFixed(1)}%`;
 
     return (
       <View
@@ -203,24 +168,26 @@ class HeaderVentaValor extends React.Component {
             flex: 1,
             flexDirection: 'row',
             marginTop: 20,
+            backgroundColor: Colors.brandPrimary,
           }}
         >
           <View
             style={{
               flex: 1,
-              justifyContent: 'flex-end',
+              justifyContent: 'center',
               alignItems: 'center',
             }}
           >
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
+                color: '#FFF',
                 marginBottom: 0,
               }}
             >
-              TOTAL SALA
+              VENTAS TOTAL SALA
             </Text>
           </View>
         </View>
@@ -235,112 +202,140 @@ class HeaderVentaValor extends React.Component {
             style={{
               flex: 0.3,
               justifyContent: 'flex-end',
-              alignItems: 'center',
-              borderBottomColor: '#DEDEDE',
-              borderBottomWidth: 1,
-              paddingBottom: 5,
-              paddingLeft: 15,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 12,
-                fontFamily: 'Bree',
-                fontWeight: 'bold',
-                marginBottom: 0,
-              }}
-            ></Text>
-          </View>
-          <View
-            style={{
-              flex: 0.35,
-              flexDirection: 'row',
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                borderBottomColor: '#DEDEDE',
-                borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 5,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontFamily: 'Bree',
-                  fontWeight: 'bold',
-                }}
-              >
-                MTD
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              flex: 0.35,
-              flexDirection: 'row',
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                borderBottomColor: '#DEDEDE',
-                borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 5,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontFamily: 'Bree',
-                  fontWeight: 'bold',
-                }}
-              >
-                MTD LY
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-          }}
-        >
-          <View
-            style={{
-              flex: 0.3,
-              justifyContent: 'center',
               alignItems: 'flex-start',
               paddingBottom: 5,
               paddingLeft: 15,
-              borderRightColor: '#DEDEDE',
-              borderRightWidth: 1,
             }}
           >
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 13,
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 marginBottom: 0,
+                color: Colors.brandPrimary
               }}
             >
-              VENTAS
+              VENTAS V/S TARGET
             </Text>
           </View>
           <View
             style={{
               flex: 0.35,
               flexDirection: 'row',
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                paddingTop: 10,
+                paddingBottom: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 13,
+                  fontFamily: 'Bree',
+                  fontWeight: 'bold',
+                  color: Colors.brandPrimary
+                }}
+              >
+                VENTA ($)
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flex: 0.35,
+              flexDirection: 'row',
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                paddingTop: 10,
+                paddingBottom: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: 'Bree',
+                  fontWeight: 'bold',
+                }}
+              ></Text>
+            </View>
+          </View>
+        </View>
+
+        <View
+          style={{
+            flex: 2,
+            flexDirection: 'row',
+          }}
+        >
+          <View
+            style={{
+              flex: 0.34,
+              flexDirection: 'column',
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                paddingLeft: 15,
+                borderRightColor: '#DEDEDE',
+                borderRightWidth: 1,
+                borderTopColor: '#DEDEDE',
+                borderTopWidth: 1,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: 'Bree',
+                  fontWeight: 'bold',
+                  color: '#6D6D6D',
+                }}
+              >
+                VENTAS MTD
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                borderBottomColor: '#DEDEDE',
+                borderRightColor: '#DEDEDE',
+                borderBottomWidth: 1,
+                borderRightWidth: 1,
+                paddingLeft: 15,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: 'Bree',
+                  fontWeight: 'bold',
+                  marginBottom: 0,
+                  color: '#6D6D6D',
+                }}
+              >
+                TARGET
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flex: 0.35,
+              flexDirection: 'column',
             }}
           >
             <View
@@ -348,10 +343,12 @@ class HeaderVentaValor extends React.Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                paddingTop: 10,
-                paddingBottom: 10,
                 borderRightColor: '#DEDEDE',
                 borderRightWidth: 1,
+                // borderBottomColor: '#DEDEDE',
+                // borderBottomWidth: 1,
+                borderTopColor: '#DEDEDE',
+                borderTopWidth: 1,
               }}
             >
               <Text
@@ -363,247 +360,67 @@ class HeaderVentaValor extends React.Component {
                 ${mtb}
               </Text>
             </View>
-          </View>
-          <View
-            style={{
-              flex: 0.35,
-              flexDirection: 'row',
-            }}
-          >
             <View
               style={{
                 flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingTop: 10,
-                paddingBottom: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 13,
-                  fontFamily: 'Questrial',
-                }}
-              >
-                ${mtbly}
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-          }}
-        >
-          <View
-            style={{
-              flex: 0.3,
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              borderBottomColor: '#DEDEDE',
-              borderBottomWidth: 1,
-              paddingBottom: 5,
-              paddingLeft: 15,
-              borderRightColor: '#DEDEDE',
-              borderRightWidth: 1,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 12,
-                fontFamily: 'Bree',
-                fontWeight: 'bold',
-                marginBottom: 0,
-              }}
-            >
-              CUMPLIMIENTO
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 0.35,
-              flexDirection: 'row',
-            }}
-          >
-            <View
-              style={{
-                flex: 0.7,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderBottomColor: '#DEDEDE',
-                borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 13,
-                  fontFamily: 'Questrial',
-                  color: cumplimientoColor,
-                }}
-              >
-                ${cumplimientoNumber}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flex: 0.3,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderBottomColor: '#DEDEDE',
-                borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 10,
                 borderRightColor: '#DEDEDE',
                 borderRightWidth: 1,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 13,
-                  fontFamily: 'Questrial',
-                }}
-              >
-                {cumplimientoPorc}
-              </Text>
-            </View>
-          </View>
-
-          <View
-            style={{
-              flex: 0.35,
-              flexDirection: 'row',
-            }}
-          >
-            <View
-              style={{
-                flex: 0.7,
-                justifyContent: 'center',
-                alignItems: 'center',
                 borderBottomColor: '#DEDEDE',
                 borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 10,
               }}
             >
-              <Text
+              <View
                 style={{
-                  fontSize: 13,
-                  fontFamily: 'Questrial',
-                  color: cumplimientolyColor,
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                ${cumplimientolyNumber}
-              </Text>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: 'Questrial',
+                  }}
+                >
+                  {target}
+                </Text>
+              </View>
             </View>
-
-            <View
-              style={{
-                flex: 0.3,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderBottomColor: '#DEDEDE',
-                borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 13,
-                  fontFamily: 'Questrial',
-                }}
-              >
-                {cumplimientolyPorc}
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-          }}
-        >
-          <View
-            style={{
-              flex: 0.3,
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              borderBottomColor: '#DEDEDE',
-              borderBottomWidth: 1,
-              paddingBottom: 5,
-              paddingLeft: 15,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 12,
-                fontFamily: 'Bree',
-                fontWeight: 'bold',
-                marginBottom: 0,
-              }}
-            ></Text>
           </View>
           <View
             style={{
               flex: 0.35,
-              flexDirection: 'row',
+              flexDirection: 'column',
             }}
           >
             <View
               style={{
                 flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
+                borderTopColor: '#DEDEDE',
+                borderTopWidth: 1,
+                borderRightColor: '#DEDEDE',
+                borderRightWidth: 1,
                 borderBottomColor: '#DEDEDE',
                 borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 5,
               }}
             >
-              <Text
+              <View
                 style={{
-                  fontSize: 12,
-                  fontFamily: 'Bree',
-                  fontWeight: 'bold',
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
                 }}
               >
-                YTD
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              flex: 0.35,
-              flexDirection: 'row',
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                borderBottomColor: '#DEDEDE',
-                borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 5,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontFamily: 'Bree',
-                  fontWeight: 'bold',
-                }}
-              >
-                YTD LY
-              </Text>
+                <Text
+                  style={{
+                    fontSize: 30,
+                    fontFamily: 'Questrial',
+                  }}
+                >
+                  {ventaTargetPorc}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -619,6 +436,8 @@ class HeaderVentaValor extends React.Component {
               flex: 0.3,
               justifyContent: 'center',
               alignItems: 'flex-start',
+              borderBottomColor: '#DEDEDE',
+              borderBottomWidth: 1,
               paddingBottom: 5,
               paddingLeft: 15,
               borderRightColor: '#DEDEDE',
@@ -631,9 +450,10 @@ class HeaderVentaValor extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 marginBottom: 0,
+                color: '#6D6D6D'
               }}
             >
-              VENTAS
+              VENTAS YTD
             </Text>
           </View>
           <View
@@ -647,6 +467,8 @@ class HeaderVentaValor extends React.Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
+                borderBottomColor: '#DEDEDE',
+                borderBottomWidth: 1,
                 paddingTop: 10,
                 paddingBottom: 10,
                 borderRightColor: '#DEDEDE',
@@ -663,6 +485,130 @@ class HeaderVentaValor extends React.Component {
               </Text>
             </View>
           </View>
+
+          <View
+            style={{
+              flex: 0.35,
+              flexDirection: 'row',
+            }}
+          ></View>
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+          }}
+        >
+          <View
+            style={{
+              flex: 0.3,
+              justifyContent: 'flex-end',
+              alignItems: 'flex-start',
+              borderBottomColor: '#DEDEDE',
+              borderBottomWidth: 1,
+              paddingBottom: 5,
+              paddingLeft: 15,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 13,
+                fontFamily: 'Bree',
+                fontWeight: 'bold',
+                marginBottom: 0,
+                color: Colors.brandPrimary
+              }}
+            >
+              VARIACIONES
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 0.35,
+              flexDirection: 'row',
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                borderBottomColor: '#DEDEDE',
+                borderBottomWidth: 1,
+                paddingTop: 10,
+                paddingBottom: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 13,
+                  fontFamily: 'Bree',
+                  fontWeight: 'bold',
+                  color: Colors.brandPrimary
+                }}
+              >
+                VENTAS ($)
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flex: 0.35,
+              flexDirection: 'row',
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                borderBottomColor: '#DEDEDE',
+                borderBottomWidth: 1,
+                paddingTop: 10,
+                paddingBottom: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: 'Bree',
+                  fontWeight: 'bold',
+                }}
+              ></Text>
+            </View>
+          </View>
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+          }}
+        >
+          <View
+            style={{
+              flex: 0.3,
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              paddingBottom: 5,
+              paddingLeft: 15,
+              borderRightColor: '#DEDEDE',
+              borderRightWidth: 1,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: 'Bree',
+                fontWeight: 'bold',
+                marginBottom: 0,
+                color: '#6D6D6D'
+              }}
+            >
+              VENTAS MTD LY
+            </Text>
+          </View>
           <View
             style={{
               flex: 0.35,
@@ -676,6 +622,10 @@ class HeaderVentaValor extends React.Component {
                 alignItems: 'center',
                 paddingTop: 10,
                 paddingBottom: 10,
+                borderRightColor: '#DEDEDE',
+                borderRightWidth: 1,
+                borderBottomColor: '#DEDEDE',
+                borderBottomWidth: 1,
               }}
             >
               <Text
@@ -684,7 +634,34 @@ class HeaderVentaValor extends React.Component {
                   fontFamily: 'Questrial',
                 }}
               >
-                ${ytbly}
+                ${mtbly}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flex: 0.35,
+              flexDirection: 'row',
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: 10,
+                paddingBottom: 10,
+                borderBottomColor: '#DEDEDE',
+                borderBottomWidth: 1,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontFamily: 'Questrial',
+                }}
+              >
+                {ventaMtdPorc}
               </Text>
             </View>
           </View>
@@ -715,9 +692,10 @@ class HeaderVentaValor extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 marginBottom: 0,
+                color: '#6D6D6D'
               }}
             >
-              CUMPLIMIENTO
+              VENTAS YTD LY
             </Text>
           </View>
           <View
@@ -728,29 +706,7 @@ class HeaderVentaValor extends React.Component {
           >
             <View
               style={{
-                flex: 0.7,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderBottomColor: '#DEDEDE',
-                borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 13,
-                  fontFamily: 'Questrial',
-                  color: cumplimientoColorYear,
-                }}
-              >
-                ${cumplimientoNumberYear}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flex: 0.3,
+                flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderBottomColor: '#DEDEDE',
@@ -767,7 +723,7 @@ class HeaderVentaValor extends React.Component {
                   fontFamily: 'Questrial',
                 }}
               >
-                {cumplimientoPorcYear}
+                ${ytbly}
               </Text>
             </View>
           </View>
@@ -780,7 +736,7 @@ class HeaderVentaValor extends React.Component {
           >
             <View
               style={{
-                flex: 0.7,
+                flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderBottomColor: '#DEDEDE',
@@ -791,38 +747,15 @@ class HeaderVentaValor extends React.Component {
             >
               <Text
                 style={{
-                  fontSize: 13,
-                  fontFamily: 'Questrial',
-                  color: cumplimientolyColorYear,
-                }}
-              >
-                ${cumplimientolyNumberYear}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flex: 0.3,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderBottomColor: '#DEDEDE',
-                borderBottomWidth: 1,
-                paddingTop: 10,
-                paddingBottom: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 13,
+                  fontSize: 15,
                   fontFamily: 'Questrial',
                 }}
               >
-                {cumplimientolyPorcYear}
+                {ventaYtdPorc}
               </Text>
             </View>
           </View>
         </View>
-
       </View>
     );
   }
