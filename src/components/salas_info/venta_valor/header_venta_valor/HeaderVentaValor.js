@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, Dimensions, Text } from 'react-native';
-import Colors from "@assets/native-base-theme/variables//commonColor";
+import Colors from '@assets/native-base-theme/variables//commonColor';
+import { Ionicons } from '@expo/vector-icons';
 
 class HeaderVentaValor extends React.Component {
   static propTypes = {
@@ -81,6 +82,34 @@ class HeaderVentaValor extends React.Component {
     return value;
   };
 
+  semaforo = (num) => {
+    if (parseFloat(num) <= 0) {
+      return (
+        <Ionicons
+          style={{
+            color: 'green',
+            fontSize: 15,
+            marginRight: 2,
+          }}
+          name="ios-arrow-round-up"
+        />
+      );
+    } else if (parseFloat(num) > 0) {
+      return (
+        <Ionicons
+          style={{
+            color: 'red',
+            fontSize: 15,
+            marginRight: 2,
+          }}
+          name="ios-arrow-round-down"
+        />
+      );
+    } else {
+      return <></>;
+    }
+  };
+
   render() {
     const deviceFullWidth = Dimensions.get('window').width;
     const deviceWidth = deviceFullWidth - 30;
@@ -98,22 +127,32 @@ class HeaderVentaValor extends React.Component {
       : 0;
 
     const target =
-      this.props.data.target > 0 ? `$ ${this.formatter(this.props.data.target)}` : `-`;
+      this.props.data.target > 0
+        ? `$ ${this.formatter(this.props.data.target)}`
+        : `-`;
 
     const ventaTargetPorc =
       this.props.data.target > 0
-        ? `${((this.props.data.mtb / this.props.data.target)*100).toFixed(1)}%`
+        ? `${((this.props.data.mtb / this.props.data.target) * 100).toFixed(
+            1
+          )}%`
         : `-`;
 
-    const ventaMtdPorc = `${(
-      (this.props.data.mtb * 100) /
-      this.props.data.mtbly
-    ).toFixed(1)}%`;
+    const ventaMtdPorc =
+      this.props.data.mtb > 0 && this.props.data.mtbly > 0
+        ? `${(
+            100 -
+            (this.props.data.mtb * 100) / this.props.data.mtbly
+          ).toFixed(1)}`
+        : `-`;
 
-    const ventaYtdPorc = `${(
-      (this.props.data.ytb * 100) /
-      this.props.data.ytbly
-    ).toFixed(1)}%`;
+    const ventaYtdPorc =
+      this.props.data.ytb > 0 && this.props.data.ytbly > 0
+        ? `${(
+            100 -
+            (this.props.data.ytb * 100) / this.props.data.ytbly
+          ).toFixed(1)}`
+        : `-`;
 
     return (
       <View
@@ -200,7 +239,7 @@ class HeaderVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.3,
+              flex: 0.4,
               justifyContent: 'flex-end',
               alignItems: 'flex-start',
               paddingBottom: 5,
@@ -213,7 +252,7 @@ class HeaderVentaValor extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 marginBottom: 0,
-                color: Colors.brandPrimary
+                color: Colors.brandPrimary,
               }}
             >
               VENTAS V/S TARGET
@@ -221,7 +260,7 @@ class HeaderVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'row',
             }}
           >
@@ -239,7 +278,7 @@ class HeaderVentaValor extends React.Component {
                   fontSize: 13,
                   fontFamily: 'Bree',
                   fontWeight: 'bold',
-                  color: Colors.brandPrimary
+                  color: Colors.brandPrimary,
                 }}
               >
                 VENTA ($)
@@ -248,7 +287,7 @@ class HeaderVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'row',
             }}
           >
@@ -280,7 +319,7 @@ class HeaderVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.34,
+              flex: 0.4,
               flexDirection: 'column',
             }}
           >
@@ -334,7 +373,7 @@ class HeaderVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'column',
             }}
           >
@@ -389,7 +428,7 @@ class HeaderVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'column',
             }}
           >
@@ -433,7 +472,7 @@ class HeaderVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.3,
+              flex: 0.42,
               justifyContent: 'center',
               alignItems: 'flex-start',
               borderBottomColor: '#DEDEDE',
@@ -450,7 +489,7 @@ class HeaderVentaValor extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 marginBottom: 0,
-                color: '#6D6D6D'
+                color: '#6D6D6D',
               }}
             >
               VENTAS YTD
@@ -502,7 +541,7 @@ class HeaderVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.3,
+              flex: 0.4,
               justifyContent: 'flex-end',
               alignItems: 'flex-start',
               borderBottomColor: '#DEDEDE',
@@ -517,7 +556,7 @@ class HeaderVentaValor extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 marginBottom: 0,
-                color: Colors.brandPrimary
+                color: Colors.brandPrimary,
               }}
             >
               VARIACIONES
@@ -525,7 +564,7 @@ class HeaderVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'row',
             }}
           >
@@ -545,7 +584,7 @@ class HeaderVentaValor extends React.Component {
                   fontSize: 13,
                   fontFamily: 'Bree',
                   fontWeight: 'bold',
-                  color: Colors.brandPrimary
+                  color: Colors.brandPrimary,
                 }}
               >
                 VENTAS ($)
@@ -554,7 +593,7 @@ class HeaderVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'row',
             }}
           >
@@ -588,7 +627,7 @@ class HeaderVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.3,
+              flex: 0.42,
               justifyContent: 'center',
               alignItems: 'flex-start',
               paddingBottom: 5,
@@ -603,7 +642,7 @@ class HeaderVentaValor extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 marginBottom: 0,
-                color: '#6D6D6D'
+                color: '#6D6D6D',
               }}
             >
               VENTAS MTD LY
@@ -649,19 +688,21 @@ class HeaderVentaValor extends React.Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
+                flexDirection: 'row',
                 paddingTop: 10,
                 paddingBottom: 10,
                 borderBottomColor: '#DEDEDE',
                 borderBottomWidth: 1,
               }}
             >
+              {this.semaforo(ventaMtdPorc)}
               <Text
                 style={{
                   fontSize: 15,
                   fontFamily: 'Questrial',
                 }}
               >
-                {ventaMtdPorc}
+                {Math.abs(ventaMtdPorc) ? `${Math.abs(ventaMtdPorc)}%` : `-`}
               </Text>
             </View>
           </View>
@@ -675,7 +716,7 @@ class HeaderVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.3,
+              flex: 0.42,
               justifyContent: 'center',
               alignItems: 'flex-start',
               borderBottomColor: '#DEDEDE',
@@ -692,7 +733,7 @@ class HeaderVentaValor extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 marginBottom: 0,
-                color: '#6D6D6D'
+                color: '#6D6D6D',
               }}
             >
               VENTAS YTD LY
@@ -739,19 +780,21 @@ class HeaderVentaValor extends React.Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
+                flexDirection: 'row',
                 borderBottomColor: '#DEDEDE',
                 borderBottomWidth: 1,
                 paddingTop: 10,
                 paddingBottom: 10,
               }}
             >
+              {this.semaforo(ventaYtdPorc)}
               <Text
                 style={{
                   fontSize: 15,
                   fontFamily: 'Questrial',
                 }}
               >
-                {ventaYtdPorc}
+                {Math.abs(ventaYtdPorc) ? `${Math.abs(ventaYtdPorc)}%` : `-`}
               </Text>
             </View>
           </View>
