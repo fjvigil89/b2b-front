@@ -51,24 +51,24 @@ class CategoriasVentaValor extends React.Component {
     return value;
   };
 
-  semaforo = (ventaMtdMtdLyPorc) => {
-    if (parseFloat(ventaMtdMtdLyPorc) >= 100) {
+  semaforo = (num) => {
+    if (parseFloat(num) <= 0) {
       return (
         <Ionicons
           style={{
             color: 'green',
-            fontSize: 22,
+            fontSize: 15,
             marginRight: 2,
           }}
           name="ios-arrow-round-up"
         />
       );
-    } else if (parseFloat(ventaMtdMtdLyPorc) < 100) {
+    } else if (parseFloat(num) > 0) {
       return (
         <Ionicons
           style={{
             color: 'red',
-            fontSize: 22,
+            fontSize: 15,
             marginRight: 2,
           }}
           name="ios-arrow-round-down"
@@ -91,9 +91,9 @@ class CategoriasVentaValor extends React.Component {
     const ventaMtdMtdLyPorc =
       this.props.data[1].mtd > 0 && this.props.data[1].mtdLy > 0
         ? `${(
-            (this.props.data[1].mtd * 100) /
-            this.props.data[1].mtdLy
-          ).toFixed(1)}%`
+            100 -
+            (this.props.data[1].mtd * 100) / this.props.data[1].mtdLy
+          ).toFixed(1)}`
         : `-`;
 
     return (
@@ -111,7 +111,7 @@ class CategoriasVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.35,
+              flex: 0.45,
               flexDirection: 'row',
             }}
           >
@@ -128,7 +128,7 @@ class CategoriasVentaValor extends React.Component {
                   fontSize: 12,
                   fontFamily: 'Bree',
                   fontWeight: 'bold',
-                  color: Colors.brandPrimary,
+                  color: Colors.brandInfo,
                 }}
               >
                 {nombre}
@@ -191,7 +191,7 @@ class CategoriasVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.35,
+              flex: 0.4,
               flexDirection: 'column',
             }}
           >
@@ -249,7 +249,7 @@ class CategoriasVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'column',
             }}
           >
@@ -306,7 +306,7 @@ class CategoriasVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'column',
             }}
           >
@@ -336,7 +336,9 @@ class CategoriasVentaValor extends React.Component {
                     fontFamily: 'Questrial',
                   }}
                 >
-                  {ventaMtdMtdLyPorc}
+                  {Math.abs(ventaMtdMtdLyPorc)
+                    ? `${Math.abs(ventaMtdMtdLyPorc)} %`
+                    : `-`}
                 </Text>
               </View>
             </View>
