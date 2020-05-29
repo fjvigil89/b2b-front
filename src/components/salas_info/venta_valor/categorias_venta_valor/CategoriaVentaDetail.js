@@ -28,25 +28,24 @@ class CategoriasVentaValor extends React.Component {
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
       return parts.join('.');
     };
-
-    if (value > 999999 && value < 1000000000) {
+    if (value >= 1000 && value < 10000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} k`;
+    } else if (value >= 10000000 && value < 1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} m`;
     } else if (value >= 1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value < 1000000 && value >= 0) {
-      const format = formatterNumber(value);
-      return `${format}`;
-    } else if (value < -999999 && value > -1000000000) {
+    } else if (value <= -1000 && value > -10000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} k`;
+    } else if (value <= -10000000 && value > -1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} m`;
     } else if (value <= -1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value > -1000000 && value < 0) {
-      const format = formatterNumber(value);
-      return `${format}`;
     }
     return value;
   };

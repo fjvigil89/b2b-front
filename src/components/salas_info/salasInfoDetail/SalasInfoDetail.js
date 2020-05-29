@@ -83,32 +83,35 @@ class SalasInfoDetail extends React.Component {
       return parts.join('.');
     };
 
-    if (value > 999999 && value < 1000000000) {
+    if (value >= 1000 && value < 1000000) {
       const format = formatterNumber(value).split('.');
-
       return {
-        number: `${format[0]}.${format[1].slice(0, 1)} m`,
+        number: `${format[0]}.${format[1].slice(0, 1)} k`,
         size: 29,
       };
-    } else if (value >= 1000000000 && value < 99999999999) {
+    } else if (value >= 1000000 && value < 10000000) {
       const format = formatterNumber(value).split('.');
       return {
-        number: `${format[0]}.${format[1].slice(0, 2)} mm`,
+        number: `${format[0]}.${format[1].slice(0, 2)} m`,
         size: 25,
       };
-    } else if (value >= 10000000000) {
+    } else if (value >= 10000000 && value < 100000000) {
       const format = formatterNumber(value).split('.');
-
+      return {
+        number: `${format[0]}.${format[1].slice(0, 1)} m`,
+        size: 25,
+      };
+    } else if (value >= 100000000 && value < 1000000000) {
+      const format = formatterNumber(value).split('.');
+      return {
+        number: `${format[0]}.${format[1].slice(0, 1)} m`,
+        size: 25,
+      };
+    } else if (value >= 1000000000) {
+      const format = formatterNumber(value).split('.');
       return {
         number: `${format[0]}.${format[1].slice(0, 2)} mm`,
-        size: 20,
-      };
-    } else if (value < 1000000) {
-      const format = value / 1000000;
-
-      return {
-        number: `${format.toPrecision(2)} m`,
-        size: 32,
+        size: 22,
       };
     }
     return {
