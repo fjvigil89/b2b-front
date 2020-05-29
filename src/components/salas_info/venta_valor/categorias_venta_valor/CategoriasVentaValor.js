@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Dimensions, Text, ScrollView } from 'react-native';
 
-import Colors from "@assets/native-base-theme/variables//commonColor";
+import Colors from '@assets/native-base-theme/variables//commonColor';
 
 import CategoriasVentaItem from '@components/salas_info/venta_valor/categorias_venta_valor/CategoriaVentaDetail';
 
@@ -62,32 +62,36 @@ class CategoriasVentaValor extends React.Component {
       return parts.join('.');
     };
 
-    if (value > 999999 && value < 1000000000) {
+    if (value >= 1000 && value < 10000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} k`;
+    } else if (value >= 10000000 && value < 1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} m`;
     } else if (value >= 1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value < 1000000) {
-      const format = formatterNumber(value);
-      return `${format}`;
+    } else if (value <= -1000 && value > -10000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} k`;
+    } else if (value <= -10000000 && value > -1000000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} m`;
+    } else if (value <= -1000000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} mm`;
     }
     return value;
   };
 
   render() {
-    const { data } = this.props
-    const { categorias } = data
+    const { data } = this.props;
+    const { categorias } = data;
 
     let categoryDetail;
     if (data && categorias && Object.keys(categorias).length > 0) {
       categoryDetail = Object.entries(categorias).map((category) => {
-        return (
-          <CategoriasVentaItem
-            key={category[0]}
-            data={category}
-          />
-        );
+        return <CategoriasVentaItem key={category[0]} data={category} />;
       });
     }
 
@@ -121,7 +125,7 @@ class CategoriasVentaValor extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 color: '#FFF',
-                paddingVertical: 5
+                paddingVertical: 5,
               }}
             >
               CATEGORIAS

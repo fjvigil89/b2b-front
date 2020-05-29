@@ -83,29 +83,37 @@ class SalasInfoDetail extends React.Component {
       return parts.join('.');
     };
 
-    if (value > 999999 && value < 1000000000) {
+    if (value >= 1000 && value < 1000000) {
       const format = formatterNumber(value).split('.');
-
+      return {
+        number: `${format[0]}.${format[1].slice(0, 1)} k`,
+        size: 29,
+      };
+    } else if (value >= 1000000 && value < 10000000) {
+      const format = formatterNumber(value).split('.');
+      return {
+        number: `${format[0]}.${format[1].slice(0, 2)} m`,
+        size: 25,
+      };
+    } else if (value >= 10000000 && value < 100000000) {
+      const format = formatterNumber(value).split('.');
       return {
         number: `${format[0]}.${format[1].slice(0, 1)} m`,
-        size: 35,
+        size: 25,
+      };
+    } else if (value >= 100000000 && value < 1000000000) {
+      const format = formatterNumber(value).split('.');
+      return {
+        number: `${format[0]}.${format[1].slice(0, 1)} m`,
+        size: 25,
       };
     } else if (value >= 1000000000) {
       const format = formatterNumber(value).split('.');
-
       return {
         number: `${format[0]}.${format[1].slice(0, 2)} mm`,
-        size: 25,
-      };
-    } else if (value < 1000000) {
-      const format = value / 1000000
-
-      return {
-        number: `${format.toPrecision(2)} m`,
-        size: 35,
+        size: 22,
       };
     }
-
     return {
       number: value,
       size: 35,
@@ -424,7 +432,7 @@ class SalasInfoDetail extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.2,
+              flex: 0.21,
               justifyContent: 'flex-end',
               alignItems: 'flex-end',
               borderBottomColor: '#DEDEDE',

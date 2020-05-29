@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.0.5] - 2020-05-29
+
+### Fix
+
+- Se cambia el formato de numeros de venta valor.
+
+## [3.0.4] - 2020-05-25
+
+### Added
+
+- Se agrega semaforo en HeaderVentaValor
+
+### Fix
+
+- Se corrigen las variaciones en CategoriaVentaDetail
+- Se corrige el formato para numeros mayores a 10000000000
+- Fixes de estilos en SalasInfoDetail, CategoriaVentaDetail, HeaderVentaValor.
+
 ## [3.0.3] - 2020-05-12
 
 ### Refactor

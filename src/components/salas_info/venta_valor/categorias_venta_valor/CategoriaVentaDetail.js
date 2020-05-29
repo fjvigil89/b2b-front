@@ -28,47 +28,46 @@ class CategoriasVentaValor extends React.Component {
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
       return parts.join('.');
     };
-
-    if (value > 999999 && value < 1000000000) {
+    if (value >= 1000 && value < 10000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} k`;
+    } else if (value >= 10000000 && value < 1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} m`;
     } else if (value >= 1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value < 1000000 && value >= 0) {
-      const format = formatterNumber(value);
-      return `${format}`;
-    } else if (value < -999999 && value > -1000000000) {
+    } else if (value <= -1000 && value > -10000000) {
+      const format = formatterNumber(value).split('.');
+      return `${format[0]}.${format[1].slice(0, 2)} k`;
+    } else if (value <= -10000000 && value > -1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} m`;
     } else if (value <= -1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value > -1000000 && value < 0) {
-      const format = formatterNumber(value);
-      return `${format}`;
     }
     return value;
   };
 
-  semaforo = (ventaMtdMtdLyPorc) => {
-    if (parseFloat(ventaMtdMtdLyPorc) >= 100) {
+  semaforo = (num) => {
+    if (parseFloat(num) <= 0) {
       return (
         <Ionicons
           style={{
             color: 'green',
-            fontSize: 22,
+            fontSize: 15,
             marginRight: 2,
           }}
           name="ios-arrow-round-up"
         />
       );
-    } else if (parseFloat(ventaMtdMtdLyPorc) < 100) {
+    } else if (parseFloat(num) > 0) {
       return (
         <Ionicons
           style={{
             color: 'red',
-            fontSize: 22,
+            fontSize: 15,
             marginRight: 2,
           }}
           name="ios-arrow-round-down"
@@ -91,9 +90,9 @@ class CategoriasVentaValor extends React.Component {
     const ventaMtdMtdLyPorc =
       this.props.data[1].mtd > 0 && this.props.data[1].mtdLy > 0
         ? `${(
-            (this.props.data[1].mtd * 100) /
-            this.props.data[1].mtdLy
-          ).toFixed(1)}%`
+            100 -
+            (this.props.data[1].mtd * 100) / this.props.data[1].mtdLy
+          ).toFixed(1)}`
         : `-`;
 
     return (
@@ -111,7 +110,7 @@ class CategoriasVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.35,
+              flex: 0.45,
               flexDirection: 'row',
             }}
           >
@@ -128,7 +127,7 @@ class CategoriasVentaValor extends React.Component {
                   fontSize: 12,
                   fontFamily: 'Bree',
                   fontWeight: 'bold',
-                  color: Colors.brandPrimary,
+                  color: Colors.brandInfo,
                 }}
               >
                 {nombre}
@@ -191,7 +190,7 @@ class CategoriasVentaValor extends React.Component {
         >
           <View
             style={{
-              flex: 0.35,
+              flex: 0.4,
               flexDirection: 'column',
             }}
           >
@@ -249,7 +248,7 @@ class CategoriasVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'column',
             }}
           >
@@ -306,7 +305,7 @@ class CategoriasVentaValor extends React.Component {
           </View>
           <View
             style={{
-              flex: 0.35,
+              flex: 0.3,
               flexDirection: 'column',
             }}
           >
@@ -336,7 +335,9 @@ class CategoriasVentaValor extends React.Component {
                     fontFamily: 'Questrial',
                   }}
                 >
-                  {ventaMtdMtdLyPorc}
+                  {Math.abs(ventaMtdMtdLyPorc)
+                    ? `${Math.abs(ventaMtdMtdLyPorc)} %`
+                    : `-`}
                 </Text>
               </View>
             </View>
