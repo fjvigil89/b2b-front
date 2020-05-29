@@ -1,7 +1,7 @@
 {
   "name": "smartb2b-cademsmart",
   "homepage": "https://miguelmeza.me",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.9.0",
