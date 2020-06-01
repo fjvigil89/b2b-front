@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.6] - 2020-05-29
+
+### Fix
+
+- Fix de miles en funcion formatter.
+
 ## [3.0.5] - 2020-05-29
 
 ### Fix
