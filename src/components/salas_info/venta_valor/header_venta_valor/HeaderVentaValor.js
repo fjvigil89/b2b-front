@@ -60,19 +60,19 @@ class HeaderVentaValor extends React.Component {
       return parts.join('.');
     };
 
-    if (value >= 1000 && value < 10000000) {
+    if (value >= 1000 && value < 1000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} k`;
-    } else if (value >= 10000000 && value < 1000000000) {
+    } else if (value >= 1000000 && value < 1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} m`;
     } else if (value >= 1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value <= -1000 && value > -10000000) {
+    } else if (value <= -1000 && value > -1000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} k`;
-    } else if (value <= -10000000 && value > -1000000000) {
+    } else if (value <= -1000000 && value > -1000000000) {
       const format = formatterNumber(value).split('.');
       return `${format[0]}.${format[1].slice(0, 2)} m`;
     } else if (value <= -1000000000) {

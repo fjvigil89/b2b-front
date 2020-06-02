@@ -95,8 +95,6 @@ class CategoriasVentaValor extends React.Component {
           ).toFixed(1)}`
         : `-`;
 
-    console.log('DATA >>> ', this.props.data[1].mtd, mtdLy);
-
     return (
       <View
         style={{
