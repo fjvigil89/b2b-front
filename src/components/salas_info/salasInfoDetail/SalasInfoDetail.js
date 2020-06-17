@@ -284,7 +284,8 @@ class SalasInfoDetail extends React.Component {
               height: 70,
             }}
             onPress={() => {
-              Actions.productosCademsmart({
+              Actions.medicionCadem({
+                folio: data.folio,
                 porcentaje: report.cademsmartPorcentaje,
                 visita: data.id_visita,
                 nombreSala: data.descripcion,

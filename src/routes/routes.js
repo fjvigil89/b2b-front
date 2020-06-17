@@ -21,6 +21,7 @@ import Help from '@components/report/help/Help';
 import MyStatistics from '@components/myStatistics/MyStatistics';
 import Gallery from '@components/gallery/Gallery';
 import VentaValor from '@components/salas_info/venta_valor/VentaValor';
+import MedicionCadem from '@components/salas_info/medicionCadem/MedicionCadem';
 
 const Index = (
   <Router>
@@ -73,6 +74,13 @@ const Index = (
         key="productosCademsmart"
         component={ProductosCademsmart}
         title="ProductosCademsmart"
+      />
+
+      <Scene
+        hideNavBar
+        key="medicionCadem"
+        component={MedicionCadem}
+        title="MedicionCadem"
       />
 
       <Scene
