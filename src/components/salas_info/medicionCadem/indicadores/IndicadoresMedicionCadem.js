@@ -36,11 +36,6 @@ class IndicadoresMedicionCadem extends React.Component {
         return <IndicadoresMedicionDetail medicion={medicion} />;
       });
     }
-    /* indicadoresDetail = (
-      <View>
-        <IndicadoresMedicionDetail />
-      </View>
-    ); */
 
     return (
       <View
