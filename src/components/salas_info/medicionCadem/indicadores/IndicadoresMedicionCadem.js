@@ -6,25 +6,11 @@ import IndicadoresMedicionDetail from '@components/salas_info/medicionCadem/indi
 
 class IndicadoresMedicionCadem extends React.Component {
   static propTypes = {
-    nombreSala: PropTypes.string,
-    direccion: PropTypes.string,
-    data: PropTypes.shape({
-      nombre: PropTypes.string,
-      nota_medicion: PropTypes.number,
-      variacion: PropTypes.number,
-      ultimas_mediciones: PropTypes.array,
-    }),
+    data: PropTypes.array,
   };
 
   static defaultProps = {
-    nombreSala: '',
-    direccion: '',
-    data: {
-      nombre: '',
-      nota_medicion: 0,
-      variacion: 0,
-      ultimas_mediciones: [],
-    },
+    data: [],
   };
 
   render() {
@@ -32,8 +18,8 @@ class IndicadoresMedicionCadem extends React.Component {
 
     let indicadoresDetail;
     if (data && data.length > 0) {
-      indicadoresDetail = data.map((medicion) => {
-        return <IndicadoresMedicionDetail medicion={medicion} />;
+      indicadoresDetail = data.map((medicion, index) => {
+        return <IndicadoresMedicionDetail key={index} medicion={medicion} />;
       });
     }
 
