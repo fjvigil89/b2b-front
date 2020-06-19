@@ -4,7 +4,7 @@ import { View, ScrollView } from 'react-native';
 
 import IndicadoresMedicionDetail from '@components/salas_info/medicionCadem/indicadores/IndicadoresMedicionDetail';
 
-class CategoriasVentaValor extends React.Component {
+class IndicadoresMedicionCadem extends React.Component {
   static propTypes = {
     nombreSala: PropTypes.string,
     direccion: PropTypes.string,
@@ -72,4 +72,4 @@ class CategoriasVentaValor extends React.Component {
   }
 }
 
-export default CategoriasVentaValor;
+export default IndicadoresMedicionCadem;
