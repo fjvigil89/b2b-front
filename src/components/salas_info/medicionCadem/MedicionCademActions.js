@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Sentry from 'sentry-expo';
 
-export default function DetalleMedicion(folio) {
+export default function DetalleMedicion(url, folio) {
   const formForSend = {
     folio,
   };
@@ -10,7 +10,7 @@ export default function DetalleMedicion(folio) {
     new Promise(async (resolve, reject) =>
       axios({
         method: 'POST',
-        url: `${url}/medicion/tiendas`,
+        url: `${url}/indicador/test`,
         data: formForSend,
       })
         .then(async (response) => {
