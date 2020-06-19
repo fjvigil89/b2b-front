@@ -24,44 +24,27 @@ import ProductoCademsmart from '@components/salas_info/productos_cademsmart/prod
 class MedicionCadem extends React.Component {
   static propTypes = {
     DetalleMedicion: PropTypes.func.isRequired,
-    ListadoProductosCademsmart: PropTypes.func.isRequired,
-    productos: PropTypes.oneOfType([() => null, PropTypes.any]).isRequired,
     porcentaje: PropTypes.string,
-    visita: PropTypes.number,
     nombreSala: PropTypes.string,
     direccion: PropTypes.string,
-    ultimaMedicion: PropTypes.string,
     endpoint: PropTypes.string,
+    indicadores: PropTypes.array,
   };
 
   static defaultProps = {
     porcentaje: '',
-    visita: 0,
     nombreSala: '',
     direccion: '',
-    ultimaMedicion: '',
     endpoint: '',
+    indicadores: [],
   };
 
   componentWillMount = () => {
-    this.props.DetalleMedicion(this.props.folio);
+    this.props.DetalleMedicion(this.props.endpoint, this.props.folio);
   };
 
   render() {
-    const mediciones = [
-      {
-        nombre: 'CARTELERIA',
-        nota_medicion: 44.9,
-        variacion: 12.9,
-        ultimas_mediciones: [10, 100, 20, 80, 60],
-      },
-      {
-        nombre: 'OSA',
-        nota_medicion: 100.0,
-        variacion: -9.2,
-        ultimas_mediciones: [50, 60, 70, 80, 90],
-      },
-    ];
+    const { indicadores } = this.props;
     return (
       <Container style={{ backgroundColor: '#F4F4F4' }}>
         <StatusBar barStyle="dark-content" />
@@ -85,7 +68,7 @@ class MedicionCadem extends React.Component {
               }}
             >
               <ScrollView>
-                <IndicadoresMedicionCadem data={mediciones} />
+                <IndicadoresMedicionCadem data={indicadores} />
               </ScrollView>
             </View>
           </SafeAreaView>
@@ -109,7 +92,8 @@ class MedicionCadem extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  productos: state.productosCademsmart.productos,
+  indicadores: state.medicion.indicadores,
+  endpoint: state.user.endpoint,
 });
 
 const mapDispatchToProps = {
