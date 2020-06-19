@@ -17,7 +17,7 @@ export default function DetalleMedicion(url, folio) {
           resolve(
             dispatch({
               type: 'MEDICION_DETALLE',
-              data: response.data,
+              data: response.data.data,
             })
           );
         })

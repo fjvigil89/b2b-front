@@ -1,6 +1,4 @@
-export const initialState = {
-  detalle: {},
-};
+export const initialState = {};
 
 export default function ventaValor(state = initialState, action) {
   switch (action.type) {
@@ -8,7 +6,7 @@ export default function ventaValor(state = initialState, action) {
       if (action.data) {
         return {
           ...state,
-          detalle: action.data,
+          ...action.data,
         };
       }
 
