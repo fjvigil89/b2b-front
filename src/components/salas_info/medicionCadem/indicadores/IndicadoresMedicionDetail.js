@@ -1,55 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, Dimensions, Text, ScrollView } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '@assets/native-base-theme/variables//commonColor';
-import { VictoryBar, VictoryChart } from 'victory-native';
+import { VictoryBar, VictoryLabel } from 'victory-native';
+
+const IconsMedicion = {
+  Cartel: require('@assets/images/iconos-medicion/Cartel.png'),
+  Catalogo: require('@assets/images/iconos-medicion/Catalogo.png'),
+  Facing: require('@assets/images/iconos-medicion/Facing.png'),
+  Fleje: require('@assets/images/iconos-medicion/Fleje.png'),
+  Osa: require('@assets/images/iconos-medicion/Osa.png'),
+  Sovi: require('@assets/images/iconos-medicion/Sovi.png'),
+};
 
 class IndicadoresMedicionDetail extends React.Component {
   static propTypes = {
-    nombreSala: PropTypes.string,
-    direccion: PropTypes.string,
-    data: PropTypes.array,
+    diff: PropTypes.number,
+    inScore: PropTypes.bool,
+    lastIndicators: PropTypes.array,
+    name: PropTypes.string,
+    score: PropTypes.number,
   };
 
   static defaultProps = {
-    nombreSala: '',
-    direccion: '',
-    data: [],
-  };
-
-  currency = (x) => {
-    let parts = x.toString();
-    parts = parts.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    return parts;
-  };
-
-  formatter = (value) => {
-    const formatterNumber = (x) => {
-      const parts = x.toString().split('.');
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-      return parts.join('.');
-    };
-    if (value >= 1000 && value < 1000000) {
-      const format = formatterNumber(value).split('.');
-      return `${format[0]}.${format[1].slice(0, 2)} k`;
-    } else if (value >= 1000000 && value < 1000000000) {
-      const format = formatterNumber(value).split('.');
-      return `${format[0]}.${format[1].slice(0, 2)} m`;
-    } else if (value >= 1000000000) {
-      const format = formatterNumber(value).split('.');
-      return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    } else if (value <= -1000 && value > -1000000) {
-      const format = formatterNumber(value).split('.');
-      return `${format[0]}.${format[1].slice(0, 2)} k`;
-    } else if (value <= -1000000 && value > -1000000000) {
-      const format = formatterNumber(value).split('.');
-      return `${format[0]}.${format[1].slice(0, 2)} m`;
-    } else if (value <= -1000000000) {
-      const format = formatterNumber(value).split('.');
-      return `${format[0]}.${format[1].slice(0, 2)} mm`;
-    }
-    return value;
+    diff: 0,
+    inScore: false,
+    lastIndicators: [],
+    name: '',
+    score: 0,
   };
 
   semaforo = (num) => {
@@ -81,61 +61,46 @@ class IndicadoresMedicionDetail extends React.Component {
   };
 
   icono = (medicion) => {
-    switch (medicion) {
-      case 'OSA':
-        return (
-          <Ionicons
-            style={{
-              fontSize: 50,
-            }}
-            name="md-analytics"
-          />
-        );
-      case 'CARTELERIA':
-        return (
-          <Ionicons
-            style={{
-              fontSize: 50,
-            }}
-            name="ios-grid"
-          />
-        );
-      default:
-        return (
-          <Ionicons
-            style={{
-              fontSize: 50,
-            }}
-            name="md-apps"
-          />
-        );
+    if (!IconsMedicion[medicion]) {
+      return (
+        <Image
+          style={{ height: 55, width: 55 }}
+          source={require('@assets/images/iconos-medicion/Sovi.png')}
+        />
+      );
     }
+    return (
+      <Image
+        style={{ height: 55, width: 55 }}
+        source={IconsMedicion[medicion]}
+      />
+    );
   };
 
   render() {
-    const {
-      nombre,
-      nota_medicion,
-      variacion,
-      ultimas_mediciones,
-    } = this.props.medicion;
+    const { diff, inScore, lastIndicators, name, score } = this.props.medicion;
 
-    const nota = `${nota_medicion} %`;
+    const nota = `${score * 100} %`;
+    const variacion = diff * 100;
+    const ultimosIndicadores = lastIndicators.map((i) => i * 100);
 
     return (
       <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          paddingHorizontal: 10,
-          paddingVertical: 10,
-          borderBottomColor: '#DEDEDE',
-          borderBottomWidth: 1,
-        }}
+        style={[
+          {
+            flex: 1,
+            flexDirection: 'row',
+            paddingHorizontal: 10,
+            paddingVertical: 10,
+            borderBottomColor: '#DEDEDE',
+            borderBottomWidth: 1,
+          },
+          inScore ? { borderLeftColor: 'red', borderLeftWidth: 6 } : {},
+        ]}
       >
         <View
           style={{
-            flex: 0.25,
+            flex: 0.26,
             flexDirection: 'column',
           }}
         >
@@ -153,7 +118,7 @@ class IndicadoresMedicionDetail extends React.Component {
                 color: '#555',
               }}
             >
-              {nombre}
+              {name}
             </Text>
           </View>
           <View
@@ -161,15 +126,25 @@ class IndicadoresMedicionDetail extends React.Component {
               flex: 0.7,
               flexDirection: 'row',
               justifyContent: 'center',
+              alignItems: 'flex-end',
+              paddingTop: 2,
             }}
           >
-            {this.icono(nombre)}
-            {/* <Ionicons
+            <View
               style={{
-                fontSize: 50,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
+                shadowOpacity: 0.29,
+                shadowRadius: 4.65,
+
+                elevation: 7,
               }}
-              name="md-apps"
-            /> */}
+            >
+              {name && this.icono(name)}
+            </View>
           </View>
         </View>
         <View
@@ -183,6 +158,7 @@ class IndicadoresMedicionDetail extends React.Component {
               flex: 0.3,
               flexDirection: 'row',
               justifyContent: 'center',
+              paddingTop: 15,
             }}
           >
             <Text
@@ -191,6 +167,7 @@ class IndicadoresMedicionDetail extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 color: Colors.brandPrimary,
+                // backgroundColor: '#ccc',
               }}
             >
               {nota}
@@ -201,6 +178,7 @@ class IndicadoresMedicionDetail extends React.Component {
               flex: 0.7,
               flexDirection: 'row',
               justifyContent: 'center',
+              alignItems: 'flex-end',
             }}
           >
             {this.semaforo(variacion)}
@@ -208,7 +186,7 @@ class IndicadoresMedicionDetail extends React.Component {
         </View>
         <View
           style={{
-            flex: 0.35,
+            flex: 0.34,
             flexDirection: 'column',
             justifyContent: 'center',
           }}
@@ -221,17 +199,19 @@ class IndicadoresMedicionDetail extends React.Component {
           >
             <VictoryBar
               width={120}
-              height={65}
-              data={ultimas_mediciones.concat(0)}
+              height={70}
+              data={ultimosIndicadores.concat(100)}
               barWidth={17}
               barRatio={1}
               alignment="start"
-              style={{ data: { fill: Colors.brandInfo } }}
-              animate={{
-                duration: 2500,
-                onLoad: { duration: 1500 },
+              style={{
+                data: { fill: Colors.brandInfo },
+                labels: { fill: '#999' },
               }}
-              padding={0}
+              padding={{ top: 25, bottom: 0, left: 0, right: 0 }}
+              samples={100}
+              labels={({ datum }) => datum._y}
+              labelComponent={<VictoryLabel dx={9} dy={-10} />}
             />
           </View>
         </View>
