@@ -33,7 +33,7 @@ class IndicadoresMedicionDetail extends React.Component {
   };
 
   semaforo = (num) => {
-    if (parseFloat(num) >= 0) {
+    if (parseFloat(num) > 0) {
       return (
         <Text
           style={{
@@ -42,6 +42,17 @@ class IndicadoresMedicionDetail extends React.Component {
           }}
         >
           + {num}
+        </Text>
+      );
+    } else if (parseFloat(num) === 0) {
+      return (
+        <Text
+          style={{
+            fontSize: 15,
+            color: 'green',
+          }}
+        >
+          {num}
         </Text>
       );
     } else if (parseFloat(num) < 0) {
@@ -56,7 +67,15 @@ class IndicadoresMedicionDetail extends React.Component {
         </Text>
       );
     } else {
-      return <></>;
+      return (
+        <Text
+          style={{
+            fontSize: 15,
+          }}
+        >
+          -
+        </Text>
+      );
     }
   };
 
@@ -80,7 +99,10 @@ class IndicadoresMedicionDetail extends React.Component {
   render() {
     const { diff, inScore, lastIndicators, name, score } = this.props.medicion;
 
-    const nota = `${score * 100} %`;
+    const nota =
+      score * 100 === 100 || score * 100 === 0
+        ? `${score * 100} %`
+        : `${(score * 100).toFixed(2)} %`;
     const variacion = diff * 100;
     const ultimosIndicadores = lastIndicators.map((i) => i * 100);
 
@@ -95,7 +117,9 @@ class IndicadoresMedicionDetail extends React.Component {
             borderBottomColor: '#DEDEDE',
             borderBottomWidth: 1,
           },
-          inScore ? { borderLeftColor: 'red', borderLeftWidth: 6 } : {},
+          inScore
+            ? { borderLeftColor: Colors.brandPrimary, borderLeftWidth: 6 }
+            : {},
         ]}
       >
         <View
@@ -167,7 +191,6 @@ class IndicadoresMedicionDetail extends React.Component {
                 fontFamily: 'Bree',
                 fontWeight: 'bold',
                 color: Colors.brandPrimary,
-                // backgroundColor: '#ccc',
               }}
             >
               {nota}
