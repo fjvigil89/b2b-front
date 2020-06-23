@@ -65,7 +65,7 @@ class IndicadoresMedicionDetail extends React.Component {
       return (
         <Image
           style={{ height: 55, width: 55 }}
-          source={require('@assets/images/iconos-medicion/Sovi.png')}
+          source={require('@assets/images/iconos-medicion/default.png')}
         />
       );
     }
