@@ -220,22 +220,24 @@ class IndicadoresMedicionDetail extends React.Component {
               justifyContent: 'center',
             }}
           >
-            <VictoryBar
-              width={120}
-              height={70}
-              data={ultimosIndicadores.concat(100)}
-              barWidth={17}
-              barRatio={1}
-              alignment="start"
-              style={{
-                data: { fill: Colors.brandInfo },
-                labels: { fill: '#999' },
-              }}
-              padding={{ top: 25, bottom: 0, left: 0, right: 0 }}
-              samples={100}
-              labels={({ datum }) => datum._y}
-              labelComponent={<VictoryLabel dx={9} dy={-10} />}
-            />
+            {ultimosIndicadores.length > 0 && (
+              <VictoryBar
+                width={120}
+                height={70}
+                data={ultimosIndicadores.concat(100)}
+                barWidth={17}
+                barRatio={1}
+                alignment="start"
+                style={{
+                  data: { fill: Colors.brandInfo },
+                  labels: { fill: '#999' },
+                }}
+                padding={{ top: 25, bottom: 0, left: 0, right: 0 }}
+                samples={100}
+                labels={({ datum }) => datum._y}
+                labelComponent={<VictoryLabel dx={9} dy={-10} />}
+              />
+            )}
           </View>
         </View>
       </View>
