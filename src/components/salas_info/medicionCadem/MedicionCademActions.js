@@ -10,7 +10,7 @@ export default function DetalleMedicion(url, folio) {
     new Promise(async (resolve, reject) =>
       axios({
         method: 'POST',
-        url: `${url}/indicador/test`,
+        url: `${url}/indicador/all`,
         data: formForSend,
       })
         .then(async (response) => {
