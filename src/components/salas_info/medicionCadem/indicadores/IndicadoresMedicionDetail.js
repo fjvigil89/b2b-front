@@ -41,7 +41,7 @@ class IndicadoresMedicionDetail extends React.Component {
             color: 'green',
           }}
         >
-          + {num}
+          + {num * 100}
         </Text>
       );
     } else if (parseFloat(num) === 0) {
@@ -52,7 +52,7 @@ class IndicadoresMedicionDetail extends React.Component {
             color: 'green',
           }}
         >
-          {num}
+          {num * 100}
         </Text>
       );
     } else if (parseFloat(num) < 0) {
@@ -63,7 +63,7 @@ class IndicadoresMedicionDetail extends React.Component {
             color: 'red',
           }}
         >
-          - {Math.abs(num)}
+          - {Math.abs(num * 100)}
         </Text>
       );
     } else {
@@ -103,7 +103,6 @@ class IndicadoresMedicionDetail extends React.Component {
       score * 100 === 100 || score * 100 === 0
         ? `${score * 100} %`
         : `${(score * 100).toFixed(2)} %`;
-    const variacion = diff * 100;
     const ultimosIndicadores = lastIndicators.map((i) => i * 100);
 
     return (
@@ -204,7 +203,7 @@ class IndicadoresMedicionDetail extends React.Component {
               alignItems: 'flex-end',
             }}
           >
-            {this.semaforo(variacion)}
+            {this.semaforo(diff)}
           </View>
         </View>
         <View
