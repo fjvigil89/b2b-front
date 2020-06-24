@@ -1,22 +1,23 @@
-import React, { Component } from "react";
-import { Image, View, Dimensions, Platform, StyleSheet } from "react-native";
-import PropTypes from "prop-types";
-import { Actions } from "react-native-router-flux";
-import { connect } from "react-redux";
-import { Content, Text, ListItem, Container, Left } from "native-base";
+import React, { Component } from 'react';
+import { Image, View, Dimensions, Platform, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
+import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
+import { Content, Text, ListItem, Container, Left } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 
-import { Logout } from "@components/login/LoginActions";
+import { Logout } from '@components/login/LoginActions';
 
-const logo = require("@assets/images/logo-cademsmart.png");
-const backgroundImage = require("@assets/images/background_app_cademsmart-v2.png");
+const logo = require('@assets/images/logo-cademsmart.png');
+const backgroundImage = require('@assets/images/background_app_cademsmart-v2.png');
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 
 class SideBar extends Component {
   static propTypes = {
-    Logout: PropTypes.func.isRequired
+    Logout: PropTypes.func.isRequired,
   };
 
   close = () => {
@@ -57,45 +58,55 @@ class SideBar extends Component {
       <Container>
         <Content
           bounces={false}
-          style={{ flex: 1, backgroundColor: "#fff", top: -1 }}
+          style={{ flex: 1, backgroundColor: '#fff', top: -1 }}
         >
           <View
             style={{
-              alignSelf: "stretch",
+              alignSelf: 'stretch',
               height: 200,
               width: null,
-              position: "relative",
+              position: 'relative',
               marginBottom: 10,
-              justifyContent: "center",
-              alignItems: "center"
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <Image
               style={{
-                position: "absolute",
+                position: 'absolute',
                 width: 700,
                 height: 200,
                 top: 0,
                 zIndex: 100,
-                opacity: 0.7
+                opacity: 0.7,
               }}
               source={backgroundImage}
             />
             <Image
               source={logo}
               style={{
-                zIndex: 150
+                zIndex: 150,
               }}
             />
             <Text
               style={{
-                fontFamily: "Bree",
+                fontFamily: 'Bree',
                 fontSize: 16,
-                color: "#000",
-                zIndex: 200
+                color: '#000',
+                zIndex: 200,
               }}
             >
               SmartApp
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Bree',
+                fontSize: 16,
+                color: '#777',
+                zIndex: 200,
+              }}
+            >
+              V {Constants.manifest.version}
             </Text>
           </View>
           <ListItem button noBorder onPress={this.report}>
@@ -108,10 +119,10 @@ class SideBar extends Component {
 
               <Text
                 style={{
-                  fontFamily: "Questrial",
-                  fontWeight: "500",
+                  fontFamily: 'Questrial',
+                  fontWeight: '500',
                   fontSize: 16,
-                  marginLeft: 20
+                  marginLeft: 20,
                 }}
               >
                 Dashboard
@@ -128,10 +139,10 @@ class SideBar extends Component {
 
               <Text
                 style={{
-                  fontFamily: "Questrial",
-                  fontWeight: "500",
+                  fontFamily: 'Questrial',
+                  fontWeight: '500',
                   fontSize: 16,
-                  marginLeft: 20
+                  marginLeft: 20,
                 }}
               >
                 Salas
@@ -149,10 +160,10 @@ class SideBar extends Component {
 
               <Text
                 style={{
-                  fontFamily: "Questrial",
-                  fontWeight: "500",
+                  fontFamily: 'Questrial',
+                  fontWeight: '500',
                   fontSize: 16,
-                  marginLeft: 20
+                  marginLeft: 20,
                 }}
               >
                 Mapa
@@ -170,10 +181,10 @@ class SideBar extends Component {
 
               <Text
                 style={{
-                  fontFamily: "Questrial",
-                  fontWeight: "500",
+                  fontFamily: 'Questrial',
+                  fontWeight: '500',
                   fontSize: 16,
-                  marginLeft: 20
+                  marginLeft: 20,
                 }}
               >
                 Muro
@@ -191,10 +202,10 @@ class SideBar extends Component {
 
               <Text
                 style={{
-                  fontFamily: "Questrial",
-                  fontWeight: "500",
+                  fontFamily: 'Questrial',
+                  fontWeight: '500',
                   fontSize: 16,
-                  marginLeft: 20
+                  marginLeft: 20,
                 }}
               >
                 Encuestas
@@ -233,10 +244,10 @@ class SideBar extends Component {
 
               <Text
                 style={{
-                  fontFamily: "Questrial",
-                  fontWeight: "500",
+                  fontFamily: 'Questrial',
+                  fontWeight: '500',
                   fontSize: 16,
-                  marginLeft: 20
+                  marginLeft: 20,
                 }}
               >
                 Galería
@@ -254,19 +265,17 @@ class SideBar extends Component {
 
               <Text
                 style={{
-                  fontFamily: "Questrial",
-                  fontWeight: "500",
+                  fontFamily: 'Questrial',
+                  fontWeight: '500',
                   fontSize: 16,
-                  marginLeft: 20
+                  marginLeft: 20,
                 }}
               >
                 Cerrar Sesión
               </Text>
             </Left>
           </ListItem>
-          <View
-            style={styles.contentUsername}
-          >
+          <View style={styles.contentUsername}>
             <Ionicons
               active
               name="md-person"
@@ -274,9 +283,9 @@ class SideBar extends Component {
             />
             <Text
               style={{
-                fontFamily: "Bree",
+                fontFamily: 'Bree',
                 fontSize: 12,
-                color: "#000",
+                color: '#000',
                 marginRight: 20,
               }}
             >
@@ -292,21 +301,21 @@ class SideBar extends Component {
 const styles = StyleSheet.create({
   contentUsername: {
     flexDirection: 'row',
-    height: Platform.OS === 'ios' ? 340 : 180,
+    height: Platform.OS === 'ios' ? 120 : 170,
     width: null,
-    justifyContent: "flex-start",
-    alignItems: "flex-end",
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
     marginLeft: 20,
-  }
+  },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   email: state.user.email,
-  user: state.user.user
+  user: state.user.user,
 });
 
 const mapDispatchToProps = {
-  Logout
+  Logout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);
