@@ -284,7 +284,9 @@ class SalasInfoDetail extends React.Component {
               height: 70,
             }}
             onPress={() => {
-              Actions.productosCademsmart({
+              if (data.id_visita === null) return;
+              Actions.medicionCadem({
+                folio: data.folio,
                 porcentaje: report.cademsmartPorcentaje,
                 visita: data.id_visita,
                 nombreSala: data.descripcion,
@@ -305,9 +307,10 @@ class SalasInfoDetail extends React.Component {
                   fontSize: formatter.size,
                   fontWeight: 'bold',
                   fontFamily: 'Questrial',
+                  fontSize: 20,
                 }}
               >
-                {report.cademsmartPorcentaje}
+                Medición
               </Text>
               <Text style={{ fontFamily: 'Questrial', fontSize: 12 }}>
                 CademSmart
@@ -427,7 +430,7 @@ class SalasInfoDetail extends React.Component {
                 marginBottom: 0,
               }}
             >
-              Categoria
+              Categoría
             </Text>
           </View>
           <View

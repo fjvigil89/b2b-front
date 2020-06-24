@@ -6,5 +6,5 @@
   "minify": false,
   "urlType": "exp",
   "urlRandomness": "i8-d3s",
-  "https": true
+  "https": false
 }
