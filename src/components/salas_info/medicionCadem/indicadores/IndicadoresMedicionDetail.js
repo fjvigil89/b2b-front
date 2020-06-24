@@ -41,7 +41,7 @@ class IndicadoresMedicionDetail extends React.Component {
             color: 'green',
           }}
         >
-          + {num * 100}
+          + {(num * 100).toFixed(1)}
         </Text>
       );
     } else if (parseFloat(num) === 0) {
@@ -102,8 +102,8 @@ class IndicadoresMedicionDetail extends React.Component {
     const nota =
       score * 100 === 100 || score * 100 === 0
         ? `${score * 100} %`
-        : `${(score * 100).toFixed(2)} %`;
-    const ultimosIndicadores = lastIndicators.map((i) => i * 100);
+        : `${(score * 100).toFixed(1)} %`;
+    const ultimosIndicadores = lastIndicators.map((i) => parseInt(i * 100));
 
     return (
       <View
