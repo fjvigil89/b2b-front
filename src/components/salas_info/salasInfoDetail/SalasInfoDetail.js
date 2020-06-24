@@ -430,7 +430,7 @@ class SalasInfoDetail extends React.Component {
                 marginBottom: 0,
               }}
             >
-              Categoria
+              Categoría
             </Text>
           </View>
           <View
