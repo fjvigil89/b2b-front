@@ -13,6 +13,8 @@ const IconsMedicion = {
   Fleje: require('@assets/images/iconos-medicion/Fleje.png'),
   Osa: require('@assets/images/iconos-medicion/Osa.png'),
   Sovi: require('@assets/images/iconos-medicion/Sovi.png'),
+  $Destacado: require('@assets/images/iconos-medicion/Precio-Destacado.png'),
+  Nsg: require('@assets/images/iconos-medicion/Nsg.png'),
 };
 
 class IndicadoresMedicionDetail extends React.Component {
