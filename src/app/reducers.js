@@ -13,6 +13,7 @@ import pollsList from '@components/polls/polls_list/PollsListReducers';
 import hashtags from '@components/wall/hashtags/HashtagsReducers';
 import reporte from '@components/report/ReportReducers';
 import ventaValor from '@components/salas_info/venta_valor/VentaValorReducers';
+import medicion from '@components/salas_info/medicionCadem/MedicionCademReducers';
 
 const rehydrated = (state = false, action) => {
   switch (action.type) {
@@ -40,4 +41,5 @@ export default {
   pollsList,
   reporte,
   ventaValor,
+  medicion,
 };

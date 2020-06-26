@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.8] - 2020-06-24
+
+### Added
+
+- Se agrega modal para medicion CademSmart.
+
 ## [3.0.7] - 2020-05-29
 
 ### Fix
