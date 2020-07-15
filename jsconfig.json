@@ -7,7 +7,8 @@
       "@common/*": ["src/common/*"],
       "@components/*": ["./src/components/*"],
       "@constants/*": ["src/constants/*"],
-      "@routes/*": ["src/routes/*"]
+      "@routes/*": ["./src/routes/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   },
   "exclude": ["node_modules"]
