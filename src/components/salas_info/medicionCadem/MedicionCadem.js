@@ -53,7 +53,9 @@ class MedicionCadem extends React.Component {
           scrollEnabled={false}
           contentContainerStyle={{ flex: 1 }}
         >
-          <SafeAreaView style={{ flex: 1, backgroundColor: '#fdf7c6' }}>
+          <SafeAreaView
+            style={{ flex: 1, backgroundColor: '#fdf7c6', paddingTop: 10 }}
+          >
             <HeaderCademsmart
               porcentaje={this.props.porcentaje}
               nombreSala={this.props.nombreSala}
