@@ -1,11 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import {
   Button,
   Text,
@@ -15,20 +10,22 @@ import {
   Right,
   Item,
   ListItem,
-  Icon
-} from "native-base";
-import Modal from "react-native-modal";
-import _ from "lodash";
-import {MaterialIcons} from "@expo/vector-icons";
+  Icon,
+} from 'native-base';
+import Modal from 'react-native-modal';
+import _ from 'lodash';
+import { MaterialIcons } from '@expo/vector-icons';
 
-import {modalHide, setPhoto} from "@components/salas_info/salasInfoDetailAction/Producto/ProductoAction";
-import * as ImagePicker from 'expo-image-picker'
+import {
+  modalHide,
+  setPhoto,
+} from '@components/salas_info/salasInfoDetailAction/Producto/ProductoAction';
+import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   content: {
     height: 500,
@@ -44,27 +41,27 @@ const styles = StyleSheet.create({
   itemHeader: {
     // flex: 1,
     flexDirection: 'row',
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   itemHeaderIcon: {
     color: 'black',
     fontSize: 30,
-    marginTop: -40
+    marginTop: -40,
   },
   text: {
     fontSize: 16,
-    fontWeight: "bold",
-    fontFamily: "Questrial",
+    fontWeight: 'bold',
+    fontFamily: 'Questrial',
   },
   buttonIcon: {
     color: 'white',
     textAlign: 'center',
     fontSize: 22,
-    fontFamily: "Questrial"
+    fontFamily: 'Questrial',
   },
   containerButtons: {
     flexDirection: 'row',
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   buttonContainer: {
     margin: 20,
@@ -72,19 +69,17 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 30 / 2,
     width: 120,
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
 
 class ModalFeedBack extends Component {
-
   state = {
     questions: this.props.questions,
     response: {},
     images: '',
-    comment: ''
+    comment: '',
   };
-
 
   componentDidMount() {
     this.getPermissionAsync();
@@ -97,7 +92,7 @@ class ModalFeedBack extends Component {
     const gallery = await Permissions.askAsync(permissions);
     const camera = await Permissions.askAsync(permissionsCamera);
 
-    if (gallery.status !== "granted" || camera.status !== "granted") {
+    if (gallery.status !== 'granted' || camera.status !== 'granted') {
       Alert.alert('Disculpa, la Camara requiere de estos permisos para operar');
       return false;
     }
@@ -110,53 +105,53 @@ class ModalFeedBack extends Component {
       Alert.alert('Disculpa, la Camara requiere de estos permisos para operar');
       return;
     }
-    const result = await ImagePicker.launchCameraAsync({base64: true});
+    const result = await ImagePicker.launchCameraAsync({ base64: true });
 
     if (!result.cancelled) {
       const filename = result.uri.split('/').pop();
       result.name = filename;
 
-      this.handleInput(8, result.name)
+      this.handleInput(8, result.name);
       this.props.setPhoto(result);
-      this.setState({images: result});
+      this.setState({ images: result });
     }
   };
 
   handleInput = (idQuestion, val) => {
-    const newCheck = {...this.state.response};
+    const newCheck = { ...this.state.response };
     newCheck[idQuestion] = val;
-    this.setState({response: newCheck});
+    this.setState({ response: newCheck });
   };
 
   render() {
-    const {questions} = this.props;
-
+    const { questions } = this.props;
     let questionList = <View></View>;
     if (!_.isEmpty(questions)) {
-      questionList = questions.map(q => {
-        if (q.id === 7) { // Comentario
+      questionList = questions.map((q) => {
+        if (q.id === 7) {
+          // Comentario
           return (
-            <View style={{padding: 20}}>
+            <View style={{ padding: 20 }} key={JSON.stringify(q.id)}>
               <Text style={styles.text}>{q.question}</Text>
               <Item>
                 <Input
-                  placeholder='Ingrese comentario (opcional)'
-                  onChangeText={val => {
+                  placeholder="Ingrese comentario (opcional)"
+                  onChangeText={(val) => {
                     this.handleInput(q.id, val);
                     this.setState({ comment: val });
                   }}
                   value={this.state.comment}
                 />
-                <Icon name='checkmark-circle'/>
+                <Icon name="checkmark-circle" />
               </Item>
             </View>
-          )
+          );
         }
 
         if ([1, 2, 3, 4, 5, 6].includes(q.id)) {
           return (
-            <View>
-              <ListItem style={{flexDirection: 'row'}}>
+            <View key={JSON.stringify(q.id)}>
+              <ListItem style={{ flexDirection: 'row' }}>
                 <Left
                   style={{
                     flex: 6,
@@ -179,26 +174,28 @@ class ModalFeedBack extends Component {
                 </View>
               </ListItem>
             </View>
-          )
+          );
         }
-      })
+      });
     }
 
     return (
-      <Modal
-        style={styles.container}
-        isVisible={this.props.showModal}
-      >
+      <Modal style={styles.container} isVisible={this.props.showModal}>
         <View style={styles.content}>
           <View
-            style={[styles.itemHeader, {
-              paddingBottom: 15
-            }]}
+            style={[
+              styles.itemHeader,
+              {
+                paddingBottom: 15,
+              },
+            ]}
           >
             <Left
-              style={{
-                // marginRight: 5
-              }}
+              style={
+                {
+                  // marginRight: 5
+                }
+              }
             >
               <View>
                 <Text
@@ -206,7 +203,7 @@ class ModalFeedBack extends Component {
                     marginLeft: 5,
                     marginTop: 15,
                     fontSize: 20,
-                    fontFamily: "Questrial"
+                    fontFamily: 'Questrial',
                   }}
                 >
                   {this.props.currentProduct.description}
@@ -217,10 +214,10 @@ class ModalFeedBack extends Component {
                   style={{
                     marginLeft: 5,
                     fontSize: 12,
-                    fontFamily: "Questrial"
+                    fontFamily: 'Questrial',
                   }}
                 >
-                EAN: {this.props.currentProduct.ean}
+                  EAN: {this.props.currentProduct.ean}
                 </Text>
               </View>
             </Left>
@@ -233,30 +230,19 @@ class ModalFeedBack extends Component {
                   this.setState({
                     questions: [],
                     response: {},
-                    images: ''
+                    images: '',
                   });
                 }}
               >
-                <MaterialIcons
-                  name="close"
-                  style={styles.itemHeaderIcon}
-                />
+                <MaterialIcons name="close" style={styles.itemHeaderIcon} />
               </Button>
             </Right>
           </View>
-          <ScrollView>
-            {questionList}
-          </ScrollView>
+          <ScrollView>{questionList}</ScrollView>
           <View style={styles.containerButtons}>
             <View style={styles.buttonContainer}>
-              <Button
-                onPress={this.takePhoto}
-                style={styles.button}
-              >
-                <MaterialIcons
-                  style={styles.buttonIcon}
-                  name="camera-alt"
-                />
+              <Button onPress={this.takePhoto} style={styles.button}>
+                <MaterialIcons style={styles.buttonIcon} name="camera-alt" />
                 <Text>Foto</Text>
               </Button>
             </View>
@@ -267,8 +253,8 @@ class ModalFeedBack extends Component {
                   this.setState({
                     questions: [],
                     response: {},
-                    images: ''
-                  })
+                    images: '',
+                  });
                 }}
                 style={styles.button}
               >
@@ -282,14 +268,14 @@ class ModalFeedBack extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isModalVisible: state.productos.modal.isModalVisible,
-  currentProduct: state.productos.currentProduct
+  currentProduct: state.productos.currentProduct,
 });
 
 const mapDispatchToProps = {
   modalHide,
-  setPhoto
+  setPhoto,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalFeedBack);
