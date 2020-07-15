@@ -6,7 +6,8 @@
     "@common": "${workspaceRoot}/src/common",
     "@components": "${workspaceRoot}/src/components",
     "@constants": "${workspaceRoot}/src/constants",
-    "@routes": "${workspaceRoot}/src/routes"
+    "@routes": "${workspaceRoot}/src/routes",
+    "@hooks": "${workspaceRoot}/src/hooks",
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#2f7c47",
