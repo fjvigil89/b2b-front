@@ -2,6 +2,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistCombineReducers } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
+import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import reducers from '@app/reducers';
 
@@ -16,7 +17,9 @@ const reducer = persistCombineReducers(config, reducers);
 const middleware = [thunk];
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
+if (__DEV__) {
+  middleware.push(logger);
+}
 const configureStore = () => {
   const store = createStore(
     reducer,
