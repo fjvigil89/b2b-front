@@ -34,17 +34,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingRight: 10,
   },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  txtDia: {
+    marginLeft: 5,
+    fontSize: 12,
+    fontWeight: 'bold',
+    fontFamily: 'Questrial',
+  },
 });
-
-const leftButtons = [
-  <TouchableOpacity
-    activeOpacity={0.8}
-    style={[styles.leftSwipeItem, { backgroundColor: '#f3bc32' }]}
-  >
-    <Text>Gestionar</Text>
-    <Text>Caso</Text>
-  </TouchableOpacity>,
-];
 
 class Producto extends React.Component {
   static propTypes = {
@@ -221,9 +224,17 @@ class Producto extends React.Component {
   currency = (x) => {
     const parts = x.toString().split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
     return parts.join('.');
   };
+
+  leftButtons = (
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={[styles.leftSwipeItem, { backgroundColor: '#f3bc32' }]}
+    >
+      <Text>{'Gestionar \n Caso'}</Text>
+    </TouchableOpacity>
+  );
 
   render() {
     const {
@@ -240,9 +251,8 @@ class Producto extends React.Component {
     }
 
     if (_.isEmpty(productos) || questions.length === 0) {
-      return <View></View>;
+      return <View />;
     }
-
     return (
       <View>
         <ModalFeedBack
@@ -259,15 +269,14 @@ class Producto extends React.Component {
           {productos.detail.data.map((data) => {
             return (
               <Swipeable
+                key={data.ean}
                 onRef={(ref) => {
                   this.state.swipeable = ref;
                 }}
                 leftContent={
                   Number(data.gestionado) === 0 && visitaEnProgreso === 1
-                    ? leftButtons
-                    : // : leftButtons
-                      // TODO: Para bloquear gestionados
-                      null
+                    ? this.leftButtons
+                    : null
                 }
                 onLeftActionRelease={() => {
                   this.props.setCurrentProduct(
@@ -291,7 +300,7 @@ class Producto extends React.Component {
                     paddingTop: 5,
                   }}
                 >
-                  {(data.cadem === 1 || data.cadem === 0) && (
+                  {[0, 1].includes(data.cadem) && (
                     <Image
                       style={{
                         position: 'absolute',
@@ -304,9 +313,8 @@ class Producto extends React.Component {
                       source={
                         data.cadem === 1
                           ? require('@assets/images/thumb.png')
-                          : data.cadem === 0
-                          ? require('@assets/images/thumb-down.png')
-                          : ''
+                          : data.cadem === 0 &&
+                            require('@assets/images/thumb-down.png')
                       }
                     />
                   )}
@@ -374,23 +382,8 @@ class Producto extends React.Component {
                   </View>
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex: 1, flexDirection: 'column' }}>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center',
-                          marginTop: 5,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            fontSize: 12,
-                            fontWeight: 'bold',
-                            fontFamily: 'Questrial',
-                          }}
-                        >
+                      <View style={styles.row}>
+                        <Text style={styles.txtDia}>
                           Días sin venta: {data.sventa}
                         </Text>
                       </View>
@@ -439,7 +432,7 @@ class Producto extends React.Component {
                         </View>
                       )}
                     </View>
-                    {data.venta_perdida && (
+                    {data.venta_perdida > 0 && (
                       <View
                         style={{
                           flex: 1,
@@ -457,8 +450,8 @@ class Producto extends React.Component {
                             fontFamily: 'Questrial',
                           }}
                         >
-                          Venta Perdida:{' '}
-                          {`$${this.currency(data.venta_perdida)}`}
+                          {'Venta Perdida: \n $'}
+                          {this.currency(data.venta_perdida)}
                         </Text>
                       </View>
                     )}
