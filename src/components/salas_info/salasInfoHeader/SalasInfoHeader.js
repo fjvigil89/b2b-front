@@ -1,22 +1,22 @@
-import React from "react";
-import { Header, Left, Body, Title, Right, Button } from "native-base";
-import { Actions } from "react-native-router-flux";
-import PropTypes from "prop-types";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import { Header, Left, Body, Title, Right, Button } from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import PropTypes from 'prop-types';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 class SalasInfoHeader extends React.Component {
   static propTypes = {
     data: PropTypes.shape({
       hasPoll: PropTypes.number,
-      folio: PropTypes.number
-    })
+      folio: PropTypes.number,
+    }),
   };
 
   static defaultProps = {
-    data: {}
+    data: {},
   };
 
-  showPolls = data => {
+  showPolls = (data) => {
     if (data.hasPoll > 0) {
       return (
         <Right>
@@ -28,8 +28,8 @@ class SalasInfoHeader extends React.Component {
           >
             <Ionicons
               style={{
-                color: "white",
-                fontSize: 25
+                color: 'white',
+                fontSize: 25,
               }}
               name="ios-create"
             />
@@ -48,14 +48,15 @@ class SalasInfoHeader extends React.Component {
           <Button
             transparent
             onPress={() => {
-              Actions.pop();
+              Actions.push('dashboard');
+              // Actions.pop();
             }}
           >
             <MaterialIcons
               name="arrow-back"
               style={{
-                color: "white",
-                fontSize: 25
+                color: 'white',
+                fontSize: 25,
               }}
             />
           </Button>

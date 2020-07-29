@@ -1,12 +1,17 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Content } from 'native-base';
-import { InteractionManager, RefreshControl } from 'react-native';
-
+import { RefreshControl } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import LoadingOverlay from '@common/loading_overlay/LoadingOverlay';
 import SalasDetail from '@components/salas/salas_detail/SalasDetail';
 import NoSalas from '@components/salas/salas_empty/SalasEmpty';
+
+import useAppState, {
+  usePrevAppState,
+  removeListener,
+} from '@hooks/app-state-hook';
 
 import {
   ListadoSalas,
@@ -14,126 +19,112 @@ import {
   GetLocationAsync,
 } from '@components/salas/salas_list/SalasListActions';
 
-class SalasList extends Component {
-  static propTypes = {
-    GetLocationAsync: PropTypes.func.isRequired,
-    ListadoSalas: PropTypes.func.isRequired,
-    ListadoSalasWithRefresh: PropTypes.func.isRequired,
-    salas: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number,
-        bandera: PropTypes.string,
-        date_b2b: PropTypes.string,
-        mide: PropTypes.number,
-        realizada: PropTypes.number,
-        fecha_visita: PropTypes.string,
-        direccion: PropTypes.string,
-      })
-    ),
-    refreshing: PropTypes.bool,
-    lostSaleON: PropTypes.bool,
-    endpoint: PropTypes.string,
-    activeCheckin: PropTypes.bool,
+const SalasList = ({
+  activeCheckin,
+  GetLocationAsync,
+  ListadoSalas,
+  endpoint,
+  lostSaleON,
+  salas,
+  refreshing,
+}) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const { currentScene } = Actions;
+  const appState = useAppState();
+  const prevAppState = usePrevAppState(appState);
+  const delay = 200;
+
+  useEffect(() => {
+    const refreshData = async () => {
+      setIsLoading(true);
+      await GetLocationAsync();
+      await ListadoSalas(endpoint, lostSaleON);
+      setIsLoading(false);
+    };
+    if (
+      appState === 'active' &&
+      prevAppState === 'background' &&
+      prevAppState !== appState &&
+      currentScene === 'dashboard'
+    ) {
+      refreshData();
+    }
+  }, [appState, currentScene]);
+
+  useEffect(() => {
+    const getData = async () => {
+      await GetLocationAsync();
+      await ListadoSalas(endpoint, lostSaleON);
+      setIsLoading(false);
+    };
+    getData();
+  }, []);
+
+  const RefreshListadoSalas = async () => {
+    setIsLoading(true);
+
+    await GetLocationAsync();
+
+    ListadoSalasWithRefresh(endpoint, lostSaleON);
+
+    setIsLoading(false);
   };
 
-  static defaultProps = {
-    salas: [],
-    refreshing: false,
-    lostSaleON: true,
-    endpoint: '',
-    activeCheckin: false,
-  };
+  const detailListadoSalas = salas.map((sala, i) => (
+    <SalasDetail
+      data={sala}
+      key={sala.folio}
+      delay={delay * i}
+      lostSaleON={lostSaleON}
+      activeCheckin={activeCheckin}
+    />
+  ));
 
-  state = {
-    loading: false,
-  };
+  return (
+    <Content
+      style={{ backgroundColor: '#F4F4F4' }}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={RefreshListadoSalas}
+          title="Recargar Salas..."
+        />
+      }
+    >
+      {salas.length !== 0 ? detailListadoSalas : <NoSalas />}
+      {isLoading && <LoadingOverlay />}
+    </Content>
+  );
+};
 
-  /*  componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this._interval = setInterval(() => {
-        console.log('every 30 second')
-        this.props.GetLocationAsync();
-      }, 30000);
+SalasList.propTypes = {
+  GetLocationAsync: PropTypes.func.isRequired,
+  ListadoSalas: PropTypes.func.isRequired,
+  ListadoSalasWithRefresh: PropTypes.func.isRequired,
+  salas: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      bandera: PropTypes.string,
+      date_b2b: PropTypes.string,
+      mide: PropTypes.number,
+      realizada: PropTypes.number,
+      fecha_visita: PropTypes.string,
+      direccion: PropTypes.string,
     })
-  } */
+  ),
+  refreshing: PropTypes.bool,
+  lostSaleON: PropTypes.bool,
+  endpoint: PropTypes.string,
+  activeCheckin: PropTypes.bool,
+};
 
-  componentWillMount = () => {
-    this.props.GetLocationAsync();
-
-    this.setState({
-      loading: true,
-    });
-
-    this.props
-      .ListadoSalas(this.props.endpoint, this.props.lostSaleON)
-      .then(() => {
-        this.setState({
-          loading: false,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          loading: false,
-        });
-      });
-  };
-
-  /* componentWillUnmount() {
-    clearInterval(this._interval);
-  } */
-
-  RefreshListadoSalas = () => {
-    this.setState({
-      loading: true,
-    });
-
-    this.props.GetLocationAsync();
-
-    this.props
-      .ListadoSalasWithRefresh(this.props.endpoint, this.props.lostSaleON)
-      .then(() => {
-        this.setState({
-          loading: false,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          loading: false,
-        });
-      });
-  };
-
-  render = () => {
-    const { salas, refreshing, lostSaleON } = this.props;
-
-    const delay = 200;
-    const detailListadoSalas = salas.map((sala, i) => (
-      <SalasDetail
-        data={sala}
-        key={sala.folio}
-        delay={delay * i}
-        lostSaleON={lostSaleON}
-        activeCheckin={this.props.activeCheckin}
-      />
-    ));
-
-    return (
-      <Content
-        style={{ backgroundColor: '#F4F4F4' }}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={this.RefreshListadoSalas}
-            title="Recargar Salas..."
-          />
-        }
-      >
-        {salas.length !== 0 ? detailListadoSalas : <NoSalas />}
-        {this.state.loading && <LoadingOverlay />}
-      </Content>
-    );
-  };
-}
+SalasList.defaultProps = {
+  salas: [],
+  refreshing: false,
+  lostSaleON: true,
+  endpoint: '',
+  activeCheckin: false,
+};
 
 const mapStateToProps = (state) => ({
   salas: state.salas.salas,

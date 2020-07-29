@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, StatusBar, SafeAreaView } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import {
   Container,
   Button,
@@ -63,31 +63,28 @@ class VentaValor extends React.Component {
   render() {
     return (
       <Container style={{ backgroundColor: '#F4F4F4' }}>
-        <StatusBar barStyle="dark-content" />
-        <Content
-          style={{ flex: 1, backgroundColor: '#FFF' }}
-          scrollEnabled={false}
-          contentContainerStyle={{ flex: 1 }}
+        <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor: '#fdf7c6',
+            justifyContent: 'space-evenly',
+          }}
         >
-          <SafeAreaView style={{ flex: 1, backgroundColor: '#fdf7c6' }}>
-            <HeaderVentaValor
-              nombreSala={this.props.nombreSala}
-              direccion={this.props.direccion}
-              data={this.props.detalle}
-            />
+          <HeaderVentaValor
+            nombreSala={this.props.nombreSala}
+            direccion={this.props.direccion}
+            data={this.props.detalle}
+          />
 
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: '#FFFFFF',
-              }}
-            >
-              <CategoriasVentaValor
-                data={this.props.detalle}
-              />
-            </View>
-          </SafeAreaView>
-        </Content>
+          <View
+            style={{
+              flex: 3,
+              backgroundColor: '#FFFFFF',
+            }}
+          >
+            <CategoriasVentaValor data={this.props.detalle} />
+          </View>
+        </SafeAreaView>
         <Footer>
           <FooterTab>
             <Button

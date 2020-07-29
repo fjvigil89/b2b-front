@@ -1,11 +1,71 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, Dimensions, Text, ScrollView } from 'react-native';
+import { View, Image, Dimensions, Text, StyleSheet } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '@assets/native-base-theme/variables//commonColor';
-import { VictoryBar, VictoryLabel } from 'victory-native';
+import {
+  VictoryBar,
+  VictoryLabel,
+  VictoryChart,
+  VictoryContainer,
+} from 'victory-native';
 
+const { width } = Dimensions.get('window');
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: width,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderBottomColor: '#DEDEDE',
+    borderBottomWidth: 1,
+    justifyContent: 'space-between',
+  },
+  indicatorTypeContent: {
+    flex: 0.33,
+    flexDirection: 'column',
+  },
+  indicatorName: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  txtName: {
+    fontSize: 15,
+    fontFamily: 'Questrial',
+    color: '#555',
+    textAlign: 'center',
+  },
+  iconContainer: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingTop: 2,
+  },
+  iconContent: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
+  },
+  chartContainer: {
+    flex: 0.33,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  chartContent: {
+    justifyContent: 'center',
+  },
+  diff: {
+    flex: 1,
+    alignItems: 'center',
+  },
+});
 const IconsMedicion = {
   Cartel: require('@assets/images/iconos-medicion/Cartel.png'),
   Catalogo: require('@assets/images/iconos-medicion/Catalogo.png'),
@@ -35,15 +95,20 @@ class IndicadoresMedicionDetail extends React.Component {
   };
 
   semaforo = (num) => {
+    const roundedNumber = (Math.ceil(num * 1000) / 1000) * 100;
+    const parseNumber = roundedNumber.toFixed(1);
     if (parseFloat(num) > 0) {
       return (
         <Text
           style={{
             fontSize: 15,
             color: 'green',
+            textAlign: 'auto',
+            flex: 1,
+            marginRight: 20,
           }}
         >
-          + {(num * 100).toFixed(1)}
+          + {parseNumber}
         </Text>
       );
     } else if (parseFloat(num) === 0) {
@@ -52,9 +117,12 @@ class IndicadoresMedicionDetail extends React.Component {
           style={{
             fontSize: 15,
             color: 'green',
+            textAlign: 'auto',
+            flex: 1,
+            marginRight: 20,
           }}
         >
-          {num * 100}
+          {parseNumber}
         </Text>
       );
     } else if (parseFloat(num) < 0) {
@@ -63,9 +131,12 @@ class IndicadoresMedicionDetail extends React.Component {
           style={{
             fontSize: 15,
             color: 'red',
+            textAlign: 'auto',
+            flex: 1,
+            marginRight: 20,
           }}
         >
-          - {Math.abs(num * 100)}
+          - {Math.abs(parseNumber)}
         </Text>
       );
     } else {
@@ -100,7 +171,6 @@ class IndicadoresMedicionDetail extends React.Component {
 
   render() {
     const { diff, inScore, lastIndicators, name, score } = this.props.medicion;
-
     const nota =
       score * 100 === 100 || score * 100 === 0
         ? `${score * 100} %`
@@ -110,136 +180,66 @@ class IndicadoresMedicionDetail extends React.Component {
     return (
       <View
         style={[
-          {
-            flex: 1,
-            flexDirection: 'row',
-            paddingHorizontal: 10,
-            paddingVertical: 10,
-            borderBottomColor: '#DEDEDE',
-            borderBottomWidth: 1,
-          },
+          styles.container,
           inScore
             ? { borderLeftColor: Colors.brandPrimary, borderLeftWidth: 6 }
             : {},
         ]}
       >
-        <View
-          style={{
-            flex: 0.26,
-            flexDirection: 'column',
-          }}
-        >
-          <View
-            style={{
-              flex: 0.3,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily: 'Questrial',
-                color: '#555',
-              }}
-            >
-              {name}
-            </Text>
+        <View style={styles.indicatorTypeContent}>
+          <View style={styles.indicatorName}>
+            <Text style={styles.txtName}>{name}</Text>
           </View>
-          <View
-            style={{
-              flex: 0.7,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-              paddingTop: 2,
-            }}
-          >
-            <View
-              style={{
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 3,
-                },
-                shadowOpacity: 0.29,
-                shadowRadius: 4.65,
-
-                elevation: 7,
-              }}
-            >
-              {name && this.icono(name)}
-            </View>
+          <View style={styles.iconContainer}>
+            <View style={styles.iconContent}>{name && this.icono(name)}</View>
           </View>
         </View>
-        <View
-          style={{
-            flex: 0.4,
-            flexDirection: 'column',
-          }}
-        >
-          <View
-            style={{
-              flex: 0.3,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingTop: 15,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 35,
-                fontFamily: 'Bree',
-                fontWeight: 'bold',
-                color: Colors.brandPrimary,
-              }}
-            >
-              {nota}
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 0.7,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-            }}
-          >
-            {this.semaforo(diff)}
+        <View style={styles.chartContainer}>
+          <View style={styles.chartContent}>
+            {ultimosIndicadores.length > 0 && (
+              <VictoryBar
+                width={width * 0.3}
+                height={80}
+                data={ultimosIndicadores.reverse()}
+                maxDomain={{ y: 100 }}
+                barWidth={15}
+                barRatio={1}
+                alignment="start"
+                style={{
+                  data: {
+                    fill: Colors.brandInfo,
+                  },
+                  labels: {
+                    fill: '#999',
+                  },
+                }}
+                padding={{ top: 25, bottom: 0, left: 20, right: 20 }}
+                samples={100}
+                labels={({ datum }) => datum._y}
+                labelComponent={<VictoryLabel dx={7} dy={-9} />}
+              />
+            )}
           </View>
         </View>
         <View
           style={{
             flex: 0.34,
-            flexDirection: 'column',
-            justifyContent: 'center',
+            paddingTop: 15,
+            alignItems: 'center',
           }}
         >
-          <View
+          <Text
             style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
+              fontSize: 30,
+              fontFamily: 'Bree',
+              fontWeight: 'bold',
+              textAlign: 'center',
+              color: Colors.brandPrimary,
             }}
           >
-            {ultimosIndicadores.length > 0 && (
-              <VictoryBar
-                width={120}
-                height={70}
-                data={ultimosIndicadores.concat(100)}
-                barWidth={17}
-                barRatio={1}
-                alignment="start"
-                style={{
-                  data: { fill: Colors.brandInfo },
-                  labels: { fill: '#999' },
-                }}
-                padding={{ top: 25, bottom: 0, left: 0, right: 0 }}
-                samples={100}
-                labels={({ datum }) => datum._y}
-                labelComponent={<VictoryLabel dx={9} dy={-10} />}
-              />
-            )}
-          </View>
+            {nota}
+          </Text>
+          {this.semaforo(diff)}
         </View>
       </View>
     );

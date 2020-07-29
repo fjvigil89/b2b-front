@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, Dimensions, Text } from 'react-native';
+import { View, Image, Dimensions, Text, StyleSheet } from 'react-native';
 import Colors from '@assets/native-base-theme/variables//commonColor';
 import { Ionicons } from '@expo/vector-icons';
+import { styles } from './styles';
+
+const deviceFullWidth = Dimensions.get('window').width;
 
 class HeaderVentaValor extends React.Component {
   static propTypes = {
@@ -111,9 +114,6 @@ class HeaderVentaValor extends React.Component {
   };
 
   render() {
-    const deviceFullWidth = Dimensions.get('window').width;
-    const deviceWidth = deviceFullWidth - 30;
-
     const backgroundImage = require('@assets/images/background-detalle-accion.png');
 
     const mtb = this.props.data.mtb ? this.formatter(this.props.data.mtb) : 0;
@@ -155,79 +155,16 @@ class HeaderVentaValor extends React.Component {
         : `-`;
 
     return (
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 350,
-          backgroundColor: '#FFF',
-        }}
-      >
-        <Image
-          style={{
-            position: 'absolute',
-            top: 0,
-            width: deviceFullWidth,
-          }}
-          source={backgroundImage}
-        />
-
-        <View
-          style={{
-            flex: 1,
-            width: deviceWidth,
-            marginTop: 30,
-            paddingRight: 90,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              fontFamily: 'Questrial',
-              fontWeight: 'bold',
-              marginBottom: 5,
-              alignItems: 'flex-start',
-            }}
-          >
-            {this.props.nombreSala}
-          </Text>
-
-          <Text
-            style={{
-              fontSize: 12,
-              fontFamily: 'Questrial',
-            }}
-          >
-            {this.props.direccion}
-          </Text>
+      <View style={styles.container}>
+        <Image style={styles.headerImage} source={backgroundImage} />
+        <View style={styles.headerTitle}>
+          <Text style={styles.headerTextTitle}>{this.props.nombreSala}</Text>
+          <Text style={styles.headerTextSubTitle}>{this.props.direccion}</Text>
         </View>
 
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            marginTop: 20,
-            backgroundColor: Colors.brandPrimary,
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: 'Bree',
-                fontWeight: 'bold',
-                color: '#FFF',
-                marginBottom: 0,
-              }}
-            >
-              VENTAS TOTAL SALA
-            </Text>
+        <View style={styles.tableHeader}>
+          <View style={styles.tableHeaderTitle}>
+            <Text style={styles.tableTitleText}>VENTAS TOTAL SALA</Text>
           </View>
         </View>
 
