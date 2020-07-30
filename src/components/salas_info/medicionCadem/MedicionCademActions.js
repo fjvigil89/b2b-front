@@ -6,7 +6,12 @@ export default function DetalleMedicion(url, folio) {
     folio,
   };
 
-  return (dispatch) =>
+  return (dispatch) => {
+    dispatch({
+      type: 'LOADING',
+      loading: true,
+    });
+
     new Promise(async (resolve, reject) =>
       axios({
         method: 'POST',
@@ -20,6 +25,10 @@ export default function DetalleMedicion(url, folio) {
               data: response.data.data,
             })
           );
+          dispatch({
+            type: 'LOADING',
+            loading: false,
+          });
         })
         .catch((error) => {
           Sentry.captureException(error);
@@ -27,4 +36,5 @@ export default function DetalleMedicion(url, folio) {
           reject({ message: error.response.data.message });
         })
     );
+  }
 }

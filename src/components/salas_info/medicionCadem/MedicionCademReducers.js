@@ -12,6 +12,12 @@ export default function ventaValor(state = initialState, action) {
 
       return initialState;
     }
+    case 'LOADING': {
+      return {
+        ...state,
+        loading: action.loading,
+      };
+    }
     default:
       return initialState;
   }
