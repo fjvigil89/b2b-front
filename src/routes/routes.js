@@ -22,6 +22,7 @@ import MyStatistics from '@components/myStatistics/MyStatistics';
 import Gallery from '@components/gallery/Gallery';
 import VentaValor from '@components/salas_info/venta_valor/VentaValor';
 import MedicionCadem from '@components/salas_info/medicionCadem/MedicionCadem';
+import Ayuda from '@components/ayuda/Ayuda';
 
 const Index = (
   <Router>
@@ -116,6 +117,13 @@ const Index = (
         key="HelpReport"
         component={Help}
         title="HelpReportAction"
+      />
+
+      <Scene
+        hideNavBar
+        key="Ayuda"
+        component={Ayuda}
+        title="AyudaAction"
       />
     </Modal>
   </Router>
