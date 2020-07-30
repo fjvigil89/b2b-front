@@ -209,7 +209,7 @@ class Report extends Component {
             <Button
               transparent
               onPress={() => {
-                Actions.HelpReport();
+                Actions.Ayuda('report')
               }}
             >
               <Ionicons
