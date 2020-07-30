@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.10] - 2020-07-29
+# Added
+- Se refactoriza la seccion de ayuda
+- Se agrega login en la seccion de indicadores
+- Se agrega fondo blanco en los pin del mapa
+
 ## [3.0.8] - 2020-06-24
 
 ### Added
