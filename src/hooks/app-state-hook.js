@@ -25,7 +25,7 @@ export const usePrevAppState = (appState) => {
   const appStateRef = useRef(appState);
   useEffect(() => {
     appStateRef.current = appState;
-  }, [appState]);
+  });
   return appStateRef.current;
 };
 
