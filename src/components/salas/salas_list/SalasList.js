@@ -42,8 +42,6 @@ const SalasList = ({
       setIsLoading(false);
     };
     if (
-      appState === 'active' &&
-      prevAppState === 'background' &&
       prevAppState !== appState &&
       currentScene === 'dashboard'
     ) {
