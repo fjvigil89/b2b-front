@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { View, ActivityIndicator, StyleSheet, Dimensions } from "react-native";
 
 class LoadingOverlay extends React.Component {
   render() {
@@ -10,7 +10,8 @@ class LoadingOverlay extends React.Component {
           {
             backgroundColor: "#F4F4F4",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "flex-start",
+            paddingTop: HEIGHT * 0.45,
             opacity: 0.6
           }
         ]}
@@ -20,5 +21,9 @@ class LoadingOverlay extends React.Component {
     );
   }
 }
+
+const { height: HEIGHT } = Dimensions.get('window');
+
+
 
 export default LoadingOverlay;
