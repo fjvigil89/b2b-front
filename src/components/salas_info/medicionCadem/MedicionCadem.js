@@ -1,7 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, ScrollView, StatusBar, SafeAreaView } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StatusBar,
+  SafeAreaView,
+  ActivityIndicator,
+} from 'react-native';
 import {
   Container,
   Button,
@@ -12,6 +18,8 @@ import {
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import _ from 'lodash';
+
+import Colors from '@assets/native-base-theme/variables//commonColor';
 
 import DetalleMedicion from '@components/salas_info/medicionCadem/MedicionCademActions';
 
@@ -44,7 +52,7 @@ class MedicionCadem extends React.Component {
   };
 
   render() {
-    const { indicadores } = this.props;
+    const { indicadores, loading } = this.props;
     return (
       <Container style={{ backgroundColor: '#F4F4F4' }}>
         <StatusBar barStyle="dark-content" />
@@ -63,16 +71,28 @@ class MedicionCadem extends React.Component {
               ultimaMedicion={this.props.ultimaMedicion}
             />
 
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: '#FFFFFF',
-              }}
-            >
-              <ScrollView>
-                <IndicadoresMedicionCadem data={indicadores} />
-              </ScrollView>
-            </View>
+            {loading ? (
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: '#FFFFFF',
+                  justifyContent: 'center',
+                }}
+              >
+                <ActivityIndicator size="large" />
+              </View>
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: '#FFFFFF',
+                }}
+              >
+                <ScrollView>
+                  <IndicadoresMedicionCadem data={indicadores} />
+                </ScrollView>
+              </View>
+            )}
           </SafeAreaView>
         </Content>
         <Footer>
@@ -95,6 +115,7 @@ class MedicionCadem extends React.Component {
 
 const mapStateToProps = (state) => ({
   indicadores: state.medicion.indicadores,
+  loading: state.medicion.loading,
   endpoint: state.user.endpoint,
 });
 

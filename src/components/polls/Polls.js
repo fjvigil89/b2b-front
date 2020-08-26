@@ -240,7 +240,7 @@ class Polls extends Component {
   };
 
   savePoll = () => {
-    this.props.SavePoll(this.props.endpoint, this.props.form);
+    this.props.SavePoll(this.props.endpoint, this.props.form, this.props.user);
   };
 
   nextPosition = () => {
@@ -313,6 +313,7 @@ const mapStateToProps = (state) => ({
   isFinish: state.polls.isFinish,
   form: state.polls.form,
   endpoint: state.user.endpoint,
+  user: state.user.user,
 });
 
 const mapDispatchToProps = {
