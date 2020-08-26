@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.11] - 2020-08-25
+# Added
+- Se agrega user y date a la data en Poll
+
 ## [3.0.10] - 2020-07-29
 # Added
 - Se refactoriza la seccion de ayuda
