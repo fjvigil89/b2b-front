@@ -10,6 +10,7 @@ import {
   Button,
   Title,
   Body,
+  View,
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import MapView from 'react-native-maps';
@@ -143,10 +144,21 @@ class Maps extends Component {
                     Actions.salasInfo({ data: sala });
                   }}
                 >
-                  <Image
-                    source={logo}
-                    style={{ width: 40, height: 40, zIndex: -1 }}
-                  />
+                  <View
+                    style={{
+                      backgroundColor: '#FFF',
+                      width: 43,
+                      height: 43,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Image
+                      source={logo}
+                      style={{ width: 40, height: 40, zIndex: -1 }}
+                    />
+                  </View>
                 </MapView.Marker.Animated>
               );
             }
