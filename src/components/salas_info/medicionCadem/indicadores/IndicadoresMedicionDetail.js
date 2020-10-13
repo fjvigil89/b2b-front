@@ -212,7 +212,7 @@ class IndicadoresMedicionDetail extends React.Component {
             >
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 11,
                 }}
               >
                 {det.categoria}
@@ -229,7 +229,7 @@ class IndicadoresMedicionDetail extends React.Component {
                   fontSize: 12,
                 }}
               >
-                {det.EAN}
+                {det.ean}
               </Text>
             </View>
             <View
@@ -240,7 +240,7 @@ class IndicadoresMedicionDetail extends React.Component {
             >
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 11,
                 }}
               >
                 {det.descripcion}
@@ -271,10 +271,10 @@ class IndicadoresMedicionDetail extends React.Component {
             >
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 11,
                 }}
               >
-                {det.ean}
+                {det.descripcion}
               </Text>
             </View>
           </View>
@@ -394,7 +394,7 @@ class IndicadoresMedicionDetail extends React.Component {
               <Text
                 style={{
                   marginLeft: 5,
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: 'bold',
                   fontFamily: 'Questrial',
                 }}
@@ -414,7 +414,7 @@ class IndicadoresMedicionDetail extends React.Component {
               <Text
                 style={{
                   marginLeft: 5,
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: 'bold',
                   fontFamily: 'Questrial',
                 }}
@@ -452,7 +452,7 @@ class IndicadoresMedicionDetail extends React.Component {
                   >
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: 'bold',
                       }}
                     >
@@ -467,7 +467,7 @@ class IndicadoresMedicionDetail extends React.Component {
                   >
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: 'bold',
                       }}
                     >
@@ -482,7 +482,7 @@ class IndicadoresMedicionDetail extends React.Component {
                   >
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: 'bold',
                       }}
                     >
@@ -516,7 +516,7 @@ class IndicadoresMedicionDetail extends React.Component {
               <Text
                 style={{
                   marginLeft: 5,
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: 'bold',
                   fontFamily: 'Questrial',
                 }}
@@ -536,7 +536,7 @@ class IndicadoresMedicionDetail extends React.Component {
               <Text
                 style={{
                   marginLeft: 5,
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: 'bold',
                   fontFamily: 'Questrial',
                 }}
@@ -573,7 +573,7 @@ class IndicadoresMedicionDetail extends React.Component {
                   >
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: 'bold',
                       }}
                     >
